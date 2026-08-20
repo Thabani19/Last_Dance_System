@@ -15,13 +15,20 @@
 
         protected override void Seed(ApplicationDbContext context)
         {
-            // Create Administrator role
+            // Create roles
             var roleManager = new RoleManager<IdentityRole>(
                 new RoleStore<IdentityRole>(context));
 
+            // Create Administrator role
             if (!roleManager.RoleExists("Administrator"))
             {
                 roleManager.Create(new IdentityRole("Administrator"));
+            }
+
+            // Create Student role
+            if (!roleManager.RoleExists("Student"))
+            {
+                roleManager.Create(new IdentityRole("Student"));
             }
 
             // Create UserManager

@@ -149,28 +149,105 @@ namespace Last_Dance_System.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    return RedirectToAction("Index", "Home");
-                }
-                AddErrors(result);
+                return View(model);
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            // Check if the ID number is already registered
+            using (var context = new ApplicationDbContext())
+            {
+                var existingRegistration = context.Registrations
+                    .FirstOrDefault(r => r.RegistrationId == model.RegistrationId);
+
+                if (existingRegistration != null)
+                {
+                    ModelState.AddModelError(
+                        "RegistrationId",
+                        "This ID number is already registered."
+                    );
+
+                    return View(model);
+                }
+            }
+
+            // Check if the email is already registered
+            var existingUser = await UserManager.FindByEmailAsync(model.Email);
+
+            if (existingUser != null)
+            {
+                ModelState.AddModelError(
+                    "Email",
+                    "This email address is already registered."
+                );
+
+                return View(model);
+            }
+
+            // Create ASP.NET Identity account
+            var user = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                EmailConfirmed = true
+            };
+
+            var result = await UserManager.CreateAsync(user, model.Password);
+
+            if (!result.Succeeded)
+            {
+                AddErrors(result);
+                return View(model);
+            }
+
+            // Assign Student role
+            var roleResult = await UserManager.AddToRoleAsync(
+                user.Id,
+                "Student"
+            );
+
+            if (!roleResult.Succeeded)
+            {
+                // Remove the Identity account if role assignment fails
+                await UserManager.DeleteAsync(user);
+
+                AddErrors(roleResult);
+                return View(model);
+            }
+
+            // Create Registration record
+            using (var context = new ApplicationDbContext())
+            {
+                var registration = new Registration
+                {
+                    RegistrationId = model.RegistrationId,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Gender = model.Gender,
+                    DateOfBirth = model.DateOfBirth,
+                    Phone = model.Phone,
+                    Email = model.Email,
+                    Address = model.Address,
+                    RegistrationDate = DateTime.Now,
+
+                    // Connect Registration to ASP.NET Identity
+                    ApplicationUserId = user.Id
+                };
+
+                context.Registrations.Add(registration);
+                await context.SaveChangesAsync();
+            }
+
+            // Log the student in
+            await SignInManager.SignInAsync(
+                user,
+                isPersistent: false,
+                rememberBrowser: false
+            );
+
+            return RedirectToAction("Index", "Home");
         }
+
 
         //
         // GET: /Account/ConfirmEmail
@@ -349,41 +426,7 @@ namespace Last_Dance_System.Controllers
 
         //
         // POST: /Account/ExternalLoginConfirmation
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
-        {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Manage");
-            }
-
-            if (ModelState.IsValid)
-            {
-                // Get the information about the user from the external login provider
-                var info = await AuthenticationManager.GetExternalLoginInfoAsync();
-                if (info == null)
-                {
-                    return View("ExternalLoginFailure");
-                }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user);
-                if (result.Succeeded)
-                {
-                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
-                    if (result.Succeeded)
-                    {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        return RedirectToLocal(returnUrl);
-                    }
-                }
-                AddErrors(result);
-            }
-
-            ViewBag.ReturnUrl = returnUrl;
-            return View(model);
-        }
+        
 
         //
         // POST: /Account/LogOff
