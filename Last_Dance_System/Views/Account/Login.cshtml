@@ -6,258 +6,696 @@
 }
 
 <style>
-    .login-page {
-        min-height: 85vh;
+    /* ================================
+       DARK AUTOMOTIVE LOGIN
+       ================================ */
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #050a12;
+    }
+
+    .automotive-login {
+        min-height: calc(100vh - 50px);
+        background: radial-gradient(circle at 15% 50%, rgba(25, 118, 210, 0.12), transparent 30%), linear-gradient(135deg, #03070d 0%, #07111e 50%, #02060b 100%);
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #f4f7fb;
-        padding: 40px 20px;
+        padding: 35px;
+        color: #ffffff;
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    .login-wrapper {
+        width: 100%;
+        max-width: 1180px;
+        min-height: 680px;
+        display: grid;
+        grid-template-columns: 1.05fr 0.95fr;
+        background: #0b1420;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 26px;
+        overflow: hidden;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65), 0 0 60px rgba(25, 118, 210, 0.06);
+    }
+
+    /* ================================
+       LEFT SIDE
+       ================================ */
+
+    .automotive-side {
+        position: relative;
+        min-height: 680px;
+        overflow: hidden;
+        background: linear-gradient( 135deg, rgba(2, 7, 14, 0.92), rgba(5, 18, 32, 0.78) ), url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=85") center / cover no-repeat;
+    }
+
+        .automotive-side::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient( 90deg, rgba(3, 8, 15, 0.95) 0%, rgba(3, 8, 15, 0.55) 55%, rgba(3, 8, 15, 0.75) 100% );
+            pointer-events: none;
+        }
+
+    .automotive-content {
+        position: relative;
+        z-index: 2;
+        height: 100%;
+        padding: 55px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    /* Logo */
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .brand-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #2196f3, #0d47a1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        box-shadow: 0 0 25px rgba(33, 150, 243, 0.35);
+    }
+
+    .brand-name {
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+    }
+
+        .brand-name span {
+            color: #2196f3;
+        }
+
+    /* Hero */
+
+    .hero-text {
+        max-width: 480px;
+        margin-top: auto;
+        margin-bottom: 35px;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border-radius: 50px;
+        background: rgba(33, 150, 243, 0.12);
+        border: 1px solid rgba(33, 150, 243, 0.25);
+        color: #64b5f6;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+    }
+
+    .hero-text h1 {
+        font-size: 52px;
+        line-height: 1.05;
+        margin: 0 0 20px;
+        font-weight: 800;
+        letter-spacing: -1.5px;
+    }
+
+        .hero-text h1 span {
+            color: #2196f3;
+        }
+
+    .hero-text p {
+        color: #b7c3d0;
+        font-size: 17px;
+        line-height: 1.7;
+        margin: 0;
+        max-width: 430px;
+    }
+
+    /* Features */
+
+    .features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .feature {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        background: rgba(255, 255, 255, 0.055);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 10px;
+        color: #d7e0ea;
+        font-size: 12px;
+    }
+
+    .feature-icon {
+        color: #42a5f5;
+        font-weight: bold;
+    }
+
+    /* ================================
+       RIGHT SIDE
+       ================================ */
+
+    .login-side {
+        background: #0c1724;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 55px;
     }
 
     .login-container {
         width: 100%;
-        max-width: 430px;
-    }
-
-    .login-card {
-        background: #ffffff;
-        border-radius: 18px;
-        padding: 40px;
-        box-shadow: 0 10px 35px rgba(0, 0, 0, 0.10);
+        max-width: 410px;
     }
 
     .login-header {
-        text-align: center;
-        margin-bottom: 30px;
+        margin-bottom: 35px;
     }
 
-    .login-icon {
-        width: 70px;
-        height: 70px;
-        margin: 0 auto 18px;
-        border-radius: 50%;
-        background: #0d6efd;
-        color: white;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 30px;
+        .login-header h2 {
+            margin: 0 0 10px;
+            font-size: 34px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+
+        .login-header p {
+            margin: 0;
+            color: #7f91a5;
+            font-size: 14px;
+        }
+
+    /* Validation */
+
+    .validation-summary-errors {
+        background: rgba(220, 53, 69, 0.10);
+        border: 1px solid rgba(220, 53, 69, 0.25);
+        border-radius: 10px;
+        padding: 12px 15px;
+        color: #ff7b86;
+        margin-bottom: 20px;
+        font-size: 13px;
     }
 
-    .login-header h2 {
-        margin-bottom: 8px;
-        font-weight: 700;
-        color: #1f2937;
-    }
-
-    .login-header p {
-        color: #6b7280;
-        margin: 0;
-    }
+    /* Form */
 
     .form-group {
-        margin-bottom: 20px;
+        margin-bottom: 22px;
     }
 
     .form-label {
-        font-weight: 600;
-        color: #374151;
-        margin-bottom: 8px;
         display: block;
+        margin-bottom: 9px;
+        color: #d9e2ec;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #60758b;
+        font-size: 15px;
+        z-index: 2;
     }
 
     .form-control {
-        height: 48px;
-        border-radius: 10px;
-        border: 1px solid #d1d5db;
-        padding: 10px 14px;
-        font-size: 15px;
         width: 100%;
-        box-sizing: border-box;
+        height: 52px;
+        border-radius: 11px;
+        border: 1px solid #26384b;
+        background: #09121d;
+        color: #ffffff;
+        padding: 12px 15px 12px 44px;
+        font-size: 14px;
+        outline: none;
+        transition: all 0.25s ease;
     }
 
-        .form-control:focus {
-            border-color: #0d6efd;
-            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.12);
-            outline: none;
+        .form-control::placeholder {
+            color: #52667b;
         }
+
+        .form-control:hover {
+            border-color: #35506b;
+        }
+
+        .form-control:focus {
+            border-color: #2196f3;
+            background: #0a1522;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.10), 0 0 20px rgba(33, 150, 243, 0.08);
+        }
+
+    .field-validation-error {
+        display: block;
+        color: #ff7b86;
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+    /* Remember */
 
     .remember-row {
         display: flex;
         align-items: center;
-        margin-bottom: 22px;
+        margin: 5px 0 25px;
     }
 
         .remember-row input {
-            margin-right: 8px;
+            width: 16px;
+            height: 16px;
+            accent-color: #2196f3;
+            margin-right: 9px;
+            cursor: pointer;
         }
 
         .remember-row label {
             margin: 0;
-            color: #6b7280;
-            font-weight: normal;
+            color: #7f91a5;
+            font-size: 13px;
+            font-weight: 400;
+            cursor: pointer;
         }
+
+    /* Login button */
 
     .login-button {
         width: 100%;
-        height: 48px;
+        height: 54px;
         border: none;
-        border-radius: 10px;
-        background: #0d6efd;
-        color: white;
-        font-size: 16px;
-        font-weight: 600;
+        border-radius: 11px;
+        background: linear-gradient(135deg, #2196f3, #1565c0);
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 800;
+        letter-spacing: 0.8px;
         cursor: pointer;
-        transition: 0.2s;
+        transition: all 0.25s ease;
+        box-shadow: 0 8px 25px rgba(33, 150, 243, 0.20);
     }
 
         .login-button:hover {
-            background: #0b5ed7;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(33, 150, 243, 0.32);
+            background: linear-gradient(135deg, #42a5f5, #1976d2);
         }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+    /* Links */
 
     .login-links {
         text-align: center;
-        margin-top: 25px;
+        margin-top: 28px;
     }
 
+        .login-links p {
+            margin: 10px 0;
+            color: #718397;
+            font-size: 13px;
+        }
+
         .login-links a {
-            color: #0d6efd;
+            color: #42a5f5;
             text-decoration: none;
             font-weight: 600;
+            transition: 0.2s;
         }
 
             .login-links a:hover {
-                text-decoration: underline;
+                color: #90caf9;
+                text-decoration: none;
             }
 
-    .validation-summary-errors {
-        color: #dc3545;
-        margin-bottom: 15px;
+    /* Security text */
+
+    .security-note {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        margin-top: 28px;
+        color: #52667b;
+        font-size: 11px;
     }
 
-    .field-validation-error {
-        color: #dc3545;
-        font-size: 13px;
+        .security-note span {
+            color: #42a5f5;
+        }
+
+    /* ================================
+       RESPONSIVE
+       ================================ */
+
+    @@media (max-width: 900px) {
+
+        .automotive-login {
+            padding: 20px;
+        }
+
+        .login-wrapper {
+            grid-template-columns: 1fr;
+            max-width: 550px;
+        }
+
+        .automotive-side {
+            min-height: 350px;
+        }
+
+        .automotive-content {
+            padding: 35px;
+        }
+
+        .hero-text {
+            margin-top: 70px;
+        }
+
+            .hero-text h1 {
+                font-size: 38px;
+            }
+
+        .login-side {
+            padding: 40px 30px;
+        }
+    }
+
+    @@media (max-width: 500px) {
+
+        .automotive-login {
+            padding: 10px;
+        }
+
+        .login-wrapper {
+            border-radius: 18px;
+        }
+
+        .automotive-side {
+            min-height: 330px;
+        }
+
+        .automotive-content {
+            padding: 25px;
+        }
+
+        .hero-text h1 {
+            font-size: 32px;
+        }
+
+        .hero-text p {
+            font-size: 14px;
+        }
+
+        .features {
+            display: none;
+        }
+
+        .login-side {
+            padding: 35px 22px;
+        }
+
+        .login-header h2 {
+            font-size: 29px;
+        }
     }
 </style>
 
-<div class="login-page">
 
-    <div class="login-container">
+<div class="automotive-login">
 
-        <div class="login-card">
+    <div class="login-wrapper">
 
-            <div class="login-header">
+        <!-- =================================
+             LEFT AUTOMOTIVE SECTION
+             ================================= -->
 
-                <div class="login-icon">
-                    🚗
+        <div class="automotive-side">
+
+            <div class="automotive-content">
+
+                <!-- Brand -->
+
+                <div class="brand">
+
+                    <div class="brand-icon">
+                        🚗
+                    </div>
+
+                    <div class="brand-name">
+                        DRIVE <span>SMART</span>
+                    </div>
+
                 </div>
 
-                <h2>Welcome Back</h2>
 
-                <p>Login to your Driving School account</p>
+                <!-- Hero -->
+
+                <div class="hero-text">
+
+                    <div class="hero-badge">
+                        ● Driving School Platform
+                    </div>
+
+                    <h1>
+                        Drive with
+                        <span>confidence.</span>
+                    </h1>
+
+                    <p>
+                        Your journey to becoming a confident,
+                        responsible driver starts here.
+                    </p>
+
+                </div>
+
+
+                <!-- Features -->
+
+                <div class="features">
+
+                    <div class="feature">
+                        <span class="feature-icon">✓</span>
+                        Professional Instructors
+                    </div>
+
+                    <div class="feature">
+                        <span class="feature-icon">✓</span>
+                        Easy Lesson Booking
+                    </div>
+
+                    <div class="feature">
+                        <span class="feature-icon">✓</span>
+                        Track Your Progress
+                    </div>
+
+                </div>
 
             </div>
 
-            @using (Html.BeginForm(
-                "Login",
-                "Account",
-                new { ReturnUrl = ViewBag.ReturnUrl },
-                FormMethod.Post,
-                new { role = "form" }))
-            {
-                @Html.AntiForgeryToken()
+        </div>
 
-                @Html.ValidationSummary(
-                    true,
-                    "",
-                    new { @class = "validation-summary-errors" }
-                )
 
-                <div class="form-group">
+        <!-- =================================
+             RIGHT LOGIN SECTION
+             ================================= -->
 
-                    @Html.LabelFor(
-                        m => m.Email,
-                        new { @class = "form-label" }
-                    )
+        <div class="login-side">
 
-                    @Html.TextBoxFor(
-                        m => m.Email,
-                        new
-                        {
-                            @class = "form-control",
-                            placeholder = "Enter your email",
-                            autocomplete = "email"
-                        }
-                    )
+            <div class="login-container">
 
-                    @Html.ValidationMessageFor(
-                        m => m.Email,
-                        "",
-                        new { @class = "field-validation-error" }
-                    )
+                <div class="login-header">
 
-                </div>
-
-                <div class="form-group">
-
-                    @Html.LabelFor(
-                        m => m.Password,
-                        new { @class = "form-label" }
-                    )
-
-                    @Html.PasswordFor(
-                        m => m.Password,
-                        new
-                        {
-                            @class = "form-control",
-                            placeholder = "Enter your password",
-                            autocomplete = "current-password"
-                        }
-                    )
-
-                    @Html.ValidationMessageFor(
-                        m => m.Password,
-                        "",
-                        new { @class = "field-validation-error" }
-                    )
-
-                </div>
-
-                <div class="remember-row">
-
-                    @Html.CheckBoxFor(m => m.RememberMe)
-
-                    @Html.LabelFor(m => m.RememberMe)
-
-                </div>
-
-                <button type="submit" class="login-button">
-                    Login
-                </button>
-
-                <div class="login-links">
+                    <h2>Welcome Back 👋</h2>
 
                     <p>
-                        Don't have an account?
-                        @Html.ActionLink(
-                            "Register",
-                            "Register",
-                            "Account"
-                        )
-                    </p>
-
-                    <p>
-                        @Html.ActionLink(
-                            "Forgot Password?",
-                            "ForgotPassword",
-                            "Account"
-                        )
+                        Sign in to continue to your account.
                     </p>
 
                 </div>
-            }
+
+
+                @using (Html.BeginForm(
+                    "Login",
+                    "Account",
+                    new { ReturnUrl = ViewBag.ReturnUrl },
+                    FormMethod.Post,
+                    new { role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(
+                        true,
+                        "",
+                        new { @class = "validation-summary-errors" }
+                    )
+
+
+                    <!-- Email -->
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(
+                            m => m.Email,
+                            new { @class = "form-label" }
+                        )
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                ✉
+                            </span>
+
+                            @Html.TextBoxFor(
+                                m => m.Email,
+                                new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "Enter your email",
+                                    autocomplete = "email"
+                                }
+                            )
+
+                        </div>
+
+                        @Html.ValidationMessageFor(
+                            m => m.Email,
+                            "",
+                            new { @class = "field-validation-error" }
+                        )
+
+                    </div>
+
+
+                    <!-- Password -->
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(
+                            m => m.Password,
+                            new { @class = "form-label" }
+                        )
+
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                                🔒
+                            </span>
+
+                            @Html.PasswordFor(
+                                m => m.Password,
+                                new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "Enter your password",
+                                    autocomplete = "current-password"
+                                }
+                            )
+
+                        </div>
+
+                        @Html.ValidationMessageFor(
+                            m => m.Password,
+                            "",
+                            new { @class = "field-validation-error" }
+                        )
+
+                    </div>
+
+
+                    <!-- Remember -->
+
+                    <div class="remember-row">
+
+                        @Html.CheckBoxFor(
+                            m => m.RememberMe
+                        )
+
+                        @Html.LabelFor(
+                            m => m.RememberMe
+                        )
+
+                    </div>
+
+
+                    <!-- Login -->
+
+                    <button type="submit"
+                            class="login-button">
+
+                        SIGN IN
+
+                    </button>
+
+
+                    <!-- Links -->
+
+                    <div class="login-links">
+
+                        <p>
+
+                            Don't have an account?
+
+                            @Html.ActionLink(
+                                "Create Account",
+                                "Register",
+                                "Account"
+                            )
+
+                        </p>
+
+                        <p>
+
+                            @Html.ActionLink(
+                                "Forgot Password?",
+                                "ForgotPassword",
+                                "Account"
+                            )
+
+                        </p>
+
+                    </div>
+
+
+                    <!-- Security -->
+
+                    <div class="security-note">
+
+                        <span>🔒</span>
+
+                        Secure login protected by your account
+
+                    </div>
+                }
+
+            </div>
 
         </div>
 
@@ -265,6 +703,9 @@
 
 </div>
 
+
 @section Scripts {
+
     @Scripts.Render("~/bundles/jqueryval")
+
 }

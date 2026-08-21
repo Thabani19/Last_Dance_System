@@ -5,352 +5,1064 @@
 }
 
 <style>
-    .instructor-page {
-        min-height: 90vh;
-        background: #f4f7fb;
-        padding: 40px 20px;
-    }
 
-    .instructor-container {
-        max-width: 850px;
-        margin: 0 auto;
-    }
+    /* =========================================
+       INSTRUCTOR PAGE
+       SAME COLOR SYSTEM AS LOGIN
+       ========================================= */
 
-    .instructor-card {
-        background: white;
-        border-radius: 18px;
-        padding: 40px;
-        box-shadow: 0 10px 35px rgba(0,0,0,0.10);
-    }
-
-    .page-header {
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-        .page-header h2 {
-            font-weight: 700;
-            color: #1f2937;
-        }
-
-        .page-header p {
-            color: #6b7280;
-        }
-
-    .section-title {
-        font-size: 18px;
-        font-weight: 700;
-        color: #1f2937;
-        margin-top: 25px;
-        margin-bottom: 20px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #e5e7eb;
-    }
-
-    .form-group {
-        margin-bottom: 18px;
-    }
-
-    .form-label {
-        display: block;
-        font-weight: 600;
-        margin-bottom: 7px;
-        color: #374151;
-    }
-
-    .form-control {
-        width: 100%;
-        height: 46px;
-        padding: 10px 14px;
-        border: 1px solid #d1d5db;
-        border-radius: 10px;
+    * {
         box-sizing: border-box;
     }
 
-        .form-control:focus {
-            border-color: #0d6efd;
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(13,110,253,.12);
+    body {
+        margin: 0;
+        background: #050a12;
+    }
+
+    .instructor-page {
+        min-height: calc(100vh - 50px);
+        background: radial-gradient( circle at 15% 50%, rgba(25, 118, 210, 0.12), transparent 30% ), linear-gradient( 135deg, #03070d 0%, #07111e 50%, #02060b 100% );
+        padding: 40px 25px 60px;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: #ffffff;
+    }
+
+
+    /* =========================================
+       WRAPPER
+       ========================================= */
+
+    .instructor-wrapper {
+        width: 100%;
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+
+    /* =========================================
+       MAIN CARD
+       ========================================= */
+
+    .instructor-card {
+        background: #0c1724;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65), 0 0 60px rgba(25, 118, 210, 0.06);
+    }
+
+
+    /* =========================================
+       HEADER
+       ========================================= */
+
+    .page-header {
+        position: relative;
+        background: linear-gradient( 135deg, #03070d 0%, #07111e 55%, #0d2b4d 100% );
+        padding: 38px 45px;
+        overflow: hidden;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+
+        .page-header::before {
+            content: "";
+            position: absolute;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: rgba(33, 150, 243, 0.08);
+            top: -120px;
+            right: -60px;
         }
+
+
+        .page-header::after {
+            content: "";
+            position: absolute;
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+            background: rgba(33, 150, 243, 0.06);
+            bottom: -100px;
+            left: 25%;
+        }
+
+
+    .header-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+
+    /* =========================================
+       HEADER ICON
+       ========================================= */
+
+    .header-icon {
+        width: 62px;
+        height: 62px;
+        border-radius: 15px;
+        background: linear-gradient( 135deg, #2196f3, #0d47a1 );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 27px;
+        flex-shrink: 0;
+        box-shadow: 0 0 25px rgba(33, 150, 243, 0.30);
+    }
+
+
+    /* =========================================
+       HEADER TEXT
+       ========================================= */
+
+    .header-text h2 {
+        margin: 0 0 7px;
+        color: #ffffff;
+        font-size: 29px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+
+
+    .header-text p {
+        margin: 0;
+        color: #7f91a5;
+        font-size: 14px;
+    }
+
+
+    /* =========================================
+       FORM AREA
+       ========================================= */
+
+    .instructor-form-area {
+        padding: 42px 50px 45px;
+        background: #0c1724;
+    }
+
+
+    /* =========================================
+       VALIDATION
+       ========================================= */
+
+    .validation-summary-errors {
+        background: rgba(220, 53, 69, 0.10);
+        border: 1px solid rgba(220, 53, 69, 0.25);
+        border-radius: 10px;
+        padding: 12px 15px;
+        margin-bottom: 25px;
+        color: #ff7b86;
+        font-size: 13px;
+    }
+
+
+    .text-danger {
+        display: block;
+        color: #ff7b86;
+        font-size: 12px;
+        margin-top: 6px;
+    }
+
+
+    /* =========================================
+       FORM SECTIONS
+       ========================================= */
+
+    .form-section {
+        margin-bottom: 32px;
+    }
+
+
+    .section-heading {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 25px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+
+    .section-number {
+        width: 34px;
+        height: 34px;
+        border-radius: 9px;
+        background: rgba(33, 150, 243, 0.12);
+        border: 1px solid rgba(33, 150, 243, 0.20);
+        color: #42a5f5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 800;
+        flex-shrink: 0;
+    }
+
+
+    .section-heading h3 {
+        margin: 0 0 3px;
+        color: #ffffff;
+        font-size: 17px;
+        font-weight: 700;
+    }
+
+
+    .section-heading p {
+        margin: 0;
+        color: #60758b;
+        font-size: 12px;
+    }
+
+
+    /* =========================================
+       FORM GROUP
+       ========================================= */
+
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+
+    .form-label {
+        display: block;
+        margin-bottom: 9px;
+        color: #d9e2ec;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+
+    /* =========================================
+       INPUT WRAPPER
+       ========================================= */
+
+    .input-wrapper {
+        position: relative;
+    }
+
+
+    .input-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #60758b;
+        font-size: 15px;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+
+    /* =========================================
+       INPUTS
+       ========================================= */
+
+    .form-control {
+        width: 100%;
+        height: 52px;
+        border-radius: 11px;
+        border: 1px solid #26384b;
+        background: #09121d;
+        color: #ffffff;
+        padding: 12px 15px 12px 44px;
+        font-size: 14px;
+        outline: none;
+        transition: all 0.25s ease;
+    }
+
+
+        .form-control::placeholder {
+            color: #52667b;
+        }
+
+
+        .form-control:hover {
+            border-color: #35506b;
+        }
+
+
+        .form-control:focus {
+            border-color: #2196f3;
+            background: #0a1522;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.10), 0 0 20px rgba(33, 150, 243, 0.08);
+        }
+
+
+    /* =========================================
+       PASSWORD
+       ========================================= */
+
+    .password-wrapper {
+        position: relative;
+    }
+
+
+        .password-wrapper .form-control {
+            padding-right: 65px;
+        }
+
+
+    .toggle-password {
+        position: absolute;
+        right: 13px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: transparent;
+        color: #7f91a5;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 5px;
+        transition: 0.2s;
+    }
+
+
+        .toggle-password:hover {
+            color: #42a5f5;
+        }
+
+
+    /* =========================================
+       PASSWORD STRENGTH
+       ========================================= */
+
+    .password-strength {
+        height: 4px;
+        background: #26384b;
+        border-radius: 5px;
+        margin-top: 9px;
+        overflow: hidden;
+    }
+
+
+    .password-strength-bar {
+        width: 0;
+        height: 100%;
+        background: linear-gradient( 90deg, #1565c0, #42a5f5 );
+        transition: all 0.25s ease;
+    }
+
+
+    .password-strength-text {
+        font-size: 11px;
+        color: #60758b;
+        margin-top: 6px;
+    }
+
+
+    /* =========================================
+       CREATE BUTTON
+       ========================================= */
 
     .btn-create {
         width: 100%;
-        height: 50px;
-        margin-top: 15px;
+        height: 54px;
+        margin-top: 5px;
         border: none;
-        border-radius: 10px;
-        background: #0d6efd;
-        color: white;
-        font-size: 16px;
-        font-weight: 600;
+        border-radius: 11px;
+        background: linear-gradient( 135deg, #2196f3, #1565c0 );
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 800;
+        letter-spacing: 0.8px;
         cursor: pointer;
+        transition: all 0.25s ease;
+        box-shadow: 0 8px 25px rgba(33, 150, 243, 0.20);
     }
 
+
         .btn-create:hover {
-            background: #0b5ed7;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(33, 150, 243, 0.32);
+            background: linear-gradient( 135deg, #42a5f5, #1976d2 );
         }
 
-    .text-danger {
-        color: #dc3545;
-        font-size: 13px;
+
+        .btn-create:active {
+            transform: translateY(0);
+        }
+
+
+    /* =========================================
+       FOOTER NOTE
+       ========================================= */
+
+    .form-note {
+        text-align: center;
+        margin-top: 20px;
+        color: #52667b;
+        font-size: 11px;
+    }
+
+
+        .form-note span {
+            color: #42a5f5;
+        }
+
+
+    /* =========================================
+       RESPONSIVE
+       ========================================= */
+
+    @@media (max-width: 850px) {
+
+        .instructor-page {
+            padding: 25px 18px 45px;
+        }
+
+        .instructor-form-area {
+            padding: 35px 30px;
+        }
+
+        .page-header {
+            padding: 35px 30px;
+        }
+    }
+
+
+    @@media (max-width: 576px) {
+
+        .instructor-page {
+            padding: 10px;
+            min-height: 100vh;
+        }
+
+        .instructor-card {
+            border-radius: 18px;
+        }
+
+        .page-header {
+            padding: 30px 22px;
+        }
+
+        .header-content {
+            align-items: flex-start;
+        }
+
+        .header-icon {
+            width: 52px;
+            height: 52px;
+            font-size: 22px;
+        }
+
+        .header-text h2 {
+            font-size: 23px;
+        }
+
+        .header-text p {
+            font-size: 12px;
+        }
+
+        .instructor-form-area {
+            padding: 30px 20px;
+        }
+
+        .row {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .col-md-6 {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .section-heading {
+            align-items: flex-start;
+        }
     }
 </style>
 
+
 <div class="instructor-page">
 
-    <div class="instructor-container">
+    <div class="instructor-wrapper">
 
         <div class="instructor-card">
 
+
+            <!-- =====================================
+                 HEADER
+                 ===================================== -->
+
             <div class="page-header">
-                <h2>Add Instructor</h2>
-                <p>Create an instructor account and profile</p>
+
+                <div class="header-content">
+
+                    <div class="header-icon">
+
+                        👨‍🏫
+
+                    </div>
+
+
+                    <div class="header-text">
+
+                        <h2>
+                            Add Instructor
+                        </h2>
+
+                        <p>
+                            Create an instructor profile and account
+                        </p>
+
+                    </div>
+
+                </div>
+
             </div>
 
-            @using (Html.BeginForm(
-                "Create",
-                "Instructor",
-                FormMethod.Post))
-            {
-                @Html.AntiForgeryToken()
 
-                @Html.ValidationSummary(
-                    true,
-                    "",
-                    new { @class = "text-danger" })
+            <!-- =====================================
+                 FORM
+                 ===================================== -->
 
-                <div class="section-title">
-                    Instructor Information
-                </div>
+            <div class="instructor-form-area">
 
-                <div class="row">
+                @using (Html.BeginForm(
+                    "Create",
+                    "Instructor",
+                    FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
 
-                    <div class="col-md-6">
 
-                        <div class="form-group">
+                    @Html.ValidationSummary(
+                        true,
+                        "",
+                        new
+                        {
+                            @class = "validation-summary-errors"
+                        }
+                    )
 
-                            @Html.LabelFor(
-                                m => m.FirstName,
-                                new { @class = "form-label" })
 
-                            @Html.TextBoxFor(
-                                m => m.FirstName,
-                                new
-                                {
-                                    @class = "form-control",
-                                    placeholder = "Enter first name"
-                                })
+                    <!-- =====================================
+                         INSTRUCTOR INFORMATION
+                         ===================================== -->
 
-                            @Html.ValidationMessageFor(
-                                m => m.FirstName,
-                                "",
-                                new { @class = "text-danger" })
+                    <div class="form-section">
+
+
+                        <div class="section-heading">
+
+                            <div class="section-number">
+                                01
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Instructor Information
+                                </h3>
+
+                                <p>
+                                    Enter the instructor's personal and professional details
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- FIRST NAME / LAST NAME -->
+
+                        <div class="row">
+
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+
+                                    @Html.LabelFor(
+                                        m => m.FirstName,
+                                        new
+                                        {
+                                            @class = "form-label"
+                                        }
+                                    )
+
+
+                                    <div class="input-wrapper">
+
+                                        <span class="input-icon">
+                                            👤
+                                        </span>
+
+
+                                        @Html.TextBoxFor(
+                                            m => m.FirstName,
+                                            new
+                                            {
+                                                @class = "form-control",
+                                                placeholder = "Enter first name",
+                                                autocomplete = "given-name"
+                                            }
+                                        )
+
+                                    </div>
+
+
+                                    @Html.ValidationMessageFor(
+                                        m => m.FirstName,
+                                        "",
+                                        new
+                                        {
+                                            @class = "text-danger"
+                                        }
+                                    )
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+
+                                    @Html.LabelFor(
+                                        m => m.LastName,
+                                        new
+                                        {
+                                            @class = "form-label"
+                                        }
+                                    )
+
+
+                                    <div class="input-wrapper">
+
+                                        <span class="input-icon">
+                                            👤
+                                        </span>
+
+
+                                        @Html.TextBoxFor(
+                                            m => m.LastName,
+                                            new
+                                            {
+                                                @class = "form-control",
+                                                placeholder = "Enter last name",
+                                                autocomplete = "family-name"
+                                            }
+                                        )
+
+                                    </div>
+
+
+                                    @Html.ValidationMessageFor(
+                                        m => m.LastName,
+                                        "",
+                                        new
+                                        {
+                                            @class = "text-danger"
+                                        }
+                                    )
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PHONE / EMAIL -->
+
+                        <div class="row">
+
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+
+                                    @Html.LabelFor(
+                                        m => m.Phone,
+                                        new
+                                        {
+                                            @class = "form-label"
+                                        }
+                                    )
+
+
+                                    <div class="input-wrapper">
+
+                                        <span class="input-icon">
+                                            📞
+                                        </span>
+
+
+                                        @Html.TextBoxFor(
+                                            m => m.Phone,
+                                            new
+                                            {
+                                                @class = "form-control",
+                                                placeholder = "Enter phone number",
+                                                autocomplete = "tel"
+                                            }
+                                        )
+
+                                    </div>
+
+
+                                    @Html.ValidationMessageFor(
+                                        m => m.Phone,
+                                        "",
+                                        new
+                                        {
+                                            @class = "text-danger"
+                                        }
+                                    )
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+
+                                    @Html.LabelFor(
+                                        m => m.Email,
+                                        new
+                                        {
+                                            @class = "form-label"
+                                        }
+                                    )
+
+
+                                    <div class="input-wrapper">
+
+                                        <span class="input-icon">
+                                            ✉
+                                        </span>
+
+
+                                        @Html.TextBoxFor(
+                                            m => m.Email,
+                                            new
+                                            {
+                                                @class = "form-control",
+                                                type = "email",
+                                                placeholder = "Enter email address",
+                                                autocomplete = "email"
+                                            }
+                                        )
+
+                                    </div>
+
+
+                                    @Html.ValidationMessageFor(
+                                        m => m.Email,
+                                        "",
+                                        new
+                                        {
+                                            @class = "text-danger"
+                                        }
+                                    )
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- LICENSE / EXPERIENCE -->
+
+                        <div class="row">
+
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+
+                                    @Html.LabelFor(
+                                        m => m.LicenseNumber,
+                                        new
+                                        {
+                                            @class = "form-label"
+                                        }
+                                    )
+
+
+                                    <div class="input-wrapper">
+
+                                        <span class="input-icon">
+                                            🪪
+                                        </span>
+
+
+                                        @Html.TextBoxFor(
+                                            m => m.LicenseNumber,
+                                            new
+                                            {
+                                                @class = "form-control",
+                                                placeholder = "Enter license number"
+                                            }
+                                        )
+
+                                    </div>
+
+
+                                    @Html.ValidationMessageFor(
+                                        m => m.LicenseNumber,
+                                        "",
+                                        new
+                                        {
+                                            @class = "text-danger"
+                                        }
+                                    )
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+
+                                    @Html.LabelFor(
+                                        m => m.Experience,
+                                        new
+                                        {
+                                            @class = "form-label"
+                                        }
+                                    )
+
+
+                                    <div class="input-wrapper">
+
+                                        <span class="input-icon">
+                                            ⭐
+                                        </span>
+
+
+                                        @Html.TextBoxFor(
+                                            m => m.Experience,
+                                            new
+                                            {
+                                                @class = "form-control",
+                                                type = "number",
+                                                min = "0",
+                                                max = "50",
+                                                placeholder = "Years of experience"
+                                            }
+                                        )
+
+                                    </div>
+
+
+                                    @Html.ValidationMessageFor(
+                                        m => m.Experience,
+                                        "",
+                                        new
+                                        {
+                                            @class = "text-danger"
+                                        }
+                                    )
+
+                                </div>
+
+                            </div>
 
                         </div>
 
                     </div>
 
-                    <div class="col-md-6">
 
-                        <div class="form-group">
+                    <!-- =====================================
+                         LOGIN INFORMATION
+                         ===================================== -->
 
-                            @Html.LabelFor(
-                                m => m.LastName,
-                                new { @class = "form-label" })
+                    <div class="form-section">
 
-                            @Html.TextBoxFor(
-                                m => m.LastName,
-                                new
-                                {
-                                    @class = "form-control",
-                                    placeholder = "Enter last name"
-                                })
 
-                            @Html.ValidationMessageFor(
-                                m => m.LastName,
-                                "",
-                                new { @class = "text-danger" })
+                        <div class="section-heading">
+
+                            <div class="section-number">
+                                02
+                            </div>
+
+
+                            <div>
+
+                                <h3>
+                                    Login Information
+                                </h3>
+
+                                <p>
+                                    Set up the instructor's login credentials
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+
+
+                            <!-- PASSWORD -->
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+
+                                    @Html.LabelFor(
+                                        m => m.Password,
+                                        new
+                                        {
+                                            @class = "form-label"
+                                        }
+                                    )
+
+
+                                    <div class="password-wrapper">
+
+
+                                        @Html.PasswordFor(
+                                            m => m.Password,
+                                            new
+                                            {
+                                                @class = "form-control",
+                                                placeholder = "Create password",
+                                                id = "InstructorPassword"
+                                            }
+                                        )
+
+
+                                        <button type="button"
+                                                class="toggle-password"
+                                                onclick="togglePassword('InstructorPassword', this)">
+
+                                            Show
+
+                                        </button>
+
+                                    </div>
+
+
+                                    <div class="password-strength">
+
+                                        <div id="passwordStrengthBar"
+                                             class="password-strength-bar">
+                                        </div>
+
+                                    </div>
+
+
+                                    <div id="passwordStrengthText"
+                                         class="password-strength-text">
+
+                                        Create a strong password.
+
+                                    </div>
+
+
+                                    @Html.ValidationMessageFor(
+                                        m => m.Password,
+                                        "",
+                                        new
+                                        {
+                                            @class = "text-danger"
+                                        }
+                                    )
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- CONFIRM PASSWORD -->
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+
+                                    @Html.LabelFor(
+                                        m => m.ConfirmPassword,
+                                        new
+                                        {
+                                            @class = "form-label"
+                                        }
+                                    )
+
+
+                                    <div class="password-wrapper">
+
+
+                                        @Html.PasswordFor(
+                                            m => m.ConfirmPassword,
+                                            new
+                                            {
+                                                @class = "form-control",
+                                                placeholder = "Confirm password",
+                                                id = "InstructorConfirmPassword"
+                                            }
+                                        )
+
+
+                                        <button type="button"
+                                                class="toggle-password"
+                                                onclick="togglePassword('InstructorConfirmPassword', this)">
+
+                                            Show
+
+                                        </button>
+
+                                    </div>
+
+
+                                    @Html.ValidationMessageFor(
+                                        m => m.ConfirmPassword,
+                                        "",
+                                        new
+                                        {
+                                            @class = "text-danger"
+                                        }
+                                    )
+
+                                </div>
+
+                            </div>
 
                         </div>
 
                     </div>
 
-                </div>
 
-                <div class="row">
+                    <!-- =====================================
+                         CREATE BUTTON
+                         ===================================== -->
 
-                    <div class="col-md-6">
+                    <button type="submit"
+                            class="btn-create">
 
-                        <div class="form-group">
+                        CREATE INSTRUCTOR
 
-                            @Html.LabelFor(
-                                m => m.Phone,
-                                new { @class = "form-label" })
+                    </button>
 
-                            @Html.TextBoxFor(
-                                m => m.Phone,
-                                new
-                                {
-                                    @class = "form-control",
-                                    placeholder = "Enter phone number"
-                                })
 
-                            @Html.ValidationMessageFor(
-                                m => m.Phone,
-                                "",
-                                new { @class = "text-danger" })
+                    <div class="form-note">
 
-                        </div>
+                        <span>🔒</span>
+
+                        Instructor login credentials will be created with this account.
 
                     </div>
 
-                    <div class="col-md-6">
+                }
 
-                        <div class="form-group">
-
-                            @Html.LabelFor(
-                                m => m.Email,
-                                new { @class = "form-label" })
-
-                            @Html.TextBoxFor(
-                                m => m.Email,
-                                new
-                                {
-                                    @class = "form-control",
-                                    type = "email",
-                                    placeholder = "Enter email address"
-                                })
-
-                            @Html.ValidationMessageFor(
-                                m => m.Email,
-                                "",
-                                new { @class = "text-danger" })
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="row">
-
-                    <div class="col-md-6">
-
-                        <div class="form-group">
-
-                            @Html.LabelFor(
-                                m => m.LicenseNumber,
-                                new { @class = "form-label" })
-
-                            @Html.TextBoxFor(
-                                m => m.LicenseNumber,
-                                new
-                                {
-                                    @class = "form-control",
-                                    placeholder = "Enter license number"
-                                })
-
-                            @Html.ValidationMessageFor(
-                                m => m.LicenseNumber,
-                                "",
-                                new { @class = "text-danger" })
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-6">
-
-                        <div class="form-group">
-
-                            @Html.LabelFor(
-                                m => m.Experience,
-                                new { @class = "form-label" })
-
-                            @Html.TextBoxFor(
-                                m => m.Experience,
-                                new
-                                {
-                                    @class = "form-control",
-                                    type = "number",
-                                    min = "0",
-                                    max = "50",
-                                    placeholder = "Years of experience"
-                                })
-
-                            @Html.ValidationMessageFor(
-                                m => m.Experience,
-                                "",
-                                new { @class = "text-danger" })
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="section-title">
-                    Login Information
-                </div>
-
-                <div class="row">
-
-                    <div class="col-md-6">
-
-                        <div class="form-group">
-
-                            @Html.LabelFor(
-                                m => m.Password,
-                                new { @class = "form-label" })
-
-                            @Html.PasswordFor(
-                                m => m.Password,
-                                new
-                                {
-                                    @class = "form-control",
-                                    placeholder = "Create password"
-                                })
-
-                            @Html.ValidationMessageFor(
-                                m => m.Password,
-                                "",
-                                new { @class = "text-danger" })
-
-                        </div>
-
-                    </div>
-
-                    <div class="col-md-6">
-
-                        <div class="form-group">
-
-                            @Html.LabelFor(
-                                m => m.ConfirmPassword,
-                                new { @class = "form-label" })
-
-                            @Html.PasswordFor(
-                                m => m.ConfirmPassword,
-                                new
-                                {
-                                    @class = "form-control",
-                                    placeholder = "Confirm password"
-                                })
-
-                            @Html.ValidationMessageFor(
-                                m => m.ConfirmPassword,
-                                "",
-                                new { @class = "text-danger" })
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <button type="submit" class="btn-create">
-                    Create Instructor
-                </button>
-            }
+            </div>
 
         </div>
 
@@ -358,6 +1070,159 @@
 
 </div>
 
+
+<script>
+
+    /* =========================================
+       SHOW / HIDE PASSWORD
+       ========================================= */
+
+    function togglePassword(inputId, button) {
+
+        var input =
+            document.getElementById(inputId);
+
+
+        if (input.type === "password") {
+
+            input.type = "text";
+
+            button.innerText = "Hide";
+
+        }
+        else {
+
+            input.type = "password";
+
+            button.innerText = "Show";
+        }
+
+    }
+
+
+    /* =========================================
+       PASSWORD STRENGTH
+       ========================================= */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        function () {
+
+            var password =
+                document.getElementById(
+                    "InstructorPassword"
+                );
+
+
+            var strengthBar =
+                document.getElementById(
+                    "passwordStrengthBar"
+                );
+
+
+            var strengthText =
+                document.getElementById(
+                    "passwordStrengthText"
+                );
+
+
+            if (!password) {
+
+                return;
+            }
+
+
+            password.addEventListener(
+                "input",
+                function () {
+
+                    var value =
+                        password.value;
+
+
+                    var strength = 0;
+
+
+                    if (value.length >= 8) {
+
+                        strength++;
+                    }
+
+
+                    if (/[A-Z]/.test(value)) {
+
+                        strength++;
+                    }
+
+
+                    if (/[a-z]/.test(value)) {
+
+                        strength++;
+                    }
+
+
+                    if (/[0-9]/.test(value)) {
+
+                        strength++;
+                    }
+
+
+                    if (/[^A-Za-z0-9]/.test(value)) {
+
+                        strength++;
+                    }
+
+
+                    if (value.length === 0) {
+
+                        strengthBar.style.width =
+                            "0%";
+
+                        strengthText.innerText =
+                            "Create a strong password.";
+
+                    }
+
+                    else if (strength <= 2) {
+
+                        strengthBar.style.width =
+                            "35%";
+
+                        strengthText.innerText =
+                            "Weak password.";
+
+                    }
+
+                    else if (strength === 3) {
+
+                        strengthBar.style.width =
+                            "60%";
+
+                        strengthText.innerText =
+                            "Medium password.";
+
+                    }
+
+                    else {
+
+                        strengthBar.style.width =
+                            "100%";
+
+                        strengthText.innerText =
+                            "Strong password.";
+                    }
+
+                }
+            );
+
+        }
+    );
+
+</script>
+
+
 @section Scripts {
+
     @Scripts.Render("~/bundles/jqueryval")
+
 }
