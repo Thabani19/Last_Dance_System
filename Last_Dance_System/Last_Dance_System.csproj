@@ -170,6 +170,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InstructorController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -177,6 +178,10 @@
     <Compile Include="Migrations\202608201403254_InitialCreate.cs" />
     <Compile Include="Migrations\202608201403254_InitialCreate.Designer.cs">
       <DependentUpon>202608201403254_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202608202233411_AddInstructorAndCurrentChanges.cs" />
+    <Compile Include="Migrations\202608202233411_AddInstructorAndCurrentChanges.Designer.cs">
+      <DependentUpon>202608202233411_AddInstructorAndCurrentChanges.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -271,6 +276,7 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Instructor\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -306,6 +312,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202608201403254_InitialCreate.resx">
       <DependentUpon>202608201403254_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608202233411_AddInstructorAndCurrentChanges.resx">
+      <DependentUpon>202608202233411_AddInstructorAndCurrentChanges.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

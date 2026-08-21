@@ -30,7 +30,11 @@
             {
                 roleManager.Create(new IdentityRole("Student"));
             }
-
+            // Create Instructor role
+            if (!roleManager.RoleExists("Instructor"))
+            {
+                roleManager.Create(new IdentityRole("Instructor"));
+            }
             // Create UserManager
             var userManager = new UserManager<ApplicationUser>(
                 new UserStore<ApplicationUser>(context));
