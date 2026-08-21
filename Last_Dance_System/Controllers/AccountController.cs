@@ -79,7 +79,9 @@ namespace Last_Dance_System.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    // redirect students to dashboard after login
+                    return RedirectToAction("Index", "Dashboard");
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
