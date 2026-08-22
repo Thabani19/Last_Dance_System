@@ -1,0 +1,299 @@
+﻿@model IEnumerable<Last_Dance_System.Models.Payment>
+
+@{
+    ViewBag.Title = "Payment History";
+}
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #050a12;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: #ffffff;
+    }
+
+    .payments-page {
+        min-height: calc(100vh - 50px);
+        padding: 40px 20px;
+        background: radial-gradient(circle at 85% 10%, rgba(225,6,0,.10), transparent 30%), linear-gradient(135deg,#050a12,#08111d);
+    }
+
+    .payments-container {
+        max-width: 1100px;
+        margin: auto;
+    }
+
+    .payments-header {
+        margin-bottom: 25px;
+    }
+
+        .payments-header h1 {
+            margin: 0 0 7px;
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+            .payments-header h1 span {
+                color: #e10600;
+            }
+
+        .payments-header p {
+            margin: 0;
+            color: #75818c;
+            font-size: 13px;
+        }
+
+    .payment-table-card {
+        background: #0d141d;
+        border: 1px solid #1c2733;
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    .payment-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .payment-table th {
+            padding: 17px 20px;
+            text-align: left;
+            background: #101923;
+            color: #7f8b96;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            border-bottom: 1px solid #1d2935;
+        }
+
+        .payment-table td {
+            padding: 18px 20px;
+            border-bottom: 1px solid #18232e;
+            color: #d8dee3;
+            font-size: 12px;
+        }
+
+        .payment-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .payment-table tr:hover td {
+            background: #101923;
+        }
+
+    .amount {
+        color: #ffffff;
+        font-weight: 700;
+    }
+
+    .status {
+        display: inline-block;
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 9px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    .status-paid {
+        color: #63d391;
+        background: rgba(45,190,105,.10);
+        border: 1px solid rgba(45,190,105,.20);
+    }
+
+    .status-pending {
+        color: #ffb347;
+        background: rgba(255,179,71,.10);
+        border: 1px solid rgba(255,179,71,.20);
+    }
+
+    .empty-state {
+        padding: 70px 20px;
+        text-align: center;
+    }
+
+    .empty-icon {
+        width: 60px;
+        height: 60px;
+        margin: auto auto 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 13px;
+        background: rgba(225,6,0,.10);
+        border: 1px solid rgba(225,6,0,.20);
+        color: #e10600;
+        font-size: 22px;
+    }
+
+    .empty-state h3 {
+        margin: 0 0 7px;
+        font-size: 16px;
+    }
+
+    .empty-state p {
+        margin: 0;
+        color: #697580;
+        font-size: 12px;
+    }
+</style>
+
+
+<div class="payments-page">
+
+    <div class="payments-container">
+
+        <div class="payments-header">
+
+            <h1>
+                Payment <span>History</span>
+            </h1>
+
+            <p>
+                View your driving lesson payments and transactions.
+            </p>
+
+        </div>
+
+
+        <div class="payment-table-card">
+
+            @if (Model != null && Model.Any())
+            {
+
+                <div class="table-wrapper">
+
+                    <table class="payment-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Payment
+                                </th>
+
+                                <th>
+                                    Booking
+                                </th>
+
+                                <th>
+                                    Amount
+                                </th>
+
+                                <th>
+                                    Method
+                                </th>
+
+                                <th>
+                                    Date
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Reference
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            @foreach (var payment in Model)
+                            {
+
+                                <tr>
+
+                                    <td>
+                                        #@payment.PaymentId
+                                    </td>
+
+                                    <td>
+                                        #@payment.BookingId
+                                    </td>
+
+                                    <td class="amount">
+                                        R @payment.Amount.ToString("N2")
+                                    </td>
+
+                                    <td>
+                                        @payment.PaymentMethod
+                                    </td>
+
+                                    <td>
+                                        @payment.PaymentDate.ToString("dd MMM yyyy HH:mm")
+                                    </td>
+
+                                    <td>
+
+                                        @if (payment.PaymentStatus == "Paid")
+                                        {
+                                            <span class="status status-paid">
+                                                Paid
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="status status-pending">
+                                                @payment.PaymentStatus
+                                            </span>
+                                        }
+
+                                    </td>
+
+                                    <td>
+                                        @payment.TransactionReference
+                                    </td>
+
+                                </tr>
+
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            }
+            else
+            {
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        <i class="fa-solid fa-receipt"></i>
+                    </div>
+
+                    <h3>
+                        No Payments Yet
+                    </h3>
+
+                    <p>
+                        Your payment transactions will appear here.
+
+                    </p>
+
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+
+</div>

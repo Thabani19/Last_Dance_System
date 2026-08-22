@@ -1,0 +1,422 @@
+﻿@{
+    ViewBag.Title = "Complete Payment";
+}
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #050a12;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: #ffffff;
+    }
+
+    .payment-page {
+        min-height: calc(100vh - 50px);
+        padding: 45px 20px;
+        background: radial-gradient(circle at 85% 10%, rgba(225, 6, 0, 0.12), transparent 30%), linear-gradient(135deg, #050a12, #08111d);
+    }
+
+    .payment-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .payment-header {
+        margin-bottom: 25px;
+    }
+
+        .payment-header h1 {
+            margin: 0 0 8px;
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+            .payment-header h1 span {
+                color: #e10600;
+            }
+
+        .payment-header p {
+            margin: 0;
+            color: #7b8794;
+            font-size: 14px;
+        }
+
+    .payment-card {
+        background: #0d141d;
+        border: 1px solid #1c2733;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    }
+
+    .payment-card-header {
+        padding: 24px 28px;
+        border-bottom: 1px solid #1c2733;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .payment-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 11px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(225, 6, 0, 0.10);
+        border: 1px solid rgba(225, 6, 0, 0.25);
+        color: #e10600;
+        font-size: 18px;
+    }
+
+    .payment-card-header h2 {
+        margin: 0;
+        font-size: 18px;
+    }
+
+    .payment-card-header p {
+        margin: 4px 0 0;
+        color: #6f7b87;
+        font-size: 11px;
+    }
+
+    .payment-body {
+        padding: 28px;
+    }
+
+    .booking-summary {
+        background: #111b26;
+        border: 1px solid #202d3a;
+        border-radius: 13px;
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+
+    .summary-title {
+        margin: 0 0 17px;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .summary-item {
+        background: #0b121a;
+        border-radius: 9px;
+        padding: 13px;
+    }
+
+        .summary-item span {
+            display: block;
+            color: #687684;
+            font-size: 10px;
+            margin-bottom: 5px;
+        }
+
+        .summary-item strong {
+            font-size: 13px;
+            color: #ffffff;
+        }
+
+    .amount-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 20px;
+        margin-bottom: 25px;
+        border-radius: 12px;
+        background: rgba(225, 6, 0, 0.08);
+        border: 1px solid rgba(225, 6, 0, 0.20);
+    }
+
+        .amount-box span {
+            color: #9aa5af;
+            font-size: 13px;
+        }
+
+        .amount-box strong {
+            color: #e10600;
+            font-size: 25px;
+        }
+
+    .form-group {
+        margin-bottom: 22px;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #c4ccd3;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+    .payment-select {
+        width: 100%;
+        padding: 13px 14px;
+        background: #091019;
+        border: 1px solid #263442;
+        border-radius: 9px;
+        color: #ffffff;
+        outline: none;
+        font-size: 13px;
+    }
+
+        .payment-select:focus {
+            border-color: #e10600;
+        }
+
+    .security-note {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 22px;
+        color: #697682;
+        font-size: 11px;
+    }
+
+        .security-note i {
+            color: #e10600;
+        }
+
+    .payment-button {
+        width: 100%;
+        border: none;
+        padding: 14px;
+        border-radius: 9px;
+        background: #e10600;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: .25s ease;
+    }
+
+        .payment-button:hover {
+            background: #ff2018;
+            transform: translateY(-1px);
+        }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 18px;
+        color: #788591;
+        text-decoration: none;
+        font-size: 12px;
+    }
+
+        .back-link:hover {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+    @@media (max-width: 650px) {
+        .payment-page {
+            padding: 25px 15px;
+        }
+
+        .payment-body {
+            padding: 20px;
+        }
+
+        .summary-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+
+<div class="payment-page">
+
+    <div class="payment-container">
+
+        <div class="payment-header">
+
+            <h1>
+                Complete <span>Payment</span>
+            </h1>
+
+            <p>
+                Complete your payment to confirm your driving lesson.
+            </p>
+
+        </div>
+
+
+        <div class="payment-card">
+
+            <div class="payment-card-header">
+
+                <div class="payment-icon">
+                    <i class="fa-solid fa-credit-card"></i>
+                </div>
+
+                <div>
+                    <h2>Booking Payment</h2>
+
+                    <p>
+                        Your booking will only be confirmed after payment.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="payment-body">
+
+                <div class="booking-summary">
+
+                    <h3 class="summary-title">
+                        Booking Details
+                    </h3>
+
+                    <div class="summary-grid">
+
+                        <div class="summary-item">
+                            <span>Booking Number</span>
+                            <strong>#@ViewBag.BookingId</strong>
+                        </div>
+
+                        <div class="summary-item">
+                            <span>Lesson Date</span>
+                            <strong>
+                                @Convert.ToDateTime(ViewBag.LessonDate).ToString("dd MMMM yyyy")
+                            </strong>
+                        </div>
+
+                        <div class="summary-item">
+                            <span>Start Time</span>
+                            <strong>
+                                @ViewBag.StartTime
+                            </strong>
+                        </div>
+
+                        <div class="summary-item">
+                            <span>End Time</span>
+                            <strong>
+                                @ViewBag.EndTime
+                            </strong>
+                        </div>
+
+                        <div class="summary-item">
+                            <span>Instructor</span>
+                            <strong>
+                                @ViewBag.InstructorName
+                            </strong>
+                        </div>
+
+                        <div class="summary-item">
+                            <span>Booking Status</span>
+                            <strong style="color:#e10600;">
+                                Pending Payment
+                            </strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="amount-box">
+
+                    <span>
+                        Amount Due
+                    </span>
+
+                    <strong>
+                        R @String.Format("{0:N2}", ViewBag.Amount)
+                    </strong>
+
+                </div>
+
+
+                @using (Html.BeginForm("Create", "Payment", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden"
+                           name="bookingId"
+                           value="@ViewBag.BookingId" />
+
+
+                    <div class="form-group">
+
+                        <label>
+                            Payment Method
+                        </label>
+
+                        <select name="paymentMethod"
+                                class="payment-select"
+                                required>
+
+                            <option value="">
+                                Select payment method
+                            </option>
+
+                            <option value="Card">
+                                Bank Card
+                            </option>
+
+                            <option value="EFT">
+                                EFT / Bank Transfer
+                            </option>
+
+                            <option value="Cash">
+                                Cash
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <div class="security-note">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        Your booking will be confirmed after successful payment.
+
+                    </div>
+
+
+                    <button type="submit"
+                            class="payment-button">
+
+                        <i class="fa-solid fa-check"></i>
+                        Confirm Payment
+
+                    </button>
+                }
+
+
+                <a href="@Url.Action("Index", "Booking")"
+                   class="back-link">
+
+                    ← Back to My Bookings
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+}

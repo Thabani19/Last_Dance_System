@@ -1,0 +1,261 @@
+﻿@model Last_Dance_System.Models.LessonPackage
+
+@{
+    ViewBag.Title = "Package Details";
+}
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #07111f;
+        color: #ffffff;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .details-page {
+        min-height: 90vh;
+        padding: 40px 20px;
+        background: radial-gradient( circle at top right, rgba(225, 6, 0, .12), transparent 30% ), #07111f;
+    }
+
+    .details-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .back-link {
+        display: inline-block;
+        margin-bottom: 25px;
+        color: #8290a3;
+        text-decoration: none;
+        font-size: 13px;
+    }
+
+        .back-link:hover {
+            color: #ffffff;
+        }
+
+    .package-card {
+        background: #0c1726;
+        border: 1px solid #1b2a3d;
+        border-radius: 16px;
+        padding: 35px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .package-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #e10600;
+        }
+
+    .package-icon {
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(225, 6, 0, .10);
+        border: 1px solid rgba(225, 6, 0, .25);
+        border-radius: 12px;
+        font-size: 25px;
+        margin-bottom: 20px;
+    }
+
+    .package-card h1 {
+        margin: 0 0 10px;
+        font-size: 30px;
+        font-weight: 800;
+    }
+
+    .package-description {
+        color: #8290a3;
+        font-size: 14px;
+        line-height: 1.7;
+        margin-bottom: 30px;
+    }
+
+    .package-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .info-box {
+        background: #08111d;
+        border: 1px solid #16263a;
+        border-radius: 10px;
+        padding: 18px;
+    }
+
+        .info-box span {
+            display: block;
+            color: #718096;
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .info-box strong {
+            font-size: 20px;
+            color: #ffffff;
+        }
+
+    .price {
+        color: #e10600 !important;
+        font-size: 28px !important;
+    }
+
+    .notice {
+        background: rgba(225, 6, 0, .08);
+        border: 1px solid rgba(225, 6, 0, .20);
+        border-radius: 10px;
+        padding: 16px;
+        color: #b7c0cc;
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 25px;
+    }
+
+    .purchase-button {
+        display: block;
+        width: 100%;
+        padding: 14px;
+        background: #e10600;
+        color: #ffffff;
+        border: none;
+        border-radius: 9px;
+        text-align: center;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 14px;
+        transition: .2s;
+    }
+
+        .purchase-button:hover {
+            background: #ff211a;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+    @@media(max-width: 650px) {
+
+        .details-page {
+            padding: 30px 15px;
+        }
+
+        .package-card {
+            padding: 25px;
+        }
+
+        .package-info {
+            grid-template-columns: 1fr;
+        }
+
+        .package-card h1 {
+            font-size: 25px;
+        }
+    }
+</style>
+
+
+<div class="details-page">
+
+    <div class="details-container">
+
+        <a href="@Url.Action("Index", "Package")"
+           class="back-link">
+
+            ← Back to Lesson Packages
+
+        </a>
+
+
+        <div class="package-card">
+
+            <div class="package-icon">
+                🚗
+            </div>
+
+
+            <h1>
+                @Model.PackageName
+            </h1>
+
+
+            <div class="package-description">
+
+                @Model.Description
+
+            </div>
+
+
+            <div class="package-info">
+
+                <div class="info-box">
+
+                    <span>
+                        LESSONS INCLUDED
+                    </span>
+
+                    <strong>
+                        @Model.NumberOfLessons Lessons
+                    </strong>
+
+                </div>
+
+
+                <div class="info-box">
+
+                    <span>
+                        PACKAGE PRICE
+                    </span>
+
+                    <strong class="price">
+
+                        R @Model.Price.ToString("N2")
+
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="notice">
+
+                <strong>Important:</strong>
+
+                This is a lesson package purchase.
+                Once purchased, your lessons will be added to your
+                account and you can use them when booking available
+                driving lessons.
+
+            </div>
+
+
+            <a href="@Url.Action(
+                "Purchase",
+                "Package",
+                new { id = Model.LessonPackageId })"
+               class="purchase-button">
+
+                Purchase Package
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

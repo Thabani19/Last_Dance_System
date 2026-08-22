@@ -169,9 +169,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\BookingController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstructorController.cs" />
+    <Compile Include="Controllers\LessonsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PackageController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -183,6 +188,18 @@
     <Compile Include="Migrations\202608202233411_AddInstructorAndCurrentChanges.Designer.cs">
       <DependentUpon>202608202233411_AddInstructorAndCurrentChanges.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202608212157183_AddLessonCheckInCheckout.cs" />
+    <Compile Include="Migrations\202608212157183_AddLessonCheckInCheckout.Designer.cs">
+      <DependentUpon>202608212157183_AddLessonCheckInCheckout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202608212204099_AddCheckInConfirmationFields.cs" />
+    <Compile Include="Migrations\202608212204099_AddCheckInConfirmationFields.Designer.cs">
+      <DependentUpon>202608212204099_AddCheckInConfirmationFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202608212328220_AddLessonPackages.cs" />
+    <Compile Include="Migrations\202608212328220_AddLessonPackages.Designer.cs">
+      <DependentUpon>202608212328220_AddLessonPackages.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Administrator.cs" />
@@ -191,6 +208,8 @@
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Instructor.cs" />
+    <Compile Include="Models\LessonCodeGenerator.cs" />
+    <Compile Include="Models\LessonPackage.cs" />
     <Compile Include="Models\LessonProgress.cs" />
     <Compile Include="Models\LessonSchedule.cs" />
     <Compile Include="Models\LessonType.cs" />
@@ -200,6 +219,8 @@
     <Compile Include="Models\Registration.cs" />
     <Compile Include="Models\Review.cs" />
     <Compile Include="Models\StudentCourse.cs" />
+    <Compile Include="Models\StudentDashboardViewModel.cs" />
+    <Compile Include="Models\StudentPackage.cs" />
     <Compile Include="Models\Vehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -277,10 +298,20 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Instructor\Create.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\Lessons\Index.cshtml" />
+    <Content Include="Views\Lessons\Details.cshtml" />
+    <Content Include="Views\Booking\Create.cshtml" />
+    <Content Include="Views\Payment\Create.cshtml" />
+    <Content Include="Views\Payment\Index.cshtml" />
+    <Content Include="Views\Package\Index.cshtml" />
+    <Content Include="Views\Package\Details.cshtml" />
+    <Content Include="Views\Package\Purchase.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Images\" />
+    <Folder Include="Views\NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -315,6 +346,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202608202233411_AddInstructorAndCurrentChanges.resx">
       <DependentUpon>202608202233411_AddInstructorAndCurrentChanges.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608212157183_AddLessonCheckInCheckout.resx">
+      <DependentUpon>202608212157183_AddLessonCheckInCheckout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608212204099_AddCheckInConfirmationFields.resx">
+      <DependentUpon>202608212204099_AddCheckInConfirmationFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608212328220_AddLessonPackages.resx">
+      <DependentUpon>202608212328220_AddLessonPackages.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

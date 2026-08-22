@@ -1,0 +1,800 @@
+﻿@model Last_Dance_System.Models.Booking
+
+@{
+    ViewBag.Title = "Lesson Details";
+
+    var lesson = ViewBag.LessonProgress
+        as Last_Dance_System.Models.LessonProgress;
+
+    var schedule = Model.LessonSchedule;
+}
+
+<style>
+
+    body {
+        background: #07111f;
+        color: white;
+    }
+
+    .lesson-page {
+        min-height: 90vh;
+        padding: 40px 20px;
+        background: radial-gradient( circle at top right, rgba(225, 6, 0, .12), transparent 30% ), #07111f;
+    }
+
+    .lesson-container {
+        max-width: 1000px;
+        margin: auto;
+    }
+
+    /* HEADER */
+
+    .lesson-header {
+        margin-bottom: 30px;
+    }
+
+        .lesson-header h1 {
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+            .lesson-header h1 span {
+                color: #e10600;
+            }
+
+        .lesson-header p {
+            color: #8290a3;
+            margin: 0;
+        }
+
+    /* ALERTS */
+
+    .alert {
+        padding: 15px 18px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-weight: 600;
+    }
+
+    .alert-success {
+        background: rgba(0, 200, 100, .12);
+        border: 1px solid rgba(0, 200, 100, .3);
+        color: #50e3a4;
+    }
+
+    .alert-error {
+        background: rgba(225, 6, 0, .12);
+        border: 1px solid rgba(225, 6, 0, .3);
+        color: #ff6b6b;
+    }
+
+    /* MAIN GRID */
+
+    .lesson-grid {
+        display: grid;
+        grid-template-columns: 1.4fr .8fr;
+        gap: 20px;
+    }
+
+    .card {
+        background: #0c1726;
+        border: 1px solid #1b2a3d;
+        border-radius: 16px;
+        padding: 25px;
+    }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+    /* LESSON INFORMATION */
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .info-box {
+        background: #08111d;
+        border-radius: 10px;
+        padding: 15px;
+    }
+
+        .info-box span {
+            display: block;
+            color: #718096;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .info-box strong {
+            font-size: 15px;
+            color: white;
+        }
+
+    /* STATUS */
+
+    .status {
+        display: inline-block;
+        padding: 7px 13px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .status-confirmed {
+        background: rgba(0, 200, 100, .12);
+        color: #50e3a4;
+    }
+
+    .status-progress {
+        background: rgba(255, 180, 0, .12);
+        color: #ffc107;
+    }
+
+    .status-completed {
+        background: rgba(50, 150, 255, .12);
+        color: #5da9ff;
+    }
+
+    /* CODE AREA */
+
+    .code-card {
+        text-align: center;
+    }
+
+    .code-label {
+        color: #8290a3;
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    .code {
+        font-size: 32px;
+        letter-spacing: 8px;
+        font-weight: 900;
+        color: #e10600;
+        background: #08111d;
+        border: 1px solid #1b2a3d;
+        border-radius: 12px;
+        padding: 18px 10px;
+        margin-bottom: 18px;
+    }
+
+    .code-hidden {
+        color: #718096;
+        font-size: 14px;
+        background: #08111d;
+        border-radius: 10px;
+        padding: 18px;
+        margin-bottom: 18px;
+    }
+
+    /* INPUT */
+
+    .code-input {
+        width: 100%;
+        padding: 14px;
+        background: #08111d;
+        border: 1px solid #293b52;
+        border-radius: 9px;
+        color: white;
+        text-align: center;
+        font-size: 20px;
+        letter-spacing: 5px;
+        outline: none;
+        margin-bottom: 12px;
+    }
+
+        .code-input:focus {
+            border-color: #e10600;
+        }
+
+    /* BUTTON */
+
+    .action-button {
+        width: 100%;
+        padding: 13px;
+        border: none;
+        border-radius: 9px;
+        background: #e10600;
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+        transition: .2s;
+    }
+
+        .action-button:hover {
+            background: #ff211a;
+        }
+
+        .action-button:disabled {
+            background: #3b4654;
+            cursor: not-allowed;
+        }
+
+    /* TIMER */
+
+    .timer-card {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .timer-label {
+        color: #8290a3;
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    .timer {
+        font-size: 48px;
+        font-weight: 900;
+        letter-spacing: 3px;
+        color: #e10600;
+        margin: 10px 0;
+    }
+
+    .timer-message {
+        color: #8290a3;
+        font-size: 13px;
+    }
+
+    /* COMPLETED */
+
+    .completed {
+        text-align: center;
+        padding: 30px;
+    }
+
+    .completed-icon {
+        font-size: 50px;
+        margin-bottom: 10px;
+    }
+
+    .completed h2 {
+        color: #50e3a4;
+        margin-bottom: 8px;
+    }
+
+    .completed p {
+        color: #8290a3;
+    }
+
+    /* BACK */
+
+    .back-button {
+        display: inline-block;
+        margin-top: 25px;
+        color: #8290a3;
+        text-decoration: none;
+    }
+
+        .back-button:hover {
+            color: white;
+        }
+
+    @@media(max-width: 800px) {
+
+        .lesson-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .timer {
+            font-size: 40px;
+        }
+    }
+</style>
+
+
+<div class="lesson-page">
+
+    <div class="lesson-container">
+
+        <!-- =====================================================
+             HEADER
+        ====================================================== -->
+
+        <div class="lesson-header">
+
+            <h1>
+                Lesson <span>Details</span>
+            </h1>
+
+            <p>
+                Manage your driving lesson attendance.
+            </p>
+
+        </div>
+
+
+        <!-- =====================================================
+             ALERTS
+        ====================================================== -->
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["Success"]
+            </div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-error">
+                @TempData["Error"]
+            </div>
+        }
+
+
+        <!-- =====================================================
+             LESSON INFORMATION
+        ====================================================== -->
+
+        <div class="lesson-grid">
+
+            <div>
+
+                <div class="card">
+
+                    <h2>
+                        Lesson Information
+                    </h2>
+
+                    <div class="info-grid">
+
+                        <div class="info-box">
+
+                            <span>Lesson Type</span>
+
+                            <strong>
+                                @schedule.LessonType.LessonTypeName
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <span>Date</span>
+
+                            <strong>
+                                @schedule.LessonDate.ToString("dddd, dd MMMM yyyy")
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <span>Start Time</span>
+
+                            <strong>
+                                @schedule.StartTime.ToString(@"hh\:mm")
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <span>End Time</span>
+
+                            <strong>
+                                @schedule.EndTime.ToString(@"hh\:mm")
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <span>Instructor</span>
+
+                            <strong>
+                                @schedule.Instructor.FirstName
+                                @schedule.Instructor.LastName
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <span>Vehicle</span>
+
+                            <strong>
+                                @schedule.Vehicle.Make
+                                @schedule.Vehicle.Model
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <span>Booking Status</span>
+
+                            <strong>
+
+                                @if (Model.Status == "Confirmed")
+                                {
+                                    <span class="status status-confirmed">
+                                        Confirmed
+                                    </span>
+                                }
+                                else if (Model.Status == "Completed")
+                                {
+                                    <span class="status status-completed">
+                                        Completed
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="status">
+                                        @Model.Status
+                                    </span>
+                                }
+
+                            </strong>
+
+                        </div>
+
+
+                        <div class="info-box">
+
+                            <span>Lesson Status</span>
+
+                            <strong>
+
+                                @if (lesson != null)
+                                {
+                                    if (lesson.LessonStatus == "In Progress")
+                                    {
+                                        <span class="status status-progress">
+                                            In Progress
+                                        </span>
+                                    }
+                                    else if (lesson.LessonStatus == "Completed")
+                                    {
+                                        <span class="status status-completed">
+                                            Completed
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="status status-confirmed">
+                                            @lesson.LessonStatus
+                                        </span>
+                                    }
+                                }
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     TIMER
+                ================================================== -->
+
+                @if (lesson != null &&
+                     lesson.CheckInConfirmed &&
+                     !lesson.CheckOutConfirmed &&
+                     lesson.CheckInTime.HasValue)
+                {
+                    <div class="card timer-card">
+
+                        <div class="timer-label">
+                            LESSON TIME REMAINING
+                        </div>
+
+                        <div id="lessonTimer"
+                             class="timer">
+                            30:00
+                        </div>
+
+                        <div id="timerMessage"
+                             class="timer-message">
+                            Your lesson is currently in progress.
+                        </div>
+
+                    </div>
+
+                    <script>
+
+                        var checkInTime =
+                            new Date(
+                                "@lesson.CheckInTime.Value.ToString("yyyy-MM-ddTHH:mm:ss")"
+                            );
+
+                        var lessonEnd =
+                            new Date(
+                                checkInTime.getTime()
+                                +
+                                (30 * 60 * 1000)
+                            );
+
+                        function updateTimer() {
+
+                            var now = new Date();
+
+                            var remaining =
+                                lessonEnd.getTime()
+                                -
+                                now.getTime();
+
+                            if (remaining <= 0) {
+
+                                document.getElementById(
+                                    "lessonTimer"
+                                ).innerHTML = "00:00";
+
+                                document.getElementById(
+                                    "timerMessage"
+                                ).innerHTML =
+                                    "Your 30-minute lesson is complete. Your checkout code is now available.";
+
+                                return;
+                            }
+
+                            var totalSeconds =
+                                Math.floor(
+                                    remaining / 1000
+                                );
+
+                            var minutes =
+                                Math.floor(
+                                    totalSeconds / 60
+                                );
+
+                            var seconds =
+                                totalSeconds % 60;
+
+                            document.getElementById(
+                                "lessonTimer"
+                            ).innerHTML =
+                                String(minutes).padStart(2, "0")
+                                +
+                                ":"
+                                +
+                                String(seconds).padStart(2, "0");
+                        }
+
+                        updateTimer();
+
+                        setInterval(
+                            updateTimer,
+                            1000
+                        );
+
+                    </script>
+                }
+
+            </div>
+
+
+            <!-- =====================================================
+                 CHECK-IN / CHECK-OUT
+            ====================================================== -->
+
+            <div>
+
+
+                @if (lesson != null &&
+                     !lesson.CheckInConfirmed &&
+                     Model.Status == "Confirmed")
+                {
+
+                    <div class="card code-card">
+
+                        <h2>
+                            Check-In
+                        </h2>
+
+                        <div class="code-label">
+                            SYSTEM-GENERATED CHECK-IN CODE
+                        </div>
+
+
+                        @if (!string.IsNullOrEmpty(lesson.CheckInCode))
+                        {
+                            <div class="code">
+                                @lesson.CheckInCode
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="code-hidden">
+                                Your check-in code will be generated automatically.
+                            </div>
+                        }
+
+
+                        <p class="code-label">
+                            Enter the code shown above to start your lesson.
+                        </p>
+
+
+                        @using (Html.BeginForm(
+                            "CheckIn",
+                            "Lessons",
+                            FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden"
+                                   name="id"
+                                   value="@Model.BookingId" />
+
+                            <input type="text"
+                                   name="checkInCode"
+                                   class="code-input"
+                                   maxlength="6"
+                                   minlength="6"
+                                   placeholder="000000"
+                                   required />
+
+                            <button type="submit"
+                                    class="action-button">
+
+                                Confirm Check-In
+
+                            </button>
+                        }
+
+                    </div>
+
+                }
+
+
+                @if (lesson != null &&
+                     lesson.CheckInConfirmed &&
+                     !lesson.CheckOutConfirmed)
+                {
+
+                    <div class="card code-card">
+
+                        <h2>
+                            Check-Out
+                        </h2>
+
+
+                        @{
+                            bool thirtyMinutesPassed =
+                                lesson.CheckInTime.HasValue &&
+                                DateTime.Now >=
+                                lesson.CheckInTime.Value.AddMinutes(30);
+                        }
+
+
+                        @if (thirtyMinutesPassed)
+                        {
+
+                            <div class="code-label">
+                                SYSTEM-GENERATED CHECK-OUT CODE
+                            </div>
+
+
+                            if (!string.IsNullOrEmpty(lesson.CheckOutCode))
+                            {
+                                <div class="code">
+                                    @lesson.CheckOutCode
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="code-hidden">
+                                    Refresh this page to generate your checkout code.
+                                </div>
+                            }
+
+
+                            <p class="code-label">
+                                Enter the checkout code to complete your lesson.
+                            </p>
+
+
+                            using (Html.BeginForm(
+                                "CheckOut",
+                                "Lessons",
+                                FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="id"
+                                       value="@Model.BookingId" />
+
+                                <input type="text"
+                                       name="checkOutCode"
+                                       class="code-input"
+                                       maxlength="6"
+                                       minlength="6"
+                                       placeholder="000000"
+                                       required />
+
+                                <button type="submit"
+                                        class="action-button">
+
+                                    Confirm Check-Out
+
+                                </button>
+                            }
+
+                        }
+                        else
+                        {
+
+                            <div class="code-hidden">
+
+                                <strong>
+                                    Checkout is locked.
+                                </strong>
+
+                                <br /><br />
+
+                                You must complete the full
+                                30-minute lesson before checking out.
+
+                            </div>
+
+                        }
+
+                    </div>
+
+                }
+
+
+                @if (lesson != null &&
+                     lesson.CheckOutConfirmed)
+                {
+
+                    <div class="card completed">
+
+                        <div class="completed-icon">
+                            ✓
+                        </div>
+
+                        <h2>
+                            Lesson Completed
+                        </h2>
+
+                        <p>
+                            Your driving lesson has been successfully completed.
+                        </p>
+
+                        <div class="status status-completed">
+                            100% COMPLETE
+                        </div>
+
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+
+
+        <a href="@Url.Action("Index", "Lessons")"
+           class="back-button">
+
+            ← Back to My Lessons
+
+        </a>
+
+    </div>
+
+</div>

@@ -10,256 +10,427 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>@ViewBag.Title</title>
-    <meta name="description" content="Book driving lessons online, get an instructor assigned automatically, pay securely and track your progress to test-ready." />
-    <meta property="og:title" content="TK Driving School — Learn to drive with confidence" />
-    <meta property="og:description" content="Online booking, automatic instructor assignment, payments and progress tracking." />
+
+    <meta name="description"
+          content="Book driving lessons online, get an instructor assigned automatically, pay securely and track your progress to test-ready." />
+
+    <meta property="og:title"
+          content="TK Driving School — Learn to drive with confidence" />
+
+    <meta property="og:description"
+          content="Online booking, automatic instructor assignment, payments and progress tracking." />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Barlow:wght@400;500;600&display=swap" />
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Barlow:wght@400;500;600&display=swap" />
 
     <!-- TK Driving School CSS -->
-    <link rel="stylesheet" href='@Url.Content("~/Content/landing_style.css")' />
+    <link rel="stylesheet"
+          href="@Url.Content("~/Content/landing_style.css")" />
 </head>
 
 <body>
 
-    <!-- Hazard stripe accent -->
+    <!-- =========================================
+         HAZARD STRIPE
+         ========================================= -->
     <div class="hazard-stripe"></div>
 
-    <!-- =========================
+
+    <!-- =========================================
          HEADER / NAVIGATION
-         ========================= -->
+         ========================================= -->
     <header class="container nav">
 
         <div class="brand">
-            <span class="logo">TK</span>
+
+            <span class="logo">
+                TK
+            </span>
+
             <span class="brand-name">
                 Driving School
             </span>
+
         </div>
 
-        <!-- Temporary link - connect to MVC login later -->
-        <a href="auth.html" class="btn">
-            Sign up / Log in
-        </a>
+
+        <!-- LOGIN / REGISTER -->
+        <div class="auth-buttons">
+
+            <a href="@Url.Action("Login", "Account")"
+               class="btn">
+                Log in
+            </a>
+
+            <a href="@Url.Action("Register", "Account")"
+               class="btn">
+                Register
+            </a>
+
+        </div>
+
     </header>
 
-    <!-- =========================
+
+    <!-- =========================================
          HERO SECTION
-         ========================= -->
+         ========================================= -->
     <section class="hero">
 
-        <img src='@Url.Content("~/Content/images/ClassBG.jpg")' alt="Instructor taking a student through a driving lesson" />
+        <img src="@Url.Content("~/Content/images/ClassBG.jpg")"
+             alt="Instructor taking a student through a driving lesson" />
+
 
         <div class="hero-content">
+
             <p class="hero-eyebrow">
                 Licensed · Insured · Since 2009
             </p>
 
+
             <h1>
+
                 Learn to drive.
+
                 <span class="text-primary">
                     Book it in sixty seconds.
                 </span>
+
             </h1>
 
+
             <p class="hero-sub">
-                TK Driving School puts your lessons, instructor,payments and progress in one place — no phone calls, no paperwork.
+
+                TK Driving School puts your lessons, instructor,
+                payments and progress in one place —
+                no phone calls, no paperwork.
+
             </p>
 
-            <!-- Temporary link - connect to MVC bookings later -->
-            <a href="auth.html" class="btn btn-lg">
+
+            <!-- BOOK LESSONS -->
+            <a href="@Url.Action("Login", "Account")"
+               class="btn btn-lg">
+
                 Book Lessons
+
             </a>
+
         </div>
+
     </section>
 
-    <!-- =========================
+
+
+    <!-- =========================================
          FEATURES
-         ========================= -->
+         ========================================= -->
     <section class="container features">
+
         <h2>
             Why pick us?
         </h2>
+
+
         <div class="features-grid">
 
-            <!-- Feature 1 -->
+
+            <!-- FEATURE 1 -->
             <div class="feature-card">
+
                 <h3>
                     Instant booking
                 </h3>
+
                 <p>
-                    Pick a slot between 08:00 and 16:00 and an available instructor and vehicle are automatically.
+                    Pick a slot between 08:00 and 16:00
+                    and an available instructor and vehicle
+                    are automatically assigned.
                 </p>
+
             </div>
 
-            <!-- Feature 2 -->
+
+            <!-- FEATURE 2 -->
             <div class="feature-card">
+
                 <h3>
                     Simple payments
                 </h3>
+
                 <p>
-                    Pay per lesson or enrol in a course package, with a full receipt history on your account.
+                    Pay per lesson or enrol in a course package,
+                    with a full receipt history on your account.
                 </p>
+
             </div>
 
-            <!-- Feature 3 -->
+
+            <!-- FEATURE 3 -->
             <div class="feature-card">
+
                 <h3>
                     Progress tracking
                 </h3>
+
                 <p>
-                    Hours behind the wheel, completed lessons and instructor feedback after every session.
+                    Hours behind the wheel, completed lessons
+                    and instructor feedback after every session.
                 </p>
+
             </div>
 
-            <!-- Feature 4 -->
+
+            <!-- FEATURE 4 -->
             <div class="feature-card">
+
                 <h3>
                     Qualified instructors
                 </h3>
+
                 <p>
-                    Patient, licensed instructors who log your attendance and coach you toward the test.
+                    Patient, licensed instructors who log your
+                    attendance and coach you toward the test.
                 </p>
+
             </div>
 
-            <!-- Feature 5 -->
+
+            <!-- FEATURE 5 -->
             <div class="feature-card">
+
                 <h3>
                     Rate everything
                 </h3>
+
                 <p>
-                    Review your instructor, the vehicle and the service so the school keeps improving.
+                    Review your instructor, the vehicle and
+                    the service so the school keeps improving.
                 </p>
+
             </div>
 
-            <!-- Feature 6 -->
+
+            <!-- FEATURE 6 -->
             <div class="feature-card">
+
                 <h3>
                     Maintained fleet
                 </h3>
+
                 <p>
-                    Manual and automatic vehicles, tracked serviced by the school administrators.
+                    Manual and automatic vehicles, tracked and
+                    serviced by the school administrators.
                 </p>
+
             </div>
+
         </div>
+
     </section>
 
-    <!-- =========================
+
+
+    <!-- =========================================
          COURSES
-         ========================= -->
+         ========================================= -->
     <section class="container Courses">
+
         <h2>
             Courses we offer
         </h2>
+
+
         <div class="features-grid">
 
-            <!-- CODE 8 -->
-            <a href="bookings.html" class="course-card">
+
+            <!-- =====================================
+                 CODE 8
+                 ===================================== -->
+            <a href="@Url.Action("Login", "Account")"
+               class="course-card">
+
                 <img class="course-img"
-                     src='@Url.Content("~/Content/images/code8.jpg")'
+                     src="@Url.Content("~/Content/images/code8.jpg")"
                      alt="Sedan-style light motor vehicle used for Code 8 lessons" />
 
+
                 <div class="course-body">
+
                     <span class="course-badge">
                         Code 8
                     </span>
+
+
                     <h3>
                         Light Motor Vehicle
                     </h3>
+
+
                     <p class="course-desc">
-                        South Africa's most common licence, for cars and light vehicles up to 3,500 kg GVM.
-                        Ideal for personal use and most jobs that require a driver's licence.
+
+                        South Africa's most common licence,
+                        for cars and light vehicles up to
+                        3,500 kg GVM.
+
+                        Ideal for personal use and most jobs
+                        that require a driver's licence.
+
                         Choose manual or automatic.
+
                     </p>
+
 
                     <p class="course-price">
+
                         From R2,500
+
                         <span>
-                            / 10-lesson package
+                            / 30-lesson package
                         </span>
+
                     </p>
+
                 </div>
+
             </a>
 
-            <!-- CODE 10 -->
-            <a href="bookings.html" class="course-card">
+
+
+            <!-- =====================================
+                 CODE 10
+                 ===================================== -->
+            <a href="@Url.Action("Login", "Account")"
+               class="course-card">
 
                 <img class="course-img"
-                     src='@Url.Content("~/Content/images/code10.jpg")'
+                     src="@Url.Content("~/Content/images/code10.jpg")"
                      alt="Minibus and light delivery truck used for Code 10 lessons" />
 
+
                 <div class="course-body">
+
                     <span class="course-badge">
                         Code 10
                     </span>
+
+
                     <h3>
                         Medium Heavy Vehicle
                     </h3>
 
+
                     <p class="course-desc">
-                        Covers minibuses, delivery vans and trucks between 3,500 kg and 16,000 kg GVM.
-                        A strong choice for logistics, transport and commercial driving careers.
+
+                        Covers minibuses, delivery vans and
+                        trucks between 3,500 kg and 16,000 kg GVM.
+
+                        A strong choice for logistics,
+                        transport and commercial driving careers.
+
                     </p>
 
+
                     <p class="course-price">
+
                         From R3,000
+
                         <span>
-                            / 10-lesson package
+                            / 30-lesson package
                         </span>
+
                     </p>
+
                 </div>
+
             </a>
 
 
-            <!-- CODE 14 -->
-            <a href="bookings.html" class="course-card">
+
+            <!-- =====================================
+                 CODE 14
+                 ===================================== -->
+            <a href="@Url.Action("Login", "Account")"
+               class="course-card">
 
                 <img class="course-img"
-                     src='@Url.Content("~/Content/images/code14.jpg")'
+                     src="@Url.Content("~/Content/images/code14.jpg")"
                      alt="Heavy articulated truck with trailer used for Code 14 lessons" />
 
+
                 <div class="course-body">
+
                     <span class="course-badge">
                         Code 14
                     </span>
+
+
                     <h3>
                         Heavy Articulated Vehicle
                     </h3>
+
+
                     <p class="course-desc">
-                        For articulated trucks over 16,000 kg GVM, including trailers. The most in-depth
-                        training, built for learners heading into long-haul and heavy freight driving.
+
+                        For articulated trucks over 16,000 kg GVM,
+                        including trailers.
+
+                        The most in-depth training, built for
+                        learners heading into long-haul and
+                        heavy freight driving.
+
                     </p>
+
 
                     <p class="course-price">
+
                         From R4,500
+
                         <span>
-                            / 10-lesson package
+                            / 30-lesson package
                         </span>
+
                     </p>
+
                 </div>
+
             </a>
+
         </div>
+
     </section>
 
-    <!-- =========================
+
+
+    <!-- =========================================
          FOOTER
-         ========================= -->
+         ========================================= -->
     <footer class="container footer">
+
         © <span id="year"></span>
+
         TK Driving School.
+
         Student, instructor and administrator portal.
+
     </footer>
 
-    <!-- =========================
+
+
+    <!-- =========================================
          JAVASCRIPT
-         ========================= -->
+         ========================================= -->
     <script>
+
         document.getElementById("year").textContent =
             new Date().getFullYear();
+
     </script>
+
 
 </body>
 </html>

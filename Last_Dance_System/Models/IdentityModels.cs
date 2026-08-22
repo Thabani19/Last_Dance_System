@@ -37,6 +37,8 @@ namespace Last_Dance_System.Models
         public DbSet<Vehicle> Vehicles { get; set; }
         public DbSet<LessonType> LessonTypes { get; set; }
         public DbSet<LessonSchedule> LessonSchedules { get; set; }
+        public DbSet<LessonPackage> LessonPackages { get; set; }
+        public DbSet<StudentPackage> StudentPackages { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<LessonProgress> LessonProgresses { get; set; }
@@ -191,6 +193,19 @@ namespace Last_Dance_System.Models
                 .HasRequired(ls => ls.Vehicle)
                 .WithMany()
                 .HasForeignKey(ls => ls.VehicleId)
+                .WillCascadeOnDelete(false);
+            // LessonPackage → StudentPackage
+            modelBuilder.Entity<StudentPackage>()
+                .HasRequired(sp => sp.LessonPackage)
+                .WithMany(lp => lp.StudentPackages)
+                .HasForeignKey(sp => sp.LessonPackageId)
+                .WillCascadeOnDelete(false);
+
+            // Registration → StudentPackage
+            modelBuilder.Entity<StudentPackage>()
+                .HasRequired(sp => sp.Registration)
+                .WithMany()
+                .HasForeignKey(sp => sp.RegistrationId)
                 .WillCascadeOnDelete(false);
         }
 

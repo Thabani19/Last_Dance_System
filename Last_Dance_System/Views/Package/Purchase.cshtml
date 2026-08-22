@@ -1,0 +1,307 @@
+﻿@model Last_Dance_System.Models.LessonPackage
+
+@{
+    ViewBag.Title = "Purchase Package";
+}
+
+<style>
+
+    body {
+        background: #07111f;
+        color: white;
+    }
+
+    .purchase-page {
+        min-height: 90vh;
+        padding: 40px 20px;
+        background: radial-gradient( circle at top right, rgba(225, 6, 0, .12), transparent 30% ), #07111f;
+    }
+
+    .purchase-container {
+        max-width: 700px;
+        margin: auto;
+    }
+
+    .purchase-card {
+        background: #0c1726;
+        border: 1px solid #1b2a3d;
+        border-radius: 16px;
+        padding: 30px;
+    }
+
+    .purchase-header {
+        margin-bottom: 25px;
+    }
+
+        .purchase-header h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+            .purchase-header h1 span {
+                color: #e10600;
+            }
+
+        .purchase-header p {
+            margin: 0;
+            color: #8290a3;
+            font-size: 13px;
+        }
+
+    .package-summary {
+        background: #08111d;
+        border: 1px solid #1b2a3d;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 25px;
+    }
+
+        .package-summary h2 {
+            margin: 0 0 8px;
+            font-size: 20px;
+        }
+
+        .package-summary p {
+            color: #8290a3;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid #1b2a3d;
+        font-size: 13px;
+    }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .summary-row span {
+            color: #8290a3;
+        }
+
+        .summary-row strong {
+            color: white;
+        }
+
+    .price {
+        color: #e10600 !important;
+        font-size: 22px;
+    }
+
+    .payment-title {
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    .payment-method {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+
+    .payment-option {
+        background: #08111d;
+        border: 1px solid #293b52;
+        border-radius: 9px;
+        padding: 15px;
+        text-align: center;
+        cursor: pointer;
+        color: #8290a3;
+    }
+
+        .payment-option:hover {
+            border-color: #e10600;
+            color: white;
+        }
+
+        .payment-option input {
+            margin-right: 6px;
+        }
+
+    .pay-button {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 9px;
+        background: #e10600;
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+    }
+
+        .pay-button:hover {
+            background: #ff211a;
+        }
+
+    .back-button {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: #8290a3;
+        text-decoration: none;
+        font-size: 13px;
+    }
+
+        .back-button:hover {
+            color: white;
+        }
+
+    @@media(max-width: 600px) {
+
+        .payment-method {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+
+<div class="purchase-page">
+
+    <div class="purchase-container">
+
+        <div class="purchase-card">
+
+            <div class="purchase-header">
+
+                <h1>
+                    Purchase <span>Package</span>
+                </h1>
+
+                <p>
+                    Purchase your lesson package and receive
+                    lesson credits for booking.
+                </p>
+
+            </div>
+
+
+            <!-- PACKAGE SUMMARY -->
+
+            <div class="package-summary">
+
+                <h2>
+                    @Model.PackageName
+                </h2>
+
+                <p>
+                    @Model.Description
+                </p>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Lessons Included
+                    </span>
+
+                    <strong>
+                        @Model.NumberOfLessons
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Package Price
+                    </span>
+
+                    <strong class="price">
+                        R @Model.Price.ToString("N2")
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- PAYMENT -->
+
+            <h3 class="payment-title">
+                Select Payment Method
+            </h3>
+
+
+            @using (Html.BeginForm(
+                "Purchase",
+                "Package",
+                FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       name="id"
+                       value="@Model.LessonPackageId" />
+
+
+                <div class="payment-method">
+
+                    <label class="payment-option">
+
+                        <input type="radio"
+                               name="paymentMethod"
+                               value="Card"
+                               required />
+
+                        Card
+
+                    </label>
+
+
+                    <label class="payment-option">
+
+                        <input type="radio"
+                               name="paymentMethod"
+                               value="Cash"
+                               required />
+
+                        Cash
+
+                    </label>
+
+
+                    <label class="payment-option">
+
+                        <input type="radio"
+                               name="paymentMethod"
+                               value="EFT"
+                               required />
+
+                        EFT
+
+                    </label>
+
+                </div>
+
+
+                <button type="submit"
+                        class="pay-button">
+
+                    Purchase Package
+
+                </button>
+            }
+
+
+            <a href="@Url.Action(
+                "Details",
+                "Package",
+                new { id = Model.LessonPackageId })"
+               class="back-button">
+
+                ← Back to Package
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>

@@ -6,22 +6,34 @@
 }
 
 <style>
-    /* ================================
-       DARK AUTOMOTIVE LOGIN
-       ================================ */
+
+    /* =========================================
+       TK DRIVING SCHOOL
+       DARK RED AUTOMOTIVE LOGIN
+       ========================================= */
 
     * {
         box-sizing: border-box;
     }
 
+    html {
+        scroll-behavior: smooth;
+    }
+
     body {
         margin: 0;
+        padding: 0;
         background: #050a12;
     }
 
+
+    /* =========================================
+       MAIN LOGIN
+       ========================================= */
+
     .automotive-login {
         min-height: calc(100vh - 50px);
-        background: radial-gradient(circle at 15% 50%, rgba(25, 118, 210, 0.12), transparent 30%), linear-gradient(135deg, #03070d 0%, #07111e 50%, #02060b 100%);
+        background: radial-gradient( circle at 15% 50%, rgba(229, 57, 53, 0.12), transparent 30% ), radial-gradient( circle at 90% 10%, rgba(229, 57, 53, 0.07), transparent 25% ), linear-gradient( 135deg, #03070d 0%, #07111e 50%, #02060b 100% );
         display: flex;
         align-items: center;
         justify-content: center;
@@ -30,6 +42,25 @@
         font-family: "Segoe UI", Arial, sans-serif;
     }
 
+
+    /* =========================================
+       RED HAZARD STRIPE
+       ========================================= */
+
+    .hazard-stripe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 7px;
+        background: repeating-linear-gradient( -45deg, #e53935 0, #e53935 14px, #07111e 14px, #07111e 28px );
+    }
+
+
+    /* =========================================
+       LOGIN WRAPPER
+       ========================================= */
+
     .login-wrapper {
         width: 100%;
         max-width: 1180px;
@@ -37,30 +68,37 @@
         display: grid;
         grid-template-columns: 1.05fr 0.95fr;
         background: #0b1420;
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba( 255, 255, 255, 0.08 );
         border-radius: 26px;
         overflow: hidden;
-        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65), 0 0 60px rgba(25, 118, 210, 0.06);
+        box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 60px rgba( 229, 57, 53, 0.06 );
     }
 
-    /* ================================
-       LEFT SIDE
-       ================================ */
+
+    /* =========================================
+       LEFT AUTOMOTIVE SIDE
+       ========================================= */
 
     .automotive-side {
         position: relative;
         min-height: 680px;
         overflow: hidden;
-        background: linear-gradient( 135deg, rgba(2, 7, 14, 0.92), rgba(5, 18, 32, 0.78) ), url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=85") center / cover no-repeat;
+        background: linear-gradient( 135deg, rgba(2,7,14,0.92), rgba(5,18,32,0.78) ), url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=85") center / cover no-repeat;
     }
+
 
         .automotive-side::after {
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient( 90deg, rgba(3, 8, 15, 0.95) 0%, rgba(3, 8, 15, 0.55) 55%, rgba(3, 8, 15, 0.75) 100% );
+            background: linear-gradient( 90deg, rgba(3,8,15,0.96) 0%, rgba(3,8,15,0.55) 55%, rgba(3,8,15,0.78) 100% );
             pointer-events: none;
         }
+
+
+    /* =========================================
+       LEFT CONTENT
+       ========================================= */
 
     .automotive-content {
         position: relative;
@@ -72,7 +110,10 @@
         justify-content: space-between;
     }
 
-    /* Logo */
+
+    /* =========================================
+       BRAND
+       ========================================= */
 
     .brand {
         display: flex;
@@ -80,17 +121,19 @@
         gap: 12px;
     }
 
+
     .brand-icon {
         width: 46px;
         height: 46px;
         border-radius: 12px;
-        background: linear-gradient(135deg, #2196f3, #0d47a1);
+        background: linear-gradient( 135deg, #ef5350, #b71c1c );
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 22px;
-        box-shadow: 0 0 25px rgba(33, 150, 243, 0.35);
+        box-shadow: 0 0 25px rgba( 229, 57, 53, 0.35 );
     }
+
 
     .brand-name {
         font-size: 22px;
@@ -98,11 +141,15 @@
         letter-spacing: 1.5px;
     }
 
+
         .brand-name span {
-            color: #2196f3;
+            color: #e53935;
         }
 
-    /* Hero */
+
+    /* =========================================
+       HERO
+       ========================================= */
 
     .hero-text {
         max-width: 480px;
@@ -110,21 +157,28 @@
         margin-bottom: 35px;
     }
 
+
     .hero-badge {
         display: inline-flex;
         align-items: center;
         gap: 8px;
         padding: 8px 14px;
         border-radius: 50px;
-        background: rgba(33, 150, 243, 0.12);
-        border: 1px solid rgba(33, 150, 243, 0.25);
-        color: #64b5f6;
+        background: rgba( 229, 57, 53, 0.12 );
+        border: 1px solid rgba( 229, 57, 53, 0.25 );
+        color: #ef5350;
         font-size: 12px;
         font-weight: 700;
         letter-spacing: 1px;
         text-transform: uppercase;
         margin-bottom: 20px;
     }
+
+
+        .hero-badge::first-letter {
+            color: #e53935;
+        }
+
 
     .hero-text h1 {
         font-size: 52px;
@@ -134,9 +188,11 @@
         letter-spacing: -1.5px;
     }
 
+
         .hero-text h1 span {
-            color: #2196f3;
+            color: #e53935;
         }
+
 
     .hero-text p {
         color: #b7c3d0;
@@ -146,7 +202,10 @@
         max-width: 430px;
     }
 
-    /* Features */
+
+    /* =========================================
+       FEATURES
+       ========================================= */
 
     .features {
         display: flex;
@@ -154,26 +213,29 @@
         gap: 10px;
     }
 
+
     .feature {
         display: flex;
         align-items: center;
         gap: 8px;
         padding: 10px 14px;
-        background: rgba(255, 255, 255, 0.055);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba( 255, 255, 255, 0.055 );
+        border: 1px solid rgba( 255, 255, 255, 0.08 );
         border-radius: 10px;
         color: #d7e0ea;
         font-size: 12px;
     }
 
+
     .feature-icon {
-        color: #42a5f5;
+        color: #ef5350;
         font-weight: bold;
     }
 
-    /* ================================
-       RIGHT SIDE
-       ================================ */
+
+    /* =========================================
+       RIGHT LOGIN SIDE
+       ========================================= */
 
     .login-side {
         background: #0c1724;
@@ -183,14 +245,21 @@
         padding: 55px;
     }
 
+
     .login-container {
         width: 100%;
         max-width: 410px;
     }
 
+
+    /* =========================================
+       LOGIN HEADER
+       ========================================= */
+
     .login-header {
         margin-bottom: 35px;
     }
+
 
         .login-header h2 {
             margin: 0 0 10px;
@@ -200,17 +269,31 @@
             letter-spacing: -0.5px;
         }
 
+
         .login-header p {
             margin: 0;
             color: #7f91a5;
             font-size: 14px;
         }
 
-    /* Validation */
+
+    .login-header-line {
+        width: 55px;
+        height: 3px;
+        margin-top: 17px;
+        border-radius: 5px;
+        background: #e53935;
+        box-shadow: 0 0 12px rgba( 229, 57, 53, 0.45 );
+    }
+
+
+    /* =========================================
+       VALIDATION
+       ========================================= */
 
     .validation-summary-errors {
-        background: rgba(220, 53, 69, 0.10);
-        border: 1px solid rgba(220, 53, 69, 0.25);
+        background: rgba( 220, 53, 69, 0.10 );
+        border: 1px solid rgba( 220, 53, 69, 0.25 );
         border-radius: 10px;
         padding: 12px 15px;
         color: #ff7b86;
@@ -218,11 +301,15 @@
         font-size: 13px;
     }
 
-    /* Form */
+
+    /* =========================================
+       FORM GROUP
+       ========================================= */
 
     .form-group {
         margin-bottom: 22px;
     }
+
 
     .form-label {
         display: block;
@@ -232,9 +319,15 @@
         font-weight: 600;
     }
 
+
+    /* =========================================
+       INPUT WRAPPER
+       ========================================= */
+
     .input-wrapper {
         position: relative;
     }
+
 
     .input-icon {
         position: absolute;
@@ -245,6 +338,11 @@
         font-size: 15px;
         z-index: 2;
     }
+
+
+    /* =========================================
+       INPUT
+       ========================================= */
 
     .form-control {
         width: 100%;
@@ -259,19 +357,27 @@
         transition: all 0.25s ease;
     }
 
+
         .form-control::placeholder {
             color: #52667b;
         }
+
 
         .form-control:hover {
             border-color: #35506b;
         }
 
+
         .form-control:focus {
-            border-color: #2196f3;
+            border-color: #e53935;
             background: #0a1522;
-            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.10), 0 0 20px rgba(33, 150, 243, 0.08);
+            box-shadow: 0 0 0 3px rgba( 229, 57, 53, 0.10 ), 0 0 20px rgba( 229, 57, 53, 0.08 );
         }
+
+
+    /* =========================================
+       VALIDATION MESSAGE
+       ========================================= */
 
     .field-validation-error {
         display: block;
@@ -280,7 +386,10 @@
         margin-top: 6px;
     }
 
-    /* Remember */
+
+    /* =========================================
+       REMEMBER ME
+       ========================================= */
 
     .remember-row {
         display: flex;
@@ -288,13 +397,15 @@
         margin: 5px 0 25px;
     }
 
+
         .remember-row input {
             width: 16px;
             height: 16px;
-            accent-color: #2196f3;
+            accent-color: #e53935;
             margin-right: 9px;
             cursor: pointer;
         }
+
 
         .remember-row label {
             margin: 0;
@@ -304,39 +415,48 @@
             cursor: pointer;
         }
 
-    /* Login button */
+
+    /* =========================================
+       LOGIN BUTTON
+       ========================================= */
 
     .login-button {
         width: 100%;
         height: 54px;
         border: none;
         border-radius: 11px;
-        background: linear-gradient(135deg, #2196f3, #1565c0);
+        background: linear-gradient( 135deg, #e53935, #b71c1c );
         color: #ffffff;
         font-size: 14px;
         font-weight: 800;
         letter-spacing: 0.8px;
         cursor: pointer;
         transition: all 0.25s ease;
-        box-shadow: 0 8px 25px rgba(33, 150, 243, 0.20);
+        box-shadow: 0 8px 25px rgba( 229, 57, 53, 0.20 );
     }
+
 
         .login-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(33, 150, 243, 0.32);
-            background: linear-gradient(135deg, #42a5f5, #1976d2);
+            box-shadow: 0 12px 32px rgba( 229, 57, 53, 0.32 );
+            background: linear-gradient( 135deg, #ef5350, #d32f2f );
         }
+
 
         .login-button:active {
             transform: translateY(0);
         }
 
-    /* Links */
+
+    /* =========================================
+       LINKS
+       ========================================= */
 
     .login-links {
         text-align: center;
         margin-top: 28px;
     }
+
 
         .login-links p {
             margin: 10px 0;
@@ -344,19 +464,24 @@
             font-size: 13px;
         }
 
+
         .login-links a {
-            color: #42a5f5;
+            color: #ef5350;
             text-decoration: none;
             font-weight: 600;
             transition: 0.2s;
         }
 
+
             .login-links a:hover {
-                color: #90caf9;
+                color: #ff8a80;
                 text-decoration: none;
             }
 
-    /* Security text */
+
+    /* =========================================
+       SECURITY
+       ========================================= */
 
     .security-note {
         display: flex;
@@ -368,13 +493,40 @@
         font-size: 11px;
     }
 
+
         .security-note span {
-            color: #42a5f5;
+            color: #ef5350;
         }
 
-    /* ================================
+
+    /* =========================================
+       SCROLLBAR
+       ========================================= */
+
+    .login-side::-webkit-scrollbar {
+        width: 7px;
+    }
+
+
+    .login-side::-webkit-scrollbar-track {
+        background: #08111c;
+    }
+
+
+    .login-side::-webkit-scrollbar-thumb {
+        background: #26384b;
+        border-radius: 10px;
+    }
+
+
+        .login-side::-webkit-scrollbar-thumb:hover {
+            background: #35506b;
+        }
+
+
+    /* =========================================
        RESPONSIVE
-       ================================ */
+       ========================================= */
 
     @@media (max-width: 900px) {
 
@@ -382,31 +534,38 @@
             padding: 20px;
         }
 
+
         .login-wrapper {
             grid-template-columns: 1fr;
             max-width: 550px;
         }
 
+
         .automotive-side {
             min-height: 350px;
         }
+
 
         .automotive-content {
             padding: 35px;
         }
 
+
         .hero-text {
             margin-top: 70px;
         }
+
 
             .hero-text h1 {
                 font-size: 38px;
             }
 
+
         .login-side {
             padding: 40px 30px;
         }
     }
+
 
     @@media (max-width: 500px) {
 
@@ -414,33 +573,41 @@
             padding: 10px;
         }
 
+
         .login-wrapper {
             border-radius: 18px;
         }
+
 
         .automotive-side {
             min-height: 330px;
         }
 
+
         .automotive-content {
             padding: 25px;
         }
+
 
         .hero-text h1 {
             font-size: 32px;
         }
 
+
         .hero-text p {
             font-size: 14px;
         }
+
 
         .features {
             display: none;
         }
 
+
         .login-side {
             padding: 35px 22px;
         }
+
 
         .login-header h2 {
             font-size: 29px;
@@ -449,9 +616,20 @@
 </style>
 
 
+<!-- =========================================
+     LOGIN PAGE
+     ========================================= -->
+
 <div class="automotive-login">
 
+
+    <!-- RED HAZARD STRIPE -->
+
+    <div class="hazard-stripe"></div>
+
+
     <div class="login-wrapper">
+
 
         <!-- =================================
              LEFT AUTOMOTIVE SECTION
@@ -461,59 +639,101 @@
 
             <div class="automotive-content">
 
-                <!-- Brand -->
+
+                <!-- BRAND -->
 
                 <div class="brand">
 
                     <div class="brand-icon">
+
                         🚗
+
                     </div>
 
+
                     <div class="brand-name">
-                        DRIVE <span>SMART</span>
+
+                        TK DRIVING
+
+                        <span>
+                            SCHOOL
+                        </span>
+
                     </div>
 
                 </div>
 
 
-                <!-- Hero -->
+
+                <!-- HERO -->
 
                 <div class="hero-text">
 
+
                     <div class="hero-badge">
+
                         ● Driving School Platform
+
                     </div>
 
+
                     <h1>
+
                         Drive with
-                        <span>confidence.</span>
+
+                        <span>
+                            confidence.
+                        </span>
+
                     </h1>
 
+
                     <p>
+
                         Your journey to becoming a confident,
                         responsible driver starts here.
+
                     </p>
 
                 </div>
 
 
-                <!-- Features -->
+
+                <!-- FEATURES -->
 
                 <div class="features">
 
+
                     <div class="feature">
-                        <span class="feature-icon">✓</span>
+
+                        <span class="feature-icon">
+                            ✓
+                        </span>
+
                         Professional Instructors
+
                     </div>
 
+
                     <div class="feature">
-                        <span class="feature-icon">✓</span>
+
+                        <span class="feature-icon">
+                            ✓
+                        </span>
+
                         Easy Lesson Booking
+
                     </div>
 
+
                     <div class="feature">
-                        <span class="feature-icon">✓</span>
+
+                        <span class="feature-icon">
+                            ✓
+                        </span>
+
                         Track Your Progress
+
                     </div>
 
                 </div>
@@ -521,6 +741,7 @@
             </div>
 
         </div>
+
 
 
         <!-- =================================
@@ -531,112 +752,182 @@
 
             <div class="login-container">
 
+
+                <!-- HEADER -->
+
                 <div class="login-header">
 
-                    <h2>Welcome Back 👋</h2>
+                    <h2>
+                        Welcome Back 
+                    </h2>
+
 
                     <p>
                         Sign in to continue to your account.
                     </p>
 
+
+                    <div class="login-header-line"></div>
+
                 </div>
+
 
 
                 @using (Html.BeginForm(
                     "Login",
                     "Account",
-                    new { ReturnUrl = ViewBag.ReturnUrl },
+                    new
+                    {
+                        ReturnUrl =
+                            ViewBag.ReturnUrl
+                    },
                     FormMethod.Post,
-                    new { role = "form" }))
+                    new
+                    {
+                        role = "form"
+                    }))
                 {
+
                     @Html.AntiForgeryToken()
+
 
                     @Html.ValidationSummary(
                         true,
                         "",
-                        new { @class = "validation-summary-errors" }
+                        new
+                        {
+                            @class =
+                                "validation-summary-errors"
+                        }
                     )
 
 
-                    <!-- Email -->
+
+                    <!-- =================================
+                         EMAIL
+                         ================================= -->
 
                     <div class="form-group">
 
+
                         @Html.LabelFor(
                             m => m.Email,
-                            new { @class = "form-label" }
+                            new
+                            {
+                                @class =
+                                    "form-label"
+                            }
                         )
 
+
                         <div class="input-wrapper">
+
 
                             <span class="input-icon">
                                 ✉
                             </span>
 
+
                             @Html.TextBoxFor(
                                 m => m.Email,
                                 new
                                 {
-                                    @class = "form-control",
-                                    placeholder = "Enter your email",
-                                    autocomplete = "email"
+                                    @class =
+                                        "form-control",
+
+                                    placeholder =
+                                        "Enter your email",
+
+                                    autocomplete =
+                                        "email"
                                 }
                             )
 
                         </div>
 
+
                         @Html.ValidationMessageFor(
                             m => m.Email,
                             "",
-                            new { @class = "field-validation-error" }
+                            new
+                            {
+                                @class =
+                                    "field-validation-error"
+                            }
                         )
 
                     </div>
 
 
-                    <!-- Password -->
+
+                    <!-- =================================
+                         PASSWORD
+                         ================================= -->
 
                     <div class="form-group">
 
+
                         @Html.LabelFor(
                             m => m.Password,
-                            new { @class = "form-label" }
+                            new
+                            {
+                                @class =
+                                    "form-label"
+                            }
                         )
 
+
                         <div class="input-wrapper">
+
 
                             <span class="input-icon">
                                 🔒
                             </span>
 
+
                             @Html.PasswordFor(
                                 m => m.Password,
                                 new
                                 {
-                                    @class = "form-control",
-                                    placeholder = "Enter your password",
-                                    autocomplete = "current-password"
+                                    @class =
+                                        "form-control",
+
+                                    placeholder =
+                                        "Enter your password",
+
+                                    autocomplete =
+                                        "current-password"
                                 }
                             )
 
                         </div>
 
+
                         @Html.ValidationMessageFor(
                             m => m.Password,
                             "",
-                            new { @class = "field-validation-error" }
+                            new
+                            {
+                                @class =
+                                    "field-validation-error"
+                            }
                         )
 
                     </div>
 
 
-                    <!-- Remember -->
+
+                    <!-- =================================
+                         REMEMBER ME
+                         ================================= -->
 
                     <div class="remember-row">
+
 
                         @Html.CheckBoxFor(
                             m => m.RememberMe
                         )
+
 
                         @Html.LabelFor(
                             m => m.RememberMe
@@ -645,7 +936,10 @@
                     </div>
 
 
-                    <!-- Login -->
+
+                    <!-- =================================
+                         LOGIN BUTTON
+                         ================================= -->
 
                     <button type="submit"
                             class="login-button">
@@ -655,9 +949,13 @@
                     </button>
 
 
-                    <!-- Links -->
+
+                    <!-- =================================
+                         LINKS
+                         ================================= -->
 
                     <div class="login-links">
+
 
                         <p>
 
@@ -670,6 +968,7 @@
                             )
 
                         </p>
+
 
                         <p>
 
@@ -684,15 +983,21 @@
                     </div>
 
 
-                    <!-- Security -->
+
+                    <!-- =================================
+                         SECURITY
+                         ================================= -->
 
                     <div class="security-note">
 
-                        <span>🔒</span>
+                        <span>
+                            🔒
+                        </span>
 
                         Secure login protected by your account
 
                     </div>
+
                 }
 
             </div>
@@ -706,6 +1011,8 @@
 
 @section Scripts {
 
-    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render(
+        "~/bundles/jqueryval"
+    )
 
 }

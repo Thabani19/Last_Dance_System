@@ -79,7 +79,7 @@ namespace Last_Dance_System.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    return RedirectToAction("Index", "Dashboard");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -89,6 +89,7 @@ namespace Last_Dance_System.Controllers
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
             }
+            return RedirectToAction("Index", "Dashboard");
         }
 
         //
