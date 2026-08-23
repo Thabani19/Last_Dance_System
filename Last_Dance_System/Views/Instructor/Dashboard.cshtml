@@ -1,0 +1,46 @@
+﻿@model Last_Dance_System.Models.InstructorDashboardViewModel
+@{
+    ViewBag.Title = "Instructor Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/Content/instructor-theme.css" rel="stylesheet" />
+
+<div class="instructor-container">
+    <h2 class="page-title">Instructor Dashboard</h2>
+    <p class="page-subtitle">Your schedule and assigned students.</p>
+
+    <div class="mb-4">
+        <a href="@Url.Action("Schedule", "Instructor")" class="btn btn-light-blue">
+            Open schedule
+        </a>
+    </div>
+
+    <div class="stat-card-row">
+        <div>
+            <div class="stat-label">LESSONS TODAY</div>
+            <div class="stat-number">@Model.LessonsToday</div>
+        </div>
+    </div>
+
+    <div class="stat-card-row">
+        <div>
+            <div class="stat-label">UPCOMING</div>
+            <div class="stat-number">@Model.UpcomingLessons</div>
+        </div>
+    </div>
+
+    <div class="stat-card-row">
+        <div>
+            <div class="stat-label">COMPLETED</div>
+            <div class="stat-number">@Model.CompletedLessons</div>
+        </div>
+    </div>
+
+    <div class="stat-card-row">
+        <div>
+            <div class="stat-label">STUDENTS</div>
+            <div class="stat-number">@Model.TotalStudents</div>
+        </div>
+    </div>
+</div>

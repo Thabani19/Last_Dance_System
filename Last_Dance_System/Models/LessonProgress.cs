@@ -6,6 +6,8 @@ namespace Last_Dance_System.Models
 {
     public class LessonProgress
     {
+       
+
         [Key]
         public int LessonProgressId { get; set; }
 

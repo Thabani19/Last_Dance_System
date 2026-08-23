@@ -1,0 +1,222 @@
+﻿body {
+    background-color: #ffffff !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #1f2937;
+}
+
+.instructor-container {
+    padding: 20px 15px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.page-subtitle {
+    color: #6b7280;
+    font-size: 0.95rem;
+    margin-bottom: 24px;
+}
+
+/* Light Blue Buttons */
+.btn-light-blue {
+    background-color: #38bdf8;
+    color: #ffffff !important;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+}
+
+    .btn-light-blue:hover {
+        background-color: #0284c7;
+    }
+
+/* Card Outer Wrapper */
+.card-wrapper {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Dashboard Stat Cards */
+.stat-card-row {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-left: 4px solid #38bdf8;
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+    .stat-card-row .stat-label {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .stat-card-row .stat-number {
+        font-size: 1.8rem;
+        font-weight: 800;
+        color: #0f172a;
+    }
+
+/* Tabs */
+.custom-tab-bar {
+    background-color: #f3f4f6;
+    border-radius: 10px;
+    padding: 4px;
+    display: flex;
+    margin-bottom: 20px;
+}
+
+    .custom-tab-bar .tab-item {
+        flex: 1;
+        text-align: center;
+        padding: 10px 0;
+        color: #6b7280;
+        font-weight: 600;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+        .custom-tab-bar .tab-item.active {
+            background-color: #ffffff;
+            color: #0f172a;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+/* Status Badges */
+.badge-status {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.badge-outline {
+    border: 1px solid #38bdf8;
+    color: #0284c7;
+}
+
+.badge-completed {
+    border: 1px solid #22c55e;
+    color: #15803d;
+}
+
+.badge-absent {
+    border: 1px solid #ef4444;
+    color: #b91c1c;
+}
+/* Top Navbar Styling */
+.top-nav-bar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 12px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none !important;
+}
+
+.logo-box {
+    background-color: #38bdf8;
+    color: #ffffff;
+    font-weight: 800;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.logo-text {
+    color: #0f172a;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nav-icon-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.25rem;
+    color: #4b5563;
+    position: relative;
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+    .nav-icon-btn:hover {
+        background-color: #f3f4f6;
+        color: #0284c7;
+    }
+
+.notif-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background-color: #ef4444;
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 2px 5px;
+    line-height: 1;
+}
+
+/* Modal Feedback Field */
+.modal-content {
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+}
+
+.modal-header {
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.modal-footer {
+    border-top: 1px solid #f3f4f6;
+}
+.nav-item-dropdown {
+    position: relative;
+    display: inline-block;
+}
