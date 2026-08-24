@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "Feedback";
+}
+
+<h1 class="page-title">Feedback</h1>
+<p class="page-subtitle">Submit your thoughts, suggestions, or issues.</p>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success bg-dark border-success text-success mb-4" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+<div class="stat-card flex-column align-items-start p-4">
+    @using (Html.BeginForm("SubmitFeedback", "Instructor", FormMethod.Post, new { @class = "w-100" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group mb-3">
+            <label class="stat-title mb-2">Subject</label>
+            <input type="text" name="Subject" class="form-control dark-input" placeholder="e.g. Schedule Bug, Feature Suggestion" required />
+        </div>
+
+        <div class="form-group mb-4">
+            <label class="stat-title mb-2">Message</label>
+            <textarea name="Message" rows="5" class="form-control dark-input" placeholder="Write your feedback here..." required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-red-action">Submit feedback</button>
+    }
+</div>
+

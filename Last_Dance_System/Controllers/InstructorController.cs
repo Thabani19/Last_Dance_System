@@ -269,6 +269,28 @@ namespace Last_Dance_System.Controllers
 
             return Redirect(Request.UrlReferrer?.ToString() ?? Url.Action("Dashboard", "Instructor"));
         }
+        // GET: Instructor/Feedback
+        public ActionResult Feedback()
+        {
+            return View();
+        }
+
+        // POST: Instructor/Feedback
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SubmitFeedback(string Subject, string Message)
+        {
+            if (!string.IsNullOrWhiteSpace(Message))
+            {
+                // TODO: Save feedback to database or send an email notification here
+
+                TempData["SuccessMessage"] = "Thank you! Your feedback has been submitted successfully.";
+                return RedirectToAction("Feedback");
+            }
+
+            ModelState.AddModelError("", "Please fill in all required fields.");
+            return View("Feedback");
+        }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CheckOut(int lessonId)

@@ -1,54 +1,59 @@
 ﻿@model Last_Dance_System.Models.ScheduleStudentsViewModel
 @{
     ViewBag.Title = "Schedule & Students";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    string activeTab = Request.QueryString["tab"] ?? "Upcoming";
 }
 
-<link href="~/Content/instructor-theme.css" rel="stylesheet" />
+<h1 class="page-title">Schedule &amp; students</h1>
+<p class="page-subtitle">Your assigned lessons and student roster.</p>
 
-<div class="instructor-container">
-    <h2 class="page-title">Schedule &amp; students</h2>
-    <p class="page-subtitle">Your assigned lessons and student roster.</p>
+<!-- Pill Navigation Container -->
+<div class="custom-tab-pills mb-4">
+    <a href="@Url.Action("Schedule", "Instructor", new { tab = "Upcoming" })"
+       class="tab-pill-item @(activeTab == "Upcoming" ? "active" : "")">
+        Upcoming
+    </a>
+    <a href="@Url.Action("Schedule", "Instructor", new { tab = "History" })"
+       class="tab-pill-item @(activeTab == "History" ? "active" : "")">
+        History
+    </a>
+    <a href="@Url.Action("Schedule", "Instructor", new { tab = "Students" })"
+       class="tab-pill-item @(activeTab == "Students" ? "active" : "")">
+        Students
+    </a>
+</div>
 
-    <!-- Tab Navigation -->
-    <div class="custom-tab-bar">
-        <a href="@Url.Action("Schedule", "Instructor", new { tab = "Upcoming" })"
-           class="tab-item @(Model.ActiveTab == "Upcoming" ? "active" : "")">Upcoming</a>
-        <a href="@Url.Action("Schedule", "Instructor", new { tab = "History" })"
-           class="tab-item @(Model.ActiveTab == "History" ? "active" : "")">History</a>
-        <a href="@Url.Action("Schedule", "Instructor", new { tab = "Students" })"
-           class="tab-item @(Model.ActiveTab == "Students" ? "active" : "")">Students</a>
-    </div>
-    <!-- Required Post-Checkout Feedback Modal -->
-    <div class="modal fade" id="lessonFeedbackModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content" style="border-radius: 12px;">
-                @using (Html.BeginForm("SubmitFeedback", "Instructor", FormMethod.Post))
-                {
-                    @Html.AntiForgeryToken()
-                    <input type="hidden" name="lessonId" value="@(TempData["PromptLessonFeedback"] ?? 0)" />
 
-                    <div class="modal-header" style="background-color: #0284c7; color: white;">
-                        <h5 class="modal-title" style="font-weight: 700;">Lesson Checkout — Instructor Feedback</h5>
+<!-- Required Post-Checkout Feedback Modal -->
+<div class="modal fade" id="lessonFeedbackModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="border-radius: 12px;">
+            @using (Html.BeginForm("SubmitFeedback", "Instructor", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="lessonId" value="@(TempData["PromptLessonFeedback"] ?? 0)" />
+
+                <div class="modal-header" style="background-color: #0284c7; color: white;">
+                    <h5 class="modal-title" style="font-weight: 700;">Lesson Checkout — Instructor Feedback</h5>
+                </div>
+                <div class="modal-body" style="padding: 20px;">
+                    <p class="text-muted small">Please provide performance feedback and notes for this student to complete the checkout process.</p>
+                    <div class="form-group">
+                        <label style="font-weight: 600; color: #374151;">Lesson Feedback / Student Progress</label>
+                        <textarea name="feedbackNotes" class="form-control" rows="4" placeholder="Enter student performance, areas to improve, or lesson notes..." required></textarea>
                     </div>
-                    <div class="modal-body" style="padding: 20px;">
-                        <p class="text-muted small">Please provide performance feedback and notes for this student to complete the checkout process.</p>
-                        <div class="form-group">
-                            <label style="font-weight: 600; color: #374151;">Lesson Feedback / Student Progress</label>
-                            <textarea name="feedbackNotes" class="form-control" rows="4" placeholder="Enter student performance, areas to improve, or lesson notes..." required></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary" style="background-color: #0284c7; border: none; width: 100%;">Save &amp; Complete Checkout</button>
-                    </div>
-                }
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" style="background-color: #0284c7; border: none; width: 100%;">Save &amp; Complete Checkout</button>
+                </div>
+            }
         </div>
     </div>
+</div>
 
-    @if (TempData["PromptLessonFeedback"] != null)
-    {
-        <script>
+@if (TempData["PromptLessonFeedback"] != null)
+{
+    <script>
         document.addEventListener("DOMContentLoaded", function () {
             var feedbackModal = new bootstrap.Modal(document.getElementById('lessonFeedbackModal'), {
                 backdrop: 'static',
@@ -56,121 +61,127 @@
             });
             feedbackModal.show();
         });
-        </script>
-    }
+    </script>
+}
 
-    <!-- Upcoming Lessons -->
-    @if (Model.ActiveTab == "Upcoming")
+<!-- Upcoming Lessons -->
+@if (Model.ActiveTab == "Upcoming")
+{
+    if (Model.UpcomingLessons != null && Model.UpcomingLessons.Any())
     {
-        if (Model.UpcomingLessons != null && Model.UpcomingLessons.Any())
+        foreach (var item in Model.UpcomingLessons)
         {
-            foreach (var item in Model.UpcomingLessons)
-            {
-                <div class="card-wrapper">
-                    <h4 style="font-weight: 700; margin-top: 0;">@item.StudentName</h4>
-                    <p style="color: #6b7280; margin-bottom: 12px; font-size: 0.9rem;">
-                        @item.LessonType · @item.LessonDate.ToString("ddd, dd MMM 'at' HH:mm")
-                    </p>
-                    <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-                        <span class="badge-status badge-outline">CONFIRMED</span>
+            <div class="card-wrapper">
+                <h4 style="font-weight: 700; margin-top: 0;">@item.StudentName</h4>
+                <p style="color: #6b7280; margin-bottom: 12px; font-size: 0.9rem;">
+                    @item.LessonType · @item.LessonDate.ToString("ddd, dd MMM 'at' HH:mm")
+                </p>
+                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                    <span class="badge-status badge-outline">CONFIRMED</span>
 
-                        @using (Html.BeginForm("MarkStatus", "Instructor", FormMethod.Post, new { style = "display:inline;" }))
+                    @using (Html.BeginForm("MarkStatus", "Instructor", FormMethod.Post, new { style = "display:inline;" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="scheduleId" value="@item.LessonId" />
+                        <button type="submit" name="status" value="COMPLETED" class="btn btn-light-blue" style="padding: 5px 12px; font-size: 0.8rem;">Mark complete</button>
+                        <button type="submit" name="status" value="ABSENT" class="btn btn-default" style="padding: 5px 12px; font-size: 0.8rem;">Mark absent</button>
+                    }
+
+                    <button type="button" class="btn btn-outline-secondary" style="padding: 5px 12px; font-size: 0.8rem;"
+                            data-toggle="modal" data-target="#feedbackModal-@item.LessonId">
+                        Give Feedback
+                    </button>
+                </div>
+            </div>
+
+            <!-- Feedback Modal -->
+            <div class="modal fade" id="feedbackModal-@item.LessonId" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        @using (Html.BeginForm("SubmitFeedback", "Instructor", FormMethod.Post))
                         {
                             @Html.AntiForgeryToken()
-                            <input type="hidden" name="scheduleId" value="@item.LessonId" />
-                            <button type="submit" name="status" value="COMPLETED" class="btn btn-light-blue" style="padding: 5px 12px; font-size: 0.8rem;">Mark complete</button>
-                            <button type="submit" name="status" value="ABSENT" class="btn btn-default" style="padding: 5px 12px; font-size: 0.8rem;">Mark absent</button>
+                            <input type="hidden" name="lessonId" value="@item.LessonId" />
+                            <div class="modal-header">
+                                <h5 class="modal-title" style="font-weight: 700;">Feedback for @item.StudentName</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label style="font-weight: 600;">Lesson Performance &amp; Notes</label>
+                                    <textarea name="feedbackNotes" class="form-control" rows="4" placeholder="Enter student feedback..." required>@item.Notes</textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-light-blue">Save Feedback</button>
+                            </div>
                         }
-
-                        <button type="button" class="btn btn-outline-secondary" style="padding: 5px 12px; font-size: 0.8rem;"
-                                data-toggle="modal" data-target="#feedbackModal-@item.LessonId">
-                            Give Feedback
-                        </button>
                     </div>
                 </div>
-
-                <!-- Feedback Modal -->
-                <div class="modal fade" id="feedbackModal-@item.LessonId" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            @using (Html.BeginForm("SubmitFeedback", "Instructor", FormMethod.Post))
-                            {
-                                @Html.AntiForgeryToken()
-                                <input type="hidden" name="lessonId" value="@item.LessonId" />
-                                <div class="modal-header">
-                                    <h5 class="modal-title" style="font-weight: 700;">Feedback for @item.StudentName</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <label style="font-weight: 600;">Lesson Performance &amp; Notes</label>
-                                        <textarea name="feedbackNotes" class="form-control" rows="4" placeholder="Enter student feedback..." required>@item.Notes</textarea>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn btn-light-blue">Save Feedback</button>
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
-            }
-        }
-        else
-        {
-            <div class="card-wrapper text-center text-muted">No upcoming lessons.</div>
+            </div>
         }
     }
-    else if (Model.ActiveTab == "History")
+    else
     {
-        if (Model.HistoryLessons != null && Model.HistoryLessons.Any())
-        {
-            foreach (var item in Model.HistoryLessons)
-            {
-                <div class="card-wrapper">
-                    <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                        <div>
-                            <h4 style="font-weight: 700; margin-top: 0;">@item.StudentName</h4>
-                            <p style="color: #6b7280; margin-bottom: 4px; font-size: 0.9rem;">
-                                @item.LessonType · @item.LessonDate.ToString("ddd, dd MMM 'at' HH:mm")
-                            </p>
-                        </div>
-                        <span class="badge-status @(item.Status == "COMPLETED" ? "badge-completed" : "badge-absent")">
-                            @item.Status
-                        </span>
-                    </div>
-                </div>
-            }
-        }
-        else
-        {
-            <div class="card-wrapper text-center text-muted">No history found.</div>
-        }
-    }
-    else if (Model.ActiveTab == "Students")
-    {
-        <div class="card-wrapper">
-            <h4 style="font-weight: 700; margin-top: 0; margin-bottom: 16px;">Assigned students</h4>
-            @if (Model.AssignedStudents != null && Model.AssignedStudents.Any())
-            {
-                foreach (var student in Model.AssignedStudents)
-                {
-                    <div style="border: 1px solid #f3f4f6; border-radius: 8px; padding: 12px; margin-bottom: 10px;">
-                        <div style="font-weight: 700; font-size: 1rem;">@student.FullName</div>
-                        <div style="color: #6b7280; font-size: 0.85rem;">@student.Email · @student.Phone</div>
-                        <div style="color: #4b5563; font-size: 0.85rem; margin-top: 6px;">
-                            @student.CompletedLessons completed of @student.TotalLessons lessons
-                        </div>
-                    </div>
-                }
-            }
-            else
-            {
-                <div class="text-muted text-center">No assigned students found.</div>
-            }
+        <div class="custom-dark-card text-center py-5">
+            <p class="text-muted mb-0">No upcoming lessons.</p>
         </div>
     }
+}
+else if (Model.ActiveTab == "History")
+{
+    if (Model.HistoryLessons != null && Model.HistoryLessons.Any())
+    {
+        foreach (var item in Model.HistoryLessons)
+        {
+            <div class="card-wrapper">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <div>
+                        <h4 style="font-weight: 700; margin-top: 0;">@item.StudentName</h4>
+                        <p style="color: #6b7280; margin-bottom: 4px; font-size: 0.9rem;">
+                            @item.LessonType · @item.LessonDate.ToString("ddd, dd MMM 'at' HH:mm")
+                        </p>
+                    </div>
+                    <span class="badge-status @(item.Status == "COMPLETED" ? "badge-completed" : "badge-absent")">
+                        @item.Status
+                    </span>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+<div class="custom-dark-card text-center py-5">
+    <p class="text-muted mb-0">No lesson history found.</p>
+</div>
+    }
+}
+else if (Model.ActiveTab == "Students")
+{
+    <div class="card-wrapper">
+        <h4 style="font-weight: 700; margin-top: 0; margin-bottom: 16px;">Assigned students</h4>
+        @if (Model.AssignedStudents != null && Model.AssignedStudents.Any())
+        {
+            foreach (var student in Model.AssignedStudents)
+            {
+                <div style="border: 1px solid #f3f4f6; border-radius: 8px; padding: 12px; margin-bottom: 10px;">
+                    <div style="font-weight: 700; font-size: 1rem;">@student.FullName</div>
+                    <div style="color: #6b7280; font-size: 0.85rem;">@student.Email · @student.Phone</div>
+                    <div style="color: #4b5563; font-size: 0.85rem; margin-top: 6px;">
+                        @student.CompletedLessons completed of @student.TotalLessons lessons
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+    <div class="custom-dark-card text-center py-5">
+        <p class="text-muted mb-0">No assigned students found.</p>
+    </div>
+        }
+    </div>
+}
 </div>

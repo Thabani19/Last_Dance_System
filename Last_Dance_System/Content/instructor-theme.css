@@ -1,222 +1,293 @@
-﻿body {
-    background-color: #ffffff !important;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    color: #1f2937;
+﻿
+/* Color Variables */
+:root {
+    --bg-dark: #0a0e17;
+    --card-bg: #111625;
+    --card-border: #1d2538;
+    --accent-red: #e11d48;
+    --text-white: #ffffff;
+    --text-muted: #8b949e;
 }
 
-.instructor-container {
-    padding: 20px 15px;
-    max-width: 800px;
+/* Global Reset */
+html, body {
+    background-color: var(--bg-dark) !important;
+    color: var(--text-white) !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    margin: 0;
+    padding: 0;
+}
+
+.main-content-wrapper {
+    max-width: 600px;
     margin: 0 auto;
+    padding-bottom: 40px;
 }
 
-.page-title {
-    font-size: 2rem;
+/* Red & Dark Top Hazard Stripe */
+.top-stripe-bar {
+    height: 6px;
+    background: repeating-linear-gradient( -45deg, #e11d48, #e11d48 10px, #0a0e17 10px, #0a0e17 20px );
+    width: 100%;
+}
+
+/* Navigation Header */
+.app-top-nav {
+    background-color: var(--bg-dark);
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.tk-logo-box {
+    background-color: var(--accent-red);
+    color: var(--text-white) !important;
     font-weight: 800;
-    color: #111827;
+    font-size: 1.2rem;
+    padding: 6px 12px;
+    border-radius: 2px;
+    display: inline-block;
+}
+
+.nav-icon-link {
+    color: var(--text-white) !important;
+    font-size: 1.25rem;
+    text-decoration: none !important;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    background-color: var(--accent-red);
+    color: var(--text-white);
+    font-size: 0.65rem;
+    font-weight: 700;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Dropdown Menu */
+.custom-dark-dropdown {
+    background-color: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    border-radius: 6px !important;
+    padding: 8px 0 !important;
+}
+
+    .custom-dark-dropdown .dropdown-item {
+        color: var(--text-white) !important;
+        font-size: 0.95rem;
+        padding: 10px 16px;
+    }
+
+        .custom-dark-dropdown .dropdown-item:hover {
+            background-color: var(--card-border) !important;
+        }
+
+/* Typography */
+h1.page-title {
+    font-size: 2.2rem !important;
+    font-weight: 800 !important;
+    color: var(--text-white) !important;
     margin-bottom: 4px;
 }
 
-.page-subtitle {
-    color: #6b7280;
+p.page-subtitle {
+    color: var(--text-muted) !important;
     font-size: 0.95rem;
     margin-bottom: 24px;
 }
 
-/* Light Blue Buttons */
-.btn-light-blue {
-    background-color: #38bdf8;
-    color: #ffffff !important;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-weight: 600;
-    font-size: 0.95rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    transition: all 0.2s ease;
-}
-
-    .btn-light-blue:hover {
-        background-color: #0284c7;
-    }
-
-/* Card Outer Wrapper */
-.card-wrapper {
-    background-color: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 20px;
-    margin-bottom: 16px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-}
-
-/* Dashboard Stat Cards */
-.stat-card-row {
-    background-color: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-left: 4px solid #38bdf8;
-    border-radius: 10px;
-    padding: 18px 20px;
-    margin-bottom: 14px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
-}
-
-    .stat-card-row .stat-label {
-        font-size: 0.8rem;
-        font-weight: 700;
-        color: #6b7280;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-
-    .stat-card-row .stat-number {
-        font-size: 1.8rem;
-        font-weight: 800;
-        color: #0f172a;
-    }
-
-/* Tabs */
-.custom-tab-bar {
-    background-color: #f3f4f6;
-    border-radius: 10px;
-    padding: 4px;
-    display: flex;
-    margin-bottom: 20px;
-}
-
-    .custom-tab-bar .tab-item {
-        flex: 1;
-        text-align: center;
-        padding: 10px 0;
-        color: #6b7280;
-        font-weight: 600;
-        border-radius: 8px;
-        text-decoration: none;
-        font-size: 0.9rem;
-    }
-
-        .custom-tab-bar .tab-item.active {
-            background-color: #ffffff;
-            color: #0f172a;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-
-/* Status Badges */
-.badge-status {
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
+/* Red Solid Action Button */
+.btn-red-action {
+    background-color: var(--accent-red) !important;
+    border: none !important;
+    color: var(--text-white) !important;
+    font-weight: 600 !important;
+    border-radius: 4px !important;
+    padding: 10px 20px !important;
     display: inline-block;
-}
-
-.badge-outline {
-    border: 1px solid #38bdf8;
-    color: #0284c7;
-}
-
-.badge-completed {
-    border: 1px solid #22c55e;
-    color: #15803d;
-}
-
-.badge-absent {
-    border: 1px solid #ef4444;
-    color: #b91c1c;
-}
-/* Top Navbar Styling */
-.top-nav-bar {
-    background-color: #ffffff;
-    border-bottom: 1px solid #e5e7eb;
-    padding: 12px 20px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.nav-container {
-    max-width: 900px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.brand-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
     text-decoration: none !important;
 }
 
-.logo-box {
-    background-color: #38bdf8;
-    color: #ffffff;
-    font-weight: 800;
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 1rem;
-}
-
-.logo-text {
-    color: #0f172a;
-    font-weight: 700;
-    font-size: 1.1rem;
-}
-
-.nav-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.nav-icon-btn {
-    background: transparent;
-    border: none;
-    font-size: 1.25rem;
-    color: #4b5563;
-    position: relative;
-    padding: 6px 8px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
-    .nav-icon-btn:hover {
-        background-color: #f3f4f6;
-        color: #0284c7;
+    .btn-red-action:hover {
+        background-color: #be123c !important;
     }
 
-.notif-badge {
-    position: absolute;
-    top: 2px;
-    right: 2px;
-    background-color: #ef4444;
-    color: white;
-    font-size: 0.65rem;
+/* Stat Cards (Dark background + Red Left Line) */
+.stat-card {
+    background-color: var(--card-bg) !important;
+    border: 1px solid var(--card-border) !important;
+    border-left: 4px solid var(--accent-red) !important;
+    border-radius: 8px !important;
+    padding: 20px 24px !important;
+    margin-bottom: 16px !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-title {
+    color: var(--text-muted) !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.08em !important;
+    text-transform: uppercase !important;
+}
+
+.stat-value {
+    color: var(--text-white) !important;
+    font-size: 2rem !important;
+    font-weight: 800 !important;
+    margin-top: 6px;
+}
+
+.stat-icon-red {
+    color: var(--accent-red) !important;
+    font-size: 1.5rem !important;
+}
+
+/* Tab Switcher (Upcoming / History / Students) */
+.tab-container {
+    background-color: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    padding: 4px;
+    display: flex;
+    margin-bottom: 24px;
+}
+
+.tab-button {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 4px;
+}
+
+    .tab-button.active {
+        background-color: var(--bg-dark);
+        color: var(--text-white);
+    }
+
+/* Status Badges */
+.badge-outline-green {
+    border: 1px solid #10b981;
+    color: #10b981;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
     font-weight: 700;
-    border-radius: 10px;
-    padding: 2px 5px;
-    line-height: 1;
 }
 
-/* Modal Feedback Field */
-.modal-content {
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
+.badge-outline-red {
+    border: 1px solid var(--accent-red);
+    color: var(--accent-red);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
 }
 
-.modal-header {
-    border-bottom: 1px solid #f3f4f6;
+/* Dark Form Inputs */
+.dark-input {
+    background-color: var(--bg-dark) !important;
+    border: 1px solid var(--card-border) !important;
+    color: var(--text-white) !important;
+    border-radius: 6px !important;
+    padding: 12px !important;
+}
+/* Force Global Dark Theme Override */
+html,
+body,
+.body-content,
+.container,
+.container-fluid,
+div.body-content,
+div.container {
+    background-color: #0a0e17 !important;
+    color: #ffffff !important;
 }
 
-.modal-footer {
-    border-top: 1px solid #f3f4f6;
+/* Tab Container Styles */
+.tab-container {
+    background-color: #111625 !important;
+    border: 1px solid #1d2538 !important;
+    border-radius: 6px;
+    padding: 4px;
+    display: flex;
+    margin-bottom: 24px;
 }
-.nav-item-dropdown {
-    position: relative;
-    display: inline-block;
+
+    .tab-button, .tab-container .btn {
+        flex: 1;
+        background: transparent !important;
+        border: none !important;
+        color: #8b949e !important;
+        padding: 8px 12px;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border-radius: 4px;
+        text-align: center;
+        text-decoration: none !important;
+    }
+
+        .tab-button.active, .tab-container .btn.active {
+            background-color: #0a0e17 !important;
+            color: #ffffff !important;
+        }
+
+/* Card Overrides */
+.card, .stat-card, .student-card {
+    background-color: #111625 !important;
+    border: 1px solid #1d2538 !important;
+    color: #ffffff !important;
+}
+/* Tab Pill Container Background */
+.custom-tab-pills {
+    background-color: #111625 !important;
+    border: 1px solid #1d2538 !important;
+    border-radius: 8px !important;
+    padding: 4px !important;
+    display: flex !important;
+    gap: 4px !important;
+    max-width: 400px;
+}
+
+/* Individual Tab Items */
+.tab-pill-item {
+    flex: 1 !important;
+    text-align: center !important;
+    padding: 8px 16px !important;
+    color: #8b949e !important;
+    text-decoration: none !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
+    border-radius: 6px !important;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+    /* Active Selected Tab */
+    .tab-pill-item.active {
+        background-color: #0a0e17 !important;
+        color: #ffffff !important;
+    }
+
+    .tab-pill-item:hover {
+        color: #ffffff !important;
+    }
+
+/* Dark Card Component */
+.custom-dark-card {
+    background-color: #111625 !important;
+    border: 1px solid #1d2538 !important;
+    border-radius: 8px !important;
+    padding: 24px !important;
 }

@@ -1,46 +1,46 @@
-﻿@model Last_Dance_System.Models.InstructorDashboardViewModel
-@{
+﻿@{
     ViewBag.Title = "Instructor Dashboard";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<link href="~/Content/instructor-theme.css" rel="stylesheet" />
+<h1 class="page-title">Instructor Dashboard</h1>
+<p class="page-subtitle">Your schedule and assigned students.</p>
 
-<div class="instructor-container">
-    <h2 class="page-title">Instructor Dashboard</h2>
-    <p class="page-subtitle">Your schedule and assigned students.</p>
+<a href="@Url.Action("Schedule", "Instructor")" class="btn btn-red-action mb-4">Open schedule</a>
 
-    <div class="mb-4">
-        <a href="@Url.Action("Schedule", "Instructor")" class="btn btn-light-blue">
-            Open schedule
-        </a>
+<hr style="border-color: var(--card-border);" class="mb-4" />
+
+<!-- Lessons Today Card -->
+<div class="stat-card">
+    <div>
+        <div class="stat-title">LESSONS TODAY</div>
+        <div class="stat-value">@Model.LessonsToday</div>
     </div>
+    <i class="bi bi-people fs-3 text-danger"></i>
+</div>
 
-    <div class="stat-card-row">
-        <div>
-            <div class="stat-label">LESSONS TODAY</div>
-            <div class="stat-number">@Model.LessonsToday</div>
-        </div>
+<!-- Upcoming Card -->
+<div class="stat-card">
+    <div>
+        <div class="stat-title">UPCOMING</div>
+        <div class="stat-value">@Model.UpcomingLessons</div>
     </div>
+    <i class="bi bi-people fs-3 text-danger"></i>
+</div>
 
-    <div class="stat-card-row">
-        <div>
-            <div class="stat-label">UPCOMING</div>
-            <div class="stat-number">@Model.UpcomingLessons</div>
-        </div>
+<!-- Completed Card -->
+<div class="stat-card">
+    <div>
+        <div class="stat-title">COMPLETED</div>
+        <div class="stat-value">@Model.CompletedLessons</div>
     </div>
+    <i class="bi bi-people fs-3 text-danger"></i>
+</div>
 
-    <div class="stat-card-row">
-        <div>
-            <div class="stat-label">COMPLETED</div>
-            <div class="stat-number">@Model.CompletedLessons</div>
-        </div>
+<!-- Students Card -->
+<div class="stat-card">
+    <div>
+        <div class="stat-title">STUDENTS</div>
+        <div class="stat-value">@Model.TotalStudents</div>
     </div>
-
-    <div class="stat-card-row">
-        <div>
-            <div class="stat-label">STUDENTS</div>
-            <div class="stat-number">@Model.TotalStudents</div>
-        </div>
-    </div>
+    <i class="bi bi-people fs-3 text-danger"></i>
 </div>
