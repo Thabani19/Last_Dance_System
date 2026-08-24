@@ -9,34 +9,68 @@ namespace Last_Dance_System.Models
         [Key]
         public int StudentPackageId { get; set; }
 
-        // Student who purchased the package
+
+        // =========================================================
+        // STUDENT
+        // =========================================================
+
         [Required]
         public string RegistrationId { get; set; }
 
         [ForeignKey("RegistrationId")]
         public virtual Registration Registration { get; set; }
 
-        // Package purchased
+
+        // =========================================================
+        // PACKAGE
+        // =========================================================
+
         [Required]
         public int LessonPackageId { get; set; }
 
         [ForeignKey("LessonPackageId")]
         public virtual LessonPackage LessonPackage { get; set; }
 
-        // Number originally purchased
+
+        // =========================================================
+        // LESSON CREDITS
+        // =========================================================
+
         [Required]
         public int LessonsPurchased { get; set; }
 
-        // Number still available for booking
         [Required]
         public int LessonsRemaining { get; set; }
+
+
+        // =========================================================
+        // PAYMENT
+        // =========================================================
+
+        [Required]
+        [StringLength(30)]
+        public string PaymentMethod { get; set; }
 
         [Required]
         [StringLength(20)]
         public string PaymentStatus { get; set; }
 
+
+        // =========================================================
+        // PURCHASE INFORMATION
+        // =========================================================
+
         public DateTime PurchaseDate { get; set; }
 
         public bool IsActive { get; set; }
+
+
+        // =========================================================
+        // CANCELLATION
+        // =========================================================
+
+        public bool IsCancelled { get; set; }
+
+        public DateTime? CancellationDate { get; set; }
     }
 }

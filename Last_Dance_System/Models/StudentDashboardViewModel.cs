@@ -4,11 +4,11 @@ namespace Last_Dance_System.Models
 {
     public class StudentDashboardViewModel
     {
-        // ============================================================
-        // STUDENT INFORMATION
-        // ============================================================
+        // =========================================================
+        // STUDENT
+        // =========================================================
 
-        public string RegistrationId { get; set; }
+        public string StudentID { get; set; }
 
         public string FirstName { get; set; }
 
@@ -16,35 +16,10 @@ namespace Last_Dance_System.Models
 
         public string Email { get; set; }
 
-        // Compatibility properties used by the dashboard
-        public string StudentName { get; set; }
 
-        public string StudentSurname { get; set; }
-
-        public string StudentEmail { get; set; }
-
-
-        // ============================================================
-        // BOOKING
-        // ============================================================
-
-        public string BookingStatus { get; set; }
-
-        public string CourseName { get; set; }
-
-        public string InstructorName { get; set; }
-
-
-        // ============================================================
-        // PAYMENT
-        // ============================================================
-
-        public string PaymentStatus { get; set; }
-
-
-        // ============================================================
-        // LESSONS
-        // ============================================================
+        // =========================================================
+        // LESSON STATISTICS
+        // =========================================================
 
         public int TotalLessons { get; set; }
 
@@ -52,58 +27,59 @@ namespace Last_Dance_System.Models
 
         public int RemainingLessons { get; set; }
 
-        public int UpcomingLessons { get; set; }
-
-
-        // ============================================================
-        // PROGRESS
-        // ============================================================
-
         public int ProgressPercentage { get; set; }
 
 
-        // ============================================================
-        // NEXT LESSON
-        // ============================================================
+        // =========================================================
+        // UPCOMING LESSON
+        // =========================================================
 
-        public DateTime? NextLessonDate { get; set; }
+        public bool HasUpcomingLesson { get; set; }
 
-        public string NextLessonTime { get; set; }
+        public int? UpcomingLessonID { get; set; }
 
-        // These are used by your current Dashboard view
-        public NextLessonViewModel NextLesson { get; set; }
+        public DateTime? UpcomingLessonDate { get; set; }
+
+        public string UpcomingLessonTime { get; set; }
+
+        public string UpcomingLessonType { get; set; }
+
+        public string UpcomingInstructor { get; set; }
+
+        public string UpcomingVehicle { get; set; }
+
+        public string UpcomingLocation { get; set; }
+
+        // NEW
+        public string BookingStatus { get; set; }
 
 
-        // ============================================================
-        // REVIEWS & FEEDBACK
-        // ============================================================
+        // =========================================================
+        // PAYMENT
+        // =========================================================
 
-        public string DailyReview { get; set; }
+        public string PaymentStatus { get; set; }
 
-        public string InstructorFeedback { get; set; }
+        public decimal TotalPaid { get; set; }
 
-        public string OverallReview { get; set; }
-    }
+        public decimal OutstandingAmount { get; set; }
 
 
-    // ================================================================
-    // NEXT LESSON
-    // ================================================================
+        // =========================================================
+        // DAILY REVIEW
+        // =========================================================
 
-    public class NextLessonViewModel
-    {
-        public int Day { get; set; }
+        public bool HasPendingReview { get; set; }
 
-        public string Month { get; set; }
+        public int? ReviewLessonID { get; set; }
 
-        public string Date { get; set; }
 
-        public string Time { get; set; }
+        // =========================================================
+        // INSTRUCTOR FEEDBACK
+        // =========================================================
 
-        public string Location { get; set; }
+        public bool HasInstructorFeedback { get; set; }
 
-        public string Instructor { get; set; }
-
-        public string Vehicle { get; set; }
+        public string LatestFeedback { get; set; }
     }
 }

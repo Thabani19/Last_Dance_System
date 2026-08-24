@@ -1,6 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -46,10 +45,49 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Stripe.net, Version=52.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Stripe.net.52.3.0\lib\net462\Stripe.net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
+      <Private>True</Private>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.6.0.0\lib\net461\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=6.0.0.10, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.6.0.10\lib\net461\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -158,9 +196,6 @@
     <Reference Include="Microsoft.Owin.Security.OAuth">
       <HintPath>..\packages\Microsoft.Owin.Security.OAuth.4.2.2\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -200,6 +235,42 @@
     <Compile Include="Migrations\202608212328220_AddLessonPackages.Designer.cs">
       <DependentUpon>202608212328220_AddLessonPackages.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202608220713573_AddPaymentMethodToStudentPackage.cs" />
+    <Compile Include="Migrations\202608220713573_AddPaymentMethodToStudentPackage.Designer.cs">
+      <DependentUpon>202608220713573_AddPaymentMethodToStudentPackage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202608220832591_AddPackagePayments.cs" />
+    <Compile Include="Migrations\202608220832591_AddPackagePayments.Designer.cs">
+      <DependentUpon>202608220832591_AddPackagePayments.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202608220842036_AddPackagePayments1.cs" />
+    <Compile Include="Migrations\202608220842036_AddPackagePayments1.Designer.cs">
+      <DependentUpon>202608220842036_AddPackagePayments1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202608220847179_AddStudentPackagePaymentRelationship.cs" />
+    <Compile Include="Migrations\202608220847179_AddStudentPackagePaymentRelationship.Designer.cs">
+      <DependentUpon>202608220847179_AddStudentPackagePaymentRelationship.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202608221122253_FixPaymentRelationships.cs" />
+    <Compile Include="Migrations\202608221122253_FixPaymentRelationships.Designer.cs">
+      <DependentUpon>202608221122253_FixPaymentRelationships.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202608230821397_AddStudentPackageToBooking.cs" />
+    <Compile Include="Migrations\202608230821397_AddStudentPackageToBooking.Designer.cs">
+      <DependentUpon>202608230821397_AddStudentPackageToBooking.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202608230834554_MakeStudentPackageOptional.cs" />
+    <Compile Include="Migrations\202608230834554_MakeStudentPackageOptional.Designer.cs">
+      <DependentUpon>202608230834554_MakeStudentPackageOptional.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202608231128451_AddPackageCancellation.cs" />
+    <Compile Include="Migrations\202608231128451_AddPackageCancellation.Designer.cs">
+      <DependentUpon>202608231128451_AddPackageCancellation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202608231934228_AddBookingAttendance.cs" />
+    <Compile Include="Migrations\202608231934228_AddBookingAttendance.Designer.cs">
+      <DependentUpon>202608231934228_AddBookingAttendance.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Administrator.cs" />
@@ -215,6 +286,7 @@
     <Compile Include="Models\LessonType.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Notification.cs" />
+    <Compile Include="Models\PackagePayment.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\Registration.cs" />
     <Compile Include="Models\Review.cs" />
@@ -307,6 +379,10 @@
     <Content Include="Views\Package\Index.cshtml" />
     <Content Include="Views\Package\Details.cshtml" />
     <Content Include="Views\Package\Purchase.cshtml" />
+    <Content Include="Views\Package\MyPackages.cshtml" />
+    <Content Include="Views\Booking\MyLessons.cshtml" />
+    <Content Include="Views\Package\CancelPackage.cshtml" />
+    <Content Include="Views\Dashboard\Profile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -356,6 +432,33 @@
     <EmbeddedResource Include="Migrations\202608212328220_AddLessonPackages.resx">
       <DependentUpon>202608212328220_AddLessonPackages.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608220713573_AddPaymentMethodToStudentPackage.resx">
+      <DependentUpon>202608220713573_AddPaymentMethodToStudentPackage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608220832591_AddPackagePayments.resx">
+      <DependentUpon>202608220832591_AddPackagePayments.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608220842036_AddPackagePayments1.resx">
+      <DependentUpon>202608220842036_AddPackagePayments1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608220847179_AddStudentPackagePaymentRelationship.resx">
+      <DependentUpon>202608220847179_AddStudentPackagePaymentRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608221122253_FixPaymentRelationships.resx">
+      <DependentUpon>202608221122253_FixPaymentRelationships.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608230821397_AddStudentPackageToBooking.resx">
+      <DependentUpon>202608230821397_AddStudentPackageToBooking.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608230834554_MakeStudentPackageOptional.resx">
+      <DependentUpon>202608230834554_MakeStudentPackageOptional.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608231128451_AddPackageCancellation.resx">
+      <DependentUpon>202608231128451_AddPackageCancellation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608231934228_AddBookingAttendance.resx">
+      <DependentUpon>202608231934228_AddBookingAttendance.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -397,7 +500,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
 </Project>

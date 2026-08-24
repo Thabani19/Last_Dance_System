@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Last_Dance_System.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
-using Last_Dance_System.Models;
+using System;
 
 namespace Last_Dance_System
 {
@@ -18,6 +19,22 @@ namespace Last_Dance_System
             app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
+
+            using (var context = new ApplicationDbContext())
+            {
+                var roleManager = new RoleManager<IdentityRole>(
+                    new RoleStore<IdentityRole>(context));
+
+                string[] roles = { "Student", "Instructor", "Administrator" };
+
+                foreach (var role in roles)
+                {
+                    if (!roleManager.RoleExists(role))
+                    {
+                        roleManager.Create(new IdentityRole(role));
+                    }
+                }
+            }
 
             // Enable the application to use a cookie to store information for the signed in user
             // and to use a cookie to temporarily store information about a user logging in with a third party login provider

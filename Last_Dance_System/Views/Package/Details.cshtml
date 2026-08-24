@@ -28,17 +28,60 @@
         margin: 0 auto;
     }
 
+
+    /* =============================================
+       TOP NAVIGATION BUTTONS
+       ============================================= */
+
+    .top-actions {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        margin-bottom: 25px;
+        flex-wrap: wrap;
+    }
+
     .back-link {
         display: inline-block;
-        margin-bottom: 25px;
         color: #8290a3;
         text-decoration: none;
         font-size: 13px;
+        padding: 10px 14px;
+        border: 1px solid #1b2a3d;
+        border-radius: 8px;
+        background: #0c1726;
+        transition: .2s ease;
     }
 
         .back-link:hover {
             color: #ffffff;
+            border-color: #8290a3;
+            text-decoration: none;
         }
+
+    .dashboard-link {
+        display: inline-block;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 10px 14px;
+        border: 1px solid rgba(225, 6, 0, .40);
+        border-radius: 8px;
+        background: rgba(225, 6, 0, .10);
+        transition: .2s ease;
+    }
+
+        .dashboard-link:hover {
+            background: #e10600;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+
+    /* =============================================
+       PACKAGE CARD
+       ============================================= */
 
     .package-card {
         background: #0c1726;
@@ -59,6 +102,11 @@
             background: #e10600;
         }
 
+
+    /* =============================================
+       PACKAGE ICON
+       ============================================= */
+
     .package-icon {
         width: 60px;
         height: 60px;
@@ -72,6 +120,11 @@
         margin-bottom: 20px;
     }
 
+
+    /* =============================================
+       PACKAGE TITLE
+       ============================================= */
+
     .package-card h1 {
         margin: 0 0 10px;
         font-size: 30px;
@@ -84,6 +137,11 @@
         line-height: 1.7;
         margin-bottom: 30px;
     }
+
+
+    /* =============================================
+       PACKAGE INFORMATION
+       ============================================= */
 
     .package-info {
         display: grid;
@@ -116,6 +174,11 @@
         font-size: 28px !important;
     }
 
+
+    /* =============================================
+       NOTICE
+       ============================================= */
+
     .notice {
         background: rgba(225, 6, 0, .08);
         border: 1px solid rgba(225, 6, 0, .20);
@@ -126,6 +189,11 @@
         line-height: 1.6;
         margin-bottom: 25px;
     }
+
+
+    /* =============================================
+       PURCHASE BUTTON
+       ============================================= */
 
     .purchase-button {
         display: block;
@@ -148,6 +216,11 @@
             text-decoration: none;
         }
 
+
+    /* =============================================
+       RESPONSIVE
+       ============================================= */
+
     @@media(max-width: 650px) {
 
         .details-page {
@@ -165,6 +238,17 @@
         .package-card h1 {
             font-size: 25px;
         }
+
+        .top-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .back-link,
+        .dashboard-link {
+            width: 100%;
+            text-align: center;
+        }
     }
 </style>
 
@@ -173,25 +257,58 @@
 
     <div class="details-container">
 
-        <a href="@Url.Action("Index", "Package")"
-           class="back-link">
 
-            ← Back to Lesson Packages
+        <!-- =============================================
+             NAVIGATION BUTTONS
+             ============================================= -->
 
-        </a>
+        <div class="top-actions">
 
+            <!-- BACK TO PACKAGES -->
+
+            <a href="@Url.Action("Index", "Package")"
+               class="back-link">
+
+                ← Back to Lesson Packages
+
+            </a>
+
+
+            <!-- BACK TO DASHBOARD -->
+
+            <a href="@Url.Action("Index", "Dashboard")"
+               class="dashboard-link">
+
+                <i class="fa-solid fa-house"></i>
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+
+        <!-- =============================================
+             PACKAGE DETAILS
+             ============================================= -->
 
         <div class="package-card">
+
+
+            <!-- PACKAGE ICON -->
 
             <div class="package-icon">
                 🚗
             </div>
 
 
+            <!-- PACKAGE NAME -->
+
             <h1>
                 @Model.PackageName
             </h1>
 
+
+            <!-- PACKAGE DESCRIPTION -->
 
             <div class="package-description">
 
@@ -200,7 +317,12 @@
             </div>
 
 
+            <!-- PACKAGE INFORMATION -->
+
             <div class="package-info">
+
+
+                <!-- LESSONS -->
 
                 <div class="info-box">
 
@@ -214,6 +336,8 @@
 
                 </div>
 
+
+                <!-- PRICE -->
 
                 <div class="info-box">
 
@@ -229,8 +353,11 @@
 
                 </div>
 
+
             </div>
 
+
+            <!-- IMPORTANT NOTICE -->
 
             <div class="notice">
 
@@ -244,6 +371,8 @@
             </div>
 
 
+            <!-- PURCHASE BUTTON -->
+
             <a href="@Url.Action(
                 "Purchase",
                 "Package",
@@ -253,6 +382,7 @@
                 Purchase Package
 
             </a>
+
 
         </div>
 

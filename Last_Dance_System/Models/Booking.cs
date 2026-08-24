@@ -9,19 +9,42 @@ namespace Last_Dance_System.Models
         [Key]
         public int BookingId { get; set; }
 
-        // Student
+
+        // =========================================================
+        // STUDENT
+        // =========================================================
+
         [Required]
         public string RegistrationId { get; set; }
 
         [ForeignKey("RegistrationId")]
         public virtual Registration Registration { get; set; }
 
-        // Lesson Schedule
+
+        // =========================================================
+        // STUDENT PACKAGE
+        // =========================================================
+
+        public int? StudentPackageId { get; set; }
+
+        [ForeignKey("StudentPackageId")]
+        public virtual StudentPackage StudentPackage { get; set; }
+
+
+        // =========================================================
+        // LESSON SCHEDULE
+        // =========================================================
+
         [Required]
         public int LessonScheduleId { get; set; }
 
         [ForeignKey("LessonScheduleId")]
         public virtual LessonSchedule LessonSchedule { get; set; }
+
+
+        // =========================================================
+        // BOOKING INFORMATION
+        // =========================================================
 
         [Required]
         public DateTime BookingDate { get; set; }
@@ -30,7 +53,25 @@ namespace Last_Dance_System.Models
         [StringLength(20)]
         public string Status { get; set; }
 
+
+        // =========================================================
+        // ATTENDANCE
+        // =========================================================
+
+        [Required]
+        [StringLength(20)]
+        public string AttendanceStatus { get; set; }
+
+        public DateTime? AttendanceConfirmedDate { get; set; }
+
+
+        // =========================================================
+        // NOTES
+        // =========================================================
+
         [StringLength(500)]
         public string Notes { get; set; }
+
+
     }
 }
