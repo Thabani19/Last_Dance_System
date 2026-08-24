@@ -4,10 +4,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Last_Dance_System.Models
 {
-    public class Payment
+    public class PackagePayment
     {
         [Key]
-        public int PaymentId { get; set; }
+        public int PackagePaymentId { get; set; }
+
+
+        // =========================================================
+        // STUDENT PACKAGE
+        // =========================================================
+
+        [Required]
+        public int StudentPackageId { get; set; }
+
+        [ForeignKey("StudentPackageId")]
+        public virtual StudentPackage StudentPackage { get; set; }
 
 
         // =========================================================
@@ -22,29 +33,7 @@ namespace Last_Dance_System.Models
 
 
         // =========================================================
-        // LESSON BOOKING
-        // =========================================================
-
-        // Nullable because package payments do not have a BookingId
-        public int? BookingId { get; set; }
-
-        [ForeignKey("BookingId")]
-        public virtual Booking Booking { get; set; }
-
-
-        // =========================================================
-        // STUDENT PACKAGE
-        // =========================================================
-
-        // Nullable because normal lesson payments do not have a package
-        public int? StudentPackageId { get; set; }
-
-        [ForeignKey("StudentPackageId")]
-        public virtual StudentPackage StudentPackage { get; set; }
-
-
-        // =========================================================
-        // PAYMENT INFORMATION
+        // PAYMENT
         // =========================================================
 
         [Required]
@@ -61,6 +50,10 @@ namespace Last_Dance_System.Models
         [StringLength(20)]
         public string PaymentStatus { get; set; }
 
+
+        // =========================================================
+        // TRANSACTION
+        // =========================================================
 
         [StringLength(100)]
         public string TransactionReference { get; set; }

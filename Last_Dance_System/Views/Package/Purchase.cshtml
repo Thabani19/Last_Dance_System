@@ -6,9 +6,15 @@
 
 <style>
 
+    * {
+        box-sizing: border-box;
+    }
+
     body {
+        margin: 0;
         background: #07111f;
         color: white;
+        font-family: Arial, Helvetica, sans-serif;
     }
 
     .purchase-page {
@@ -29,6 +35,11 @@
         padding: 30px;
     }
 
+
+    /* =============================================
+       HEADER
+       ============================================= */
+
     .purchase-header {
         margin-bottom: 25px;
     }
@@ -47,7 +58,13 @@
             margin: 0;
             color: #8290a3;
             font-size: 13px;
+            line-height: 1.6;
         }
+
+
+    /* =============================================
+       PACKAGE SUMMARY
+       ============================================= */
 
     .package-summary {
         background: #08111d;
@@ -65,7 +82,8 @@
         .package-summary p {
             color: #8290a3;
             font-size: 13px;
-            margin-bottom: 20px;
+            margin: 0 0 20px;
+            line-height: 1.6;
         }
 
     .summary-row {
@@ -93,26 +111,32 @@
         font-size: 22px;
     }
 
+
+    /* =============================================
+       PAYMENT
+       ============================================= */
+
     .payment-title {
         font-size: 18px;
-        margin-bottom: 15px;
+        margin: 0 0 15px;
     }
 
     .payment-method {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 10px;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
     }
 
     .payment-option {
         background: #08111d;
         border: 1px solid #293b52;
         border-radius: 9px;
-        padding: 15px;
+        padding: 16px 10px;
         text-align: center;
         cursor: pointer;
         color: #8290a3;
+        transition: .2s ease;
     }
 
         .payment-option:hover {
@@ -120,42 +144,161 @@
             color: white;
         }
 
-        .payment-option input {
-            margin-right: 6px;
+        .payment-option.selected {
+            border-color: #e10600;
+            background: rgba(225, 6, 0, .08);
+            color: white;
         }
+
+        .payment-option input {
+            display: none;
+        }
+
+    .payment-icon {
+        display: block;
+        font-size: 24px;
+        margin-bottom: 8px;
+    }
+
+    .payment-name {
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+
+    /* =============================================
+       PAYMENT INFORMATION
+       ============================================= */
+
+    .payment-info {
+        display: none;
+        background: #08111d;
+        border: 1px solid #1b2a3d;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+        color: #8290a3;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+        .payment-info.active {
+            display: block;
+        }
+
+    .stripe-info {
+        border-left: 3px solid #635bff;
+    }
+
+    .cash-info {
+        border-left: 3px solid #22c55e;
+    }
+
+    .eft-info {
+        border-left: 3px solid #fde047;
+    }
+
+
+    /* =============================================
+       PAY BUTTON
+       ============================================= */
 
     .pay-button {
         width: 100%;
-        padding: 14px;
+        padding: 15px;
         border: none;
         border-radius: 9px;
         background: #e10600;
         color: white;
+        font-size: 14px;
         font-weight: 700;
         cursor: pointer;
+        transition: .2s;
     }
 
         .pay-button:hover {
             background: #ff211a;
         }
 
+        .pay-button:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+
+    /* =============================================
+       BACK BUTTONS
+       ============================================= */
+
+    .back-actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 20px;
+    }
+
     .back-button {
+        flex: 1;
         display: block;
         text-align: center;
-        margin-top: 20px;
-        color: #8290a3;
+        padding: 12px 15px;
+        background: #16263a;
+        border: 1px solid #29415c;
+        border-radius: 9px;
+        color: #ffffff;
         text-decoration: none;
         font-size: 13px;
+        font-weight: 700;
+        transition: .2s ease;
     }
 
         .back-button:hover {
+            background: #243b55;
             color: white;
+            text-decoration: none;
         }
+
+    .dashboard-button {
+        flex: 1;
+        display: block;
+        text-align: center;
+        padding: 12px 15px;
+        background: rgba(225, 6, 0, .10);
+        border: 1px solid rgba(225, 6, 0, .40);
+        border-radius: 9px;
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        transition: .2s ease;
+    }
+
+        .dashboard-button:hover {
+            background: #e10600;
+            color: white;
+            text-decoration: none;
+        }
+
+
+    /* =============================================
+       RESPONSIVE
+       ============================================= */
 
     @@media(max-width: 600px) {
 
+        .purchase-page {
+            padding: 25px 15px;
+        }
+
+        .purchase-card {
+            padding: 20px;
+        }
+
         .payment-method {
             grid-template-columns: 1fr;
+        }
+
+        .back-actions {
+            flex-direction: column;
         }
     }
 </style>
@@ -167,6 +310,11 @@
 
         <div class="purchase-card">
 
+
+            <!-- =============================================
+                 HEADER
+                 ============================================= -->
+
             <div class="purchase-header">
 
                 <h1>
@@ -174,14 +322,16 @@
                 </h1>
 
                 <p>
-                    Purchase your lesson package and receive
-                    lesson credits for booking.
+                    Select your preferred payment method to
+                    purchase this driving lesson package.
                 </p>
 
             </div>
 
 
-            <!-- PACKAGE SUMMARY -->
+            <!-- =============================================
+                 PACKAGE SUMMARY
+                 ============================================= -->
 
             <div class="package-summary">
 
@@ -189,9 +339,12 @@
                     @Model.PackageName
                 </h2>
 
-                <p>
-                    @Model.Description
-                </p>
+                @if (!string.IsNullOrWhiteSpace(Model.Description))
+                {
+                    <p>
+                        @Model.Description
+                    </p>
+                }
 
 
                 <div class="summary-row">
@@ -222,7 +375,9 @@
             </div>
 
 
-            <!-- PAYMENT -->
+            <!-- =============================================
+                 PAYMENT METHOD
+                 ============================================= -->
 
             <h3 class="payment-title">
                 Select Payment Method
@@ -232,7 +387,8 @@
             @using (Html.BeginForm(
                 "Purchase",
                 "Package",
-                FormMethod.Post))
+                FormMethod.Post,
+                new { id = "purchaseForm" }))
             {
                 @Html.AntiForgeryToken()
 
@@ -241,67 +397,317 @@
                        value="@Model.LessonPackageId" />
 
 
+                <!-- PAYMENT OPTIONS -->
+
                 <div class="payment-method">
 
-                    <label class="payment-option">
+
+                    <!-- CARD -->
+
+                    <label class="payment-option"
+                           id="cardOption">
 
                         <input type="radio"
                                name="paymentMethod"
                                value="Card"
                                required />
 
-                        Card
+                        <span class="payment-icon">
+                            💳
+                        </span>
+
+                        <span class="payment-name">
+                            Card
+                        </span>
 
                     </label>
 
 
-                    <label class="payment-option">
+                    <!-- CASH -->
+
+                    <label class="payment-option"
+                           id="cashOption">
 
                         <input type="radio"
                                name="paymentMethod"
                                value="Cash"
                                required />
 
-                        Cash
+                        <span class="payment-icon">
+                            💵
+                        </span>
+
+                        <span class="payment-name">
+                            Cash
+                        </span>
 
                     </label>
 
 
-                    <label class="payment-option">
+                    <!-- EFT -->
+
+                    <label class="payment-option"
+                           id="eftOption">
 
                         <input type="radio"
                                name="paymentMethod"
                                value="EFT"
                                required />
 
-                        EFT
+                        <span class="payment-icon">
+                            🏦
+                        </span>
+
+                        <span class="payment-name">
+                            EFT
+                        </span>
 
                     </label>
+
 
                 </div>
 
 
+                <!-- =============================================
+                     CARD INFORMATION
+                     ============================================= -->
+
+                <div id="cardInfo"
+                     class="payment-info stripe-info">
+
+                    <strong>
+                        💳 Secure Stripe Payment
+                    </strong>
+
+                    <br />
+
+                    You will be redirected to Stripe's secure
+                    payment page where you can enter your card
+                    details and complete the payment.
+
+                </div>
+
+
+                <!-- =============================================
+                     CASH INFORMATION
+                     ============================================= -->
+
+                <div id="cashInfo"
+                     class="payment-info cash-info">
+
+                    <strong>
+                        💵 Cash Payment
+                    </strong>
+
+                    <br />
+
+                    Your package will remain pending until you
+                    make the cash payment and an administrator
+                    confirms the payment.
+
+                </div>
+
+
+                <!-- =============================================
+                     EFT INFORMATION
+                     ============================================= -->
+
+                <div id="eftInfo"
+                     class="payment-info eft-info">
+
+                    <strong>
+                        🏦 EFT Payment
+                    </strong>
+
+                    <br />
+
+                    Your package will remain pending until your
+                    EFT payment has been received and confirmed.
+
+                </div>
+
+
+                <!-- =============================================
+                     SUBMIT BUTTON
+                     ============================================= -->
+
                 <button type="submit"
+                        id="purchaseButton"
                         class="pay-button">
 
-                    Purchase Package
+                    Select a Payment Method
 
                 </button>
             }
 
 
-            <a href="@Url.Action(
-                "Details",
-                "Package",
-                new { id = Model.LessonPackageId })"
-               class="back-button">
+            <!-- =============================================
+                 BACK BUTTONS
+                 ============================================= -->
 
-                ← Back to Package
+            <div class="back-actions">
 
-            </a>
+                <!-- BACK TO PACKAGE -->
+
+                <a href="@Url.Action(
+                    "Details",
+                    "Package",
+                    new { id = Model.LessonPackageId })"
+                   class="back-button">
+
+                    ← Back to Package
+
+                </a>
+
+
+                <!-- BACK TO DASHBOARD -->
+
+                <a href="@Url.Action("Index", "Dashboard")"
+                   class="dashboard-button">
+
+                    <i class="fa-solid fa-house"></i>
+                    Back to Dashboard
+
+                </a>
+
+            </div>
+
 
         </div>
 
     </div>
 
 </div>
+
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        var paymentOptions =
+            document.querySelectorAll(
+                'input[name="paymentMethod"]'
+            );
+
+        var cardOption =
+            document.getElementById("cardOption");
+
+        var cashOption =
+            document.getElementById("cashOption");
+
+        var eftOption =
+            document.getElementById("eftOption");
+
+
+        var cardInfo =
+            document.getElementById("cardInfo");
+
+        var cashInfo =
+            document.getElementById("cashInfo");
+
+        var eftInfo =
+            document.getElementById("eftInfo");
+
+
+        var purchaseButton =
+            document.getElementById("purchaseButton");
+
+
+        paymentOptions.forEach(function (option) {
+
+            option.addEventListener(
+                "change",
+                function () {
+
+
+                    // Remove selected styling
+
+                    cardOption.classList.remove(
+                        "selected"
+                    );
+
+                    cashOption.classList.remove(
+                        "selected"
+                    );
+
+                    eftOption.classList.remove(
+                        "selected"
+                    );
+
+
+                    // Hide all information
+
+                    cardInfo.classList.remove(
+                        "active"
+                    );
+
+                    cashInfo.classList.remove(
+                        "active"
+                    );
+
+                    eftInfo.classList.remove(
+                        "active"
+                    );
+
+
+                    // CARD
+
+                    if (this.value === "Card") {
+
+                        cardOption.classList.add(
+                            "selected"
+                        );
+
+                        cardInfo.classList.add(
+                            "active"
+                        );
+
+                        purchaseButton.innerHTML =
+                            "Proceed to Secure Stripe Payment 💳";
+
+                    }
+
+
+                    // CASH
+
+                    if (this.value === "Cash") {
+
+                        cashOption.classList.add(
+                            "selected"
+                        );
+
+                        cashInfo.classList.add(
+                            "active"
+                        );
+
+                        purchaseButton.innerHTML =
+                            "Submit Cash Payment Request";
+
+                    }
+
+
+                    // EFT
+
+                    if (this.value === "EFT") {
+
+                        eftOption.classList.add(
+                            "selected"
+                        );
+
+                        eftInfo.classList.add(
+                            "active"
+                        );
+
+                        purchaseButton.innerHTML =
+                            "Submit EFT Payment Request";
+
+                    }
+
+                }
+            );
+
+        });
+
+    });
+
+</script>

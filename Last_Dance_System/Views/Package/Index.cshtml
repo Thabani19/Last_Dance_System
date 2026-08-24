@@ -36,29 +36,65 @@
         margin: 0 auto;
     }
 
+
     /* =========================================
        HEADER
        ========================================= */
 
     .package-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
         margin-bottom: 35px;
     }
 
-        .package-header h1 {
-            margin: 0 0 8px;
-            font-size: 30px;
-            font-weight: 800;
+    .package-header-content h1 {
+        margin: 0 0 8px;
+        font-size: 30px;
+        font-weight: 800;
+    }
+
+        .package-header-content h1 span {
+            color: #e10600;
         }
 
-            .package-header h1 span {
-                color: #e10600;
-            }
+    .package-header-content p {
+        margin: 0;
+        color: #8290a3;
+        font-size: 14px;
+    }
 
-        .package-header p {
-            margin: 0;
-            color: #8290a3;
-            font-size: 14px;
+
+    /* =========================================
+       DASHBOARD BUTTON
+       ========================================= */
+
+    .dashboard-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 18px;
+        background: #16263a;
+        color: #ffffff;
+        border: 1px solid #29415c;
+        border-radius: 9px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        white-space: nowrap;
+        transition: .2s ease;
+    }
+
+        .dashboard-button:hover {
+            background: #243b55;
+            border-color: #e10600;
+            color: #ffffff;
+            text-decoration: none;
+            transform: translateY(-1px);
         }
+
 
     /* =========================================
        PACKAGE GRID
@@ -69,6 +105,7 @@
         grid-template-columns: repeat(3, 1fr);
         gap: 20px;
     }
+
 
     /* =========================================
        PACKAGE CARD
@@ -100,6 +137,7 @@
             background: #e10600;
         }
 
+
     /* =========================================
        PACKAGE ICON
        ========================================= */
@@ -119,6 +157,7 @@
         margin-bottom: 20px;
     }
 
+
     /* =========================================
        PACKAGE NAME
        ========================================= */
@@ -136,6 +175,7 @@
         font-size: 13px;
         line-height: 1.6;
     }
+
 
     /* =========================================
        PRICE
@@ -157,6 +197,7 @@
         font-size: 32px;
         font-weight: 900;
     }
+
 
     /* =========================================
        LESSON COUNT
@@ -191,6 +232,7 @@
         color: #ffffff;
     }
 
+
     /* =========================================
        FEATURES
        ========================================= */
@@ -215,8 +257,9 @@
         font-weight: bold;
     }
 
+
     /* =========================================
-       BUTTON
+       VIEW PACKAGE BUTTON
        ========================================= */
 
     .package-button {
@@ -240,6 +283,7 @@
             text-decoration: none;
         }
 
+
     /* =========================================
        EMPTY STATE
        ========================================= */
@@ -260,6 +304,7 @@
             color: #718096;
         }
 
+
     /* =========================================
        RESPONSIVE
        ========================================= */
@@ -277,8 +322,17 @@
             padding: 30px 15px;
         }
 
-        .package-header h1 {
-            font-size: 26px;
+        .package-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+            .package-header h1 {
+                font-size: 26px;
+            }
+
+        .dashboard-button {
+            width: 100%;
         }
 
         .package-grid {
@@ -292,27 +346,43 @@
 
     <div class="package-container">
 
+
         <!-- =========================================
              HEADER
-        ========================================== -->
+             ========================================= -->
 
         <div class="package-header">
 
-            <h1>
-                Lesson <span>Packages</span>
-            </h1>
+            <div class="package-header-content">
 
-            <p>
-                Choose a package that suits your driving needs.
-                Purchase once and use your lessons when booking.
-            </p>
+                <h1>
+                    Lesson <span>Packages</span>
+                </h1>
+
+                <p>
+                    Choose a package that suits your driving needs.
+                    Purchase once and use your lessons when booking.
+                </p>
+
+            </div>
+
+
+            <!-- BACK TO DASHBOARD -->
+
+            <a href="@Url.Action("Index", "Dashboard")"
+               class="dashboard-button">
+
+                <i class="fa-solid fa-arrow-left"></i>
+                Back to Dashboard
+
+            </a>
 
         </div>
 
 
         <!-- =========================================
              PACKAGES
-        ========================================== -->
+             ========================================= -->
 
         @if (Model != null && Model.Any())
         {

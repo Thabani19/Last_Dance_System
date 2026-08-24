@@ -4,7 +4,9 @@
     ViewBag.Title = "Student Dashboard";
 }
 
-<!-- Font Awesome -->
+<!-- =========================================================
+     FONT AWESOME
+     ========================================================= -->
 <link rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
@@ -18,8 +20,13 @@
         box-sizing: border-box;
     }
 
+    html {
+        scroll-behavior: smooth;
+    }
+
     body {
         margin: 0;
+        padding: 0;
         background: #07111f;
         font-family: "Segoe UI", Arial, sans-serif;
         color: #ffffff;
@@ -36,15 +43,26 @@
 
     .dashboard-page {
         min-height: calc(100vh - 50px);
-        background:
-            radial-gradient(circle at 80% 10%, rgba(225, 6, 0, 0.08), transparent 30%),
-            linear-gradient(135deg, #07111f 0%, #0a1626 50%, #06101c 100%);
         padding: 30px;
+
+        background:
+            radial-gradient(
+                circle at 80% 10%,
+                rgba(225, 6, 0, 0.08),
+                transparent 30%
+            ),
+            linear-gradient(
+                135deg,
+                #07111f 0%,
+                #0a1626 50%,
+                #06101c 100%
+            );
     }
 
     .dashboard-layout {
         max-width: 1450px;
         margin: 0 auto;
+
         display: grid;
         grid-template-columns: 240px 1fr;
         gap: 24px;
@@ -56,26 +74,39 @@
        ========================================================= */
 
     .dashboard-sidebar {
-        background: #0b1727;
-        border: 1px solid #17283d;
-        border-radius: 18px;
-        padding: 20px 14px;
         height: fit-content;
+
         position: sticky;
         top: 25px;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.30);
+
+        padding: 20px 14px;
+
+        background: #0b1727;
+
+        border: 1px solid #17283d;
+        border-radius: 18px;
+
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.30);
     }
+
+
+    /* =========================================================
+       SIDEBAR BRAND
+       ========================================================= */
 
     .sidebar-brand {
         padding: 8px 12px 22px;
         margin-bottom: 10px;
+
         border-bottom: 1px solid #17283d;
     }
 
     .sidebar-brand h2 {
         margin: 0;
+
         font-size: 18px;
         font-weight: 800;
+
         letter-spacing: -0.3px;
     }
 
@@ -85,13 +116,15 @@
 
     .sidebar-brand p {
         margin: 5px 0 0;
+
         color: #64748b;
+
         font-size: 10px;
     }
 
 
     /* =========================================================
-       SIDEBAR ITEMS
+       SIDEBAR MENU
        ========================================================= */
 
     .sidebar-menu {
@@ -102,47 +135,92 @@
         margin-bottom: 5px;
     }
 
+    .sidebar-section-title {
+        padding: 15px 13px 7px;
+
+        color: #506176;
+
+        font-size: 9px;
+        font-weight: 700;
+
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+
+    /* =========================================================
+       SIDEBAR LINKS
+       ========================================================= */
+
     .sidebar-link {
         width: 100%;
+
         display: flex;
         align-items: center;
+
         gap: 13px;
+
         padding: 12px 13px;
+
         background: transparent;
+
         border: 1px solid transparent;
         border-radius: 10px;
+
         color: #9aa9ba;
+
         font-family: inherit;
         font-size: 12px;
+
         cursor: pointer;
+
         transition: all 0.25s ease;
+
         text-align: left;
     }
 
     .sidebar-link:hover {
         background: rgba(225, 6, 0, 0.08);
+
         border-color: rgba(225, 6, 0, 0.15);
+
         color: #ffffff;
+
         text-decoration: none;
     }
 
     .sidebar-link.active {
         background: rgba(225, 6, 0, 0.12);
+
         border-color: rgba(225, 6, 0, 0.20);
+
         color: #ffffff;
     }
+
+
+    /* =========================================================
+       SIDEBAR ICON
+       ========================================================= */
 
     .sidebar-icon {
         width: 32px;
         height: 32px;
+
         flex-shrink: 0;
+
         display: flex;
         align-items: center;
         justify-content: center;
+
         border-radius: 8px;
+
         background: #101f32;
+
         color: #e10600;
+
         font-size: 13px;
+
+        transition: all 0.25s ease;
     }
 
     .sidebar-link.active .sidebar-icon {
@@ -155,22 +233,13 @@
         color: #ff3b35;
     }
 
-    .sidebar-text {
-        font-weight: 600;
+    .sidebar-link.active:hover .sidebar-icon {
+        background: #e10600;
+        color: #ffffff;
     }
 
-
-    /* =========================================================
-       SIDEBAR SECTION
-       ========================================================= */
-
-    .sidebar-section-title {
-        padding: 15px 13px 7px;
-        color: #506176;
-        font-size: 9px;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+    .sidebar-text {
+        font-weight: 600;
     }
 
 
@@ -181,29 +250,42 @@
     .logout-container {
         margin-top: 15px;
         padding-top: 15px;
+
         border-top: 1px solid #17283d;
     }
 
     .logout-link {
         width: 100%;
+
         display: flex;
         align-items: center;
+
         gap: 13px;
+
         padding: 12px 13px;
+
         background: transparent;
+
         border: 1px solid transparent;
         border-radius: 10px;
+
         color: #9aa9ba;
+
         font-family: inherit;
         font-size: 12px;
+
         cursor: pointer;
+
         transition: all 0.25s ease;
+
         text-align: left;
     }
 
     .logout-link:hover {
         background: rgba(225, 6, 0, 0.10);
+
         border-color: rgba(225, 6, 0, 0.20);
+
         color: #ff3b35;
     }
 
@@ -227,18 +309,25 @@
 
     .dashboard-header {
         display: flex;
+
         justify-content: space-between;
         align-items: center;
+
         margin-bottom: 24px;
+
         padding: 25px 28px;
+
         background: #0b1727;
+
         border: 1px solid #17283d;
         border-radius: 18px;
-        box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
     }
 
     .welcome-section h1 {
         margin: 0 0 7px;
+
         font-size: 28px;
         font-weight: 800;
     }
@@ -249,41 +338,56 @@
 
     .welcome-section p {
         margin: 0;
+
         color: #708197;
+
         font-size: 13px;
     }
 
 
     /* =========================================================
-       PROFILE
+       PROFILE BUTTON
        ========================================================= */
 
     .profile-button {
         display: flex;
         align-items: center;
+
         gap: 11px;
+
         padding: 10px 15px;
+
         border-radius: 10px;
+
         background: #101f32;
+
         border: 1px solid #1d3149;
+
         color: #ffffff;
+
         transition: 0.25s ease;
     }
 
     .profile-button:hover {
         border-color: #e10600;
+
         color: #ffffff;
+
         text-decoration: none;
     }
 
     .profile-icon {
         width: 37px;
         height: 37px;
+
         border-radius: 9px;
+
         display: flex;
         align-items: center;
         justify-content: center;
+
         background: #e10600;
+
         color: #ffffff;
     }
 
@@ -297,7 +401,10 @@
     }
 
     .profile-text span {
+        margin-top: 2px;
+
         color: #607187;
+
         font-size: 10px;
     }
 
@@ -308,60 +415,84 @@
 
     .stats-grid {
         display: grid;
+
         grid-template-columns: repeat(4, 1fr);
+
         gap: 16px;
+
         margin-bottom: 22px;
     }
 
     .stat-card {
         position: relative;
+
         padding: 21px;
+
         background: #0b1727;
+
         border: 1px solid #17283d;
         border-radius: 15px;
+
         overflow: hidden;
+
         transition: 0.25s ease;
     }
 
     .stat-card:hover {
         transform: translateY(-3px);
-        border-color: rgba(225,6,0,0.4);
+
+        border-color: rgba(225, 6, 0, 0.4);
     }
 
     .stat-card::after {
         content: "";
+
         position: absolute;
+
         width: 90px;
         height: 90px;
+
         right: -35px;
         top: -35px;
-        background: rgba(225,6,0,0.06);
+
+        background: rgba(225, 6, 0, 0.06);
+
         border-radius: 50%;
     }
 
     .stat-icon {
         width: 42px;
         height: 42px;
+
         border-radius: 9px;
+
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(225,6,0,0.09);
-        border: 1px solid rgba(225,6,0,0.18);
+
+        background: rgba(225, 6, 0, 0.09);
+
+        border: 1px solid rgba(225, 6, 0, 0.18);
+
         color: #e10600;
+
         font-size: 16px;
+
         margin-bottom: 15px;
     }
 
     .stat-card h3 {
         margin: 0 0 5px;
+
         font-size: 24px;
         font-weight: 800;
     }
 
     .stat-card p {
         margin: 0;
+
         color: #637389;
+
         font-size: 11px;
     }
 
@@ -372,70 +503,94 @@
 
     .dashboard-grid {
         display: grid;
+
         grid-template-columns: 1.5fr 1fr;
+
         gap: 20px;
     }
 
 
     /* =========================================================
-       CARDS
+       DASHBOARD CARDS
        ========================================================= */
 
     .dashboard-card {
         background: #0b1727;
+
         border: 1px solid #17283d;
+
         border-radius: 16px;
+
         overflow: hidden;
-        box-shadow: 0 12px 30px rgba(0,0,0,0.20);
+
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.20);
     }
 
     .card-header {
         display: flex;
+
         align-items: center;
+
         justify-content: space-between;
+
         padding: 20px 22px;
+
         border-bottom: 1px solid #17283d;
     }
 
     .card-title {
         display: flex;
+
         align-items: center;
+
         gap: 10px;
     }
 
     .card-title-icon {
         width: 35px;
         height: 35px;
+
         border-radius: 8px;
-        background: rgba(225,6,0,0.09);
-        border: 1px solid rgba(225,6,0,0.18);
+
+        background: rgba(225, 6, 0, 0.09);
+
+        border: 1px solid rgba(225, 6, 0, 0.18);
+
         color: #e10600;
+
         display: flex;
+
         align-items: center;
         justify-content: center;
+
         font-size: 13px;
     }
 
     .card-title h2 {
         margin: 0;
+
         font-size: 15px;
+
         font-weight: 750;
     }
 
     .card-header-link {
         color: #e10600;
+
         font-size: 11px;
+
         font-weight: 600;
     }
 
     .card-header-link:hover {
         color: #ff3b35;
+
         text-decoration: none;
     }
 
 
     /* =========================================================
-       LESSON
+       UPCOMING LESSON
        ========================================================= */
 
     .lesson-content {
@@ -444,72 +599,108 @@
 
     .lesson-box {
         background: #0e1b2c;
+
         border: 1px solid #1a2d43;
+
         border-radius: 12px;
+
         padding: 19px;
     }
 
     .lesson-date {
         display: flex;
+
         align-items: center;
+
         gap: 14px;
+
         margin-bottom: 17px;
     }
 
     .date-box {
         width: 54px;
         height: 54px;
+
         border-radius: 9px;
+
         background: #e10600;
+
         display: flex;
+
         flex-direction: column;
+
         align-items: center;
         justify-content: center;
+
         color: #ffffff;
+
+        flex-shrink: 0;
     }
 
     .date-box strong {
         font-size: 19px;
+
         line-height: 1;
     }
 
     .date-box span {
         font-size: 8px;
+
         text-transform: uppercase;
+
         margin-top: 3px;
     }
 
     .lesson-info h3 {
         margin: 0 0 4px;
+
         font-size: 15px;
     }
 
     .lesson-info p {
         margin: 0;
+
         color: #6b7d92;
+
         font-size: 11px;
     }
 
+
+    /* =========================================================
+       LESSON DETAILS
+       ========================================================= */
+
     .lesson-details {
         display: grid;
+
         grid-template-columns: repeat(2, 1fr);
+
         gap: 9px;
     }
 
     .lesson-detail {
         display: flex;
+
         align-items: center;
+
         gap: 8px;
+
         padding: 10px;
+
         background: #091321;
+
         border-radius: 7px;
+
         color: #7b8ca0;
+
         font-size: 10px;
     }
 
     .lesson-detail i {
         color: #e10600;
+
         width: 15px;
+
         text-align: center;
     }
 
@@ -520,31 +711,43 @@
 
     .empty-state {
         text-align: center;
+
         padding: 42px 20px;
     }
 
     .empty-icon {
         width: 54px;
         height: 54px;
+
         border-radius: 11px;
+
         background: #101f32;
+
         border: 1px solid #1d3149;
+
         color: #e10600;
+
         display: flex;
+
         align-items: center;
         justify-content: center;
+
         margin: 0 auto 14px;
+
         font-size: 19px;
     }
 
     .empty-state h3 {
         margin: 0 0 7px;
+
         font-size: 14px;
     }
 
     .empty-state p {
         margin: 0 0 18px;
+
         color: #617186;
+
         font-size: 11px;
     }
 
@@ -555,54 +758,81 @@
 
     .actions-grid {
         padding: 20px;
+
         display: grid;
+
         grid-template-columns: repeat(2, 1fr);
+
         gap: 10px;
     }
 
     .action-card {
         display: flex;
+
         align-items: center;
+
         gap: 11px;
+
         padding: 14px;
+
         background: #0e1b2c;
+
         border: 1px solid #1a2d43;
+
         border-radius: 10px;
+
         color: #ffffff;
+
         transition: 0.25s ease;
     }
 
     .action-card:hover {
         background: #122238;
-        border-color: rgba(225,6,0,0.4);
+
+        border-color: rgba(225, 6, 0, 0.4);
+
         transform: translateY(-2px);
+
         color: #ffffff;
+
         text-decoration: none;
     }
 
     .action-icon {
         width: 37px;
         height: 37px;
+
         flex-shrink: 0;
+
         border-radius: 8px;
-        background: rgba(225,6,0,0.09);
-        border: 1px solid rgba(225,6,0,0.18);
+
+        background: rgba(225, 6, 0, 0.09);
+
+        border: 1px solid rgba(225, 6, 0, 0.18);
+
         color: #e10600;
+
         display: flex;
+
         align-items: center;
         justify-content: center;
+
         font-size: 13px;
     }
 
     .action-text strong {
         display: block;
+
         font-size: 11px;
+
         margin-bottom: 3px;
     }
 
     .action-text span {
         display: block;
+
         color: #637389;
+
         font-size: 9px;
     }
 
@@ -617,41 +847,61 @@
 
     .progress-header {
         display: flex;
+
         justify-content: space-between;
+
         margin-bottom: 11px;
     }
 
     .progress-header span {
         font-size: 11px;
+
         color: #7b8ca0;
     }
 
     .progress-header strong {
         color: #e10600;
+
         font-size: 13px;
     }
 
     .progress-bar {
         height: 8px;
+
         width: 100%;
+
         background: #162437;
+
         border-radius: 20px;
+
         overflow: hidden;
     }
 
     .progress-fill {
         height: 100%;
+
         width: @(Model.ProgressPercentage)%;
-        background: linear-gradient(90deg, #b00000, #e10600);
+
+        background: linear-gradient(
+            90deg,
+            #b00000,
+            #e10600
+        );
+
         border-radius: 20px;
+
         transition: width 0.5s ease;
     }
 
     .progress-footer {
         display: flex;
+
         justify-content: space-between;
+
         margin-top: 11px;
+
         color: #596a7e;
+
         font-size: 10px;
     }
 
@@ -666,52 +916,155 @@
 
     .payment-status {
         display: flex;
+
         align-items: center;
+
         justify-content: space-between;
+
+        gap: 10px;
+
         padding: 15px;
+
         background: #0e1b2c;
+
         border-radius: 10px;
+
         border: 1px solid #1a2d43;
     }
 
     .payment-left {
         display: flex;
+
         align-items: center;
+
         gap: 11px;
     }
 
     .payment-icon {
         width: 39px;
         height: 39px;
+
         border-radius: 8px;
+
         display: flex;
+
         align-items: center;
         justify-content: center;
-        background: rgba(225,6,0,0.09);
+
+        background: rgba(225, 6, 0, 0.09);
+
         color: #e10600;
+
+        flex-shrink: 0;
     }
 
     .payment-left strong {
         display: block;
+
         font-size: 11px;
     }
 
     .payment-left span {
         display: block;
+
         color: #627388;
+
         font-size: 9px;
+
         margin-top: 3px;
     }
 
     .status-badge {
         padding: 6px 9px;
+
         border-radius: 20px;
+
         font-size: 8px;
+
         font-weight: 700;
+
         text-transform: uppercase;
-        background: rgba(225,6,0,0.10);
+
+        background: rgba(225, 6, 0, 0.10);
+
         color: #ff4b45;
-        border: 1px solid rgba(225,6,0,0.18);
+
+        border: 1px solid rgba(225, 6, 0, 0.18);
+
+        white-space: nowrap;
+    }
+
+    .payment-amounts {
+        display: grid;
+
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 9px;
+
+        margin-top: 10px;
+    }
+
+    .payment-amount {
+        padding: 12px;
+
+        background: #091321;
+
+        border-radius: 8px;
+    }
+
+    .payment-amount span {
+        display: block;
+
+        color: #627388;
+
+        font-size: 9px;
+
+        margin-bottom: 4px;
+    }
+
+    .payment-amount strong {
+        font-size: 13px;
+
+        color: #ffffff;
+    }
+
+
+    /* =========================================================
+       FEEDBACK
+       ========================================================= */
+
+    .feedback-content {
+        padding: 22px;
+    }
+
+    .feedback-box {
+        padding: 15px;
+
+        background: #0e1b2c;
+
+        border: 1px solid #1a2d43;
+
+        border-radius: 10px;
+    }
+
+    .feedback-box p {
+        margin: 0;
+
+        color: #8493a5;
+
+        font-size: 11px;
+
+        line-height: 1.6;
+    }
+
+    .feedback-author {
+        margin-top: 10px;
+
+        color: #e10600;
+
+        font-size: 10px;
+
+        font-weight: 700;
     }
 
 
@@ -721,29 +1074,157 @@
 
     .dashboard-button {
         display: inline-flex;
+
         align-items: center;
+
         justify-content: center;
+
         gap: 7px;
+
         padding: 10px 17px;
+
         background: #e10600;
+
         color: #ffffff;
+
         border-radius: 8px;
+
         border: none;
+
         font-size: 11px;
+
         font-weight: 700;
+
         transition: 0.25s ease;
     }
 
     .dashboard-button:hover {
         background: #ff211a;
+
         color: #ffffff;
+
         text-decoration: none;
+
         transform: translateY(-1px);
     }
 
 
     /* =========================================================
-       RESPONSIVE
+       PACKAGE PROMO
+       ========================================================= */
+
+    .package-promo {
+        margin-top: 20px;
+
+        padding: 22px;
+
+        background:
+            linear-gradient(
+                135deg,
+                rgba(225, 6, 0, 0.15),
+                rgba(11, 23, 39, 1)
+            );
+
+        border: 1px solid rgba(225, 6, 0, 0.25);
+
+        border-radius: 16px;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 20px;
+    }
+
+    .package-promo-left {
+        display: flex;
+
+        align-items: center;
+
+        gap: 15px;
+    }
+
+    .package-promo-icon {
+        width: 50px;
+        height: 50px;
+
+        flex-shrink: 0;
+
+        border-radius: 11px;
+
+        background: #e10600;
+
+        color: #ffffff;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        font-size: 20px;
+
+        box-shadow: 0 8px 20px rgba(225, 6, 0, 0.25);
+    }
+
+    .package-promo-text h3 {
+        margin: 0 0 5px;
+
+        font-size: 15px;
+
+        font-weight: 800;
+    }
+
+    .package-promo-text p {
+        margin: 0;
+
+        color: #738399;
+
+        font-size: 10px;
+
+        line-height: 1.5;
+    }
+
+    .package-promo-button {
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 7px;
+
+        padding: 11px 17px;
+
+        background: #e10600;
+
+        color: #ffffff;
+
+        border-radius: 8px;
+
+        font-size: 11px;
+
+        font-weight: 700;
+
+        white-space: nowrap;
+
+        transition: 0.25s ease;
+    }
+
+    .package-promo-button:hover {
+        background: #ff211a;
+
+        color: #ffffff;
+
+        text-decoration: none;
+
+        transform: translateY(-2px);
+    }
+
+
+    /* =========================================================
+       RESPONSIVE - 1150px
        ========================================================= */
 
     @@media (max-width: 1150px) {
@@ -762,7 +1243,15 @@
     }
 
 
+    /* =========================================================
+       RESPONSIVE - 850px
+       ========================================================= */
+
     @@media (max-width: 850px) {
+
+        .dashboard-page {
+            padding: 20px;
+        }
 
         .dashboard-layout {
             grid-template-columns: 1fr;
@@ -774,15 +1263,25 @@
 
         .sidebar-menu {
             display: grid;
+
             grid-template-columns: repeat(2, 1fr);
+
             gap: 5px;
         }
 
         .sidebar-section-title {
             grid-column: 1 / -1;
         }
+
+        .logout-container {
+            grid-column: 1 / -1;
+        }
     }
 
+
+    /* =========================================================
+       RESPONSIVE - 650px
+       ========================================================= */
 
     @@media (max-width: 650px) {
 
@@ -792,8 +1291,18 @@
 
         .dashboard-header {
             flex-direction: column;
+
             align-items: flex-start;
+
             gap: 18px;
+        }
+
+        .welcome-section h1 {
+            font-size: 23px;
+        }
+
+        .profile-button {
+            width: 100%;
         }
 
         .stats-grid {
@@ -811,10 +1320,92 @@
         .sidebar-menu {
             grid-template-columns: 1fr;
         }
+
+        .sidebar-section-title {
+            grid-column: auto;
+        }
+
+        .logout-container {
+            grid-column: auto;
+        }
+
+        .payment-status {
+            align-items: flex-start;
+
+            flex-direction: column;
+        }
+
+        .status-badge {
+            align-self: flex-start;
+        }
+
+        .payment-amounts {
+            grid-template-columns: 1fr;
+        }
+
+        .package-promo {
+            flex-direction: column;
+
+            align-items: flex-start;
+        }
+
+        .package-promo-button {
+            width: 100%;
+        }
+    }
+
+
+    /* =========================================================
+       RESPONSIVE - 450px
+       ========================================================= */
+
+    @@media (max-width: 450px) {
+
+        .dashboard-page {
+            padding: 10px;
+        }
+
+        .dashboard-header {
+            padding: 20px;
+        }
+
+        .dashboard-card {
+            border-radius: 12px;
+        }
+
+        .card-header {
+            padding: 16px;
+        }
+
+        .empty-state {
+            padding: 35px 15px;
+        }
+
+        .progress-content,
+        .payment-content,
+        .feedback-content {
+            padding: 16px;
+        }
+
+        .actions-grid {
+            padding: 16px;
+        }
+
+        .stat-card {
+            padding: 17px;
+        }
+
+        .package-promo {
+            padding: 18px;
+        }
     }
 
 </style>
 
+
+<!-- =========================================================
+     DASHBOARD PAGE
+     ========================================================= -->
 
 <div class="dashboard-page">
 
@@ -826,6 +1417,9 @@
              ===================================================== -->
 
         <aside class="dashboard-sidebar">
+
+
+            <!-- BRAND -->
 
             <div class="sidebar-brand">
 
@@ -840,9 +1434,14 @@
             </div>
 
 
+            <!-- MENU -->
+
             <div class="sidebar-menu">
 
-                <!-- MAIN -->
+
+                <!-- =========================
+                     MAIN
+                     ========================= -->
 
                 <div class="sidebar-section-title">
                     Main
@@ -869,7 +1468,9 @@
                 </div>
 
 
-                <!-- BOOKING -->
+                <!-- =========================
+                     LEARNING
+                     ========================= -->
 
                 <div class="sidebar-section-title">
                     Learning
@@ -976,10 +1577,32 @@
                 </div>
 
 
-                <!-- FINANCE -->
+                <!-- =========================
+                     FINANCE
+                     ========================= -->
 
                 <div class="sidebar-section-title">
                     Finance
+                </div>
+
+
+                <!-- BUY PACKAGE -->
+
+                <div class="sidebar-item">
+
+                    <a href="@Url.Action("Index", "Package")"
+                       class="sidebar-link">
+
+                        <span class="sidebar-icon">
+                            <i class="fa-solid fa-box-open"></i>
+                        </span>
+
+                        <span class="sidebar-text">
+                            Buy Package
+                        </span>
+
+                    </a>
+
                 </div>
 
 
@@ -995,7 +1618,7 @@
                         </span>
 
                         <span class="sidebar-text">
-                            Payments
+                            Payment History
                         </span>
 
                     </a>
@@ -1003,7 +1626,9 @@
                 </div>
 
 
-                <!-- ACCOUNT -->
+                <!-- =========================
+                     ACCOUNT
+                     ========================= -->
 
                 <div class="sidebar-section-title">
                     Account
@@ -1030,24 +1655,7 @@
                 </div>
 
 
-                <!-- Cancel Course -->
-
-                <div class="sidebar-item">
-
-                    <a href="@Url.Action("Cancel", "Booking")"
-                       class="sidebar-link">
-
-                        <span class="sidebar-icon">
-                            <i class="fa-solid fa-ban"></i>
-                        </span>
-
-                        <span class="sidebar-text">
-                            Cancel Course
-                        </span>
-
-                    </a>
-
-                </div>
+                
 
 
                 <!-- LOGOUT -->
@@ -1066,7 +1674,9 @@
                                 class="logout-link">
 
                             <span class="sidebar-icon">
+
                                 <i class="fa-solid fa-right-from-bracket"></i>
+
                             </span>
 
                             <span class="sidebar-text">
@@ -1090,7 +1700,9 @@
         <main class="dashboard-main">
 
 
-            <!-- HEADER -->
+            <!-- =================================================
+                 HEADER
+                 ================================================= -->
 
             <div class="dashboard-header">
 
@@ -1112,7 +1724,9 @@
                    class="profile-button">
 
                     <div class="profile-icon">
+
                         <i class="fa-solid fa-user"></i>
+
                     </div>
 
                     <div class="profile-text">
@@ -1139,12 +1753,14 @@
             <div class="stats-grid">
 
 
-                <!-- Total Lessons -->
+                <!-- TOTAL LESSONS -->
 
                 <div class="stat-card">
 
                     <div class="stat-icon">
+
                         <i class="fa-solid fa-road"></i>
+
                     </div>
 
                     <h3>
@@ -1158,12 +1774,14 @@
                 </div>
 
 
-                <!-- Completed -->
+                <!-- COMPLETED -->
 
                 <div class="stat-card">
 
                     <div class="stat-icon">
+
                         <i class="fa-solid fa-circle-check"></i>
+
                     </div>
 
                     <h3>
@@ -1177,12 +1795,14 @@
                 </div>
 
 
-                <!-- Remaining -->
+                <!-- REMAINING -->
 
                 <div class="stat-card">
 
                     <div class="stat-icon">
+
                         <i class="fa-solid fa-calendar-days"></i>
+
                     </div>
 
                     <h3>
@@ -1196,12 +1816,14 @@
                 </div>
 
 
-                <!-- Progress -->
+                <!-- PROGRESS -->
 
                 <div class="stat-card">
 
                     <div class="stat-icon">
+
                         <i class="fa-solid fa-chart-line"></i>
+
                     </div>
 
                     <h3>
@@ -1231,7 +1853,9 @@
                 <div>
 
 
-                    <!-- UPCOMING LESSON -->
+                    <!-- =============================================
+                         UPCOMING LESSON
+                         ============================================= -->
 
                     <div class="dashboard-card">
 
@@ -1240,7 +1864,9 @@
                             <div class="card-title">
 
                                 <div class="card-title-icon">
+
                                     <i class="fa-solid fa-calendar-check"></i>
+
                                 </div>
 
                                 <h2>
@@ -1259,35 +1885,245 @@
                         </div>
 
 
-                        <div class="empty-state">
+                        @if (Model.HasUpcomingLesson)
+                        {
 
-                            <div class="empty-icon">
-                                <i class="fa-regular fa-calendar-xmark"></i>
+                            <div class="lesson-content">
+
+                                <div class="lesson-box">
+
+
+                                    <!-- LESSON DATE -->
+
+                                    <div class="lesson-date">
+
+                                        <div class="date-box">
+
+                                            @if (Model.UpcomingLessonDate.HasValue)
+                                            {
+                                                <strong>
+                                                    @Model.UpcomingLessonDate.Value.Day
+                                                </strong>
+
+                                                <span>
+                                                    @Model.UpcomingLessonDate.Value.ToString("MMM")
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <strong>
+                                                    --
+                                                </strong>
+
+                                                <span>
+                                                    DATE
+                                                </span>
+                                            }
+
+                                        </div>
+
+
+                                        <div class="lesson-info">
+
+                                            <h3>
+
+                                                @(string.IsNullOrEmpty(Model.UpcomingLessonType)
+                                                    ? "Driving Lesson"
+                                                    : Model.UpcomingLessonType)
+
+                                            </h3>
+
+                                            <p>
+
+                                                @if (Model.UpcomingLessonDate.HasValue)
+                                                {
+                                                    @Model.UpcomingLessonDate.Value.ToString("dddd, dd MMMM yyyy")
+                                                }
+
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- LESSON DETAILS -->
+
+                                    <div class="lesson-details">
+
+
+                                        <!-- TIME -->
+
+                                        <div class="lesson-detail">
+
+                                            <i class="fa-solid fa-clock"></i>
+
+                                            <span>
+
+                                                @(string.IsNullOrEmpty(Model.UpcomingLessonTime)
+                                                    ? "Time not available"
+                                                    : Model.UpcomingLessonTime)
+
+                                            </span>
+
+                                        </div>
+
+
+                                        <!-- INSTRUCTOR -->
+
+                                        <div class="lesson-detail">
+
+                                            <i class="fa-solid fa-user-tie"></i>
+
+                                            <span>
+
+                                                @(string.IsNullOrEmpty(Model.UpcomingInstructor)
+                                                    ? "Instructor not assigned"
+                                                    : Model.UpcomingInstructor)
+
+                                            </span>
+
+                                        </div>
+
+
+                                        <!-- VEHICLE -->
+
+                                        <div class="lesson-detail">
+
+                                            <i class="fa-solid fa-car"></i>
+
+                                            <span>
+
+                                                @(string.IsNullOrEmpty(Model.UpcomingVehicle)
+                                                    ? "Vehicle not assigned"
+                                                    : Model.UpcomingVehicle)
+
+                                            </span>
+
+                                        </div>
+
+
+                                        <!-- LOCATION -->
+
+                                        <div class="lesson-detail">
+
+                                            <i class="fa-solid fa-location-dot"></i>
+
+                                            <span>
+
+                                                @(string.IsNullOrEmpty(Model.UpcomingLocation)
+                                                    ? "Location not available"
+                                                    : Model.UpcomingLocation)
+
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <!-- VIEW LESSON BUTTON -->
+
+                                    <div style="margin-top:15px;">
+
+                                        <a href="@Url.Action("Details", "Booking", new { id = Model.UpcomingLessonID })"
+                                           class="dashboard-button">
+
+                                            <i class="fa-solid fa-eye"></i>
+
+                                            View Lesson
+
+                                        </a>
+
+                                    </div>
+
+                                </div>
+
                             </div>
 
-                            <h3>
-                                No Upcoming Lessons
-                            </h3>
+                        }
+                        else
+                        {
 
-                            <p>
-                                You currently don't have a lesson scheduled.
-                            </p>
+                            <!-- NO UPCOMING LESSON -->
 
-                            <a href="@Url.Action("Create", "Booking")"
-                               class="dashboard-button">
+                            <div class="empty-state">
 
-                                <i class="fa-solid fa-plus"></i>
+                                <div class="empty-icon">
 
-                                Book a Lesson
+                                    <i class="fa-regular fa-calendar-xmark"></i>
 
-                            </a>
+                                </div>
 
-                        </div>
+                                <h3>
+                                    No Upcoming Lessons
+                                </h3>
+
+                                <p>
+                                    You currently don't have a lesson scheduled.
+                                </p>
+
+                                <a href="@Url.Action("Create", "Booking")"
+                                   class="dashboard-button">
+
+                                    <i class="fa-solid fa-plus"></i>
+
+                                    Book a Lesson
+
+                                </a>
+
+                            </div>
+
+                        }
 
                     </div>
 
 
-                    <!-- QUICK ACTIONS -->
+                    <!-- =============================================
+                         PACKAGE PROMO
+                         ============================================= -->
+
+                    <div class="package-promo">
+
+                        <div class="package-promo-left">
+
+                            <div class="package-promo-icon">
+
+                                <i class="fa-solid fa-box-open"></i>
+
+                            </div>
+
+                            <div class="package-promo-text">
+
+                                <h3>
+                                    Ready for More Driving Lessons?
+                                </h3>
+
+                                <p>
+                                    Choose a lesson package that suits your
+                                    training needs and purchase it from our
+                                    available packages.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <a href="@Url.Action("Index", "Package")"
+                           class="package-promo-button">
+
+                            <i class="fa-solid fa-cart-shopping"></i>
+
+                            View Packages
+
+                        </a>
+
+                    </div>
+
+
+                    <!-- =============================================
+                         QUICK ACTIONS
+                         ============================================= -->
 
                     <div class="dashboard-card"
                          style="margin-top:20px;">
@@ -1297,7 +2133,9 @@
                             <div class="card-title">
 
                                 <div class="card-title-icon">
+
                                     <i class="fa-solid fa-bolt"></i>
+
                                 </div>
 
                                 <h2>
@@ -1312,13 +2150,15 @@
                         <div class="actions-grid">
 
 
-                            <!-- Booking -->
+                            <!-- BOOK LESSON -->
 
                             <a href="@Url.Action("Create", "Booking")"
                                class="action-card">
 
                                 <div class="action-icon">
+
                                     <i class="fa-solid fa-calendar-plus"></i>
+
                                 </div>
 
                                 <div class="action-text">
@@ -1336,13 +2176,41 @@
                             </a>
 
 
-                            <!-- Payment -->
+                            <!-- BUY PACKAGE -->
+
+                            <a href="@Url.Action("Index", "Package")"
+                               class="action-card">
+
+                                <div class="action-icon">
+
+                                    <i class="fa-solid fa-box-open"></i>
+
+                                </div>
+
+                                <div class="action-text">
+
+                                    <strong>
+                                        Buy Package
+                                    </strong>
+
+                                    <span>
+                                        View and purchase lesson packages
+                                    </span>
+
+                                </div>
+
+                            </a>
+
+
+                            <!-- PAYMENTS -->
 
                             <a href="@Url.Action("Index", "Payment")"
                                class="action-card">
 
                                 <div class="action-icon">
+
                                     <i class="fa-solid fa-credit-card"></i>
+
                                 </div>
 
                                 <div class="action-text">
@@ -1360,13 +2228,15 @@
                             </a>
 
 
-                            <!-- Lessons -->
+                            <!-- MY LESSONS -->
 
                             <a href="@Url.Action("Index", "Lessons")"
                                class="action-card">
 
                                 <div class="action-icon">
+
                                     <i class="fa-solid fa-car-side"></i>
+
                                 </div>
 
                                 <div class="action-text">
@@ -1384,13 +2254,15 @@
                             </a>
 
 
-                            <!-- Reviews -->
+                            <!-- REVIEWS -->
 
                             <a href="@Url.Action("Index", "Review")"
                                class="action-card">
 
                                 <div class="action-icon">
+
                                     <i class="fa-solid fa-star"></i>
+
                                 </div>
 
                                 <div class="action-text">
@@ -1421,7 +2293,9 @@
                 <div>
 
 
-                    <!-- PROGRESS -->
+                    <!-- =============================================
+                         LESSON PROGRESS
+                         ============================================= -->
 
                     <div class="dashboard-card">
 
@@ -1430,7 +2304,9 @@
                             <div class="card-title">
 
                                 <div class="card-title-icon">
+
                                     <i class="fa-solid fa-chart-simple"></i>
+
                                 </div>
 
                                 <h2>
@@ -1481,7 +2357,9 @@
                     </div>
 
 
-                    <!-- PAYMENT -->
+                    <!-- =============================================
+                         PAYMENT STATUS
+                         ============================================= -->
 
                     <div class="dashboard-card"
                          style="margin-top:20px;">
@@ -1491,7 +2369,9 @@
                             <div class="card-title">
 
                                 <div class="card-title-icon">
+
                                     <i class="fa-solid fa-wallet"></i>
+
                                 </div>
 
                                 <h2>
@@ -1514,10 +2394,13 @@
 
                             <div class="payment-status">
 
+
                                 <div class="payment-left">
 
                                     <div class="payment-icon">
+
                                         <i class="fa-solid fa-credit-card"></i>
+
                                     </div>
 
                                     <div>
@@ -1537,7 +2420,41 @@
 
                                 <div class="status-badge">
 
-                                    @Model.PaymentStatus
+                                    @(string.IsNullOrEmpty(Model.PaymentStatus)
+                                        ? "Pending"
+                                        : Model.PaymentStatus)
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- PAYMENT AMOUNTS -->
+
+                            <div class="payment-amounts">
+
+                                <div class="payment-amount">
+
+                                    <span>
+                                        Total Paid
+                                    </span>
+
+                                    <strong>
+                                        R @Model.TotalPaid.ToString("N2")
+                                    </strong>
+
+                                </div>
+
+
+                                <div class="payment-amount">
+
+                                    <span>
+                                        Outstanding
+                                    </span>
+
+                                    <strong>
+                                        R @Model.OutstandingAmount.ToString("N2")
+                                    </strong>
 
                                 </div>
 
@@ -1548,7 +2465,9 @@
                     </div>
 
 
-                    <!-- DAILY REVIEW -->
+                    <!-- =============================================
+                         DAILY REVIEW
+                         ============================================= -->
 
                     <div class="dashboard-card"
                          style="margin-top:20px;">
@@ -1558,7 +2477,9 @@
                             <div class="card-title">
 
                                 <div class="card-title-icon">
+
                                     <i class="fa-solid fa-clipboard-check"></i>
+
                                 </div>
 
                                 <h2>
@@ -1570,32 +2491,152 @@
                         </div>
 
 
-                        <div class="empty-state">
+                        @if (Model.HasPendingReview)
+                        {
 
-                            <div class="empty-icon">
+                            <div class="empty-state">
 
-                                <i class="fa-solid fa-clipboard-list"></i>
+                                <div class="empty-icon">
+
+                                    <i class="fa-solid fa-clipboard-list"></i>
+
+                                </div>
+
+                                <h3>
+                                    Lesson Review Pending
+                                </h3>
+
+                                <p>
+                                    You have a completed lesson waiting for your review.
+                                </p>
+
+                                <a href="@Url.Action("Create", "Review", new { id = Model.ReviewLessonID })"
+                                   class="dashboard-button">
+
+                                    <i class="fa-solid fa-pen-to-square"></i>
+
+                                    Complete Review
+
+                                </a>
 
                             </div>
 
-                            <h3>
-                                Review Your Lesson
-                            </h3>
+                        }
+                        else
+                        {
 
-                            <p>
-                                Submit feedback after completing a lesson.
-                            </p>
+                            <div class="empty-state">
+
+                                <div class="empty-icon">
+
+                                    <i class="fa-solid fa-circle-check"></i>
+
+                                </div>
+
+                                <h3>
+                                    No Pending Reviews
+                                </h3>
+
+                                <p>
+                                    You are all caught up with your lesson reviews.
+                                </p>
+
+                                <a href="@Url.Action("Index", "Review")"
+                                   class="dashboard-button">
+
+                                    <i class="fa-solid fa-arrow-right"></i>
+
+                                    View Reviews
+
+                                </a>
+
+                            </div>
+
+                        }
+
+                    </div>
+
+
+                    <!-- =============================================
+                         INSTRUCTOR FEEDBACK
+                         ============================================= -->
+
+                    <div class="dashboard-card"
+                         style="margin-top:20px;">
+
+                        <div class="card-header">
+
+                            <div class="card-title">
+
+                                <div class="card-title-icon">
+
+                                    <i class="fa-solid fa-comment-dots"></i>
+
+                                </div>
+
+                                <h2>
+                                    Instructor Feedback
+                                </h2>
+
+                            </div>
 
                             <a href="@Url.Action("Index", "Review")"
-                               class="dashboard-button">
+                               class="card-header-link">
 
-                                <i class="fa-solid fa-arrow-right"></i>
-
-                                View Reviews
+                                View All
 
                             </a>
 
                         </div>
+
+
+                        @if (Model.HasInstructorFeedback &&
+                             !string.IsNullOrEmpty(Model.LatestFeedback))
+                        {
+
+                            <div class="feedback-content">
+
+                                <div class="feedback-box">
+
+                                    <p>
+                                        "@Model.LatestFeedback"
+                                    </p>
+
+                                    <div class="feedback-author">
+
+                                        <i class="fa-solid fa-user-tie"></i>
+
+                                        Instructor Feedback
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        }
+                        else
+                        {
+
+                            <div class="empty-state">
+
+                                <div class="empty-icon">
+
+                                    <i class="fa-regular fa-comment"></i>
+
+                                </div>
+
+                                <h3>
+                                    No Feedback Yet
+                                </h3>
+
+                                <p>
+                                    Your instructor feedback will appear here after your lessons.
+                                </p>
+
+                            </div>
+
+                        }
 
                     </div>
 
@@ -1609,6 +2650,10 @@
 
 </div>
 
+
+<!-- =========================================================
+     SCRIPTS
+     ========================================================= -->
 
 @section Scripts {
 

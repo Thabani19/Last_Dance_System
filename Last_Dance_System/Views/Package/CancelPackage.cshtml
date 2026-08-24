@@ -1,0 +1,267 @@
+﻿@model Last_Dance_System.Models.StudentPackage
+
+@{
+    ViewBag.Title = "Cancel Package";
+}
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #07111f;
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .cancel-page {
+        min-height: 90vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 50px 20px;
+    }
+
+    .cancel-card {
+        width: 100%;
+        max-width: 650px;
+        background: #0d1b2a;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    }
+
+    .warning-icon {
+        width: 70px;
+        height: 70px;
+        margin: 0 auto 20px;
+        border-radius: 50%;
+        background: rgba(255, 193, 7, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 34px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 30px;
+    }
+
+    .subtitle {
+        text-align: center;
+        color: #aeb8c4;
+        margin-bottom: 30px;
+        line-height: 1.6;
+    }
+
+    .package-info {
+        background: #07111f;
+        border-radius: 14px;
+        padding: 22px;
+        margin-bottom: 25px;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+
+    .label {
+        color: #9da9b5;
+    }
+
+    .value {
+        font-weight: bold;
+    }
+
+    .warning-box {
+        background: rgba(220, 53, 69, 0.12);
+        border: 1px solid rgba(220, 53, 69, 0.35);
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 30px;
+        line-height: 1.6;
+    }
+
+    .warning-box strong {
+        color: #ff6b6b;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 15px;
+    }
+
+    .btn {
+        flex: 1;
+        padding: 14px 20px;
+        border-radius: 10px;
+        text-align: center;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: bold;
+        transition: 0.2s ease;
+    }
+
+    .btn-cancel {
+        background: #263648;
+        color: white;
+    }
+
+    .btn-cancel:hover {
+        background: #34495e;
+        color: white;
+    }
+
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+    }
+
+    .btn-danger:hover {
+        background: #bb2d3b;
+    }
+
+    @@media (max-width: 600px) {
+
+        .cancel-card {
+            padding: 25px;
+        }
+
+        .buttons {
+            flex-direction: column;
+        }
+    }
+</style>
+
+
+<div class="cancel-page">
+
+    <div class="cancel-card">
+
+        <div class="warSning-icon">
+            ⚠️
+        </div>
+
+        <h1>Cancel Package?</h1>
+
+        <p class="subtitle">
+            Are you sure you want to cancel this lesson package?
+        </p>
+
+
+        <!-- PACKAGE INFORMATION -->
+
+        <div class="package-info">
+
+            <div class="info-row">
+                <span class="label">
+                    Package
+                </span>
+
+                <span class="value">
+                    @Model.LessonPackage.PackageName
+                </span>
+            </div>
+
+            <div class="info-row">
+                <span class="label">
+                    Lessons Purchased
+                </span>
+
+                <span class="value">
+                    @Model.LessonsPurchased
+                </span>
+            </div>
+
+            <div class="info-row">
+                <span class="label">
+                    Lessons Remaining
+                </span>
+
+                <span class="value">
+                    @Model.LessonsRemaining
+                </span>
+            </div>
+
+            <div class="info-row">
+                <span class="label">
+                    Payment Status
+                </span>
+
+                <span class="value">
+                    @Model.PaymentStatus
+                </span>
+            </div>
+
+        </div>
+
+
+        <!-- WARNING -->
+
+        <div class="warning-box">
+
+            <strong>Important:</strong>
+
+            Cancelling this package will automatically cancel
+            <strong>all lessons you have booked using this package.</strong>
+
+            <br /><br />
+
+            The cancelled lesson slots will become available
+            for other students to book.
+
+            <br /><br />
+
+            <strong>This action cannot be undone.</strong>
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="buttons">
+
+            <a href="@Url.Action("MyPackages", "Package")"
+               class="btn btn-cancel">
+                Keep Package
+            </a>
+
+
+            @using (Html.BeginForm(
+                "CancelPackageConfirmed",
+                "Package",
+                FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <!-- IMPORTANT: SEND PACKAGE ID -->
+
+                <input type="hidden"
+                       name="id"
+                       value="@Model.StudentPackageId" />
+
+                <button type="submit"
+                        class="btn btn-danger">
+                    Confirm Cancellation
+                </button>
+            }
+
+        </div>
+
+    </div>
+
+</div>

@@ -1,7 +1,7 @@
-﻿@model IEnumerable<Last_Dance_System.Models.LessonSchedule>
+﻿@model IEnumerable<Last_Dance_System.Models.Booking>
 
 @{
-    ViewBag.Title = "Book a Lesson";
+    ViewBag.Title = "My Lessons";
 }
 
 <style>
@@ -17,18 +17,16 @@
         font-family: Arial, Helvetica, sans-serif;
     }
 
-    .booking-page {
+    .lessons-page {
         min-height: 100vh;
         padding: 45px 25px;
-        background: radial-gradient(circle at top right, rgba(225, 6, 0, 0.16), transparent 35%), #07111f;
+        background: radial-gradient(circle at top right, rgba(225, 6, 0, 0.15), transparent 35%), #07111f;
     }
 
-    .booking-container {
+    .lessons-container {
         max-width: 1200px;
         margin: auto;
     }
-
-    /* HEADER */
 
     .page-header {
         margin-bottom: 30px;
@@ -43,30 +41,7 @@
         .page-header p {
             color: #9ba7b7;
             margin-top: 10px;
-            font-size: 15px;
         }
-
-    /* ALERT */
-
-    .alert {
-        padding: 15px 18px;
-        border-radius: 12px;
-        margin-bottom: 25px;
-    }
-
-    .alert-danger {
-        background: rgba(225, 6, 0, 0.12);
-        border: 1px solid rgba(225, 6, 0, 0.35);
-        color: #ff8b87;
-    }
-
-    .alert-success {
-        background: rgba(25, 135, 84, 0.15);
-        border: 1px solid rgba(25, 135, 84, 0.35);
-        color: #79e7a7;
-    }
-
-    /* PACKAGE SUMMARY */
 
     .package-summary {
         background: #0d1929;
@@ -74,33 +49,32 @@
         border-radius: 18px;
         padding: 25px;
         display: grid;
-        grid-template-columns: 1fr 160px 160px;
+        grid-template-columns: 1fr 150px 150px;
         gap: 20px;
         align-items: center;
         margin-bottom: 35px;
     }
 
-    .package-info h3 {
+    .package-name h3 {
         margin: 0 0 7px;
-        font-size: 21px;
+        font-size: 20px;
     }
 
-    .package-info p {
+    .package-name p {
         margin: 0;
         color: #8f9aaa;
-        font-size: 14px;
     }
 
     .stat {
         text-align: center;
-        padding: 16px;
+        padding: 15px;
         background: rgba(255,255,255,0.03);
         border-radius: 12px;
     }
 
     .stat-number {
         display: block;
-        font-size: 28px;
+        font-size: 27px;
         font-weight: 800;
         color: #ff3028;
     }
@@ -110,24 +84,17 @@
         font-size: 12px;
     }
 
-    /* SECTION TITLE */
-
-    .section-title {
-        margin-bottom: 20px;
+    .alert {
+        padding: 15px 18px;
+        border-radius: 12px;
+        margin-bottom: 25px;
     }
 
-        .section-title h2 {
-            margin: 0;
-            font-size: 25px;
-        }
-
-        .section-title p {
-            margin-top: 7px;
-            color: #8f9aaa;
-            font-size: 14px;
-        }
-
-    /* LESSON CARD */
+    .alert-success {
+        background: rgba(25, 135, 84, 0.15);
+        border: 1px solid rgba(25, 135, 84, 0.35);
+        color: #8ff0bb;
+    }
 
     .lesson-card {
         background: #0d1929;
@@ -135,15 +102,7 @@
         border-radius: 18px;
         padding: 25px;
         margin-bottom: 20px;
-        transition: 0.25s ease;
     }
-
-        .lesson-card:hover {
-            border-color: rgba(225,6,0,0.35);
-            transform: translateY(-2px);
-        }
-
-    /* LESSON TOP */
 
     .lesson-top {
         display: flex;
@@ -160,23 +119,22 @@
     }
 
     .date-box {
-        width: 65px;
-        height: 65px;
-        min-width: 65px;
-        border-radius: 15px;
+        width: 60px;
+        height: 60px;
+        min-width: 60px;
+        border-radius: 14px;
         background: rgba(225,6,0,0.15);
         display: flex;
         justify-content: center;
         align-items: center;
         color: #ff3028;
-        font-size: 27px;
+        font-size: 25px;
         font-weight: 800;
     }
 
     .date-info strong {
         display: block;
-        font-size: 19px;
-        margin-bottom: 5px;
+        font-size: 18px;
     }
 
     .date-info span {
@@ -184,25 +142,19 @@
         font-size: 13px;
     }
 
-    /* AVAILABLE BADGE */
-
-    .available-badge {
+    .status {
         padding: 8px 14px;
         border-radius: 50px;
         background: rgba(25,135,84,0.15);
         color: #79e7a7;
         font-size: 12px;
         font-weight: 700;
-        text-transform: uppercase;
     }
-
-    /* DETAILS */
 
     .details {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 15px;
-        margin-bottom: 20px;
     }
 
     .detail {
@@ -220,61 +172,36 @@
 
     .detail-value {
         font-weight: 600;
-        color: white;
     }
 
-    /* BOOK FORM */
-
-    .booking-form {
+    .lesson-footer {
+        margin-top: 20px;
+        padding-top: 18px;
         border-top: 1px solid rgba(255,255,255,0.06);
-        padding-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
     }
 
-    .notes-label {
-        display: block;
-        color: #8f9aaa;
+    .booking-date {
+        color: #7f8a9a;
         font-size: 12px;
-        margin-bottom: 8px;
     }
 
-    .notes-input {
-        width: 100%;
-        min-height: 80px;
-        resize: vertical;
-        padding: 12px 14px;
+    .cancel-btn {
+        border: 1px solid rgba(225,6,0,0.4);
+        background: rgba(225,6,0,0.08);
+        color: #ff7772;
         border-radius: 10px;
-        border: 1px solid rgba(255,255,255,0.10);
-        background: #07111f;
-        color: white;
-        outline: none;
-        font-family: Arial, Helvetica, sans-serif;
-    }
-
-        .notes-input:focus {
-            border-color: rgba(225,6,0,0.6);
-        }
-
-    /* BOOK BUTTON */
-
-    .book-button {
-        margin-top: 15px;
-        width: 100%;
-        border: none;
-        padding: 14px 20px;
-        background: #e10600;
-        color: white;
-        border-radius: 10px;
-        font-weight: 700;
-        font-size: 14px;
+        padding: 10px 16px;
         cursor: pointer;
-        transition: 0.2s ease;
+        font-weight: 700;
     }
 
-        .book-button:hover {
-            background: #ff1b14;
+        .cancel-btn:hover {
+            background: rgba(225,6,0,0.2);
         }
-
-    /* EMPTY STATE */
 
     .empty-state {
         text-align: center;
@@ -286,23 +213,36 @@
 
         .empty-state h3 {
             margin-bottom: 10px;
-            font-size: 24px;
         }
 
         .empty-state p {
             color: #8f9aaa;
-            margin-bottom: 0;
+            margin-bottom: 25px;
         }
 
-    /* RESPONSIVE */
+    .book-btn {
+        display: inline-block;
+        padding: 13px 22px;
+        background: #e10600;
+        color: white;
+        text-decoration: none;
+        border-radius: 10px;
+        font-weight: 700;
+    }
 
-    @@media (max-width: 850px) {
+        .book-btn:hover {
+            background: #ff1b14;
+            color: white;
+            text-decoration: none;
+        }
+
+    @@media (max-width: 800px) {
 
         .package-summary {
             grid-template-columns: 1fr 1fr;
         }
 
-        .package-info {
+        .package-name {
             grid-column: 1 / -1;
         }
 
@@ -313,10 +253,6 @@
 
     @@media (max-width: 550px) {
 
-        .booking-page {
-            padding: 30px 15px;
-        }
-
         .page-header h1 {
             font-size: 30px;
         }
@@ -325,7 +261,7 @@
             grid-template-columns: 1fr;
         }
 
-        .package-info {
+        .package-name {
             grid-column: auto;
         }
 
@@ -338,43 +274,29 @@
             flex-direction: column;
         }
 
-        .available-badge {
-            align-self: flex-start;
+        .lesson-footer {
+            flex-direction: column;
+            align-items: flex-start;
         }
     }
 </style>
 
 
-<div class="booking-page">
+<div class="lessons-page">
 
-    <div class="booking-container">
-
+    <div class="lessons-container">
 
         <!-- HEADER -->
 
         <div class="page-header">
 
-            <h1>
-                Book a Lesson
-            </h1>
+            <h1>My Lessons</h1>
 
             <p>
-                Choose an available lesson time that works for you.
+                View and manage all your booked driving lessons.
             </p>
 
         </div>
-
-
-        <!-- ERROR MESSAGE -->
-
-        @if (TempData["BookingError"] != null)
-        {
-            <div class="alert alert-danger">
-
-                @TempData["BookingError"]
-
-            </div>
-        }
 
 
         <!-- SUCCESS MESSAGE -->
@@ -382,9 +304,7 @@
         @if (TempData["BookingSuccess"] != null)
         {
             <div class="alert alert-success">
-
                 @TempData["BookingSuccess"]
-
             </div>
         }
 
@@ -393,14 +313,14 @@
 
         <div class="package-summary">
 
-            <div class="package-info">
+            <div class="package-name">
 
                 <h3>
                     @ViewBag.PackageName
                 </h3>
 
                 <p>
-                    Your current lesson package
+                    Current lesson package
                 </p>
 
             </div>
@@ -426,7 +346,7 @@
                 </span>
 
                 <span class="stat-label">
-                    Lessons Remaining
+                    Remaining
                 </span>
 
             </div>
@@ -434,31 +354,15 @@
         </div>
 
 
-        <!-- AVAILABLE LESSONS -->
-
-        <div class="section-title">
-
-            <h2>
-                Available Lessons
-            </h2>
-
-            <p>
-                Select one of the available lesson slots below.
-            </p>
-
-        </div>
-
+        <!-- LESSONS -->
 
         @if (Model != null && Model.Any())
         {
-
-            foreach (var schedule in Model)
+            foreach (var booking in Model)
             {
-
                 <div class="lesson-card">
 
-
-                    <!-- DATE / STATUS -->
+                    <!-- LESSON HEADER -->
 
                     <div class="lesson-top">
 
@@ -466,18 +370,18 @@
 
                             <div class="date-box">
 
-                                @schedule.LessonDate.Day
+                                @booking.LessonSchedule.LessonDate.Day
 
                             </div>
 
                             <div class="date-info">
 
                                 <strong>
-                                    @schedule.LessonDate.ToString("dddd")
+                                    @booking.LessonSchedule.LessonDate.ToString("dddd")
                                 </strong>
 
                                 <span>
-                                    @schedule.LessonDate.ToString("dd MMMM yyyy")
+                                    @booking.LessonSchedule.LessonDate.ToString("dd MMMM yyyy")
                                 </span>
 
                             </div>
@@ -485,9 +389,9 @@
                         </div>
 
 
-                        <div class="available-badge">
+                        <div class="status">
 
-                            Available
+                            @booking.Status.ToUpper()
 
                         </div>
 
@@ -509,16 +413,18 @@
 
                             <span class="detail-value">
 
-                                @schedule.StartTime.ToString(@"hh\:mm")
+                                @booking.LessonSchedule.StartTime.ToString(@"hh\:mm")
+
                                 -
-                                @schedule.EndTime.ToString(@"hh\:mm")
+
+                                @booking.LessonSchedule.EndTime.ToString(@"hh\:mm")
 
                             </span>
 
                         </div>
 
 
-                        <!-- LESSON TYPE -->
+                        <!-- LESSON -->
 
                         <div class="detail">
 
@@ -528,9 +434,9 @@
 
                             <span class="detail-value">
 
-                                @if (schedule.LessonType != null)
+                                @if (booking.LessonSchedule.LessonType != null)
                                 {
-                                    @schedule.LessonType.LessonTypeName
+                                    @booking.LessonSchedule.LessonType.LessonTypeName
                                 }
                                 else
                                 {
@@ -552,10 +458,10 @@
 
                             <span class="detail-value">
 
-                                @if (schedule.Instructor != null)
+                                @if (booking.LessonSchedule.Instructor != null)
                                 {
-                                    @schedule.Instructor.FirstName
-                                    @schedule.Instructor.LastName
+                                    @booking.LessonSchedule.Instructor.FirstName
+                                    @booking.LessonSchedule.Instructor.LastName
                                 }
                                 else
                                 {
@@ -577,10 +483,10 @@
 
                             <span class="detail-value">
 
-                                @if (schedule.Vehicle != null)
+                                @if (booking.LessonSchedule.Vehicle != null)
                                 {
-                                    @schedule.Vehicle.Make
-                                    @schedule.Vehicle.Model
+                                    @booking.LessonSchedule.Vehicle.Make
+                                    @booking.LessonSchedule.Vehicle.Model
                                 }
                                 else
                                 {
@@ -594,74 +500,76 @@
                     </div>
 
 
-                    <!-- BOOKING FORM -->
+                    <!-- FOOTER -->
 
-                    <div class="booking-form">
+                    <div class="lesson-footer">
 
-                        @using (Html.BeginForm(
-                            "Create",
-                            "Booking",
-                            FormMethod.Post))
+                        <div class="booking-date">
+
+                            Booked on
+
+                            @booking.BookingDate.ToString("dd MMM yyyy HH:mm")
+
+                        </div>
+
+
+                        <!-- CANCEL BUTTON -->
+
+                        @if (booking.Status != "Cancelled" &&
+                             booking.LessonSchedule.LessonDate >= DateTime.Today)
                         {
+                            using (Html.BeginForm(
+                                "Cancel",
+                                "Booking",
+                                FormMethod.Post,
+                                new
+                                {
+                                    onsubmit = "return confirm('Are you sure you want to cancel this lesson?');"
+                                }))
+                            {
+                                @Html.AntiForgeryToken()
 
-                            @Html.AntiForgeryToken()
+                                <input type="hidden"
+                                       name="id"
+                                       value="@booking.BookingId" />
 
+                                <button type="submit"
+                                        class="cancel-btn">
 
-                            <input type="hidden"
-                                   name="LessonScheduleId"
-                                   value="@schedule.LessonScheduleId" />
+                                    Cancel Lesson
 
-
-                            <label class="notes-label">
-
-                                Notes
-                                (Optional)
-
-                            </label>
-
-
-                            <textarea name="Notes"
-                                      class="notes-input"
-                                      placeholder="Add any notes or special requests for your instructor..."></textarea>
-
-
-                            <button type="submit"
-                                    class="book-button">
-
-                                Book This Lesson
-
-                            </button>
-
+                                </button>
+                            }
                         }
 
                     </div>
 
-
                 </div>
-
             }
-
         }
         else
         {
-
-            <!-- NO LESSONS -->
+            <!-- EMPTY STATE -->
 
             <div class="empty-state">
 
                 <h3>
-                    No Lessons Available
+                    You Have No Lessons Yet
                 </h3>
 
                 <p>
-                    There are currently no available lesson slots.
-                    Please check again later.
+                    Purchase a package and book your first lesson to get started.
                 </p>
 
+                <a href="@Url.Action("Create", "Booking")"
+                   class="book-btn">
+
+                    Book a Lesson
+
+                </a>
+
             </div>
-
         }
-
 
     </div>
 
