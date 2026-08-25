@@ -6,7 +6,7 @@ using Last_Dance_System.Models;
 
 namespace Last_Dance_System.Controllers
 {
-    [Authorize]
+    [Authorize (Roles = "Student")]
     public class DashboardController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

@@ -208,6 +208,7 @@
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InstructorController.cs" />
+    <Compile Include="Controllers\InstructorDashboardController.cs" />
     <Compile Include="Controllers\LessonsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PackageController.cs" />
@@ -383,6 +384,8 @@
     <Content Include="Views\Booking\MyLessons.cshtml" />
     <Content Include="Views\Package\CancelPackage.cshtml" />
     <Content Include="Views\Dashboard\Profile.cshtml" />
+    <Content Include="Views\InstructorDashboard\Index.cshtml" />
+    <Content Include="Views\MambaMain.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
