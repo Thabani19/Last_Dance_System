@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace Last_Dance_System.Controllers
 {
-    //[Authorize(Roles = "Instructor")]// Temporary commented for testing
+    [Authorize(Roles = "Instructor")]
     public class InstructorController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
