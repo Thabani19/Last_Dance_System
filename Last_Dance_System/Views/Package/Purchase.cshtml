@@ -6,708 +6,1001 @@
 
 <style>
 
-    * {
-        box-sizing: border-box;
-    }
-
-    body {
-        margin: 0;
-        background: #07111f;
-        color: white;
-        font-family: Arial, Helvetica, sans-serif;
-    }
+    /* =========================================================
+       PURCHASE PAGE - WHITE & BLUE THEME
+       ========================================================= */
 
     .purchase-page {
-        min-height: 90vh;
-        padding: 40px 20px;
-        background: radial-gradient( circle at top right, rgba(225, 6, 0, .12), transparent 30% ), #07111f;
+        min-height: calc(100vh - 100px);
+        background: #f5f8fc;
+        padding: 40px 20px 60px;
+        color: #1f2937;
+        font-family: "Segoe UI", Arial, Helvetica, sans-serif;
     }
 
     .purchase-container {
-        max-width: 700px;
-        margin: auto;
+        max-width: 1100px;
+        margin: 0 auto;
     }
 
-    .purchase-card {
-        background: #0c1726;
-        border: 1px solid #1b2a3d;
-        border-radius: 16px;
-        padding: 30px;
-    }
-
-
-    /* =============================================
+    /* =========================================================
        HEADER
-       ============================================= */
+       ========================================================= */
 
     .purchase-header {
+        background: #ffffff;
+        border: 1px solid #e1e8f0;
+        border-radius: 18px;
+        padding: 28px 30px;
         margin-bottom: 25px;
+        box-shadow: 0 6px 25px rgba(15, 23, 42, 0.06);
     }
 
-        .purchase-header h1 {
-            margin: 0 0 8px;
-            font-size: 28px;
+    .purchase-header-content {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .purchase-header-icon {
+        width: 55px;
+        height: 55px;
+        min-width: 55px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 13px;
+        background: #eaf3ff;
+        color: #0d6efd;
+        font-size: 23px;
+    }
+
+    .purchase-header h1 {
+        margin: 0 0 5px;
+        font-size: 27px;
+        font-weight: 800;
+        color: #172033;
+    }
+
+    .purchase-header p {
+        margin: 0;
+        color: #6b7280;
+        font-size: 13px;
+    }
+
+    /* =========================================================
+       MAIN GRID
+       ========================================================= */
+
+    .purchase-grid {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 25px;
+        align-items: start;
+    }
+
+    /* =========================================================
+       PACKAGE CARD
+       ========================================================= */
+
+    .package-card {
+        background: #ffffff;
+        border: 1px solid #e1e8f0;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 6px 25px rgba(15, 23, 42, 0.06);
+    }
+
+    .package-top {
+        background: linear-gradient(135deg, #0d6efd, #084298);
+        padding: 30px;
+        color: #ffffff;
+    }
+
+    .package-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: .7px;
+        opacity: .9;
+        margin-bottom: 12px;
+    }
+
+        .package-label i {
+            font-size: 15px;
+        }
+
+    .package-top h2 {
+        margin: 0 0 10px;
+        font-size: 25px;
+        font-weight: 800;
+    }
+
+    .package-description {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.7;
+        opacity: .92;
+    }
+
+    /* =========================================================
+       PACKAGE BODY
+       ========================================================= */
+
+    .package-body {
+        padding: 28px;
+    }
+
+    .price-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        padding-bottom: 25px;
+        margin-bottom: 25px;
+        border-bottom: 1px solid #e5eaf0;
+    }
+
+    .price-label {
+        color: #6b7280;
+        font-size: 12px;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+        .price-label i {
+            color: #0d6efd;
+        }
+
+    .price {
+        color: #0d6efd;
+        font-size: 34px;
+        font-weight: 800;
+        line-height: 1;
+    }
+
+    .lesson-count {
+        text-align: right;
+    }
+
+    .lesson-count-number {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 7px;
+        color: #172033;
+        font-size: 25px;
+        font-weight: 800;
+    }
+
+        .lesson-count-number i {
+            color: #0d6efd;
+            font-size: 18px;
+        }
+
+    .lesson-count-label {
+        color: #6b7280;
+        font-size: 11px;
+    }
+
+    /* =========================================================
+       INCLUDED
+       ========================================================= */
+
+    .included-title {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin: 0 0 15px;
+        color: #172033;
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+        .included-title i {
+            color: #0d6efd;
+            font-size: 15px;
+        }
+
+    .included-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .included-list li {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 11px 0;
+            border-bottom: 1px solid #edf1f5;
+            color: #4b5563;
+            font-size: 12px;
+        }
+
+            .included-list li:last-child {
+                border-bottom: none;
+            }
+
+    .included-icon {
+        width: 30px;
+        height: 30px;
+        min-width: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        background: #eaf3ff;
+        color: #0d6efd;
+        font-size: 12px;
+    }
+
+    .included-text {
+        flex: 1;
+    }
+
+    /* =========================================================
+       PAYMENT CARD
+       ========================================================= */
+
+    .payment-card {
+        background: #ffffff;
+        border: 1px solid #e1e8f0;
+        border-radius: 18px;
+        padding: 28px;
+        box-shadow: 0 6px 25px rgba(15, 23, 42, 0.06);
+    }
+
+        .payment-card h2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 7px;
+            color: #172033;
+            font-size: 20px;
             font-weight: 800;
         }
 
-            .purchase-header h1 span {
-                color: #e10600;
+            .payment-card h2 > i {
+                color: #0d6efd;
+                font-size: 18px;
             }
 
-        .purchase-header p {
-            margin: 0;
-            color: #8290a3;
-            font-size: 13px;
+        .payment-card > p {
+            margin: 0 0 22px;
+            color: #6b7280;
+            font-size: 12px;
             line-height: 1.6;
         }
 
+    /* =========================================================
+       ORDER SUMMARY
+       ========================================================= */
 
-    /* =============================================
-       PACKAGE SUMMARY
-       ============================================= */
-
-    .package-summary {
-        background: #08111d;
-        border: 1px solid #1b2a3d;
+    .order-summary {
+        background: #f5f8fc;
+        border: 1px solid #e1e8f0;
         border-radius: 12px;
-        padding: 20px;
-        margin-bottom: 25px;
+        padding: 17px;
+        margin-bottom: 22px;
     }
 
-        .package-summary h2 {
-            margin: 0 0 8px;
-            font-size: 20px;
-        }
+    .order-summary-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 13px;
+        color: #172033;
+        font-size: 13px;
+        font-weight: 800;
+    }
 
-        .package-summary p {
-            color: #8290a3;
-            font-size: 13px;
-            margin: 0 0 20px;
-            line-height: 1.6;
+        .order-summary-title i {
+            color: #0d6efd;
         }
 
     .summary-row {
         display: flex;
         justify-content: space-between;
-        padding: 12px 0;
-        border-bottom: 1px solid #1b2a3d;
-        font-size: 13px;
+        gap: 15px;
+        padding: 7px 0;
+        color: #6b7280;
+        font-size: 11px;
     }
-
-        .summary-row:last-child {
-            border-bottom: none;
-        }
-
-        .summary-row span {
-            color: #8290a3;
-        }
 
         .summary-row strong {
-            color: white;
+            color: #172033;
+            font-weight: 700;
+            text-align: right;
         }
 
-    .price {
-        color: #e10600 !important;
-        font-size: 22px;
+    .summary-total {
+        margin-top: 8px;
+        padding-top: 13px;
+        border-top: 1px solid #dce4ed;
     }
 
+        .summary-total span {
+            color: #172033;
+            font-weight: 800;
+        }
 
-    /* =============================================
-       PAYMENT
-       ============================================= */
+        .summary-total strong {
+            color: #0d6efd;
+            font-size: 18px;
+        }
 
-    .payment-title {
-        font-size: 18px;
-        margin: 0 0 15px;
+    /* =========================================================
+       PAYMENT METHODS
+       ========================================================= */
+
+    .payment-method-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 12px;
+        color: #172033;
+        font-size: 13px;
+        font-weight: 800;
     }
 
-    .payment-method {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        .payment-method-title i {
+            color: #0d6efd;
+        }
+
+    .payment-options {
+        display: flex;
+        flex-direction: column;
         gap: 10px;
         margin-bottom: 20px;
     }
 
     .payment-option {
-        background: #08111d;
-        border: 1px solid #293b52;
-        border-radius: 9px;
-        padding: 16px 10px;
-        text-align: center;
-        cursor: pointer;
-        color: #8290a3;
-        transition: .2s ease;
+        position: relative;
     }
-
-        .payment-option:hover {
-            border-color: #e10600;
-            color: white;
-        }
-
-        .payment-option.selected {
-            border-color: #e10600;
-            background: rgba(225, 6, 0, .08);
-            color: white;
-        }
 
         .payment-option input {
-            display: none;
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
         }
+
+    .payment-label {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        width: 100%;
+        padding: 14px;
+        background: #ffffff;
+        border: 1px solid #0d6efd;
+        border-radius: 11px;
+        cursor: default;
+        transition: all .2s ease;
+        box-shadow: 0 0 0 2px rgba(13, 110, 253, .08);
+    }
 
     .payment-icon {
-        display: block;
-        font-size: 24px;
-        margin-bottom: 8px;
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: #0d6efd;
+        color: #ffffff;
+        font-size: 17px;
     }
-
-    .payment-name {
-        font-size: 13px;
-        font-weight: 700;
-    }
-
-
-    /* =============================================
-       PAYMENT INFORMATION
-       ============================================= */
 
     .payment-info {
-        display: none;
-        background: #08111d;
-        border: 1px solid #1b2a3d;
-        border-radius: 10px;
-        padding: 15px;
-        margin-bottom: 20px;
-        color: #8290a3;
-        font-size: 12px;
-        line-height: 1.6;
+        flex: 1;
+        min-width: 0;
     }
 
-        .payment-info.active {
+        .payment-info strong {
             display: block;
+            margin-bottom: 3px;
+            color: #172033;
+            font-size: 12px;
         }
 
-    .stripe-info {
-        border-left: 3px solid #635bff;
+        .payment-info span {
+            display: block;
+            color: #6b7280;
+            font-size: 10px;
+        }
+
+    .radio-circle {
+        width: 18px;
+        height: 18px;
+        min-width: 18px;
+        border: 2px solid #0d6efd;
+        border-radius: 50%;
+        position: relative;
     }
 
-    .cash-info {
-        border-left: 3px solid #22c55e;
-    }
+        .radio-circle::after {
+            content: "";
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            top: 3px;
+            left: 3px;
+            background: #0d6efd;
+            border-radius: 50%;
+        }
 
-    .eft-info {
-        border-left: 3px solid #fde047;
-    }
+    /* =========================================================
+       BUY BUTTON
+       ========================================================= */
 
-
-    /* =============================================
-       PAY BUTTON
-       ============================================= */
-
-    .pay-button {
+    .buy-button {
         width: 100%;
-        padding: 15px;
-        border: none;
-        border-radius: 9px;
-        background: #e10600;
-        color: white;
-        font-size: 14px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: .2s;
-    }
-
-        .pay-button:hover {
-            background: #ff211a;
-        }
-
-        .pay-button:disabled {
-            opacity: .6;
-            cursor: not-allowed;
-        }
-
-
-    /* =============================================
-       BACK BUTTONS
-       ============================================= */
-
-    .back-actions {
         display: flex;
-        gap: 12px;
-        margin-top: 20px;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        padding: 14px;
+        border: none;
+        border-radius: 10px;
+        background: #0d6efd;
+        color: #ffffff;
+        font-size: 13px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: all .25s ease;
     }
+
+        .buy-button:hover {
+            background: #084298;
+            transform: translateY(-1px);
+            box-shadow: 0 7px 18px rgba(13, 110, 253, .20);
+        }
+
+        .buy-button i {
+            font-size: 14px;
+        }
+
+    /* =========================================================
+       SECURITY NOTE
+       ========================================================= */
+
+    .security-note {
+        display: flex;
+        align-items: flex-start;
+        gap: 9px;
+        margin-top: 15px;
+        padding: 12px;
+        background: #f5f8fc;
+        border-radius: 9px;
+        color: #6b7280;
+        font-size: 10px;
+        line-height: 1.5;
+    }
+
+    .security-note-icon {
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 6px;
+        background: #eaf3ff;
+        color: #0d6efd;
+    }
+
+    /* =========================================================
+       BACK BUTTON
+       ========================================================= */
 
     .back-button {
-        flex: 1;
-        display: block;
-        text-align: center;
-        padding: 12px 15px;
-        background: #16263a;
-        border: 1px solid #29415c;
-        border-radius: 9px;
-        color: #ffffff;
-        text-decoration: none;
-        font-size: 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        margin-top: 20px;
+        color: #0d6efd;
+        font-size: 12px;
         font-weight: 700;
+        text-decoration: none;
         transition: .2s ease;
     }
 
         .back-button:hover {
-            background: #243b55;
-            color: white;
+            color: #084298;
             text-decoration: none;
+            transform: translateX(-2px);
         }
 
-    .dashboard-button {
-        flex: 1;
-        display: block;
-        text-align: center;
-        padding: 12px 15px;
-        background: rgba(225, 6, 0, .10);
-        border: 1px solid rgba(225, 6, 0, .40);
-        border-radius: 9px;
-        color: #ffffff;
-        text-decoration: none;
-        font-size: 13px;
-        font-weight: 700;
-        transition: .2s ease;
+    /* =========================================================
+       VALIDATION
+       ========================================================= */
+
+    .field-validation-error,
+    .validation-summary-errors {
+        color: #b02a37;
+        font-size: 11px;
     }
 
-        .dashboard-button:hover {
-            background: #e10600;
-            color: white;
-            text-decoration: none;
-        }
+    .validation-summary-errors {
+        background: #fff0f1;
+        border: 1px solid #f5b7bd;
+        border-radius: 9px;
+        padding: 12px;
+        margin-bottom: 15px;
+    }
 
-
-    /* =============================================
+    /* =========================================================
        RESPONSIVE
-       ============================================= */
+       ========================================================= */
 
-    @@media(max-width: 600px) {
+    @@media (max-width: 850px) {
 
-        .purchase-page {
-            padding: 25px 15px;
-        }
-
-        .purchase-card {
-            padding: 20px;
-        }
-
-        .payment-method {
+        .purchase-grid {
             grid-template-columns: 1fr;
         }
+    }
 
-        .back-actions {
-            flex-direction: column;
+    @@media (max-width: 600px) {
+
+        .purchase-page {
+            padding: 20px 12px 40px;
+        }
+
+        .purchase-header {
+            padding: 22px;
+        }
+
+            .purchase-header h1 {
+                font-size: 22px;
+            }
+
+        .package-top {
+            padding: 24px;
+        }
+
+            .package-top h2 {
+                font-size: 21px;
+            }
+
+        .package-body,
+        .payment-card {
+            padding: 22px;
+        }
+
+        .price-section {
+            align-items: flex-start;
+        }
+
+        .price {
+            font-size: 30px;
         }
     }
 </style>
 
-
 <div class="purchase-page">
 
+    
     <div class="purchase-container">
 
-        <div class="purchase-card">
+        <!-- =====================================================
+             PAGE HEADER
+             ===================================================== -->
+
+        <div class="purchase-header">
+
+            <div class="purchase-header-content">
+
+                <div class="purchase-header-icon">
+                    <i class="fa-solid fa-car"></i>
+                </div>
+
+                <div>
+
+                    <h1>
+                        Purchase Driving Package
+                    </h1>
+
+                    <p>
+                        Choose your package and pay securely online.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
 
 
-            <!-- =============================================
-                 HEADER
-                 ============================================= -->
+        <!-- =====================================================
+             MAIN CONTENT
+             ===================================================== -->
 
-            <div class="purchase-header">
+        <div class="purchase-grid">
 
-                <h1>
-                    Purchase <span>Package</span>
-                </h1>
 
-                <p>
-                    Select your preferred payment method to
-                    purchase this driving lesson package.
-                </p>
+            <!-- =================================================
+                 PACKAGE INFORMATION
+                 ================================================= -->
+
+            <div class="package-card">
+
+                <div class="package-top">
+
+                    <div class="package-label">
+
+                        <i class="fa-solid fa-car-side"></i>
+
+                        Driving Lesson Package
+
+                    </div>
+
+
+                    <h2>
+                        @Model.PackageName
+                    </h2>
+
+
+                    <p class="package-description">
+
+                        @Model.Description
+
+                    </p>
+
+                </div>
+
+
+                <div class="package-body">
+
+
+                    <!-- PRICE -->
+
+                    <div class="price-section">
+
+                        <div>
+
+                            <div class="price-label">
+
+                                <i class="fa-solid fa-tag"></i>
+
+                                Package Price
+
+                            </div>
+
+                            <div class="price">
+
+                                R @Model.Price.ToString("N0")
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="lesson-count">
+
+                            <span class="lesson-count-number">
+
+                                <i class="fa-solid fa-book-open"></i>
+
+                                @Model.NumberOfLessons
+
+                            </span>
+
+                            <span class="lesson-count-label">
+
+                                Lessons Included
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- INCLUDED -->
+
+                    <h3 class="included-title">
+
+                        <i class="fa-solid fa-list-check"></i>
+
+                        What's Included
+
+                    </h3>
+
+
+                    <ul class="included-list">
+
+                        <li>
+
+                            <span class="included-icon">
+
+                                <i class="fa-solid fa-user-tie"></i>
+
+                            </span>
+
+                            <span class="included-text">
+
+                                Professional driving instructor
+
+                            </span>
+
+                        </li>
+
+
+                        <li>
+
+                            <span class="included-icon">
+
+                                <i class="fa-solid fa-calendar-days"></i>
+
+                            </span>
+
+                            <span class="included-text">
+
+                                Flexible lesson scheduling
+
+                            </span>
+
+                        </li>
+
+
+                        <li>
+
+                            <span class="included-icon">
+
+                                <i class="fa-solid fa-gauge-high"></i>
+
+                            </span>
+
+                            <span class="included-text">
+
+                                Lessons managed through your dashboard
+
+                            </span>
+
+                        </li>
+
+
+                        <li>
+
+                            <span class="included-icon">
+
+                                <i class="fa-solid fa-chart-line"></i>
+
+                            </span>
+
+                            <span class="included-text">
+
+                                Track your lesson progress
+
+                            </span>
+
+                        </li>
+
+
+                        <li>
+
+                            <span class="included-icon">
+
+                                <i class="fa-solid fa-comment-dots"></i>
+
+                            </span>
+
+                            <span class="included-text">
+
+                                Receive instructor feedback
+
+                            </span>
+
+                        </li>
+
+                    </ul>
+
+                </div>
 
             </div>
 
 
-            <!-- =============================================
-                 PACKAGE SUMMARY
-                 ============================================= -->
+            <!-- =================================================
+                 PAYMENT
+                 ================================================= -->
 
-            <div class="package-summary">
+            <div class="payment-card">
 
                 <h2>
-                    @Model.PackageName
+
+                    <i class="fa-solid fa-credit-card"></i>
+
+                    Secure Card Payment
+
                 </h2>
 
-                @if (!string.IsNullOrWhiteSpace(Model.Description))
+                <p>
+
+                    Review your package and continue to secure payment
+                    through Stripe.
+
+                </p>
+
+
+                @using (Html.BeginForm(
+                    "Purchase",
+                    "Package",
+                    FormMethod.Post))
                 {
-                    <p>
-                        @Model.Description
-                    </p>
+
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(
+                        true,
+                        "",
+                        new { @class = "validation-summary-errors" })
+
+
+                    <!-- ORDER SUMMARY -->
+
+                    <div class="order-summary">
+
+                        <h3 class="order-summary-title">
+
+                            <i class="fa-solid fa-receipt"></i>
+
+                            Order Summary
+
+                        </h3>
+
+
+                        <div class="summary-row">
+
+                            <span>
+                                Package
+                            </span>
+
+                            <strong>
+                                @Model.PackageName
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-row">
+
+                            <span>
+                                Lessons
+                            </span>
+
+                            <strong>
+                                @Model.NumberOfLessons
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-row summary-total">
+
+                            <span>
+                                Total
+                            </span>
+
+                            <strong>
+                                R @Model.Price.ToString("N0")
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PAYMENT METHOD -->
+
+                    <h3 class="payment-method-title">
+
+                        <i class="fa-solid fa-wallet"></i>
+
+                        Payment Method
+
+                    </h3>
+
+
+                    <div class="payment-options">
+
+                        <!-- CARD ONLY -->
+
+                        <div class="payment-option">
+
+                            <input type="radio"
+                                   id="paymentCard"
+                                   name="paymentMethod"
+                                   value="Card"
+                                   checked />
+
+                            <label for="paymentCard"
+                                   class="payment-label">
+
+                                <div class="payment-icon">
+
+                                    <i class="fa-solid fa-credit-card"></i>
+
+                                </div>
+
+                                <div class="payment-info">
+
+                                    <strong>
+                                        Card Payment
+                                    </strong>
+
+                                    <span>
+                                        Secure online payment with Stripe
+                                    </span>
+
+                                </div>
+
+                                <div class="radio-circle"></div>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- BUY -->
+
+                    <button type="submit"
+                            class="buy-button">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        Continue to Secure Payment
+
+                    </button>
+
+
+                    <!-- SECURITY -->
+
+                    <div class="security-note">
+
+                        <span class="security-note-icon">
+
+                            <i class="fa-solid fa-shield-halved"></i>
+
+                        </span>
+
+                        <span>
+
+                            Your payment information is securely processed.
+                            Card payments are handled through Stripe.
+                            Your package will be activated after successful
+                            payment.
+
+                        </span>
+
+                    </div>
+
                 }
 
 
-                <div class="summary-row">
+                <!-- BACK -->
 
-                    <span>
-                        Lessons Included
-                    </span>
-
-                    <strong>
-                        @Model.NumberOfLessons
-                    </strong>
-
-                </div>
-
-
-                <div class="summary-row">
-
-                    <span>
-                        Package Price
-                    </span>
-
-                    <strong class="price">
-                        R @Model.Price.ToString("N2")
-                    </strong>
-
-                </div>
-
-            </div>
-
-
-            <!-- =============================================
-                 PAYMENT METHOD
-                 ============================================= -->
-
-            <h3 class="payment-title">
-                Select Payment Method
-            </h3>
-
-
-            @using (Html.BeginForm(
-                "Purchase",
-                "Package",
-                FormMethod.Post,
-                new { id = "purchaseForm" }))
-            {
-                @Html.AntiForgeryToken()
-
-                <input type="hidden"
-                       name="id"
-                       value="@Model.LessonPackageId" />
-
-
-                <!-- PAYMENT OPTIONS -->
-
-                <div class="payment-method">
-
-
-                    <!-- CARD -->
-
-                    <label class="payment-option"
-                           id="cardOption">
-
-                        <input type="radio"
-                               name="paymentMethod"
-                               value="Card"
-                               required />
-
-                        <span class="payment-icon">
-                            💳
-                        </span>
-
-                        <span class="payment-name">
-                            Card
-                        </span>
-
-                    </label>
-
-
-                    <!-- CASH -->
-
-                    <label class="payment-option"
-                           id="cashOption">
-
-                        <input type="radio"
-                               name="paymentMethod"
-                               value="Cash"
-                               required />
-
-                        <span class="payment-icon">
-                            💵
-                        </span>
-
-                        <span class="payment-name">
-                            Cash
-                        </span>
-
-                    </label>
-
-
-                    <!-- EFT -->
-
-                    <label class="payment-option"
-                           id="eftOption">
-
-                        <input type="radio"
-                               name="paymentMethod"
-                               value="EFT"
-                               required />
-
-                        <span class="payment-icon">
-                            🏦
-                        </span>
-
-                        <span class="payment-name">
-                            EFT
-                        </span>
-
-                    </label>
-
-
-                </div>
-
-
-                <!-- =============================================
-                     CARD INFORMATION
-                     ============================================= -->
-
-                <div id="cardInfo"
-                     class="payment-info stripe-info">
-
-                    <strong>
-                        💳 Secure Stripe Payment
-                    </strong>
-
-                    <br />
-
-                    You will be redirected to Stripe's secure
-                    payment page where you can enter your card
-                    details and complete the payment.
-
-                </div>
-
-
-                <!-- =============================================
-                     CASH INFORMATION
-                     ============================================= -->
-
-                <div id="cashInfo"
-                     class="payment-info cash-info">
-
-                    <strong>
-                        💵 Cash Payment
-                    </strong>
-
-                    <br />
-
-                    Your package will remain pending until you
-                    make the cash payment and an administrator
-                    confirms the payment.
-
-                </div>
-
-
-                <!-- =============================================
-                     EFT INFORMATION
-                     ============================================= -->
-
-                <div id="eftInfo"
-                     class="payment-info eft-info">
-
-                    <strong>
-                        🏦 EFT Payment
-                    </strong>
-
-                    <br />
-
-                    Your package will remain pending until your
-                    EFT payment has been received and confirmed.
-
-                </div>
-
-
-                <!-- =============================================
-                     SUBMIT BUTTON
-                     ============================================= -->
-
-                <button type="submit"
-                        id="purchaseButton"
-                        class="pay-button">
-
-                    Select a Payment Method
-
-                </button>
-            }
-
-
-            <!-- =============================================
-                 BACK BUTTONS
-                 ============================================= -->
-
-            <div class="back-actions">
-
-                <!-- BACK TO PACKAGE -->
-
-                <a href="@Url.Action(
-                    "Details",
-                    "Package",
-                    new { id = Model.LessonPackageId })"
+                <a href="@Url.Action("Index", "Package")"
                    class="back-button">
 
-                    ← Back to Package
+                    <i class="fa-solid fa-arrow-left"></i>
 
-                </a>
-
-
-                <!-- BACK TO DASHBOARD -->
-
-                <a href="@Url.Action("Index", "Dashboard")"
-                   class="dashboard-button">
-
-                    <i class="fa-solid fa-house"></i>
-                    Back to Dashboard
+                    Back to Packages
 
                 </a>
 
             </div>
-
 
         </div>
 
     </div>
+    
 
 </div>
-
-
-<script>
-
-    document.addEventListener("DOMContentLoaded", function () {
-
-        var paymentOptions =
-            document.querySelectorAll(
-                'input[name="paymentMethod"]'
-            );
-
-        var cardOption =
-            document.getElementById("cardOption");
-
-        var cashOption =
-            document.getElementById("cashOption");
-
-        var eftOption =
-            document.getElementById("eftOption");
-
-
-        var cardInfo =
-            document.getElementById("cardInfo");
-
-        var cashInfo =
-            document.getElementById("cashInfo");
-
-        var eftInfo =
-            document.getElementById("eftInfo");
-
-
-        var purchaseButton =
-            document.getElementById("purchaseButton");
-
-
-        paymentOptions.forEach(function (option) {
-
-            option.addEventListener(
-                "change",
-                function () {
-
-
-                    // Remove selected styling
-
-                    cardOption.classList.remove(
-                        "selected"
-                    );
-
-                    cashOption.classList.remove(
-                        "selected"
-                    );
-
-                    eftOption.classList.remove(
-                        "selected"
-                    );
-
-
-                    // Hide all information
-
-                    cardInfo.classList.remove(
-                        "active"
-                    );
-
-                    cashInfo.classList.remove(
-                        "active"
-                    );
-
-                    eftInfo.classList.remove(
-                        "active"
-                    );
-
-
-                    // CARD
-
-                    if (this.value === "Card") {
-
-                        cardOption.classList.add(
-                            "selected"
-                        );
-
-                        cardInfo.classList.add(
-                            "active"
-                        );
-
-                        purchaseButton.innerHTML =
-                            "Proceed to Secure Stripe Payment 💳";
-
-                    }
-
-
-                    // CASH
-
-                    if (this.value === "Cash") {
-
-                        cashOption.classList.add(
-                            "selected"
-                        );
-
-                        cashInfo.classList.add(
-                            "active"
-                        );
-
-                        purchaseButton.innerHTML =
-                            "Submit Cash Payment Request";
-
-                    }
-
-
-                    // EFT
-
-                    if (this.value === "EFT") {
-
-                        eftOption.classList.add(
-                            "selected"
-                        );
-
-                        eftInfo.classList.add(
-                            "active"
-                        );
-
-                        purchaseButton.innerHTML =
-                            "Submit EFT Payment Request";
-
-                    }
-
-                }
-            );
-
-        });
-
-    });
-
-</script>

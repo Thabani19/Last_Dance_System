@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿
+using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -18,9 +19,10 @@ namespace Last_Dance_System.Models
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(
             UserManager<ApplicationUser> manager)
         {
-            var userIdentity = await manager.CreateIdentityAsync(
-                this,
-                DefaultAuthenticationTypes.ApplicationCookie);
+            var userIdentity =
+                await manager.CreateIdentityAsync(
+                    this,
+                    DefaultAuthenticationTypes.ApplicationCookie);
 
             return userIdentity;
         }
@@ -75,6 +77,8 @@ namespace Last_Dance_System.Models
         public DbSet<Cancellation> Cancellations { get; set; }
 
         public DbSet<Review> Reviews { get; set; }
+
+        public DbSet<InstructorFeedback> InstructorFeedbacks { get; set; }
 
         public DbSet<Notification> Notifications { get; set; }
 
@@ -156,15 +160,6 @@ namespace Last_Dance_System.Models
             // =====================================================
             // BOOKING → PAYMENT
             // =====================================================
-            //
-            // OPTIONAL
-            //
-            // Normal lesson payments have a BookingId.
-            //
-            // Package payments do NOT have a BookingId.
-            //
-            // Therefore BookingId must be nullable.
-            // =====================================================
 
             modelBuilder.Entity<Payment>()
                 .HasOptional(p => p.Booking)
@@ -176,20 +171,10 @@ namespace Last_Dance_System.Models
             // =====================================================
             // STUDENT PACKAGE → PAYMENT
             // =====================================================
-            //
-            // OPTIONAL
-            //
-            // Package payments have a StudentPackageId.
-            //
-            // Normal lesson payments do NOT have a
-            // StudentPackageId.
-            //
-            // Therefore StudentPackageId must be nullable.
-            // =====================================================
 
             modelBuilder.Entity<Payment>()
                 .HasOptional(p => p.StudentPackage)
-                .WithMany()
+                .WithMany(sp => sp.Payments)
                 .HasForeignKey(p => p.StudentPackageId)
                 .WillCascadeOnDelete(false);
 
@@ -254,20 +239,31 @@ namespace Last_Dance_System.Models
             // =====================================================
 
             modelBuilder.Entity<Review>()
-                .HasRequired(r => r.Registration)
+                .HasOptional(r => r.Registration)
                 .WithMany(s => s.Reviews)
                 .HasForeignKey(r => r.RegistrationId)
                 .WillCascadeOnDelete(false);
 
 
             // =====================================================
-            // INSTRUCTOR → REVIEW
+            // INSTRUCTOR BEING REVIEWED → REVIEW
             // =====================================================
 
             modelBuilder.Entity<Review>()
                 .HasOptional(r => r.Instructor)
                 .WithMany(i => i.Reviews)
                 .HasForeignKey(r => r.InstructorId)
+                .WillCascadeOnDelete(false);
+
+
+            // =====================================================
+            // INSTRUCTOR WHO SUBMITTED REVIEW → REVIEW
+            // =====================================================
+
+            modelBuilder.Entity<Review>()
+                .HasOptional(r => r.ReviewerInstructor)
+                .WithMany()
+                .HasForeignKey(r => r.ReviewerInstructorId)
                 .WillCascadeOnDelete(false);
 
 
@@ -283,13 +279,68 @@ namespace Last_Dance_System.Models
 
 
             // =====================================================
+            // BOOKING → REVIEW
+            // =====================================================
+
+            modelBuilder.Entity<Review>()
+                .HasRequired(r => r.Booking)
+                .WithMany()
+                .HasForeignKey(r => r.BookingId)
+                .WillCascadeOnDelete(false);
+
+
+            // =====================================================
+            // BOOKING → INSTRUCTOR FEEDBACK
+            // =====================================================
+
+            modelBuilder.Entity<InstructorFeedback>()
+                .HasRequired(f => f.Booking)
+                .WithMany()
+                .HasForeignKey(f => f.BookingId)
+                .WillCascadeOnDelete(false);
+
+
+            // =====================================================
+            // INSTRUCTOR → INSTRUCTOR FEEDBACK
+            // =====================================================
+
+            modelBuilder.Entity<InstructorFeedback>()
+                .HasRequired(f => f.Instructor)
+                .WithMany()
+                .HasForeignKey(f => f.InstructorId)
+                .WillCascadeOnDelete(false);
+
+
+            // =====================================================
+            // REGISTRATION → INSTRUCTOR FEEDBACK
+            // =====================================================
+
+            modelBuilder.Entity<InstructorFeedback>()
+                .HasRequired(f => f.Registration)
+                .WithMany()
+                .HasForeignKey(f => f.RegistrationId)
+                .WillCascadeOnDelete(false);
+
+
+            // =====================================================
             // REGISTRATION → NOTIFICATION
             // =====================================================
 
             modelBuilder.Entity<Notification>()
-                .HasRequired(n => n.Registration)
+                .HasOptional(n => n.Registration)
                 .WithMany(r => r.Notifications)
                 .HasForeignKey(n => n.RegistrationId)
+                .WillCascadeOnDelete(false);
+
+
+            // =====================================================
+            // INSTRUCTOR → NOTIFICATION
+            // =====================================================
+
+            modelBuilder.Entity<Notification>()
+                .HasOptional(n => n.Instructor)
+                .WithMany()
+                .HasForeignKey(n => n.InstructorId)
                 .WillCascadeOnDelete(false);
 
 
@@ -381,3 +432,4 @@ namespace Last_Dance_System.Models
         }
     }
 }
+

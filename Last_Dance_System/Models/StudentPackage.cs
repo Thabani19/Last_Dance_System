@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -33,6 +34,16 @@ namespace Last_Dance_System.Models
 
 
         // =========================================================
+        // PAYMENTS
+        // =========================================================
+
+        // One StudentPackage can have one or more
+        // Payment records.
+
+        public virtual ICollection<Payment> Payments { get; set; }
+
+
+        // =========================================================
         // LESSON CREDITS
         // =========================================================
 
@@ -44,7 +55,7 @@ namespace Last_Dance_System.Models
 
 
         // =========================================================
-        // PAYMENT
+        // PAYMENT INFORMATION
         // =========================================================
 
         [Required]
@@ -72,5 +83,15 @@ namespace Last_Dance_System.Models
         public bool IsCancelled { get; set; }
 
         public DateTime? CancellationDate { get; set; }
+
+
+        // =========================================================
+        // CONSTRUCTOR
+        // =========================================================
+
+        public StudentPackage()
+        {
+            Payments = new HashSet<Payment>();
+        }
     }
 }

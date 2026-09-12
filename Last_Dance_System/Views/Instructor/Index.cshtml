@@ -1,0 +1,850 @@
+﻿@model IEnumerable<Last_Dance_System.Models.Instructor>
+
+@{
+    ViewBag.Title = "Instructors";
+}
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #07111f;
+        color: #ffffff;
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+    /* =========================================================
+       PAGE
+       ========================================================= */
+
+    .instructor-page {
+        min-height: calc(100vh - 50px);
+        padding: 35px;
+        background: radial-gradient(circle at 80% 10%, rgba(225, 6, 0, 0.08), transparent 30%), linear-gradient(135deg, #07111f 0%, #0a1626 50%, #06101c 100%);
+    }
+
+    .instructor-container {
+        max-width: 1300px;
+        margin: 0 auto;
+    }
+
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 25px;
+        margin-bottom: 25px;
+        padding: 25px 28px;
+        background: #0b1727;
+        border: 1px solid #17283d;
+        border-radius: 18px;
+        box-shadow: 0 15px 40px rgba(0,0,0,.25);
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .header-icon {
+        width: 52px;
+        height: 52px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: #e10600;
+        color: white;
+        font-size: 21px;
+        box-shadow: 0 8px 20px rgba(225,6,0,.20);
+    }
+
+    .page-header h1 {
+        margin: 0 0 5px;
+        color: white;
+        font-size: 25px;
+        font-weight: 800;
+    }
+
+    .page-header p {
+        margin: 0;
+        color: #6f8196;
+        font-size: 12px;
+    }
+
+
+    /* =========================================================
+       HEADER ACTIONS
+       ========================================================= */
+
+    .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+
+    /* =========================================================
+       BACK TO DASHBOARD BUTTON
+       ========================================================= */
+
+    .dashboard-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 42px;
+        padding: 11px 18px;
+        background: #101f32;
+        border: 1px solid #263b55;
+        border-radius: 9px;
+        color: #d8e1eb;
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 700;
+        transition: .25s ease;
+    }
+
+        .dashboard-button:hover {
+            background: #182b43;
+            border-color: #e10600;
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+
+
+    /* =========================================================
+       ADD BUTTON
+       ========================================================= */
+
+    .add-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 42px;
+        padding: 11px 18px;
+        background: #e10600;
+        border: 1px solid #e10600;
+        border-radius: 9px;
+        color: white;
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 700;
+        transition: .25s ease;
+        box-shadow: 0 7px 18px rgba(225,6,0,.16);
+    }
+
+        .add-button:hover {
+            background: #ff211a;
+            border-color: #ff211a;
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+
+
+    /* =========================================================
+       SUMMARY
+       ========================================================= */
+
+    .summary-card {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+        padding: 18px 20px;
+        background: #0b1727;
+        border: 1px solid #17283d;
+        border-radius: 14px;
+    }
+
+    .summary-icon {
+        width: 43px;
+        height: 43px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: rgba(225,6,0,.10);
+        color: #e10600;
+    }
+
+    .summary-text strong {
+        display: block;
+        color: white;
+        font-size: 20px;
+        font-weight: 800;
+    }
+
+    .summary-text span {
+        display: block;
+        margin-top: 2px;
+        color: #65778d;
+        font-size: 10px;
+    }
+
+
+    /* =========================================================
+       INSTRUCTOR GRID
+       ========================================================= */
+
+    .instructor-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+
+
+    /* =========================================================
+       INSTRUCTOR CARD
+       ========================================================= */
+
+    .instructor-card {
+        background: #0b1727;
+        border: 1px solid #17283d;
+        border-radius: 16px;
+        overflow: hidden;
+        transition: .25s ease;
+    }
+
+        .instructor-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(225,6,0,.45);
+            box-shadow: 0 15px 35px rgba(0,0,0,.25);
+        }
+
+
+    /* =========================================================
+       CARD TOP
+       ========================================================= */
+
+    .card-top {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 20px;
+        border-bottom: 1px solid #17283d;
+    }
+
+    .instructor-avatar {
+        width: 58px;
+        height: 58px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #e10600, #8e0000);
+        color: white;
+        font-size: 18px;
+        font-weight: 800;
+        box-shadow: 0 7px 18px rgba(225,6,0,.20);
+    }
+
+    .instructor-name {
+        min-width: 0;
+    }
+
+        .instructor-name h3 {
+            margin: 0 0 4px;
+            color: white;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .instructor-name span {
+            color: #65778d;
+            font-size: 10px;
+        }
+
+
+    /* =========================================================
+       CARD BODY
+       ========================================================= */
+
+    .card-body {
+        padding: 20px;
+    }
+
+    .info-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 11px;
+        margin-bottom: 14px;
+    }
+
+        .info-row:last-child {
+            margin-bottom: 0;
+        }
+
+    .info-icon {
+        width: 28px;
+        height: 28px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 7px;
+        background: #091321;
+        color: #e10600;
+        font-size: 11px;
+    }
+
+    .info-content {
+        min-width: 0;
+    }
+
+    .info-label {
+        display: block;
+        margin-bottom: 2px;
+        color: #5f7186;
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+    }
+
+    .info-value {
+        display: block;
+        color: #dce4ed;
+        font-size: 11px;
+        font-weight: 600;
+        word-break: break-word;
+    }
+
+
+    /* =========================================================
+       STATUS
+       ========================================================= */
+
+    .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 9px;
+        border-radius: 20px;
+        font-size: 8px;
+        font-weight: 800;
+        text-transform: uppercase;
+    }
+
+    .status-active {
+        background: rgba(0,180,100,.10);
+        border: 1px solid rgba(0,180,100,.20);
+        color: #38d996;
+    }
+
+    .status-inactive {
+        background: rgba(120,130,145,.10);
+        border: 1px solid rgba(120,130,145,.20);
+        color: #8996a5;
+    }
+
+
+    /* =========================================================
+       CARD FOOTER
+       ========================================================= */
+
+    .card-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        padding: 15px 20px;
+        background: #091321;
+        border-top: 1px solid #17283d;
+    }
+
+    .license-text {
+        color: #65778d;
+        font-size: 9px;
+    }
+
+        .license-text strong {
+            color: #dce4ed;
+        }
+
+
+    /* =========================================================
+       EMPTY STATE
+       ========================================================= */
+
+    .empty-card {
+        padding: 60px 30px;
+        background: #0b1727;
+        border: 1px solid #17283d;
+        border-radius: 16px;
+        text-align: center;
+    }
+
+    .empty-icon {
+        width: 65px;
+        height: 65px;
+        margin: 0 auto 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(225,6,0,.10);
+        color: #e10600;
+        font-size: 25px;
+    }
+
+    .empty-card h3 {
+        margin: 0 0 7px;
+        color: white;
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+    .empty-card p {
+        margin: 0 0 20px;
+        color: #65778d;
+        font-size: 11px;
+    }
+
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @@media (max-width: 1100px) {
+
+        .instructor-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+
+    @@media (max-width: 750px) {
+
+        .instructor-page {
+            padding: 20px 15px;
+        }
+
+        .page-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .header-actions {
+            flex-direction: column;
+        }
+
+        .dashboard-button,
+        .add-button {
+            width: 100%;
+        }
+
+        .instructor-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+
+    @@media (max-width: 500px) {
+
+        .page-header {
+            padding: 20px;
+        }
+
+        .header-left {
+            align-items: flex-start;
+        }
+
+        .page-header h1 {
+            font-size: 21px;
+        }
+
+        .header-icon {
+            width: 46px;
+            height: 46px;
+        }
+    }
+</style>
+
+<div class="instructor-page">
+
+    
+    <div class="instructor-container">
+
+
+        <!-- =====================================================
+             HEADER
+             ===================================================== -->
+
+        <div class="page-header">
+
+            <div class="header-left">
+
+                <div class="header-icon">
+
+                    <i class="fa-solid fa-user-tie"></i>
+
+                </div>
+
+                <div>
+
+                    <h1>
+                        Instructors
+                    </h1>
+
+                    <p>
+                        View and manage all driving instructors.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 HEADER BUTTONS
+                 ================================================= -->
+
+            <div class="header-actions">
+
+                <!-- BACK TO DASHBOARD -->
+
+                <a href="@Url.Action("Index", "Admin")"
+                   class="dashboard-button">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Back to Dashboard
+
+                </a>
+
+
+                <!-- ADD INSTRUCTOR -->
+
+                <a href="@Url.Action("Create", "Instructor")"
+                   class="add-button">
+
+                    <i class="fa-solid fa-user-plus"></i>
+
+                    Add Instructor
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             SUMMARY
+             ===================================================== -->
+
+        <div class="summary-card">
+
+            <div class="summary-icon">
+
+                <i class="fa-solid fa-users"></i>
+
+            </div>
+
+            <div class="summary-text">
+
+                <strong>
+                    @(Model == null ? 0 : Model.Count())
+                </strong>
+
+                <span>
+                    Registered Instructors
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             INSTRUCTORS
+             ===================================================== -->
+
+        @if (Model != null && Model.Any())
+        {
+
+            <div class="instructor-grid">
+
+                @foreach (var instructor in Model)
+                {
+
+                    var initials = "";
+
+                    if (!string.IsNullOrEmpty(instructor.FirstName))
+                    {
+                        initials += instructor.FirstName
+                            .Substring(0, 1)
+                            .ToUpper();
+                    }
+
+                    if (!string.IsNullOrEmpty(instructor.LastName))
+                    {
+                        initials += instructor.LastName
+                            .Substring(0, 1)
+                            .ToUpper();
+                    }
+
+
+                    <div class="instructor-card">
+
+
+                        <!-- CARD TOP -->
+
+                        <div class="card-top">
+
+                            <div class="instructor-avatar">
+
+                                @initials
+
+                            </div>
+
+
+                            <div class="instructor-name">
+
+                                <h3>
+
+                                    @instructor.FirstName
+                                    @instructor.LastName
+
+                                </h3>
+
+                                <span>
+                                    Driving Instructor
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- CARD BODY -->
+
+                        <div class="card-body">
+
+
+                            <!-- EMAIL -->
+
+                            <div class="info-row">
+
+                                <div class="info-icon">
+
+                                    <i class="fa-solid fa-envelope"></i>
+
+                                </div>
+
+                                <div class="info-content">
+
+                                    <span class="info-label">
+                                        Email
+                                    </span>
+
+                                    <span class="info-value">
+
+                                        @(string.IsNullOrEmpty(instructor.Email)
+                                        ? "Not provided"
+                                        : instructor.Email)
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- PHONE -->
+
+                            <div class="info-row">
+
+                                <div class="info-icon">
+
+                                    <i class="fa-solid fa-phone"></i>
+
+                                </div>
+
+                                <div class="info-content">
+
+                                    <span class="info-label">
+                                        Phone
+                                    </span>
+
+                                    <span class="info-value">
+
+                                        @(string.IsNullOrEmpty(instructor.Phone)
+                                        ? "Not provided"
+                                        : instructor.Phone)
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- EXPERIENCE -->
+
+                            <div class="info-row">
+
+                                <div class="info-icon">
+
+                                    <i class="fa-solid fa-star"></i>
+
+                                </div>
+
+                                <div class="info-content">
+
+                                    <span class="info-label">
+                                        Experience
+                                    </span>
+
+                                    <span class="info-value">
+
+                                        @instructor.Experience years
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- STATUS -->
+
+                            <div class="info-row">
+
+                                <div class="info-icon">
+
+                                    <i class="fa-solid fa-circle-check"></i>
+
+                                </div>
+
+                                <div class="info-content">
+
+                                    <span class="info-label">
+                                        Account Status
+                                    </span>
+
+
+                                    @if (instructor.IsActive)
+                                    {
+
+                                        <span class="status status-active">
+
+                                            <i class="fa-solid fa-check"></i>
+
+                                            Active
+
+                                        </span>
+
+                                    }
+                                    else
+                                    {
+
+                                        <span class="status status-inactive">
+
+                                            <i class="fa-solid fa-ban"></i>
+
+                                            Inactive
+
+                                        </span>
+
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- CARD FOOTER -->
+
+                        <div class="card-footer">
+
+                            <div class="license-text">
+
+                                License:
+
+                                <strong>
+
+                                    @(string.IsNullOrEmpty(instructor.LicenseNumber)
+                                    ? "Not provided"
+                                    : instructor.LicenseNumber)
+
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                }
+
+            </div>
+
+        }
+        else
+        {
+
+            <!-- =================================================
+                 EMPTY STATE
+                 ================================================= -->
+
+            <div class="empty-card">
+
+                <div class="empty-icon">
+
+                    <i class="fa-solid fa-user-tie"></i>
+
+                </div>
+
+
+                <h3>
+                    No Instructors Found
+                </h3>
+
+
+                <p>
+                    There are currently no instructors registered
+                    in the system.
+                </p>
+
+
+                <a href="@Url.Action("Create", "Instructor")"
+                   class="add-button">
+
+                    <i class="fa-solid fa-user-plus"></i>
+
+                    Add First Instructor
+
+                </a>
+
+            </div>
+
+        }
+
+    </div>
+    
+
+</div>
+
+<!-- =========================================================
+     FONT AWESOME
+     ========================================================= -->
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />

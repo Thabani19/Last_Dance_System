@@ -2,15 +2,16 @@
 @model LoginViewModel
 
 @{
-    ViewBag.Title = "Login";
+    Layout = null;
+    ViewBag.Title = "TK Driving School — Login";
 }
 
 <style>
-
-    /* =========================================
+    /* =========================================================
        TK DRIVING SCHOOL
-       DARK RED AUTOMOTIVE LOGIN
-       ========================================= */
+       BLUE + WHITE PROFESSIONAL LOGIN DESIGN
+       FUNCTIONALITY UNCHANGED
+       ========================================================= */
 
     * {
         box-sizing: border-box;
@@ -23,97 +24,51 @@
     body {
         margin: 0;
         padding: 0;
-        background: #050a12;
+        background: #f3f7fc;
+        color: #172033;
+        font-family: Arial, Helvetica, sans-serif;
     }
 
 
-    /* =========================================
-       MAIN LOGIN
-       ========================================= */
+    /* =========================================================
+       MAIN PAGE
+       ========================================================= */
 
-    .automotive-login {
-        min-height: calc(100vh - 50px);
-        background: radial-gradient( circle at 15% 50%, rgba(229, 57, 53, 0.12), transparent 30% ), radial-gradient( circle at 90% 10%, rgba(229, 57, 53, 0.07), transparent 25% ), linear-gradient( 135deg, #03070d 0%, #07111e 50%, #02060b 100% );
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 35px;
-        color: #ffffff;
-        font-family: "Segoe UI", Arial, sans-serif;
+    .login-page {
+        min-height: 100vh;
+        background: radial-gradient( circle at 10% 20%, rgba(37, 99, 235, 0.08), transparent 25% ), radial-gradient( circle at 90% 80%, rgba(14, 165, 233, 0.08), transparent 25% ), #f4f7fb;
     }
 
 
-    /* =========================================
-       RED HAZARD STRIPE
-       ========================================= */
+    /* =========================================================
+       TOP BLUE LINE
+       ========================================================= */
 
     .hazard-stripe {
-        position: absolute;
-        top: 0;
-        left: 0;
         width: 100%;
-        height: 7px;
-        background: repeating-linear-gradient( -45deg, #e53935 0, #e53935 14px, #07111e 14px, #07111e 28px );
+        height: 6px;
+        background: linear-gradient( 90deg, #0b3b8f, #1769d1, #2196f3 );
     }
 
 
-    /* =========================================
-       LOGIN WRAPPER
-       ========================================= */
+    /* =========================================================
+       TOP NAVIGATION
+       ========================================================= */
 
-    .login-wrapper {
+    .login-nav {
         width: 100%;
-        max-width: 1180px;
-        min-height: 680px;
-        display: grid;
-        grid-template-columns: 1.05fr 0.95fr;
-        background: #0b1420;
-        border: 1px solid rgba( 255, 255, 255, 0.08 );
-        border-radius: 26px;
-        overflow: hidden;
-        box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 60px rgba( 229, 57, 53, 0.06 );
-    }
-
-
-    /* =========================================
-       LEFT AUTOMOTIVE SIDE
-       ========================================= */
-
-    .automotive-side {
-        position: relative;
-        min-height: 680px;
-        overflow: hidden;
-        background: linear-gradient( 135deg, rgba(2,7,14,0.92), rgba(5,18,32,0.78) ), url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1400&q=85") center / cover no-repeat;
-    }
-
-
-        .automotive-side::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient( 90deg, rgba(3,8,15,0.96) 0%, rgba(3,8,15,0.55) 55%, rgba(3,8,15,0.78) 100% );
-            pointer-events: none;
-        }
-
-
-    /* =========================================
-       LEFT CONTENT
-       ========================================= */
-
-    .automotive-content {
-        position: relative;
-        z-index: 2;
-        height: 100%;
-        padding: 55px;
+        max-width: 1250px;
+        margin: 0 auto;
+        padding: 22px 30px;
         display: flex;
-        flex-direction: column;
+        align-items: center;
         justify-content: space-between;
     }
 
 
-    /* =========================================
+    /* =========================================================
        BRAND
-       ========================================= */
+       ========================================================= */
 
     .brand {
         display: flex;
@@ -122,207 +77,374 @@
     }
 
 
-    .brand-icon {
-        width: 46px;
-        height: 46px;
-        border-radius: 12px;
-        background: linear-gradient( 135deg, #ef5350, #b71c1c );
+    .logo {
+        width: 50px;
+        height: 50px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 22px;
-        box-shadow: 0 0 25px rgba( 229, 57, 53, 0.35 );
+        border-radius: 12px;
+        background: linear-gradient( 135deg, #0b3b8f, #1976d2 );
+        color: #ffffff;
+        font-size: 19px;
+        font-weight: 900;
+        letter-spacing: -1px;
+        box-shadow: 0 8px 22px rgba(11, 59, 143, 0.22);
+    }
+
+
+    .brand-text {
+        display: flex;
+        flex-direction: column;
     }
 
 
     .brand-name {
-        font-size: 22px;
-        font-weight: 800;
-        letter-spacing: 1.5px;
+        color: #12213a;
+        font-size: 19px;
+        font-weight: 900;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
     }
 
 
-        .brand-name span {
-            color: #e53935;
+    .brand-subtitle {
+        margin-top: 3px;
+        color: #718096;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1.3px;
+        text-transform: uppercase;
+    }
+
+
+    /* =========================================================
+       HOME BUTTON
+       ========================================================= */
+
+    .home-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 11px 18px;
+        border: 1px solid #d8e2ef;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #1d4ed8;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 800;
+        box-shadow: 0 3px 12px rgba(20, 50, 90, 0.05);
+        transition: all 0.25s ease;
+    }
+
+
+        .home-button:hover {
+            background: #0b3b8f;
+            border-color: #0b3b8f;
+            color: #ffffff;
+            text-decoration: none;
+            transform: translateY(-1px);
+            box-shadow: 0 7px 20px rgba(11, 59, 143, 0.22);
         }
 
 
-    /* =========================================
-       HERO
-       ========================================= */
+    /* =========================================================
+       MAIN
+       ========================================================= */
 
-    .hero-text {
-        max-width: 480px;
-        margin-top: auto;
-        margin-bottom: 35px;
+    .login-main {
+        width: 100%;
+        max-width: 1250px;
+        margin: 0 auto;
+        padding: 20px 30px 60px;
     }
 
 
-    .hero-badge {
+    /* =========================================================
+       LOGIN CARD
+       ========================================================= */
+
+    .login-layout {
+        display: grid;
+        grid-template-columns: 0.95fr 1.05fr;
+        min-height: 680px;
+        background: #ffffff;
+        border: 1px solid #dce6f2;
+        border-radius: 22px;
+        overflow: hidden;
+        box-shadow: 0 25px 70px rgba(24, 55, 90, 0.12);
+    }
+
+
+    /* =========================================================
+       LEFT BLUE SECTION
+       ========================================================= */
+
+    .login-intro {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient( 135deg, rgba(5, 31, 78, 0.97), rgba(13, 78, 161, 0.92) ), url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1400&q=85") center / cover no-repeat;
+    }
+
+
+        .login-intro::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient( circle at 85% 15%, rgba(255,255,255,0.16), transparent 25% ), linear-gradient( 135deg, rgba(5,31,78,0.90), rgba(13,78,161,0.80) );
+        }
+
+
+        .login-intro::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 220px;
+            background: linear-gradient( to top, rgba(3,24,61,0.85), transparent );
+        }
+
+
+    /* =========================================================
+       INTRO CONTENT
+       ========================================================= */
+
+    .intro-content {
+        position: relative;
+        z-index: 2;
+        min-height: 680px;
+        padding: 50px;
+        display: flex;
+        flex-direction: column;
+    }
+
+
+    /* =========================================================
+       LABEL
+       ========================================================= */
+
+    .intro-label {
+        width: fit-content;
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 8px 14px;
+        padding: 8px 13px;
         border-radius: 50px;
-        background: rgba( 229, 57, 53, 0.12 );
-        border: 1px solid rgba( 229, 57, 53, 0.25 );
-        color: #ef5350;
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        margin-bottom: 20px;
-    }
-
-
-        .hero-badge::first-letter {
-            color: #e53935;
-        }
-
-
-    .hero-text h1 {
-        font-size: 52px;
-        line-height: 1.05;
-        margin: 0 0 20px;
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.20);
+        color: #ffffff;
+        font-size: 10px;
         font-weight: 800;
-        letter-spacing: -1.5px;
+        letter-spacing: 1.4px;
+        text-transform: uppercase;
     }
 
 
-        .hero-text h1 span {
-            color: #e53935;
+    .intro-label-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #60a5fa;
+        box-shadow: 0 0 12px rgba(96,165,250,0.9);
+    }
+
+
+    /* =========================================================
+       HERO
+       ========================================================= */
+
+    .intro-hero {
+        max-width: 440px;
+        margin-top: auto;
+        margin-bottom: auto;
+    }
+
+
+        .intro-hero h1 {
+            margin: 22px 0 18px;
+            color: #ffffff;
+            font-size: 52px;
+            line-height: 1.04;
+            font-weight: 900;
+            letter-spacing: -2px;
         }
 
 
-    .hero-text p {
-        color: #b7c3d0;
-        font-size: 17px;
-        line-height: 1.7;
-        margin: 0;
-        max-width: 430px;
+            .intro-hero h1 span {
+                display: block;
+                color: #60a5fa;
+            }
+
+
+        .intro-hero p {
+            max-width: 410px;
+            margin: 0;
+            color: #dbeafe;
+            font-size: 15px;
+            line-height: 1.75;
+        }
+
+
+    /* =========================================================
+       MOTIVATIONAL MESSAGE
+       ========================================================= */
+
+    .motivation-box {
+        margin-top: 25px;
+        padding: 16px 18px;
+        border-left: 3px solid #60a5fa;
+        background: rgba(255,255,255,0.08);
+        border-radius: 0 10px 10px 0;
+        color: #ffffff;
+        font-size: 13px;
+        line-height: 1.6;
     }
 
 
-    /* =========================================
+        .motivation-box strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #93c5fd;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+
+    /* =========================================================
        FEATURES
-       ========================================= */
+       ========================================================= */
 
-    .features {
+    .intro-features {
         display: flex;
-        flex-wrap: wrap;
+        flex-direction: column;
         gap: 10px;
+        margin-top: auto;
     }
 
 
-    .feature {
+    .intro-feature {
+        width: fit-content;
         display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 10px 14px;
-        background: rgba( 255, 255, 255, 0.055 );
-        border: 1px solid rgba( 255, 255, 255, 0.08 );
-        border-radius: 10px;
-        color: #d7e0ea;
+        gap: 10px;
+        padding: 11px 15px;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 9px;
+        color: #e5efff;
         font-size: 12px;
+        font-weight: 700;
     }
 
 
-    .feature-icon {
-        color: #ef5350;
-        font-weight: bold;
-    }
-
-
-    /* =========================================
-       RIGHT LOGIN SIDE
-       ========================================= */
-
-    .login-side {
-        background: #0c1724;
+    .intro-feature-icon {
+        width: 21px;
+        height: 21px;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 55px;
+        border-radius: 50%;
+        background: #ffffff;
+        color: #1455a0;
+        font-size: 11px;
+        font-weight: 900;
     }
 
 
-    .login-container {
+    /* =========================================================
+       RIGHT LOGIN SIDE
+       ========================================================= */
+
+    .login-form-side {
+        background: #ffffff;
+        padding: 55px 65px;
+        display: flex;
+        align-items: center;
+    }
+
+
+    .login-form-container {
         width: 100%;
-        max-width: 410px;
+        max-width: 480px;
+        margin: 0 auto;
     }
 
 
-    /* =========================================
-       LOGIN HEADER
-       ========================================= */
+    /* =========================================================
+       FORM HEADER
+       ========================================================= */
 
-    .login-header {
-        margin-bottom: 35px;
+    .form-header {
+        margin-bottom: 30px;
     }
 
 
-        .login-header h2 {
-            margin: 0 0 10px;
-            font-size: 34px;
-            font-weight: 800;
-            color: #ffffff;
-            letter-spacing: -0.5px;
+        .form-header h2 {
+            margin: 0 0 8px;
+            color: #132238;
+            font-size: 32px;
+            font-weight: 900;
+            letter-spacing: -0.8px;
         }
 
 
-        .login-header p {
+        .form-header p {
             margin: 0;
-            color: #7f91a5;
-            font-size: 14px;
+            color: #718096;
+            font-size: 13px;
+            line-height: 1.6;
         }
 
 
-    .login-header-line {
+    .form-header-line {
         width: 55px;
-        height: 3px;
+        height: 4px;
         margin-top: 17px;
         border-radius: 5px;
-        background: #e53935;
-        box-shadow: 0 0 12px rgba( 229, 57, 53, 0.45 );
+        background: linear-gradient( 90deg, #0b3b8f, #2196f3 );
     }
 
 
-    /* =========================================
-       VALIDATION
-       ========================================= */
+    /* =========================================================
+       VALIDATION SUMMARY
+       ========================================================= */
 
     .validation-summary-errors {
-        background: rgba( 220, 53, 69, 0.10 );
-        border: 1px solid rgba( 220, 53, 69, 0.25 );
-        border-radius: 10px;
+        margin-bottom: 22px;
         padding: 12px 15px;
-        color: #ff7b86;
-        margin-bottom: 20px;
-        font-size: 13px;
+        background: #fff5f5;
+        border: 1px solid #fecaca;
+        border-radius: 9px;
+        color: #dc2626;
+        font-size: 12px;
+        line-height: 1.5;
     }
 
 
-    /* =========================================
+    /* =========================================================
        FORM GROUP
-       ========================================= */
+       ========================================================= */
 
     .form-group {
-        margin-bottom: 22px;
+        margin-bottom: 20px;
     }
 
 
     .form-label {
         display: block;
-        margin-bottom: 9px;
-        color: #d9e2ec;
-        font-size: 13px;
-        font-weight: 600;
+        margin-bottom: 7px;
+        color: #334155;
+        font-size: 12px;
+        font-weight: 800;
     }
 
 
-    /* =========================================
+    /* =========================================================
        INPUT WRAPPER
-       ========================================= */
+       ========================================================= */
 
     .input-wrapper {
         position: relative;
@@ -334,74 +456,77 @@
         left: 15px;
         top: 50%;
         transform: translateY(-50%);
-        color: #60758b;
+        color: #7890aa;
         font-size: 15px;
         z-index: 2;
+        pointer-events: none;
     }
 
 
-    /* =========================================
+    /* =========================================================
        INPUT
-       ========================================= */
+       ========================================================= */
 
     .form-control {
         width: 100%;
-        height: 52px;
-        border-radius: 11px;
-        border: 1px solid #26384b;
-        background: #09121d;
-        color: #ffffff;
-        padding: 12px 15px 12px 44px;
-        font-size: 14px;
+        height: 50px;
+        padding: 10px 13px 10px 44px;
+        border: 1px solid #d5dfeb;
+        border-radius: 9px;
+        background: #f8fafc;
+        color: #172033;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 13px;
         outline: none;
-        transition: all 0.25s ease;
+        transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
     }
 
 
         .form-control::placeholder {
-            color: #52667b;
+            color: #94a3b8;
         }
 
 
         .form-control:hover {
-            border-color: #35506b;
+            border-color: #a9bfd8;
+            background: #ffffff;
         }
 
 
         .form-control:focus {
-            border-color: #e53935;
-            background: #0a1522;
-            box-shadow: 0 0 0 3px rgba( 229, 57, 53, 0.10 ), 0 0 20px rgba( 229, 57, 53, 0.08 );
+            border-color: #1976d2;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(25,118,210,0.10);
         }
 
 
-    /* =========================================
+    /* =========================================================
        VALIDATION MESSAGE
-       ========================================= */
+       ========================================================= */
 
     .field-validation-error {
         display: block;
-        color: #ff7b86;
-        font-size: 12px;
-        margin-top: 6px;
+        margin-top: 5px;
+        color: #dc2626;
+        font-size: 11px;
     }
 
 
-    /* =========================================
+    /* =========================================================
        REMEMBER ME
-       ========================================= */
+       ========================================================= */
 
     .remember-row {
         display: flex;
         align-items: center;
-        margin: 5px 0 25px;
+        margin: 4px 0 24px;
     }
 
 
         .remember-row input {
             width: 16px;
             height: 16px;
-            accent-color: #e53935;
+            accent-color: #1976d2;
             margin-right: 9px;
             cursor: pointer;
         }
@@ -409,37 +534,39 @@
 
         .remember-row label {
             margin: 0;
-            color: #7f91a5;
-            font-size: 13px;
-            font-weight: 400;
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
         }
 
 
-    /* =========================================
+    /* =========================================================
        LOGIN BUTTON
-       ========================================= */
+       ========================================================= */
 
     .login-button {
         width: 100%;
-        height: 54px;
+        height: 53px;
+        margin-top: 5px;
         border: none;
-        border-radius: 11px;
-        background: linear-gradient( 135deg, #e53935, #b71c1c );
+        border-radius: 9px;
+        background: linear-gradient( 135deg, #0b3b8f, #1976d2 );
         color: #ffffff;
-        font-size: 14px;
-        font-weight: 800;
-        letter-spacing: 0.8px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 1px;
         cursor: pointer;
         transition: all 0.25s ease;
-        box-shadow: 0 8px 25px rgba( 229, 57, 53, 0.20 );
+        box-shadow: 0 8px 22px rgba(25,118,210,0.20);
     }
 
 
         .login-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba( 229, 57, 53, 0.32 );
-            background: linear-gradient( 135deg, #ef5350, #d32f2f );
+            background: linear-gradient( 135deg, #082e70, #1565c0 );
+            box-shadow: 0 12px 30px rgba(25,118,210,0.30);
         }
 
 
@@ -448,294 +575,247 @@
         }
 
 
-    /* =========================================
+    /* =========================================================
        LINKS
-       ========================================= */
+       ========================================================= */
 
     .login-links {
         text-align: center;
-        margin-top: 28px;
+        margin-top: 22px;
     }
 
 
         .login-links p {
             margin: 10px 0;
-            color: #718397;
-            font-size: 13px;
+            color: #718096;
+            font-size: 12px;
         }
 
 
         .login-links a {
-            color: #ef5350;
+            color: #1769d1;
             text-decoration: none;
-            font-weight: 600;
-            transition: 0.2s;
+            font-weight: 800;
+            transition: color 0.2s ease;
         }
 
 
             .login-links a:hover {
-                color: #ff8a80;
+                color: #0b3b8f;
                 text-decoration: none;
             }
 
 
-    /* =========================================
+    /* =========================================================
        SECURITY
-       ========================================= */
+       ========================================================= */
 
     .security-note {
         display: flex;
         align-items: center;
         justify-content: center;
         gap: 7px;
-        margin-top: 28px;
-        color: #52667b;
-        font-size: 11px;
+        margin-top: 22px;
+        color: #94a3b8;
+        font-size: 10px;
     }
 
 
         .security-note span {
-            color: #ef5350;
+            color: #1976d2;
         }
 
 
-    /* =========================================
-       SCROLLBAR
-       ========================================= */
+    /* =========================================================
+       FOOTER
+       ========================================================= */
 
-    .login-side::-webkit-scrollbar {
-        width: 7px;
+    .login-footer {
+        max-width: 1250px;
+        margin: 0 auto;
+        padding: 0 30px 30px;
+        text-align: center;
+        color: #8290a3;
+        font-size: 11px;
     }
 
 
-    .login-side::-webkit-scrollbar-track {
-        background: #08111c;
-    }
-
-
-    .login-side::-webkit-scrollbar-thumb {
-        background: #26384b;
-        border-radius: 10px;
-    }
-
-
-        .login-side::-webkit-scrollbar-thumb:hover {
-            background: #35506b;
-        }
-
-
-    /* =========================================
+    /* =========================================================
        RESPONSIVE
-       ========================================= */
+       ========================================================= */
 
-    @@media (max-width: 900px) {
+    @@media (max-width: 1000px) {
 
-        .automotive-login {
+        .login-nav {
             padding: 20px;
         }
 
 
-        .login-wrapper {
+        .login-main {
+            padding: 20px;
+        }
+
+
+        .login-layout {
             grid-template-columns: 1fr;
-            max-width: 550px;
         }
 
 
-        .automotive-side {
-            min-height: 350px;
+        .login-intro {
+            min-height: 470px;
         }
 
 
-        .automotive-content {
-            padding: 35px;
+        .intro-content {
+            min-height: 470px;
+            padding: 40px;
         }
 
 
-        .hero-text {
-            margin-top: 70px;
+        .intro-hero {
+            margin-top: 50px;
+            margin-bottom: 40px;
         }
 
 
-            .hero-text h1 {
-                font-size: 38px;
+            .intro-hero h1 {
+                font-size: 43px;
             }
 
 
-        .login-side {
-            padding: 40px 30px;
+        .login-form-side {
+            padding: 45px;
         }
     }
 
 
-    @@media (max-width: 500px) {
+    @@media (max-width: 700px) {
 
-        .automotive-login {
-            padding: 10px;
+        .login-nav {
+            padding: 16px;
         }
 
 
-        .login-wrapper {
-            border-radius: 18px;
-        }
-
-
-        .automotive-side {
-            min-height: 330px;
-        }
-
-
-        .automotive-content {
-            padding: 25px;
-        }
-
-
-        .hero-text h1 {
-            font-size: 32px;
-        }
-
-
-        .hero-text p {
-            font-size: 14px;
-        }
-
-
-        .features {
+        .brand-subtitle {
             display: none;
         }
 
 
-        .login-side {
-            padding: 35px 22px;
+        .brand-name {
+            font-size: 16px;
         }
 
 
-        .login-header h2 {
-            font-size: 29px;
+        .logo {
+            width: 42px;
+            height: 42px;
+            font-size: 17px;
+        }
+
+
+        .home-button {
+            padding: 9px 13px;
+            font-size: 11px;
+        }
+
+
+        .login-main {
+            padding: 12px;
+        }
+
+
+        .login-layout {
+            border-radius: 17px;
+        }
+
+
+        .login-intro {
+            min-height: 440px;
+        }
+
+
+        .intro-content {
+            min-height: 440px;
+            padding: 28px;
+        }
+
+
+        .intro-hero h1 {
+            font-size: 36px;
+            letter-spacing: -1px;
+        }
+
+
+        .intro-hero p {
+            font-size: 13px;
+        }
+
+
+        .intro-features {
+            display: none;
+        }
+
+
+        .motivation-box {
+            font-size: 12px;
+        }
+
+
+        .login-form-side {
+            padding: 35px 20px;
+        }
+
+
+        .form-header h2 {
+            font-size: 27px;
+        }
+
+
+        .login-footer {
+            padding: 0 15px 25px;
         }
     }
 </style>
 
-
-<!-- =========================================
+<!-- =========================================================
      LOGIN PAGE
-     ========================================= -->
+     ========================================================= -->
 
-<div class="automotive-login">
+<div class="login-page">
 
-
-    <!-- RED HAZARD STRIPE -->
+   
+    <!-- =====================================================
+         TOP BLUE LINE
+         ===================================================== -->
 
     <div class="hazard-stripe"></div>
 
 
-    <div class="login-wrapper">
+    <!-- =====================================================
+         NAVIGATION
+         ===================================================== -->
+
+    <nav class="login-nav">
 
 
-        <!-- =================================
-             LEFT AUTOMOTIVE SECTION
-             ================================= -->
+        <!-- BRAND -->
 
-        <div class="automotive-side">
+        <div class="brand">
 
-            <div class="automotive-content">
-
-
-                <!-- BRAND -->
-
-                <div class="brand">
-
-                    <div class="brand-icon">
-
-                        🚗
-
-                    </div>
+            <div class="logo">
+                TK
+            </div>
 
 
-                    <div class="brand-name">
+            <div class="brand-text">
 
-                        TK DRIVING
-
-                        <span>
-                            SCHOOL
-                        </span>
-
-                    </div>
-
+                <div class="brand-name">
+                    TK Driving School
                 </div>
 
 
-
-                <!-- HERO -->
-
-                <div class="hero-text">
-
-
-                    <div class="hero-badge">
-
-                        ● Driving School Platform
-
-                    </div>
-
-
-                    <h1>
-
-                        Drive with
-
-                        <span>
-                            confidence.
-                        </span>
-
-                    </h1>
-
-
-                    <p>
-
-                        Your journey to becoming a confident,
-                        responsible driver starts here.
-
-                    </p>
-
-                </div>
-
-
-
-                <!-- FEATURES -->
-
-                <div class="features">
-
-
-                    <div class="feature">
-
-                        <span class="feature-icon">
-                            ✓
-                        </span>
-
-                        Professional Instructors
-
-                    </div>
-
-
-                    <div class="feature">
-
-                        <span class="feature-icon">
-                            ✓
-                        </span>
-
-                        Easy Lesson Booking
-
-                    </div>
-
-
-                    <div class="feature">
-
-                        <span class="feature-icon">
-                            ✓
-                        </span>
-
-                        Track Your Progress
-
-                    </div>
-
+                <div class="brand-subtitle">
+                    Learn to drive with confidence
                 </div>
 
             </div>
@@ -743,276 +823,506 @@
         </div>
 
 
+        <!-- HOME BUTTON -->
 
-        <!-- =================================
-             RIGHT LOGIN SECTION
-             ================================= -->
+        <a href="@Url.Action("Index", "Home")"
+           class="home-button">
 
-        <div class="login-side">
+            
 
-            <div class="login-container">
+            Homepage
 
+        </a>
 
-                <!-- HEADER -->
-
-                <div class="login-header">
-
-                    <h2>
-                        Welcome Back 
-                    </h2>
+    </nav>
 
 
-                    <p>
-                        Sign in to continue to your account.
-                    </p>
+
+    <!-- =====================================================
+         MAIN LOGIN AREA
+         ===================================================== -->
+
+    <main class="login-main">
 
 
-                    <div class="login-header-line"></div>
+        <div class="login-layout">
+
+
+            <!-- =================================================
+                 LEFT INTRODUCTION
+                 ================================================= -->
+
+            <div class="login-intro">
+
+
+                <div class="intro-content">
+
+
+                    <!-- LABEL -->
+
+                    <div class="intro-label">
+
+                        <span class="intro-label-dot"></span>
+
+                        Student Portal
+
+                    </div>
+
+
+
+                    <!-- HERO -->
+
+                    <div class="intro-hero">
+
+
+                        <h1>
+
+                            Drive with
+
+                            <span>
+                                confidence.
+                            </span>
+
+                        </h1>
+
+
+                        <p>
+
+                            Welcome back to TK Driving School.
+                            Sign in to manage your lessons,
+                            bookings and driving progress.
+
+                        </p>
+
+
+
+                        <!-- MOTIVATION -->
+
+                        <div class="motivation-box">
+
+                            <strong>
+                                Keep moving forward
+                            </strong>
+
+                            Every lesson brings you one step
+                            closer to becoming a confident,
+                            responsible driver.
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- FEATURES -->
+
+                    <div class="intro-features">
+
+
+                        <div class="intro-feature">
+
+                            <span class="intro-feature-icon">
+                                ✓
+                            </span>
+
+                            Professional Instructors
+
+                        </div>
+
+
+                        <div class="intro-feature">
+
+                            <span class="intro-feature-icon">
+                                ✓
+                            </span>
+
+                            Easy Lesson Booking
+
+                        </div>
+
+
+                        <div class="intro-feature">
+
+                            <span class="intro-feature-icon">
+                                ✓
+                            </span>
+
+                            Track Your Progress
+
+                        </div>
+
+
+                    </div>
 
                 </div>
 
+            </div>
 
 
-                @using (Html.BeginForm(
-                    "Login",
-                    "Account",
-                    new
-                    {
-                        ReturnUrl =
-                            ViewBag.ReturnUrl
-                    },
-                    FormMethod.Post,
-                    new
-                    {
-                        role = "form"
-                    }))
-                {
 
-                    @Html.AntiForgeryToken()
+            <!-- =================================================
+                 RIGHT LOGIN FORM
+                 ================================================= -->
+
+            <div class="login-form-side">
 
 
-                    @Html.ValidationSummary(
-                        true,
-                        "",
+                <div class="login-form-container">
+
+
+                    <!-- FORM HEADER -->
+
+                    <div class="form-header">
+
+                        <h2>
+                            Welcome Back
+                        </h2>
+
+
+                        <p>
+                            Sign in to continue to your account.
+                        </p>
+
+
+                        <div class="form-header-line"></div>
+
+                    </div>
+
+
+
+                    @using (Html.BeginForm(
+                        "Login",
+                        "Account",
                         new
                         {
-                            @class =
-                                "validation-summary-errors"
-                        }
-                    )
+                            ReturnUrl =
+                                ViewBag.ReturnUrl
+                        },
+                        FormMethod.Post,
+                        new
+                        {
+                            role = "form"
+                        }))
+                    {
+
+                        @Html.AntiForgeryToken()
 
 
 
-                    <!-- =================================
-                         EMAIL
-                         ================================= -->
+                        <!-- =================================================
+             VALIDATION SUMMARY
+             ================================================= -->
 
-                    <div class="form-group">
-
-
-                        @Html.LabelFor(
-                            m => m.Email,
+                        @Html.ValidationSummary(
+                            true,
+                            "",
                             new
                             {
                                 @class =
-                                    "form-label"
+                                    "validation-summary-errors"
                             }
                         )
 
 
-                        <div class="input-wrapper">
+
+                        <!-- =================================================
+             EMAIL
+             ================================================= -->
+
+                        <div class="form-group">
 
 
-                            <span class="input-icon">
-                                ✉
-                            </span>
-
-
-                            @Html.TextBoxFor(
+                            @Html.LabelFor(
                                 m => m.Email,
                                 new
                                 {
                                     @class =
-                                        "form-control",
-
-                                    placeholder =
-                                        "Enter your email",
-
-                                    autocomplete =
-                                        "email"
+                                        "form-label"
                                 }
                             )
 
-                        </div>
+
+                            <div class="input-wrapper">
 
 
-                        @Html.ValidationMessageFor(
-                            m => m.Email,
-                            "",
-                            new
-                            {
-                                @class =
-                                    "field-validation-error"
-                            }
-                        )
-
-                    </div>
+                                <span class="input-icon">
+                                    ✉
+                                </span>
 
 
+                                @Html.TextBoxFor(
+                                    m => m.Email,
+                                    new
+                                    {
+                                        @class =
+                                            "form-control",
 
-                    <!-- =================================
-                         PASSWORD
-                         ================================= -->
+                                        placeholder =
+                                            "Enter your email",
 
-                    <div class="form-group">
+                                        autocomplete =
+                                            "email"
+                                    }
+                                )
 
-
-                        @Html.LabelFor(
-                            m => m.Password,
-                            new
-                            {
-                                @class =
-                                    "form-label"
-                            }
-                        )
-
-
-                        <div class="input-wrapper">
+                            </div>
 
 
-                            <span class="input-icon">
-                                🔒
-                            </span>
-
-
-                            @Html.PasswordFor(
-                                m => m.Password,
+                            @Html.ValidationMessageFor(
+                                m => m.Email,
+                                "",
                                 new
                                 {
                                     @class =
-                                        "form-control",
-
-                                    placeholder =
-                                        "Enter your password",
-
-                                    autocomplete =
-                                        "current-password"
+                                        "field-validation-error"
                                 }
                             )
 
                         </div>
 
 
-                        @Html.ValidationMessageFor(
-                            m => m.Password,
-                            "",
-                            new
-                            {
-                                @class =
-                                    "field-validation-error"
-                            }
-                        )
 
-                    </div>
+                        <!-- =================================================
+        PASSWORD
+        ================================================= -->
 
+                        <div class="form-group">
 
-
-                    <!-- =================================
-                         REMEMBER ME
-                         ================================= -->
-
-                    <div class="remember-row">
-
-
-                        @Html.CheckBoxFor(
-                            m => m.RememberMe
-                        )
-
-
-                        @Html.LabelFor(
-                            m => m.RememberMe
-                        )
-
-                    </div>
-
-
-
-                    <!-- =================================
-                         LOGIN BUTTON
-                         ================================= -->
-
-                    <button type="submit"
-                            class="login-button">
-
-                        SIGN IN
-
-                    </button>
-
-
-
-                    <!-- =================================
-                         LINKS
-                         ================================= -->
-
-                    <div class="login-links">
-
-
-                        <p>
-
-                            Don't have an account?
-
-                            @Html.ActionLink(
-                                "Create Account",
-                                "Register",
-                                "Account"
+                            
+                            @Html.LabelFor(
+                                m => m.Password,
+                                new
+                                {
+                                    @class = "form-label"
+                                }
                             )
 
-                        </p>
+                            <div class="input-wrapper">
+
+                                <span class="input-icon">
+                                    🔒
+                                </span>
+
+                                @Html.PasswordFor(
+                                    m => m.Password,
+                                    new
+                                    {
+                                        @class = "form-control password-input",
+                                        placeholder = "Enter your password",
+                                        autocomplete = "current-password",
+                                        id = "Password"
+                                    }
+                                )
+
+                                <!-- SHOW PASSWORD BUTTON -->
+
+                                <button type="button"
+                                        class="show-password"
+                                        id="showPassword"
+                                        onclick="togglePassword()">
+
+                                    Show
+
+                                </button>
+
+                            </div>
+
+                            @Html.ValidationMessageFor(
+                                m => m.Password,
+                                "",
+                                new
+                                {
+                                    @class = "field-validation-error"
+                                }
+                            )
+                            
+
+                        </div>
+
+                        <style>
+
+                            /* =========================================
+                            SHOW PASSWORD BUTTON
+                            ========================================= */
+
+                                                 .show-password {
+                                                     position: absolute;
+                                                     right: 12px;
+                                                     top: 50%;
+                                                     transform: translateY(-50%);
+                                                     border: none;
+                                                     background: transparent;
+                                                     color: #1769d1;
+                                                     font-size: 11px;
+                                                     font-weight: 800;
+                                                     cursor: pointer;
+                                                     padding: 5px 6px;
+                                                     z-index: 3;
+                                                     transition: color 0.2s ease;
+                                                 }
 
 
-                        <p>
+                                                     .show-password:hover {
+                                                         color: #0b3b8f;
+                                                     }
 
-                            @Html.ActionLink(
-                                "Forgot Password?",
-                                "ForgotPassword",
-                                "Account"
+
+                                                 /* Make room for Show button */
+
+                                                 .password-input {
+                                                     padding-right: 65px !important;
+                                                 }
+                                                            </style>
+
+                                                            <script>
+
+                                        function togglePassword() {
+
+                                            var passwordInput =
+                                                document.getElementById("Password");
+
+                                            var showPasswordButton =
+                                                document.getElementById("showPassword");
+
+
+                                            if (passwordInput.type === "password") {
+
+                                                passwordInput.type = "text";
+
+                                                showPasswordButton.innerText = "Hide";
+
+                                            }
+                                            else {
+
+                                                passwordInput.type = "password";
+
+                                                showPasswordButton.innerText = "Show";
+
+                                            }
+
+                                        }
+
+                        </script>
+
+
+
+
+             <!-- =================================================
+             REMEMBER ME
+             ================================================= -->
+
+                        <div class="remember-row">
+
+
+                            @Html.CheckBoxFor(
+                                m => m.RememberMe
                             )
 
-                        </p>
 
-                    </div>
+                            @Html.LabelFor(
+                                m => m.RememberMe
+                            )
+
+                        </div>
 
 
 
-                    <!-- =================================
-                         SECURITY
-                         ================================= -->
+             <!-- =================================================
+             LOGIN BUTTON
+             ================================================= -->
 
-                    <div class="security-note">
+                        <button type="submit"
+                                class="login-button">
 
-                        <span>
-                            🔒
-                        </span>
+                          LOGIN
 
-                        Secure login protected by your account
+                        </button>
 
-                    </div>
 
-                }
+
+                        <!-- =================================================
+             ACCOUNT LINKS
+             ================================================= -->
+
+                        <div class="login-links">
+
+
+                            <p>
+
+                                Don't have an account?
+
+                                @Html.ActionLink(
+                                    "Create Student Account",
+                                    "Register",
+                                    "Account"
+                                )
+
+                            </p>
+
+
+                            <p>
+
+                                @Html.ActionLink(
+                                    "Forgot Password?",
+                                    "ForgotPassword",
+                                    "Account"
+                                )
+
+                            </p>
+
+                        </div>
+
+
+
+                        <!-- =================================================
+             SECURITY
+             ================================================= -->
+
+                        <div class="security-note">
+
+                            <span>
+                                🔒
+                            </span>
+
+                            Your account information is securely protected.
+
+                        </div>
+
+                    }
+
+                </div>
 
             </div>
 
         </div>
 
-    </div>
+    </main>
+
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="login-footer">
+
+        © @DateTime.Now.Year
+
+        TK Driving School.
+
+        Student, instructor and administrator portal.
+
+    </footer>
+    
 
 </div>
 
-
 @section Scripts {
 
+    
     @Scripts.Render(
         "~/bundles/jqueryval"
     )
+    
 
 }

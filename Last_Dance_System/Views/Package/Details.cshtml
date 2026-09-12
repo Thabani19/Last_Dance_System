@@ -1,10 +1,18 @@
 ﻿@model Last_Dance_System.Models.LessonPackage
 
 @{
+    Layout = null;
     ViewBag.Title = "Package Details";
 }
 
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
 <style>
+
+    /* =========================================================
+       GLOBAL
+       ========================================================= */
 
     * {
         box-sizing: border-box;
@@ -12,380 +20,1194 @@
 
     body {
         margin: 0;
-        background: #07111f;
-        color: #ffffff;
-        font-family: Arial, Helvetica, sans-serif;
+        background: #f4f7fb;
+        color: #172b4d;
+        font-family: "Segoe UI", Arial, Helvetica, sans-serif;
     }
 
+
+    /* =========================================================
+       PAGE
+       ========================================================= */
+
     .details-page {
-        min-height: 90vh;
-        padding: 40px 20px;
-        background: radial-gradient( circle at top right, rgba(225, 6, 0, .12), transparent 30% ), #07111f;
+        min-height: 100vh;
+        padding: 45px 20px;
+        background: radial-gradient(circle at top right, rgba(37, 99, 235, .07), transparent 32%), radial-gradient(circle at bottom left, rgba(37, 99, 235, .04), transparent 30%), #f4f7fb;
     }
 
     .details-container {
-        max-width: 900px;
+        max-width: 1050px;
         margin: 0 auto;
     }
 
 
-    /* =============================================
-       TOP NAVIGATION BUTTONS
-       ============================================= */
+    /* =========================================================
+       TOP NAVIGATION
+       ========================================================= */
 
-    .top-actions {
+    .top-navigation {
         display: flex;
-        gap: 12px;
+        justify-content: space-between;
         align-items: center;
-        margin-bottom: 25px;
-        flex-wrap: wrap;
+        margin-bottom: 30px;
+        gap: 15px;
     }
 
-    .back-link {
-        display: inline-block;
-        color: #8290a3;
-        text-decoration: none;
-        font-size: 13px;
-        padding: 10px 14px;
-        border: 1px solid #1b2a3d;
-        border-radius: 8px;
-        background: #0c1726;
-        transition: .2s ease;
-    }
-
-        .back-link:hover {
-            color: #ffffff;
-            border-color: #8290a3;
-            text-decoration: none;
-        }
-
-    .dashboard-link {
-        display: inline-block;
-        color: #ffffff;
+    .back-button,
+    .dashboard-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        padding: 11px 17px;
+        background: #ffffff;
+        color: #334e68;
+        border: 1px solid #d9e2ec;
+        border-radius: 9px;
         text-decoration: none;
         font-size: 13px;
         font-weight: 700;
-        padding: 10px 14px;
-        border: 1px solid rgba(225, 6, 0, .40);
-        border-radius: 8px;
-        background: rgba(225, 6, 0, .10);
+        box-shadow: 0 3px 10px rgba(15, 23, 42, .04);
         transition: .2s ease;
     }
 
-        .dashboard-link:hover {
-            background: #e10600;
-            color: #ffffff;
+        .back-button i,
+        .dashboard-button i {
+            color: #2563eb;
+            font-size: 13px;
+        }
+
+        .back-button:hover,
+        .dashboard-button:hover {
+            background: #eff6ff;
+            border-color: #2563eb;
+            color: #2563eb;
             text-decoration: none;
+            transform: translateY(-1px);
         }
 
 
-    /* =============================================
-       PACKAGE CARD
-       ============================================= */
+    /* =========================================================
+       MAIN CARD
+       ========================================================= */
 
-    .package-card {
-        background: #0c1726;
-        border: 1px solid #1b2a3d;
-        border-radius: 16px;
-        padding: 35px;
+    .package-details-card {
         position: relative;
+        display: grid;
+        grid-template-columns: 1.05fr .95fr;
+        background: #ffffff;
+        border: 1px solid #e1e8f0;
+        border-radius: 18px;
         overflow: hidden;
+        box-shadow: 0 18px 45px rgba(15, 23, 42, .08);
     }
 
-        .package-card::before {
+        .package-details-card::before {
             content: "";
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 4px;
-            background: #e10600;
+            background: #2563eb;
+            z-index: 2;
         }
 
 
-    /* =============================================
-       PACKAGE ICON
-       ============================================= */
+    /* =========================================================
+       LEFT SIDE
+       ========================================================= */
 
-    .package-icon {
-        width: 60px;
-        height: 60px;
+    .package-information {
+        padding: 45px;
+        border-right: 1px solid #e5eaf0;
+    }
+
+
+    /* =========================================================
+       PACKAGE ICON
+       ========================================================= */
+
+    .large-package-icon {
+        width: 76px;
+        height: 76px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(225, 6, 0, .10);
-        border: 1px solid rgba(225, 6, 0, .25);
-        border-radius: 12px;
-        font-size: 25px;
-        margin-bottom: 20px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 17px;
+        font-size: 31px;
+        margin-bottom: 25px;
+        color: #2563eb;
+        box-shadow: 0 8px 20px rgba(37, 99, 235, .08);
+    }
+
+        .large-package-icon i {
+            color: #2563eb;
+        }
+
+
+    /* =========================================================
+       PACKAGE TITLE
+       ========================================================= */
+
+    .package-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 10px;
+        color: #2563eb;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+        .package-label i {
+            font-size: 11px;
+        }
+
+    .package-information h1 {
+        margin: 0 0 15px;
+        font-size: 34px;
+        line-height: 1.15;
+        font-weight: 900;
+        color: #172b4d;
     }
 
 
-    /* =============================================
-       PACKAGE TITLE
-       ============================================= */
+    /* =========================================================
+       DESCRIPTION
+       ========================================================= */
 
-    .package-card h1 {
-        margin: 0 0 10px;
-        font-size: 30px;
+    .package-description {
+        margin: 0 0 30px;
+        color: #627d98;
+        font-size: 14px;
+        line-height: 1.8;
+    }
+
+
+    /* =========================================================
+       PRICE
+       ========================================================= */
+
+    .price-section {
+        display: flex;
+        align-items: baseline;
+        gap: 5px;
+        margin-bottom: 30px;
+    }
+
+    .price-currency {
+        color: #627d98;
+        font-size: 17px;
+        font-weight: 700;
+    }
+
+    .price-value {
+        color: #172b4d;
+        font-size: 42px;
+        font-weight: 900;
+        line-height: 1;
+    }
+
+    .price-label {
+        color: #829ab1;
+        font-size: 12px;
+        margin-left: 5px;
+    }
+
+
+    /* =========================================================
+       LESSON HIGHLIGHT
+       ========================================================= */
+
+    .lesson-highlight {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 18px;
+        background: #f8fafc;
+        border: 1px solid #d9e2ec;
+        border-radius: 12px;
+        margin-bottom: 30px;
+    }
+
+    .lesson-highlight-icon {
+        width: 46px;
+        height: 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 11px;
+        color: #2563eb;
+        font-size: 18px;
+    }
+
+    .lesson-highlight-text {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+        .lesson-highlight-text strong {
+            color: #172b4d;
+            font-size: 16px;
+        }
+
+        .lesson-highlight-text span {
+            color: #829ab1;
+            font-size: 12px;
+        }
+
+
+    /* =========================================================
+       INCLUDED FEATURES
+       ========================================================= */
+
+    .features-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 17px;
+        color: #172b4d;
+        font-size: 15px;
         font-weight: 800;
     }
 
-    .package-description {
-        color: #8290a3;
-        font-size: 14px;
-        line-height: 1.7;
-        margin-bottom: 30px;
-    }
-
-
-    /* =============================================
-       PACKAGE INFORMATION
-       ============================================= */
-
-    .package-info {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 15px;
-        margin-bottom: 30px;
-    }
-
-    .info-box {
-        background: #08111d;
-        border: 1px solid #16263a;
-        border-radius: 10px;
-        padding: 18px;
-    }
-
-        .info-box span {
-            display: block;
-            color: #718096;
-            font-size: 12px;
-            margin-bottom: 7px;
+        .features-title i {
+            color: #2563eb;
+            font-size: 14px;
         }
 
-        .info-box strong {
-            font-size: 20px;
-            color: #ffffff;
+    .features {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 13px;
+            color: #627d98;
+            font-size: 13px;
         }
 
-    .price {
-        color: #e10600 !important;
-        font-size: 28px !important;
+    .feature-check {
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 50%;
+        color: #2563eb;
+        font-size: 11px;
+        font-weight: 900;
     }
 
 
-    /* =============================================
-       NOTICE
-       ============================================= */
+    /* =========================================================
+       RIGHT SIDE - PURCHASE
+       ========================================================= */
 
-    .notice {
-        background: rgba(225, 6, 0, .08);
-        border: 1px solid rgba(225, 6, 0, .20);
-        border-radius: 10px;
-        padding: 16px;
-        color: #b7c0cc;
+    .purchase-section {
+        padding: 45px;
+        background: #f8fafc;
+    }
+
+        .purchase-section h2 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0 0 8px;
+            font-size: 23px;
+            font-weight: 900;
+            color: #172b4d;
+        }
+
+            .purchase-section h2 i {
+                color: #2563eb;
+                font-size: 20px;
+            }
+
+    .purchase-subtitle {
+        margin: 0 0 30px;
+        color: #829ab1;
         font-size: 13px;
         line-height: 1.6;
+    }
+
+
+    /* =========================================================
+       ORDER SUMMARY
+       ========================================================= */
+
+    .summary-box {
+        padding: 20px;
         margin-bottom: 25px;
+        background: #ffffff;
+        border: 1px solid #d9e2ec;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, .03);
     }
 
+    .summary-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 15px;
+        color: #829ab1;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
 
-    /* =============================================
-       PURCHASE BUTTON
-       ============================================= */
+        .summary-title i {
+            color: #2563eb;
+        }
 
-    .purchase-button {
-        display: block;
-        width: 100%;
-        padding: 14px;
-        background: #e10600;
-        color: #ffffff;
-        border: none;
-        border-radius: 9px;
-        text-align: center;
-        text-decoration: none;
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        padding: 11px 0;
+        border-bottom: 1px solid #edf2f7;
+        font-size: 13px;
+    }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .summary-row:first-of-type {
+            padding-top: 0;
+        }
+
+    .summary-label {
+        color: #829ab1;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+        .summary-label i {
+            color: #2563eb;
+            font-size: 11px;
+        }
+
+    .summary-value {
+        color: #172b4d;
         font-weight: 700;
-        font-size: 14px;
-        transition: .2s;
+        text-align: right;
     }
 
-        .purchase-button:hover {
-            background: #ff211a;
-            color: #ffffff;
-            text-decoration: none;
+    .summary-total {
+        margin-top: 8px;
+        padding-top: 16px !important;
+        border-top: 1px solid #d9e2ec;
+        border-bottom: none !important;
+    }
+
+        .summary-total .summary-label {
+            color: #172b4d;
+            font-weight: 800;
+        }
+
+        .summary-total .summary-value {
+            color: #2563eb;
+            font-size: 20px;
+            font-weight: 900;
         }
 
 
-    /* =============================================
-       RESPONSIVE
-       ============================================= */
+    /* =========================================================
+       PAYMENT SECTION
+       ========================================================= */
 
-    @@media(max-width: 650px) {
+    .payment-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 0 15px;
+        color: #172b4d;
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+        .payment-title i {
+            color: #2563eb;
+        }
+
+    .payment-options {
+        display: grid;
+        gap: 10px;
+        margin-bottom: 22px;
+    }
+
+    .payment-option {
+        position: relative;
+    }
+
+        .payment-option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .payment-option label {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px;
+            background: #ffffff;
+            border: 1px solid #2563eb;
+            border-radius: 12px;
+            cursor: default;
+            box-shadow: 0 0 0 1px rgba(37, 99, 235, .10);
+        }
+
+
+    /* =========================================================
+       PAYMENT ICON
+       ========================================================= */
+
+    .payment-icon {
+        width: 46px;
+        height: 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #2563eb;
+        border-radius: 11px;
+        color: #ffffff;
+        font-size: 19px;
+        flex-shrink: 0;
+        box-shadow: 0 6px 15px rgba(37, 99, 235, .18);
+    }
+
+    .payment-info {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        flex: 1;
+    }
+
+    .payment-name {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: #172b4d;
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+    .payment-description {
+        color: #829ab1;
+        font-size: 11px;
+    }
+
+
+    /* =========================================================
+       SECURE BADGE
+       ========================================================= */
+
+    .secure-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 8px;
+        background: #ecfdf3;
+        color: #15803d;
+        border: 1px solid #bbf7d0;
+        border-radius: 6px;
+        font-size: 9px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        white-space: nowrap;
+    }
+
+        .secure-badge i {
+            font-size: 9px;
+        }
+
+
+    /* =========================================================
+       PAYMENT PROVIDER
+       ========================================================= */
+
+    .stripe-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 10px;
+        padding: 10px 12px;
+        background: #ffffff;
+        border: 1px solid #e5eaf0;
+        border-radius: 9px;
+    }
+
+    .stripe-info-icon {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #eff6ff;
+        color: #2563eb;
+        border-radius: 7px;
+        font-size: 12px;
+        flex-shrink: 0;
+    }
+
+    .stripe-info-text {
+        color: #627d98;
+        font-size: 10px;
+        line-height: 1.4;
+    }
+
+        .stripe-info-text strong {
+            color: #334e68;
+        }
+
+
+    /* =========================================================
+       PURCHASE BUTTON
+       ========================================================= */
+
+    .purchase-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        width: 100%;
+        padding: 15px;
+        background: #2563eb;
+        color: #ffffff;
+        border: none;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: .2s ease;
+        box-shadow: 0 8px 20px rgba(37, 99, 235, .18);
+    }
+
+        .purchase-button i {
+            font-size: 13px;
+        }
+
+        .purchase-button:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, .25);
+        }
+
+        .purchase-button:active {
+            transform: translateY(0);
+        }
+
+
+    /* =========================================================
+       SECURITY NOTE
+       ========================================================= */
+
+    .secure-note {
+        display: flex;
+        align-items: flex-start;
+        gap: 9px;
+        margin-top: 17px;
+        color: #829ab1;
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    .secure-note-icon {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        background: #ecfdf3;
+        border-radius: 6px;
+        color: #16a34a;
+        font-size: 11px;
+    }
+
+
+    /* =========================================================
+       FOOTER NOTE
+       ========================================================= */
+
+    .page-note {
+        margin-top: 22px;
+        text-align: center;
+        color: #829ab1;
+        font-size: 11px;
+    }
+
+        .page-note i {
+            color: #2563eb;
+            margin-right: 4px;
+        }
+
+        .page-note strong {
+            color: #2563eb;
+        }
+
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @@media (max-width: 850px) {
+
+        .package-details-card {
+            grid-template-columns: 1fr;
+        }
+
+        .package-information {
+            border-right: none;
+            border-bottom: 1px solid #e5eaf0;
+        }
+
+        .purchase-section {
+            background: #f8fafc;
+        }
+    }
+
+
+    @@media (max-width: 600px) {
 
         .details-page {
             padding: 30px 15px;
         }
 
-        .package-card {
-            padding: 25px;
-        }
-
-        .package-info {
-            grid-template-columns: 1fr;
-        }
-
-        .package-card h1 {
-            font-size: 25px;
-        }
-
-        .top-actions {
+        .top-navigation {
             flex-direction: column;
             align-items: stretch;
         }
 
-        .back-link,
-        .dashboard-link {
+        .back-button,
+        .dashboard-button {
             width: 100%;
-            text-align: center;
+        }
+
+        .package-information,
+        .purchase-section {
+            padding: 30px 22px;
+        }
+
+            .package-information h1 {
+                font-size: 28px;
+            }
+
+        .price-value {
+            font-size: 36px;
+        }
+
+        .payment-option label {
+            align-items: flex-start;
+        }
+
+        .secure-badge {
+            display: none;
         }
     }
 </style>
 
-
 <div class="details-page">
 
+    
     <div class="details-container">
 
 
-        <!-- =============================================
-             NAVIGATION BUTTONS
-             ============================================= -->
+        <!-- =====================================================
+             TOP NAVIGATION
+             ===================================================== -->
 
-        <div class="top-actions">
-
-            <!-- BACK TO PACKAGES -->
+        <div class="top-navigation">
 
             <a href="@Url.Action("Index", "Package")"
-               class="back-link">
+               class="back-button">
 
-                ← Back to Lesson Packages
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back to Packages
 
             </a>
 
 
-            <!-- BACK TO DASHBOARD -->
-
             <a href="@Url.Action("Index", "Dashboard")"
-               class="dashboard-link">
+               class="dashboard-button">
 
-                <i class="fa-solid fa-house"></i>
-                Back to Dashboard
+                <i class="fa-solid fa-gauge-high"></i>
+
+                Dashboard
 
             </a>
 
         </div>
 
 
-        <!-- =============================================
+        <!-- =====================================================
              PACKAGE DETAILS
-             ============================================= -->
+             ===================================================== -->
 
-        <div class="package-card">
-
-
-            <!-- PACKAGE ICON -->
-
-            <div class="package-icon">
-                🚗
-            </div>
+        <div class="package-details-card">
 
 
-            <!-- PACKAGE NAME -->
+            <!-- =================================================
+                 LEFT SIDE
+                 ================================================= -->
 
-            <h1>
-                @Model.PackageName
-            </h1>
-
-
-            <!-- PACKAGE DESCRIPTION -->
-
-            <div class="package-description">
-
-                @Model.Description
-
-            </div>
+            <div class="package-information">
 
 
-            <!-- PACKAGE INFORMATION -->
+                <!-- PACKAGE ICON -->
 
-            <div class="package-info">
+                <div class="large-package-icon">
 
-
-                <!-- LESSONS -->
-
-                <div class="info-box">
-
-                    <span>
-                        LESSONS INCLUDED
-                    </span>
-
-                    <strong>
-                        @Model.NumberOfLessons Lessons
-                    </strong>
+                    <i class="fa-solid fa-car-side"></i>
 
                 </div>
+
+
+                <!-- LABEL -->
+
+                <span class="package-label">
+
+                    <i class="fa-solid fa-certificate"></i>
+
+                    Driving Lesson Package
+
+                </span>
+
+
+                <!-- PACKAGE NAME -->
+
+                <h1>
+
+                    @Model.PackageName
+
+                </h1>
+
+
+                <!-- DESCRIPTION -->
+
+                <p class="package-description">
+
+                    @Model.Description
+
+                </p>
 
 
                 <!-- PRICE -->
 
-                <div class="info-box">
+                <div class="price-section">
 
-                    <span>
-                        PACKAGE PRICE
+                    <span class="price-currency">
+
+                        R
+
                     </span>
 
-                    <strong class="price">
+                    <span class="price-value">
 
-                        R @Model.Price.ToString("N2")
+                        @Model.Price.ToString("N0")
 
-                    </strong>
+                    </span>
+
+                    <span class="price-label">
+
+                        package price
+
+                    </span>
 
                 </div>
 
 
+                <!-- LESSON HIGHLIGHT -->
+
+                <div class="lesson-highlight">
+
+                    <div class="lesson-highlight-icon">
+
+                        <i class="fa-solid fa-calendar-days"></i>
+
+                    </div>
+
+                    <div class="lesson-highlight-text">
+
+                        <strong>
+
+                            @Model.NumberOfLessons Lessons
+
+                        </strong>
+
+                        <span>
+
+                            Included in this package
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INCLUDED FEATURES -->
+
+                <h3 class="features-title">
+
+                    <i class="fa-solid fa-list-check"></i>
+
+                    What's Included
+
+                </h3>
+
+                <ul class="features">
+
+                    <li>
+
+                        <span class="feature-check">
+
+                            <i class="fa-solid fa-user-tie"></i>
+
+                        </span>
+
+                        Professional driving instructor
+
+                    </li>
+
+
+                    <li>
+
+                        <span class="feature-check">
+
+                            <i class="fa-solid fa-calendar-check"></i>
+
+                        </span>
+
+                        Flexible lesson scheduling
+
+                    </li>
+
+
+                    <li>
+
+                        <span class="feature-check">
+
+                            <i class="fa-solid fa-gauge-high"></i>
+
+                        </span>
+
+                        Lessons managed through your dashboard
+
+                    </li>
+
+
+                    <li>
+
+                        <span class="feature-check">
+
+                            <i class="fa-solid fa-chart-line"></i>
+
+                        </span>
+
+                        Track your lesson progress
+
+                    </li>
+
+
+                    <li>
+
+                        <span class="feature-check">
+
+                            <i class="fa-solid fa-comments"></i>
+
+                        </span>
+
+                        Receive instructor feedback
+
+                    </li>
+
+                </ul>
+
             </div>
 
 
-            <!-- IMPORTANT NOTICE -->
+            <!-- =================================================
+                 RIGHT SIDE - PURCHASE
+                 ================================================= -->
 
-            <div class="notice">
+            <div class="purchase-section">
 
-                <strong>Important:</strong>
 
-                This is a lesson package purchase.
-                Once purchased, your lessons will be added to your
-                account and you can use them when booking available
-                driving lessons.
+                <h2>
+
+                    <i class="fa-solid fa-cart-shopping"></i>
+
+                    Buy This Package
+
+                </h2>
+
+                <p class="purchase-subtitle">
+
+                    Review your package and continue with secure
+                    online payment.
+
+                </p>
+
+
+                <!-- =================================================
+                     ORDER SUMMARY
+                     ================================================= -->
+
+                <div class="summary-box">
+
+                    <div class="summary-title">
+
+                        <i class="fa-solid fa-receipt"></i>
+
+                        Order Summary
+
+                    </div>
+
+
+                    <div class="summary-row">
+
+                        <span class="summary-label">
+
+                            <i class="fa-solid fa-box"></i>
+
+                            Package
+
+                        </span>
+
+                        <span class="summary-value">
+
+                            @Model.PackageName
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="summary-row">
+
+                        <span class="summary-label">
+
+                            <i class="fa-solid fa-road"></i>
+
+                            Lessons
+
+                        </span>
+
+                        <span class="summary-value">
+
+                            @Model.NumberOfLessons
+
+                        </span>
+
+                    </div>
+
+
+                    <div class="summary-row summary-total">
+
+                        <span class="summary-label">
+
+                            <i class="fa-solid fa-wallet"></i>
+
+                            Total
+
+                        </span>
+
+                        <span class="summary-value">
+
+                            R @Model.Price.ToString("N0")
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     PAYMENT FORM
+                     ================================================= -->
+
+                @using (Html.BeginForm(
+                    "Purchase",
+                    "Package",
+                    FormMethod.Post))
+                {
+
+                    @Html.AntiForgeryToken()
+
+                    @Html.Hidden(
+                        "id",
+                        Model.LessonPackageId)
+
+
+                    <h3 class="payment-title">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                        Secure Payment
+
+                    </h3>
+
+
+                    <!-- =================================================
+                         CARD PAYMENT ONLY
+                         ================================================= -->
+
+                    <div class="payment-options">
+
+                        <div class="payment-option">
+
+                            <input type="radio"
+                                   id="payment-card"
+                                   name="paymentMethod"
+                                   value="Card"
+                                   checked />
+
+                            <label for="payment-card">
+
+                                <div class="payment-icon">
+
+                                    <i class="fa-solid fa-credit-card"></i>
+
+                                </div>
+
+                                <div class="payment-info">
+
+                                    <span class="payment-name">
+
+                                        Card Payment
+
+                                        <span class="secure-badge">
+
+                                            <i class="fa-solid fa-lock"></i>
+
+                                            Secure
+
+                                        </span>
+
+                                    </span>
+
+                                    <span class="payment-description">
+
+                                        Pay securely using your debit or credit card.
+
+                                    </span>
+
+                                </div>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         STRIPE INFORMATION
+                         ================================================= -->
+
+                    <div class="stripe-info">
+
+                        <div class="stripe-info-icon">
+
+                            <i class="fa-solid fa-shield-check"></i>
+
+                        </div>
+
+                        <div class="stripe-info-text">
+
+                            <strong>Secure online payment</strong><br />
+
+                            Your card details are securely processed through Stripe.
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         PURCHASE BUTTON
+                         ================================================= -->
+
+                    <button type="submit"
+                            class="purchase-button">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        Continue to Secure Payment
+
+                    </button>
+
+
+                    <!-- =================================================
+                         SECURITY
+                         ================================================= -->
+
+                    <div class="secure-note">
+
+                        <span class="secure-note-icon">
+
+                            <i class="fa-solid fa-shield-halved"></i>
+
+                        </span>
+
+                        <span>
+
+                            Your payment information is securely processed.
+                            We do not store your card details.
+
+                        </span>
+
+                    </div>
+
+                }
+
+
+                <!-- =================================================
+                     FOOTER NOTE
+                     ================================================= -->
+
+                <div class="page-note">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    You can manage your purchased package from
+
+                    <strong>My Packages</strong>.
+
+                </div>
 
             </div>
-
-
-            <!-- PURCHASE BUTTON -->
-
-            <a href="@Url.Action(
-                "Purchase",
-                "Package",
-                new { id = Model.LessonPackageId })"
-               class="purchase-button">
-
-                Purchase Package
-
-            </a>
-
 
         </div>
 
     </div>
+    
 
 </div>

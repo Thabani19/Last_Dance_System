@@ -1,23 +1,36 @@
 ﻿@{
+    Layout = null;
     ViewBag.Title = "Complete Payment";
 }
 
 <style>
+
+    /* =========================================================
+       GLOBAL
+       ========================================================= */
+
     * {
         box-sizing: border-box;
     }
 
+    html,
     body {
         margin: 0;
-        background: #050a12;
-        font-family: "Segoe UI", Arial, sans-serif;
-        color: #ffffff;
+        padding: 0;
+        background: #f5f8fc;
+        font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+        color: #172033;
     }
 
+
+    /* =========================================================
+       PAYMENT PAGE
+       ========================================================= */
+
     .payment-page {
-        min-height: calc(100vh - 50px);
-        padding: 45px 20px;
-        background: radial-gradient(circle at 85% 10%, rgba(225, 6, 0, 0.12), transparent 30%), linear-gradient(135deg, #050a12, #08111d);
+        min-height: 100vh;
+        padding: 50px 20px 70px;
+        background: radial-gradient(circle at 85% 5%, rgba(37, 99, 235, 0.08), transparent 30%), radial-gradient(circle at 10% 90%, rgba(37, 99, 235, 0.05), transparent 30%), #f5f8fc;
     }
 
     .payment-container {
@@ -25,83 +38,152 @@
         margin: 0 auto;
     }
 
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
     .payment-header {
-        margin-bottom: 25px;
+        margin-bottom: 28px;
     }
 
-        .payment-header h1 {
-            margin: 0 0 8px;
-            font-size: 30px;
-            font-weight: 800;
+    .header-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+        color: #2563eb;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+        .header-label::before {
+            content: "";
+            width: 24px;
+            height: 2px;
+            background: #2563eb;
         }
 
-            .payment-header h1 span {
-                color: #e10600;
-            }
+    .payment-header h1 {
+        margin: 0 0 9px;
+        color: #172033;
+        font-size: 32px;
+        font-weight: 900;
+        line-height: 1.2;
+    }
 
-        .payment-header p {
-            margin: 0;
-            color: #7b8794;
-            font-size: 14px;
+        .payment-header h1 span {
+            color: #2563eb;
         }
+
+    .payment-header p {
+        margin: 0;
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+
+    /* =========================================================
+       MAIN CARD
+       ========================================================= */
 
     .payment-card {
-        background: #0d141d;
-        border: 1px solid #1c2733;
+        background: #ffffff;
+        border: 1px solid #dce5f0;
         border-radius: 18px;
         overflow: hidden;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+        box-shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
     }
 
+
+    /* =========================================================
+       CARD HEADER
+       ========================================================= */
+
     .payment-card-header {
-        padding: 24px 28px;
-        border-bottom: 1px solid #1c2733;
         display: flex;
         align-items: center;
-        gap: 14px;
+        gap: 15px;
+        padding: 24px 28px;
+        background: #ffffff;
+        border-bottom: 1px solid #e3eaf3;
     }
 
     .payment-icon {
-        width: 45px;
-        height: 45px;
-        border-radius: 11px;
+        width: 48px;
+        height: 48px;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: rgba(225, 6, 0, 0.10);
-        border: 1px solid rgba(225, 6, 0, 0.25);
-        color: #e10600;
-        font-size: 18px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 12px;
+        color: #2563eb;
+        font-size: 19px;
+        flex-shrink: 0;
     }
 
     .payment-card-header h2 {
         margin: 0;
+        color: #172033;
         font-size: 18px;
+        font-weight: 800;
     }
 
     .payment-card-header p {
         margin: 4px 0 0;
-        color: #6f7b87;
+        color: #94a3b8;
         font-size: 11px;
     }
 
+
+    /* =========================================================
+       BODY
+       ========================================================= */
+
     .payment-body {
-        padding: 28px;
+        padding: 30px;
     }
+
+
+    /* =========================================================
+       BOOKING SUMMARY
+       ========================================================= */
 
     .booking-summary {
-        background: #111b26;
-        border: 1px solid #202d3a;
-        border-radius: 13px;
-        padding: 20px;
-        margin-bottom: 25px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 22px;
+        margin-bottom: 24px;
     }
 
-    .summary-title {
-        margin: 0 0 17px;
-        font-size: 14px;
-        font-weight: 700;
+    .summary-heading {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 18px;
     }
+
+        .summary-heading i {
+            color: #2563eb;
+            font-size: 15px;
+        }
+
+    .summary-title {
+        margin: 0;
+        color: #172033;
+        font-size: 15px;
+        font-weight: 800;
+    }
+
+
+    /* =========================================================
+       SUMMARY GRID
+       ========================================================= */
 
     .summary-grid {
         display: grid;
@@ -110,137 +192,360 @@
     }
 
     .summary-item {
-        background: #0b121a;
-        border-radius: 9px;
-        padding: 13px;
+        position: relative;
+        padding: 15px;
+        background: #ffffff;
+        border: 1px solid #e1e8f1;
+        border-radius: 10px;
     }
 
-        .summary-item span {
-            display: block;
-            color: #687684;
-            font-size: 10px;
-            margin-bottom: 5px;
-        }
+    .summary-item-icon {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        color: #bfdbfe;
+        font-size: 14px;
+    }
 
-        .summary-item strong {
-            font-size: 13px;
-            color: #ffffff;
-        }
+    .summary-item span {
+        display: block;
+        margin-bottom: 6px;
+        color: #94a3b8;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+    }
+
+    .summary-item strong {
+        display: block;
+        padding-right: 20px;
+        color: #172033;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .booking-status {
+        color: #2563eb !important;
+    }
+
+
+    /* =========================================================
+       AMOUNT BOX
+       ========================================================= */
 
     .amount-box {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        padding: 18px 20px;
-        margin-bottom: 25px;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 19px 21px;
+        margin-bottom: 26px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
         border-radius: 12px;
-        background: rgba(225, 6, 0, 0.08);
-        border: 1px solid rgba(225, 6, 0, 0.20);
     }
 
-        .amount-box span {
-            color: #9aa5af;
-            font-size: 13px;
+    .amount-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #475569;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+        .amount-label i {
+            color: #2563eb;
+            font-size: 16px;
         }
 
-        .amount-box strong {
-            color: #e10600;
-            font-size: 25px;
-        }
+    .amount-value {
+        color: #2563eb;
+        font-size: 26px;
+        font-weight: 900;
+    }
 
-    .form-group {
+
+    /* =========================================================
+       PAYMENT METHOD
+       ========================================================= */
+
+    .payment-method-section {
         margin-bottom: 22px;
     }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #c4ccd3;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-    .payment-select {
-        width: 100%;
-        padding: 13px 14px;
-        background: #091019;
-        border: 1px solid #263442;
-        border-radius: 9px;
-        color: #ffffff;
-        outline: none;
-        font-size: 13px;
-    }
-
-        .payment-select:focus {
-            border-color: #e10600;
-        }
-
-    .security-note {
+    .payment-method-title {
         display: flex;
         align-items: center;
         gap: 9px;
-        margin-bottom: 22px;
-        color: #697682;
+        margin: 0 0 12px;
+        color: #172033;
+        font-size: 15px;
+        font-weight: 800;
+    }
+
+        .payment-method-title i {
+            color: #2563eb;
+        }
+
+
+    /* =========================================================
+       CARD OPTION
+       ========================================================= */
+
+    .payment-option {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+        padding: 17px;
+        background: #ffffff;
+        border: 2px solid #d9e3ef;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: .2s ease;
+    }
+
+        .payment-option:hover {
+            border-color: #93b4ed;
+            background: #f8fbff;
+        }
+
+        .payment-option.selected {
+            background: #eff6ff;
+            border-color: #2563eb;
+            box-shadow: 0 5px 18px rgba(37, 99, 235, 0.10);
+        }
+
+        .payment-option input {
+            display: none;
+        }
+
+
+    /* =========================================================
+       CARD ICON
+       ========================================================= */
+
+    .payment-option-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 10px;
+        color: #2563eb;
+        font-size: 21px;
+        flex-shrink: 0;
+        transition: .2s ease;
+    }
+
+    .payment-option.selected .payment-option-icon {
+        background: #2563eb;
+        border-color: #2563eb;
+        color: #ffffff;
+    }
+
+
+    /* =========================================================
+       PAYMENT TEXT
+       ========================================================= */
+
+    .payment-content {
+        flex: 1;
+    }
+
+    .payment-name {
+        display: block;
+        margin-bottom: 4px;
+        color: #172033;
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+    .payment-description {
+        display: block;
+        color: #64748b;
         font-size: 11px;
+        line-height: 1.5;
+    }
+
+
+    /* =========================================================
+       CHECK
+       ========================================================= */
+
+    .payment-check {
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #cbd5e1;
+        border-radius: 50%;
+        color: transparent;
+        font-size: 11px;
+        flex-shrink: 0;
+    }
+
+    .payment-option.selected .payment-check {
+        background: #2563eb;
+        border-color: #2563eb;
+        color: #ffffff;
+    }
+
+
+    /* =========================================================
+       SECURITY INFORMATION
+       ========================================================= */
+
+    .security-note {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 14px;
+        margin-bottom: 20px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        color: #64748b;
+        font-size: 11px;
+        line-height: 1.6;
     }
 
         .security-note i {
-            color: #e10600;
+            margin-top: 2px;
+            color: #2563eb;
+            font-size: 14px;
         }
+
+
+    /* =========================================================
+       PAYMENT BUTTON
+       ========================================================= */
 
     .payment-button {
         width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        padding: 15px;
         border: none;
-        padding: 14px;
-        border-radius: 9px;
-        background: #e10600;
+        border-radius: 10px;
+        background: #2563eb;
         color: #ffffff;
         font-size: 13px;
-        font-weight: 700;
+        font-weight: 800;
         cursor: pointer;
-        transition: .25s ease;
+        transition: .2s ease;
+        box-shadow: 0 7px 20px rgba(37, 99, 235, 0.18);
     }
 
         .payment-button:hover {
-            background: #ff2018;
+            background: #1d4ed8;
             transform: translateY(-1px);
+            box-shadow: 0 9px 24px rgba(37, 99, 235, 0.25);
         }
 
+
+    /* =========================================================
+       BACK LINK
+       ========================================================= */
+
     .back-link {
-        display: block;
-        text-align: center;
-        margin-top: 18px;
-        color: #788591;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        margin-top: 19px;
+        color: #64748b;
         text-decoration: none;
         font-size: 12px;
+        font-weight: 600;
+        transition: .2s ease;
     }
 
         .back-link:hover {
-            color: #ffffff;
+            color: #2563eb;
             text-decoration: none;
         }
 
+
+    /* =========================================================
+       FOOTER SECURITY
+       ========================================================= */
+
+    .payment-footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        margin-top: 18px;
+        color: #94a3b8;
+        font-size: 10px;
+    }
+
+        .payment-footer i {
+            color: #2563eb;
+        }
+
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
     @@media (max-width: 650px) {
+
         .payment-page {
-            padding: 25px 15px;
+            padding: 30px 15px 45px;
+        }
+
+        .payment-header h1 {
+            font-size: 27px;
         }
 
         .payment-body {
             padding: 20px;
         }
 
+        .payment-card-header {
+            padding: 20px;
+        }
+
         .summary-grid {
             grid-template-columns: 1fr;
+        }
+
+        .amount-box {
+            align-items: flex-start;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .amount-value {
+            font-size: 24px;
         }
     }
 </style>
 
-
 <div class="payment-page">
 
+    
     <div class="payment-container">
 
+
+        <!-- =====================================================
+             PAGE HEADER
+             ===================================================== -->
+
         <div class="payment-header">
+
+            <div class="header-label">
+                Secure Checkout
+            </div>
 
             <h1>
                 Complete <span>Payment</span>
@@ -253,7 +558,14 @@
         </div>
 
 
+        <!-- =====================================================
+             MAIN PAYMENT CARD
+             ===================================================== -->
+
         <div class="payment-card">
+
+
+            <!-- CARD HEADER -->
 
             <div class="payment-card-header">
 
@@ -262,83 +574,166 @@
                 </div>
 
                 <div>
-                    <h2>Booking Payment</h2>
+
+                    <h2>
+                        Booking Payment
+                    </h2>
 
                     <p>
-                        Your booking will only be confirmed after payment.
+                        Your booking will be confirmed after successful payment.
                     </p>
+
                 </div>
 
             </div>
 
 
+            <!-- CARD BODY -->
+
             <div class="payment-body">
+
+
+                <!-- =================================================
+                     BOOKING SUMMARY
+                     ================================================= -->
 
                 <div class="booking-summary">
 
-                    <h3 class="summary-title">
-                        Booking Details
-                    </h3>
+                    <div class="summary-heading">
+
+                        <i class="fa-solid fa-calendar-check"></i>
+
+                        <h3 class="summary-title">
+                            Booking Details
+                        </h3>
+
+                    </div>
+
 
                     <div class="summary-grid">
 
-                        <div class="summary-item">
-                            <span>Booking Number</span>
-                            <strong>#@ViewBag.BookingId</strong>
-                        </div>
 
                         <div class="summary-item">
-                            <span>Lesson Date</span>
+
+                            <i class="fa-solid fa-hashtag summary-item-icon"></i>
+
+                            <span>
+                                Booking Number
+                            </span>
+
+                            <strong>
+                                #@ViewBag.BookingId
+                            </strong>
+
+                        </div>
+
+
+                        <div class="summary-item">
+
+                            <i class="fa-solid fa-calendar-day summary-item-icon"></i>
+
+                            <span>
+                                Lesson Date
+                            </span>
+
                             <strong>
                                 @Convert.ToDateTime(ViewBag.LessonDate).ToString("dd MMMM yyyy")
                             </strong>
+
                         </div>
 
+
                         <div class="summary-item">
-                            <span>Start Time</span>
+
+                            <i class="fa-solid fa-clock summary-item-icon"></i>
+
+                            <span>
+                                Start Time
+                            </span>
+
                             <strong>
                                 @ViewBag.StartTime
                             </strong>
+
                         </div>
 
+
                         <div class="summary-item">
-                            <span>End Time</span>
+
+                            <i class="fa-solid fa-clock-rotate-left summary-item-icon"></i>
+
+                            <span>
+                                End Time
+                            </span>
+
                             <strong>
                                 @ViewBag.EndTime
                             </strong>
+
                         </div>
 
+
                         <div class="summary-item">
-                            <span>Instructor</span>
+
+                            <i class="fa-solid fa-user-tie summary-item-icon"></i>
+
+                            <span>
+                                Instructor
+                            </span>
+
                             <strong>
                                 @ViewBag.InstructorName
                             </strong>
+
                         </div>
 
+
                         <div class="summary-item">
-                            <span>Booking Status</span>
-                            <strong style="color:#e10600;">
+
+                            <i class="fa-solid fa-hourglass-half summary-item-icon"></i>
+
+                            <span>
+                                Booking Status
+                            </span>
+
+                            <strong class="booking-status">
                                 Pending Payment
                             </strong>
+
                         </div>
+
 
                     </div>
 
                 </div>
 
 
+                <!-- =================================================
+                     AMOUNT
+                     ================================================= -->
+
                 <div class="amount-box">
 
-                    <span>
-                        Amount Due
-                    </span>
+                    <div class="amount-label">
 
-                    <strong>
+                        <i class="fa-solid fa-wallet"></i>
+
+                        Amount Due
+
+                    </div>
+
+                    <div class="amount-value">
+
                         R @String.Format("{0:N2}", ViewBag.Amount)
-                    </strong>
+
+                    </div>
 
                 </div>
 
+
+                <!-- =================================================
+                     PAYMENT FORM
+                     ================================================= -->
 
                 @using (Html.BeginForm("Create", "Payment", FormMethod.Post))
                 {
@@ -349,74 +744,176 @@
                            value="@ViewBag.BookingId" />
 
 
-                    <div class="form-group">
+                    <!-- PAYMENT METHOD -->
 
-                        <label>
+                    <div class="payment-method-section">
+
+                        <h3 class="payment-method-title">
+
+                            <i class="fa-solid fa-wallet"></i>
+
                             Payment Method
+
+                        </h3>
+
+
+                        <!-- CARD ONLY -->
+
+                        <label class="payment-option"
+                               id="cardOption">
+
+                            <input type="radio"
+                                   name="paymentMethod"
+                                   value="Card"
+                                   required />
+
+                            <span class="payment-option-icon">
+
+                                <i class="fa-solid fa-credit-card"></i>
+
+                            </span>
+
+
+                            <span class="payment-content">
+
+                                <span class="payment-name">
+                                    Credit / Debit Card
+                                </span>
+
+                                <span class="payment-description">
+                                    Secure online payment processed through Stripe
+                                </span>
+
+                            </span>
+
+
+                            <span class="payment-check">
+
+                                <i class="fa-solid fa-check"></i>
+
+                            </span>
+
                         </label>
-
-                        <select name="paymentMethod"
-                                class="payment-select"
-                                required>
-
-                            <option value="">
-                                Select payment method
-                            </option>
-
-                            <option value="Card">
-                                Bank Card
-                            </option>
-
-                            <option value="EFT">
-                                EFT / Bank Transfer
-                            </option>
-
-                            <option value="Cash">
-                                Cash
-                            </option>
-
-                        </select>
 
                     </div>
 
+
+                    <!-- =================================================
+                         SECURITY
+                         ================================================= -->
 
                     <div class="security-note">
 
-                        <i class="fa-solid fa-lock"></i>
+                        <i class="fa-solid fa-shield-halved"></i>
 
-                        Your booking will be confirmed after successful payment.
+                        <span>
+                            Your payment details are securely processed.
+                            Your booking will only be confirmed after successful
+                            payment.
+                        </span>
 
                     </div>
 
 
-                    <button type="submit"
-                            class="payment-button">
+                    <!-- =================================================
+                         PAYMENT BUTTON
+                         ================================================= -->
 
-                        <i class="fa-solid fa-check"></i>
-                        Confirm Payment
+                    <button type="submit"
+                            id="paymentButton"
+                            class="payment-button"
+                            disabled>
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        Select Card Payment
 
                     </button>
+
                 }
 
+
+                <!-- =================================================
+                     BACK
+                     ================================================= -->
 
                 <a href="@Url.Action("Index", "Booking")"
                    class="back-link">
 
-                    ← Back to My Bookings
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Back to My Bookings
 
                 </a>
+
+
+                <!-- =================================================
+                     SECURITY FOOTER
+                     ================================================= -->
+
+                <div class="payment-footer">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    Secure payment
+
+                    <span>•</span>
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    Protected checkout
+
+                </div>
+
 
             </div>
 
         </div>
 
     </div>
+    
 
 </div>
 
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        var cardOption =
+            document.getElementById("cardOption");
+
+        var cardInput =
+            cardOption.querySelector(
+                'input[name="paymentMethod"]'
+            );
+
+        var paymentButton =
+            document.getElementById("paymentButton");
+
+
+        cardInput.addEventListener("change", function () {
+
+            if (this.checked) {
+
+                cardOption.classList.add("selected");
+
+                paymentButton.disabled = false;
+
+                paymentButton.innerHTML =
+                    '<i class="fa-solid fa-lock"></i> Proceed to Secure Payment';
+
+            }
+
+        });
+
+    });
+
+</script>
 
 @section Scripts {
 
+    
     @Scripts.Render("~/bundles/jqueryval")
+    
 
 }

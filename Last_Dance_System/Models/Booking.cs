@@ -71,7 +71,5 @@ namespace Last_Dance_System.Models
 
         [StringLength(500)]
         public string Notes { get; set; }
-
-
     }
 }

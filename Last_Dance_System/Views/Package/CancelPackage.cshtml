@@ -1,20 +1,38 @@
 ﻿@model Last_Dance_System.Models.StudentPackage
 
 @{
+    Layout = null;
     ViewBag.Title = "Cancel Package";
 }
 
+<!-- =========================================================
+     FONT AWESOME
+     ========================================================= -->
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
 <style>
+
+    /* =========================================================
+       GLOBAL
+       ========================================================= */
+
     * {
         box-sizing: border-box;
     }
 
     body {
         margin: 0;
-        background: #07111f;
-        color: white;
-        font-family: Arial, Helvetica, sans-serif;
+        background: #f5f8fc;
+        color: #172033;
+        font-family: "Segoe UI", Arial, Helvetica, sans-serif;
     }
+
+
+    /* =========================================================
+       PAGE
+       ========================================================= */
 
     .cancel-page {
         min-height: 90vh;
@@ -22,233 +40,645 @@
         justify-content: center;
         align-items: center;
         padding: 50px 20px;
+        background: radial-gradient(circle at top right, rgba(23, 105, 224, .06), transparent 32%), radial-gradient(circle at bottom left, rgba(23, 105, 224, .04), transparent 30%), #f5f8fc;
     }
+
+
+    /* =========================================================
+       CARD
+       ========================================================= */
 
     .cancel-card {
         width: 100%;
-        max-width: 650px;
-        background: #0d1b2a;
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 20px;
-        padding: 40px;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+        max-width: 680px;
+        background: #ffffff;
+        border: 1px solid #dfe7f1;
+        border-radius: 18px;
+        padding: 42px;
+        box-shadow: 0 10px 35px rgba(26, 55, 92, .08);
+        position: relative;
+        overflow: hidden;
     }
 
+        .cancel-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #1769e0;
+        }
+
+
+    /* =========================================================
+       WARNING ICON
+       ========================================================= */
+
     .warning-icon {
-        width: 70px;
-        height: 70px;
-        margin: 0 auto 20px;
+        width: 76px;
+        height: 76px;
+        margin: 0 auto 22px;
         border-radius: 50%;
-        background: rgba(255, 193, 7, 0.12);
+        background: #fff8e6;
+        border: 1px solid #f0dda3;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 34px;
+        color: #d49400;
+        font-size: 30px;
+        box-shadow: 0 7px 18px rgba(212, 148, 0, .08);
     }
 
-    h1 {
+
+    /* =========================================================
+       TITLE
+       ========================================================= */
+
+    .cancel-card h1 {
         text-align: center;
-        margin-bottom: 10px;
+        margin: 0 0 10px;
         font-size: 30px;
+        font-weight: 800;
+        color: #172033;
     }
+
+        .cancel-card h1 span {
+            color: #1769e0;
+        }
 
     .subtitle {
+        max-width: 500px;
+        margin: 0 auto 30px;
         text-align: center;
-        color: #aeb8c4;
-        margin-bottom: 30px;
-        line-height: 1.6;
+        color: #6b778c;
+        font-size: 14px;
+        line-height: 1.7;
     }
 
+
+    /* =========================================================
+       PACKAGE INFORMATION
+       ========================================================= */
+
     .package-info {
-        background: #07111f;
-        border-radius: 14px;
-        padding: 22px;
-        margin-bottom: 25px;
+        background: #f7faff;
+        border: 1px solid #dce8f7;
+        border-radius: 13px;
+        padding: 20px 22px;
+        margin-bottom: 22px;
     }
+
+    .package-info-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+        color: #1769e0;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: .7px;
+    }
+
+        .package-info-title i {
+            font-size: 12px;
+        }
+
+
+    /* =========================================================
+       INFORMATION ROWS
+       ========================================================= */
 
     .info-row {
         display: flex;
         justify-content: space-between;
-        padding: 10px 0;
-        border-bottom: 1px solid rgba(255,255,255,0.06);
+        align-items: center;
+        gap: 20px;
+        padding: 12px 0;
+        border-bottom: 1px solid #e4ebf4;
+        font-size: 13px;
     }
 
-    .info-row:last-child {
-        border-bottom: none;
+        .info-row:last-child {
+            border-bottom: none;
+            padding-bottom: 2px;
+        }
+
+    .info-label {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: #748197;
     }
 
-    .label {
-        color: #9da9b5;
+    .info-label-icon {
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #ffffff;
+        border: 1px solid #dce8f7;
+        border-radius: 7px;
+        color: #1769e0;
+        font-size: 11px;
+        flex-shrink: 0;
     }
 
     .value {
-        font-weight: bold;
+        color: #172033;
+        font-weight: 700;
+        text-align: right;
     }
+
+
+    /* =========================================================
+       PAYMENT STATUS
+       ========================================================= */
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 7px;
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+    .payment-paid {
+        color: #16804d !important;
+        background: #ecfdf3;
+        border: 1px solid #bbf7d0;
+    }
+
+    .payment-pending {
+        color: #b27b00 !important;
+        background: #fff8e6;
+        border: 1px solid #f0dda3;
+    }
+
+    .payment-other {
+        color: #64748b !important;
+        background: #f1f5f9;
+        border: 1px solid #dbe3ec;
+    }
+
+
+    /* =========================================================
+       WARNING BOX
+       ========================================================= */
 
     .warning-box {
-        background: rgba(220, 53, 69, 0.12);
-        border: 1px solid rgba(220, 53, 69, 0.35);
-        border-radius: 14px;
-        padding: 20px;
-        margin-bottom: 30px;
-        line-height: 1.6;
+        background: #fff7f7;
+        border: 1px solid #f0caca;
+        border-radius: 13px;
+        padding: 19px 20px;
+        margin-bottom: 28px;
+        color: #6d4b4b;
+        font-size: 13px;
+        line-height: 1.7;
     }
 
-    .warning-box strong {
-        color: #ff6b6b;
+    .warning-box-header {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 9px;
+        color: #c53030;
+        font-weight: 800;
     }
+
+        .warning-box-header i {
+            font-size: 15px;
+        }
+
+    .warning-box strong {
+        color: #c53030;
+    }
+
+    .warning-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 9px;
+        margin-top: 10px;
+    }
+
+        .warning-item i {
+            margin-top: 4px;
+            color: #c53030;
+            font-size: 11px;
+            flex-shrink: 0;
+        }
+
+
+    /* =========================================================
+       BUTTONS
+       ========================================================= */
 
     .buttons {
         display: flex;
-        gap: 15px;
+        gap: 12px;
+        width: 100%;
     }
+
+        .buttons form {
+            flex: 1;
+            margin: 0;
+        }
+
+        .buttons > .btn {
+            flex: 1;
+        }
 
     .btn {
-        flex: 1;
-        padding: 14px 20px;
-        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        width: 100%;
+        min-height: 48px;
+        padding: 13px 20px;
+        border-radius: 9px;
         text-align: center;
         text-decoration: none;
-        border: none;
+        border: 1px solid transparent;
         cursor: pointer;
-        font-size: 15px;
-        font-weight: bold;
-        transition: 0.2s ease;
+        font-size: 13px;
+        font-weight: 800;
+        transition: .2s ease;
     }
 
-    .btn-cancel {
-        background: #263648;
-        color: white;
+        .btn i {
+            font-size: 12px;
+        }
+
+
+    /* =========================================================
+       KEEP PACKAGE
+       ========================================================= */
+
+    .btn-keep {
+        background: #ffffff;
+        color: #26364d;
+        border-color: #d7e0eb;
     }
 
-    .btn-cancel:hover {
-        background: #34495e;
-        color: white;
-    }
+        .btn-keep:hover {
+            background: #eef5ff;
+            border-color: #1769e0;
+            color: #1769e0;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+
+    /* =========================================================
+       CONFIRM CANCELLATION
+       ========================================================= */
 
     .btn-danger {
-        background: #dc3545;
-        color: white;
+        background: #1769e0;
+        border-color: #1769e0;
+        color: #ffffff;
+        box-shadow: 0 5px 14px rgba(23, 105, 224, .18);
     }
 
-    .btn-danger:hover {
-        background: #bb2d3b;
+        .btn-danger:hover {
+            background: #0d57c7;
+            border-color: #0d57c7;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+
+    /* =========================================================
+       SMALL INFORMATION
+       ========================================================= */
+
+    .bottom-note {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        text-align: center;
+        margin-top: 20px;
+        color: #8995a7;
+        font-size: 11px;
+        line-height: 1.5;
     }
+
+        .bottom-note i {
+            color: #1769e0;
+            font-size: 11px;
+        }
+
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
 
     @@media (max-width: 600px) {
 
-        .cancel-card {
-            padding: 25px;
+        .cancel-page {
+            padding: 30px 15px;
+            align-items: flex-start;
         }
+
+        .cancel-card {
+            padding: 30px 22px;
+            margin-top: 15px;
+        }
+
+            .cancel-card h1 {
+                font-size: 26px;
+            }
 
         .buttons {
             flex-direction: column;
         }
+
+            .buttons form {
+                width: 100%;
+            }
+
+        .info-row {
+            align-items: flex-start;
+        }
+
+        .value {
+            max-width: 55%;
+        }
     }
 </style>
 
-
 <div class="cancel-page">
 
+    
     <div class="cancel-card">
 
-        <div class="warSning-icon">
-            ⚠️
+
+        <!-- =====================================================
+             WARNING ICON
+             ===================================================== -->
+
+        <div class="warning-icon">
+
+            <i class="fa-solid fa-triangle-exclamation"></i>
+
         </div>
 
-        <h1>Cancel Package?</h1>
+
+        <!-- =====================================================
+             TITLE
+             ===================================================== -->
+
+        <h1>
+
+            Cancel <span>Package?</span>
+
+        </h1>
+
 
         <p class="subtitle">
+
             Are you sure you want to cancel this lesson package?
+            Please review the information below before continuing.
+
         </p>
 
 
-        <!-- PACKAGE INFORMATION -->
+        <!-- =====================================================
+             PACKAGE INFORMATION
+             ===================================================== -->
 
         <div class="package-info">
 
+            <div class="package-info-title">
+
+                <i class="fa-solid fa-box-open"></i>
+
+                Package Information
+
+            </div>
+
+
+            <!-- PACKAGE -->
+
             <div class="info-row">
-                <span class="label">
+
+                <span class="info-label">
+
+                    <span class="info-label-icon">
+
+                        <i class="fa-solid fa-box"></i>
+
+                    </span>
+
                     Package
+
                 </span>
 
                 <span class="value">
+
                     @Model.LessonPackage.PackageName
+
                 </span>
+
             </div>
 
+
+            <!-- LESSONS PURCHASED -->
+
             <div class="info-row">
-                <span class="label">
+
+                <span class="info-label">
+
+                    <span class="info-label-icon">
+
+                        <i class="fa-solid fa-cart-shopping"></i>
+
+                    </span>
+
                     Lessons Purchased
+
                 </span>
 
                 <span class="value">
+
                     @Model.LessonsPurchased
+
                 </span>
+
             </div>
 
+
+            <!-- LESSONS REMAINING -->
+
             <div class="info-row">
-                <span class="label">
+
+                <span class="info-label">
+
+                    <span class="info-label-icon">
+
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+
+                    </span>
+
                     Lessons Remaining
+
                 </span>
 
                 <span class="value">
+
                     @Model.LessonsRemaining
+
                 </span>
+
             </div>
 
+
+            <!-- PAYMENT STATUS -->
+
             <div class="info-row">
-                <span class="label">
+
+                <span class="info-label">
+
+                    <span class="info-label-icon">
+
+                        <i class="fa-solid fa-credit-card"></i>
+
+                    </span>
+
                     Payment Status
+
                 </span>
 
-                <span class="value">
-                    @Model.PaymentStatus
-                </span>
+
+                @if (Model.PaymentStatus == "Paid")
+                {
+                    <span class="status-badge payment-paid">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        @Model.PaymentStatus
+
+                    </span>
+                }
+                else if (Model.PaymentStatus == "Pending")
+                {
+                    <span class="status-badge payment-pending">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                        @Model.PaymentStatus
+
+                    </span>
+                }
+                else
+                {
+                    <span class="status-badge payment-other">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        @Model.PaymentStatus
+
+                    </span>
+                }
+
             </div>
 
         </div>
 
 
-        <!-- WARNING -->
+        <!-- =====================================================
+             WARNING
+             ===================================================== -->
 
         <div class="warning-box">
 
-            <strong>Important:</strong>
+            <div class="warning-box-header">
 
-            Cancelling this package will automatically cancel
-            <strong>all lessons you have booked using this package.</strong>
+                <i class="fa-solid fa-circle-exclamation"></i>
 
-            <br /><br />
+                Important
 
-            The cancelled lesson slots will become available
-            for other students to book.
+            </div>
 
-            <br /><br />
 
-            <strong>This action cannot be undone.</strong>
+            <div class="warning-item">
+
+                <i class="fa-solid fa-calendar-xmark"></i>
+
+                <span>
+
+                    Cancelling this package will automatically cancel
+                    <strong>all lessons you have booked using this package.</strong>
+
+                </span>
+
+            </div>
+
+
+            <div class="warning-item">
+
+                <i class="fa-solid fa-users"></i>
+
+                <span>
+
+                    The cancelled lesson slots will become available
+                    for other students to book.
+
+                </span>
+
+            </div>
+
+
+            <div class="warning-item">
+
+                <i class="fa-solid fa-ban"></i>
+
+                <span>
+
+                    <strong>This action cannot be undone.</strong>
+
+                </span>
+
+            </div>
 
         </div>
 
 
-        <!-- BUTTONS -->
+        <!-- =====================================================
+             BUTTONS
+             ===================================================== -->
 
         <div class="buttons">
 
+
+            <!-- KEEP PACKAGE -->
+
             <a href="@Url.Action("MyPackages", "Package")"
-               class="btn btn-cancel">
+               class="btn btn-keep">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
                 Keep Package
+
             </a>
 
+
+            <!-- CONFIRM CANCELLATION -->
 
             @using (Html.BeginForm(
                 "CancelPackageConfirmed",
                 "Package",
                 FormMethod.Post))
             {
-                @Html.AntiForgeryToken()
 
-                <!-- IMPORTANT: SEND PACKAGE ID -->
+                @Html.AntiForgeryToken()
 
                 <input type="hidden"
                        name="id"
@@ -256,12 +686,35 @@
 
                 <button type="submit"
                         class="btn btn-danger">
+
+                    <i class="fa-solid fa-circle-xmark"></i>
+
                     Confirm Cancellation
+
                 </button>
+
             }
 
         </div>
 
+
+        <!-- =====================================================
+             BOTTOM NOTE
+             ===================================================== -->
+
+        <div class="bottom-note">
+
+            <i class="fa-solid fa-shield-halved"></i>
+
+            <span>
+
+                Your package will only be cancelled after you confirm this action.
+
+            </span>
+
+        </div>
+
     </div>
+    
 
 </div>

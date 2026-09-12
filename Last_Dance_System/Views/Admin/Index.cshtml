@@ -1,0 +1,1355 @@
+﻿@using Last_Dance_System.Models
+
+@{
+    Layout = null;
+    ViewBag.Title = "Admin Dashboard";
+
+
+var recentBookings =
+ViewBag.RecentBookings as List<Booking>
+?? new List<Booking>();
+
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>Admin Dashboard - Last Dance Driving School</title>
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <style>
+
+            /* =========================================================
+           GLOBAL
+        ========================================================= */
+
+            * {
+                box-sizing: border-box;
+            }
+
+            html,
+            body {
+                margin: 0;
+                padding: 0;
+                min-height: 100%;
+            }
+
+            body {
+                background: #f4f8fc;
+                color: #172b4d;
+                font-family: "Segoe UI", Arial, sans-serif;
+            }
+
+
+            /* =========================================================
+           PAGE
+        ========================================================= */
+
+            .admin-page {
+                min-height: 100vh;
+                padding: 35px 25px 60px;
+                background: radial-gradient( circle at 10% 10%, rgba(33, 150, 243, 0.10), transparent 28% ), radial-gradient( circle at 90% 90%, rgba(13, 71, 161, 0.07), transparent 30% ), linear-gradient( 135deg, #f8fbff 0%, #f1f6fb 50%, #eaf2f9 100% );
+            }
+
+
+            .admin-container {
+                width: 100%;
+                max-width: 1300px;
+                margin: 0 auto;
+            }
+
+
+            /* =========================================================
+           PAGE HEADER
+        ========================================================= */
+
+            .page-header {
+                position: relative;
+                overflow: hidden;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 25px;
+                margin-bottom: 25px;
+                padding: 25px 30px;
+                background: linear-gradient( 135deg, #ffffff 0%, #f7fbff 55%, #eaf4ff 100% );
+                border: 1px solid #dce7f1;
+                border-radius: 18px;
+                box-shadow: 0 15px 40px rgba(23, 43, 77, 0.08), 0 4px 12px rgba(23, 43, 77, 0.04);
+                animation: headerFade .6s ease both;
+            }
+
+
+                .page-header::before {
+                    content: "";
+                    position: absolute;
+                    width: 280px;
+                    height: 280px;
+                    right: -120px;
+                    top: -160px;
+                    border-radius: 50%;
+                    background: rgba(33, 150, 243, 0.06);
+                }
+
+
+                .page-header::after {
+                    content: "";
+                    position: absolute;
+                    width: 180px;
+                    height: 180px;
+                    left: 45%;
+                    bottom: -130px;
+                    border-radius: 50%;
+                    background: rgba(13, 71, 161, 0.04);
+                }
+
+
+            /* =========================================================
+           HEADER LEFT
+        ========================================================= */
+
+            .header-left {
+                position: relative;
+                z-index: 2;
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+
+            /* =========================================================
+           HEADER ICON
+        ========================================================= */
+
+            .header-icon {
+                width: 55px;
+                height: 55px;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 13px;
+                background: linear-gradient( 135deg, #2196f3, #1565c0 );
+                color: #ffffff;
+                font-size: 21px;
+                box-shadow: 0 8px 20px rgba(33, 150, 243, 0.22);
+                animation: iconFloat 3s ease-in-out infinite;
+            }
+
+
+            /* =========================================================
+           HEADER TEXT
+        ========================================================= */
+
+            .page-header h1 {
+                margin: 0 0 5px;
+                color: #172b4d;
+                font-size: 25px;
+                font-weight: 800;
+                letter-spacing: -0.3px;
+            }
+
+
+            .page-header p {
+                margin: 0;
+                color: #71859a;
+                font-size: 12px;
+            }
+
+
+            /* =========================================================
+           HEADER ACTIONS
+        ========================================================= */
+
+            .header-actions {
+                position: relative;
+                z-index: 3;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+
+            /* =========================================================
+           ACTION BUTTON BASE
+        ========================================================= */
+
+            .action-button {
+                position: relative;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 9px;
+                min-height: 44px;
+                min-width: 145px;
+                padding: 11px 17px;
+                border-radius: 10px;
+                font-size: 11px;
+                font-weight: 800;
+                text-decoration: none !important;
+                cursor: pointer;
+                overflow: hidden;
+                transition: transform .22s ease, box-shadow .22s ease, background .22s ease, border-color .22s ease;
+            }
+
+
+                /* =========================================================
+           BUTTON SHINE
+        ========================================================= */
+
+                .action-button::before {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: -120%;
+                    width: 75%;
+                    height: 100%;
+                    background: linear-gradient( 90deg, transparent, rgba(255,255,255,.20), transparent );
+                    transform: skewX(-20deg);
+                    transition: left .55s ease;
+                }
+
+
+                .action-button:hover::before {
+                    left: 140%;
+                }
+
+
+                /* =========================================================
+           BUTTON ICON
+        ========================================================= */
+
+                .action-button i {
+                    width: 25px;
+                    height: 25px;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 7px;
+                    font-size: 11px;
+                    transition: transform .25s ease, background .2s ease;
+                }
+
+
+            /* =========================================================
+           ADD INSTRUCTOR
+        ========================================================= */
+
+            .primary-button {
+                background: linear-gradient( 135deg, #2196f3, #1565c0 );
+                border: 1px solid #2196f3;
+                color: #ffffff;
+                box-shadow: 0 7px 18px rgba(33, 150, 243, 0.18);
+            }
+
+
+                .primary-button i {
+                    background: rgba(255,255,255,.16);
+                }
+
+
+                .primary-button:hover {
+                    background: linear-gradient( 135deg, #42a5f5, #1976d2 );
+                    color: #ffffff;
+                    transform: translateY(-2px);
+                    box-shadow: 0 11px 25px rgba(33, 150, 243, 0.28);
+                }
+
+
+                    .primary-button:hover i {
+                        transform: scale(1.08);
+                    }
+
+
+            /* =========================================================
+           ADD PACKAGE BUTTON
+        ========================================================= */
+
+            .package-button {
+                background: linear-gradient( 135deg, #0d47a1, #1976d2 );
+                border: 1px solid #0d47a1;
+                color: #ffffff;
+                box-shadow: 0 7px 18px rgba(13, 71, 161, 0.20);
+            }
+
+
+                .package-button i {
+                    background: rgba(255,255,255,.15);
+                }
+
+
+                .package-button:hover {
+                    background: linear-gradient( 135deg, #1565c0, #2196f3 );
+                    border-color: #1565c0;
+                    color: #ffffff;
+                    transform: translateY(-2px);
+                    box-shadow: 0 12px 27px rgba(13, 71, 161, 0.28);
+                }
+
+
+                    .package-button:hover i {
+                        transform: rotate(90deg) scale(1.08);
+                        background: rgba(255,255,255,.22);
+                    }
+
+
+                .package-button:active {
+                    transform: translateY(0);
+                    box-shadow: 0 4px 10px rgba(13, 71, 161, 0.18);
+                }
+
+
+            /* =========================================================
+           LOGOUT
+        ========================================================= */
+
+            .logout-button {
+                min-width: 115px;
+                background: #ffffff;
+                border: 1px solid #d4e0eb;
+                color: #34495e;
+                box-shadow: 0 4px 10px rgba(23, 43, 77, 0.04);
+            }
+
+
+                .logout-button i {
+                    color: #1976d2;
+                    background: #edf6ff;
+                }
+
+
+                .logout-button:hover {
+                    background: #edf6ff;
+                    border-color: #2196f3;
+                    color: #1565c0;
+                    transform: translateY(-2px);
+                    box-shadow: 0 7px 16px rgba(33, 150, 243, 0.12);
+                }
+
+
+                    .logout-button:hover i {
+                        transform: translateX(2px);
+                    }
+
+
+            /* =========================================================
+           STATISTICS
+        ========================================================= */
+
+            .stats-grid {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 15px;
+                margin-bottom: 30px;
+            }
+
+
+            .stat-card {
+                position: relative;
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                padding: 20px;
+                background: #ffffff;
+                border: 1px solid #dce7f1;
+                border-radius: 14px;
+                box-shadow: 0 8px 25px rgba(23, 43, 77, 0.06);
+                transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+                animation: cardFade .55s ease both;
+            }
+
+
+                .stat-card:hover {
+                    transform: translateY(-4px);
+                    border-color: #b9d9f5;
+                    box-shadow: 0 14px 32px rgba(23, 43, 77, 0.10);
+                }
+
+
+            /* =========================================================
+           STAT ICON
+        ========================================================= */
+
+            .stat-icon {
+                width: 45px;
+                height: 45px;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 10px;
+                background: #edf6ff;
+                color: #1976d2;
+                font-size: 16px;
+            }
+
+
+                .stat-icon.green {
+                    background: #eefaf5;
+                    color: #18a66a;
+                }
+
+
+                .stat-icon.gray {
+                    background: #f1f4f7;
+                    color: #728196;
+                }
+
+
+            /* =========================================================
+           STAT TEXT
+        ========================================================= */
+
+            .stat-text {
+                min-width: 0;
+            }
+
+
+                .stat-text strong {
+                    display: block;
+                    color: #172b4d;
+                    font-size: 23px;
+                    font-weight: 800;
+                }
+
+
+                .stat-text span {
+                    display: block;
+                    margin-top: 3px;
+                    color: #8193a7;
+                    font-size: 10px;
+                }
+
+
+            /* =========================================================
+           CONTENT GRID
+        ========================================================= */
+
+            .content-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+                margin-bottom: 30px;
+            }
+
+
+            /* =========================================================
+           PANEL
+        ========================================================= */
+
+            .panel {
+                overflow: hidden;
+                background: #ffffff;
+                border: 1px solid #dce7f1;
+                border-radius: 16px;
+                box-shadow: 0 10px 30px rgba(23, 43, 77, 0.07);
+                animation: cardFade .6s ease both;
+            }
+
+
+            /* =========================================================
+           PANEL HEADER
+        ========================================================= */
+
+            .panel-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 18px 20px;
+                border-bottom: 1px solid #e5edf5;
+                background: linear-gradient( 135deg, #ffffff, #f9fcff );
+            }
+
+
+                .panel-header h2 {
+                    margin: 0;
+                    color: #172b4d;
+                    font-size: 14px;
+                    font-weight: 800;
+                }
+
+
+                .panel-header span {
+                    color: #8193a7;
+                    font-size: 10px;
+                }
+
+
+            .panel-body {
+                padding: 20px;
+            }
+
+
+            /* =========================================================
+           MANAGEMENT GRID
+        ========================================================= */
+
+            .management-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+
+            /* =========================================================
+           MANAGEMENT LINKS
+        ========================================================= */
+
+            .management-link {
+                position: relative;
+                display: flex;
+                align-items: center;
+                gap: 11px;
+                padding: 14px;
+                background: #f8fbff;
+                border: 1px solid #dce7f1;
+                border-radius: 9px;
+                color: #34495e;
+                text-decoration: none;
+                font-size: 10px;
+                font-weight: 700;
+                transition: background .2s ease, border-color .2s ease, transform .2s ease, color .2s ease, box-shadow .2s ease;
+            }
+
+
+                .management-link:hover {
+                    background: #edf6ff;
+                    border-color: #2196f3;
+                    color: #1565c0;
+                    text-decoration: none;
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 15px rgba(33,150,243,.08);
+                }
+
+
+                .management-link i {
+                    width: 20px;
+                    color: #1976d2;
+                    text-align: center;
+                    font-size: 13px;
+                    transition: transform .2s ease;
+                }
+
+
+                .management-link:hover i {
+                    transform: scale(1.12);
+                }
+
+
+            /* =========================================================
+           BOOKING ROW
+        ========================================================= */
+
+            .booking-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 15px;
+                padding: 13px 0;
+                border-bottom: 1px solid #e5edf5;
+            }
+
+
+                .booking-row:last-child {
+                    border-bottom: none;
+                }
+
+
+            .booking-info {
+                min-width: 0;
+            }
+
+
+                .booking-info strong {
+                    display: block;
+                    color: #34495e;
+                    font-size: 11px;
+                    font-weight: 700;
+                }
+
+
+                .booking-info span {
+                    display: block;
+                    margin-top: 3px;
+                    color: #8193a7;
+                    font-size: 9px;
+                }
+
+
+            /* =========================================================
+           BOOKING STATUS
+        ========================================================= */
+
+            .booking-status {
+                padding: 6px 9px;
+                border-radius: 20px;
+                font-size: 8px;
+                font-weight: 800;
+                text-transform: uppercase;
+                white-space: nowrap;
+            }
+
+
+            .status-booked {
+                background: #edf6ff;
+                color: #1976d2;
+                border: 1px solid #cfe6fa;
+            }
+
+
+            .status-completed {
+                background: #eefaf5;
+                color: #159463;
+                border: 1px solid #c9eedf;
+            }
+
+
+            .status-cancelled {
+                background: #f1f4f7;
+                color: #728196;
+                border: 1px solid #dce3e9;
+            }
+
+
+            /* =========================================================
+           EMPTY MESSAGE
+        ========================================================= */
+
+            .empty-message {
+                padding: 25px;
+                text-align: center;
+                color: #8193a7;
+                font-size: 10px;
+            }
+
+
+            /* =========================================================
+           ANIMATIONS
+        ========================================================= */
+
+            @@keyframes headerFade {
+
+                from {
+                    opacity: 0;
+                    transform: translateY(-12px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+
+            @@keyframes cardFade {
+
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+
+            @@keyframes iconFloat {
+
+                0%,
+                100% {
+                    transform: translateY(0);
+                }
+
+                50% {
+                    transform: translateY(-3px);
+                }
+            }
+
+
+            /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+            @@media (max-width: 1100px) {
+
+                .stats-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                .content-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+
+            @@media (max-width: 700px) {
+
+                .admin-page {
+                    padding: 18px 15px 40px;
+                }
+
+
+                .page-header {
+                    flex-direction: column;
+                    align-items: stretch;
+                    padding: 22px;
+                }
+
+
+                .header-actions {
+                    flex-direction: column;
+                }
+
+
+                .action-button {
+                    width: 100%;
+                }
+
+
+                .stats-grid {
+                    grid-template-columns: 1fr;
+                }
+
+
+                .management-grid {
+                    grid-template-columns: 1fr;
+                }
+            }
+
+
+            @@media (max-width: 500px) {
+
+                .header-left {
+                    align-items: flex-start;
+                }
+
+
+                .header-icon {
+                    width: 48px;
+                    height: 48px;
+                    font-size: 19px;
+                }
+
+
+                .page-header h1 {
+                    font-size: 21px;
+                }
+
+
+                .page-header p {
+                    font-size: 11px;
+                }
+
+
+                .panel-body {
+                    padding: 15px;
+                }
+
+
+                .stat-card {
+                    padding: 17px;
+                }
+            }
+    </style>
+    
+
+</head>
+
+<body>
+
+    
+    <!-- =========================================================
+         ADMIN PAGE
+    ========================================================= -->
+
+    <div class="admin-page">
+
+        <div class="admin-container">
+
+
+            <!-- =====================================================
+                 HEADER
+            ====================================================== -->
+
+            <div class="page-header">
+
+
+                <!-- HEADER LEFT -->
+
+                <div class="header-left">
+
+                    <div class="header-icon">
+
+                        <i class="fa-solid fa-gauge-high"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h1>
+                            Admin Dashboard
+                        </h1>
+
+                        <p>
+                            Manage and monitor the driving school system.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     HEADER ACTIONS
+                ================================================== -->
+
+                <div class="header-actions">
+
+
+                    <!-- ADD INSTRUCTOR -->
+
+                    <a href="@Url.Action("Create", "Instructor")"
+                       class="action-button primary-button">
+
+                        <i class="fa-solid fa-user-plus"></i>
+
+                        <span>
+                            Add Instructor
+                        </span>
+
+                    </a>
+
+
+                    <!-- =================================================
+                         ADD LESSON PACKAGE
+                    ================================================== -->
+
+                    <a href="@Url.Action("Create", "AdminLessonPackages")"
+                       class="action-button package-button">
+
+                        <i class="fa-solid fa-box-open"></i>
+
+                        <span>
+                            Add Package
+                        </span>
+
+                    </a>
+
+
+                    <!-- LOGOUT -->
+
+                    @using (Html.BeginForm(
+                        "LogOff",
+                        "Account",
+                        FormMethod.Post,
+                        new
+                        {
+                            style = "display:inline;"
+                        }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit"
+                                class="action-button logout-button">
+
+                            <i class="fa-solid fa-right-from-bracket"></i>
+
+                            <span>
+                                Logout
+                            </span>
+
+                        </button>
+                    }
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 STATISTICS
+            ====================================================== -->
+
+            <div class="stats-grid">
+
+
+                <!-- STUDENTS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+
+                        <i class="fa-solid fa-users"></i>
+
+                    </div>
+
+                    <div class="stat-text">
+
+                        <strong>
+                            @ViewBag.TotalStudents
+                        </strong>
+
+                        <span>
+                            Total Students
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INSTRUCTORS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+
+                        <i class="fa-solid fa-user-tie"></i>
+
+                    </div>
+
+                    <div class="stat-text">
+
+                        <strong>
+                            @ViewBag.TotalInstructors
+                        </strong>
+
+                        <span>
+                            Instructors
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- VEHICLES -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+
+                        <i class="fa-solid fa-car"></i>
+
+                    </div>
+
+                    <div class="stat-text">
+
+                        <strong>
+                            @ViewBag.TotalVehicles
+                        </strong>
+
+                        <span>
+                            Vehicles
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BOOKINGS -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+
+                        <i class="fa-solid fa-calendar-check"></i>
+
+                    </div>
+
+                    <div class="stat-text">
+
+                        <strong>
+                            @ViewBag.TotalBookings
+                        </strong>
+
+                        <span>
+                            Total Bookings
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- UPCOMING -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon">
+
+                        <i class="fa-solid fa-calendar-days"></i>
+
+                    </div>
+
+                    <div class="stat-text">
+
+                        <strong>
+                            @ViewBag.UpcomingLessons
+                        </strong>
+
+                        <span>
+                            Upcoming Lessons
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- COMPLETED -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon green">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+                    <div class="stat-text">
+
+                        <strong>
+                            @ViewBag.CompletedLessons
+                        </strong>
+
+                        <span>
+                            Completed Lessons
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CANCELLED -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon gray">
+
+                        <i class="fa-solid fa-ban"></i>
+
+                    </div>
+
+                    <div class="stat-text">
+
+                        <strong>
+                            @ViewBag.CancelledLessons
+                        </strong>
+
+                        <span>
+                            Cancelled Lessons
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIVE PACKAGES -->
+
+                <div class="stat-card">
+
+                    <div class="stat-icon green">
+
+                        <i class="fa-solid fa-box-open"></i>
+
+                    </div>
+
+                    <div class="stat-text">
+
+                        <strong>
+                            @ViewBag.ActiveStudentPackages
+                        </strong>
+
+                        <span>
+                            Active Student Packages
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 CONTENT GRID
+            ====================================================== -->
+
+            <div class="content-grid">
+
+
+                <!-- =================================================
+                     MANAGEMENT
+                ================================================== -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>
+                            Management
+                        </h2>
+
+                        <span>
+                            Admin controls
+                        </span>
+
+                    </div>
+
+
+                    <div class="panel-body">
+
+                        <div class="management-grid">
+
+
+                            <!-- INSTRUCTORS -->
+
+                            <a href="@Url.Action("Instructors", "Admin")"
+                               class="management-link">
+
+                                <i class="fa-solid fa-user-tie"></i>
+
+                                <span>
+                                    Instructors
+                                </span>
+
+                            </a>
+
+
+                            <!-- STUDENTS -->
+
+                            <a href="@Url.Action("Students", "Admin")"
+                               class="management-link">
+
+                                <i class="fa-solid fa-users"></i>
+
+                                <span>
+                                    Students
+                                </span>
+
+                            </a>
+
+
+                            <!-- VEHICLES -->
+
+                            <a href="@Url.Action("Vehicles", "Admin")"
+                               class="management-link">
+
+                                <i class="fa-solid fa-car"></i>
+
+                                <span>
+                                    Vehicles
+                                </span>
+
+                            </a>
+
+
+                            <!-- LESSON SCHEDULES -->
+
+                            <a href="@Url.Action("LessonSchedules", "Admin")"
+                               class="management-link">
+
+                                <i class="fa-solid fa-calendar-days"></i>
+
+                                <span>
+                                    Lesson Schedules
+                                </span>
+
+                            </a>
+
+
+                            <!-- BOOKINGS -->
+
+                            <a href="@Url.Action("Bookings", "Admin")"
+                               class="management-link">
+
+                                <i class="fa-solid fa-calendar-check"></i>
+
+                                <span>
+                                    Bookings
+                                </span>
+
+                            </a>
+
+
+                            <!-- LESSON PACKAGES -->
+
+                            <a href="@Url.Action("LessonPackages", "Admin")"
+                               class="management-link">
+
+                                <i class="fa-solid fa-box-open"></i>
+
+                                <span>
+                                    Lesson Packages
+                                </span>
+
+                            </a>
+
+
+                            <!-- PAYMENTS -->
+
+                            <a href="@Url.Action("Payments", "Admin")"
+                               class="management-link">
+
+                                <i class="fa-solid fa-wallet"></i>
+
+                                <span>
+                                    Payments
+                                </span>
+
+                            </a>
+
+
+                            <!-- REPORTS -->
+
+                            <a href="#"
+                               class="management-link">
+
+                                <i class="fa-solid fa-chart-column"></i>
+
+                                <span>
+                                    Reports
+                                </span>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     RECENT BOOKINGS
+                ================================================== -->
+
+                <div class="panel">
+
+                    <div class="panel-header">
+
+                        <h2>
+                            Recent Bookings
+                        </h2>
+
+                        <span>
+                            Latest activity
+                        </span>
+
+                    </div>
+
+
+                    <div class="panel-body">
+
+
+                        @if (recentBookings.Any())
+                        {
+
+                            foreach (var booking in recentBookings)
+                            {
+
+                                var studentName =
+                                    booking.Registration != null
+                                    ? booking.Registration.FirstName
+                                      + " "
+                                      + booking.Registration.LastName
+                                    : "Unknown Student";
+
+
+                                <div class="booking-row">
+
+                                    <div class="booking-info">
+
+                                        <strong>
+                                            @studentName
+                                        </strong>
+
+                                        <span>
+
+                                            @if (booking.LessonSchedule != null)
+                                            {
+                                                @booking.LessonSchedule.LessonDate.ToString("dd MMM yyyy")
+
+                                                @(" • ")
+
+                                                @booking.LessonSchedule.StartTime.ToString(@"hh\:mm")
+                                            }
+                                            else
+                                            {
+                                                @:Lesson schedule unavailable
+                                            }
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <span class="booking-status
+                                    @(string.Equals(
+                                        booking.Status,
+                                        "Completed",
+                                        StringComparison.OrdinalIgnoreCase)
+                                        ? "status-completed"
+                                        :
+                                        string.Equals(
+                                            booking.Status,
+                                            "Cancelled",
+                                            StringComparison.OrdinalIgnoreCase)
+                                            ? "status-cancelled"
+                                            : "status-booked")">
+
+                                        @(string.IsNullOrEmpty(booking.Status)
+                                        ? "Unknown"
+                                        : booking.Status)
+
+                                    </span>
+
+                                </div>
+
+                            }
+
+                        }
+                        else
+                        {
+
+                            <div class="empty-message">
+
+                                No bookings have been made yet.
+
+                            </div>
+
+                        }
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    
+
+</body>
+</html>

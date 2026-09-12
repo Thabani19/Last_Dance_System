@@ -14,7 +14,7 @@ namespace Last_Dance_System.Controllers
     [Authorize]
     public class PackageController : Controller
     {
-        private ApplicationDbContext db =
+        private readonly ApplicationDbContext db =
             new ApplicationDbContext();
 
 
@@ -63,9 +63,10 @@ namespace Last_Dance_System.Controllers
             string userId =
                 User.Identity.GetUserId();
 
-            var student = db.Registrations
-                .FirstOrDefault(r =>
-                    r.ApplicationUserId == userId);
+            var student =
+                db.Registrations
+                    .FirstOrDefault(r =>
+                        r.ApplicationUserId == userId);
 
             if (student == null)
             {
@@ -74,15 +75,11 @@ namespace Last_Dance_System.Controllers
                     "Account");
             }
 
-
-            // -----------------------------------------------------
-            // FIND PACKAGE
-            // -----------------------------------------------------
-
-            var package = db.LessonPackages
-                .FirstOrDefault(p =>
-                    p.LessonPackageId == id &&
-                    p.IsActive);
+            var package =
+                db.LessonPackages
+                    .FirstOrDefault(p =>
+                        p.LessonPackageId == id &&
+                        p.IsActive);
 
             if (package == null)
             {
@@ -90,48 +87,49 @@ namespace Last_Dance_System.Controllers
             }
 
 
-            // -----------------------------------------------------
-            // PREVENT DUPLICATE PACKAGE PURCHASE
-            // -----------------------------------------------------
+            // =====================================================
+            // CHECK EXISTING PACKAGE
+            // =====================================================
 
             var existingPackage =
                 db.StudentPackages
-                .FirstOrDefault(sp =>
-                    sp.RegistrationId ==
-                    student.RegistrationId &&
+                    .FirstOrDefault(sp =>
+                        sp.RegistrationId ==
+                            student.RegistrationId &&
 
-                    sp.LessonPackageId ==
-                    package.LessonPackageId &&
-
-                    (
-                        sp.PaymentStatus == "Pending" ||
+                        !sp.IsCancelled &&
 
                         (
-                            sp.PaymentStatus == "Paid" &&
-                            sp.IsActive &&
-                            !sp.IsCancelled
-                        )
-                    ));
+                            sp.PaymentStatus == "Pending"
 
+                            ||
+
+                            (
+                                sp.PaymentStatus == "Paid" &&
+                                sp.IsActive &&
+                                sp.LessonsRemaining > 0
+                            )
+                        ));
 
             if (existingPackage != null)
             {
-                if (existingPackage.PaymentStatus ==
-                    "Pending")
+                if (existingPackage.PaymentStatus == "Pending")
                 {
                     TempData["Error"] =
-                        "You already have a pending purchase for this package. Please complete the payment before purchasing it again.";
+                        "You already have a pending package purchase. " +
+                        "Please complete the payment or remove the pending " +
+                        "package before purchasing another package.";
                 }
                 else
                 {
                     TempData["Error"] =
-                        "You already have an active package of this type.";
+                        "You already have an active package with lesson " +
+                        "credits remaining.";
                 }
 
                 return RedirectToAction(
                     "MyPackages");
             }
-
 
             return View(package);
         }
@@ -150,9 +148,10 @@ namespace Last_Dance_System.Controllers
             string userId =
                 User.Identity.GetUserId();
 
-            var student = db.Registrations
-                .FirstOrDefault(r =>
-                    r.ApplicationUserId == userId);
+            var student =
+                db.Registrations
+                    .FirstOrDefault(r =>
+                        r.ApplicationUserId == userId);
 
             if (student == null)
             {
@@ -161,15 +160,11 @@ namespace Last_Dance_System.Controllers
                     "Account");
             }
 
-
-            // -----------------------------------------------------
-            // FIND PACKAGE
-            // -----------------------------------------------------
-
-            var package = db.LessonPackages
-                .FirstOrDefault(p =>
-                    p.LessonPackageId == id &&
-                    p.IsActive);
+            var package =
+                db.LessonPackages
+                    .FirstOrDefault(p =>
+                        p.LessonPackageId == id &&
+                        p.IsActive);
 
             if (package == null)
             {
@@ -177,42 +172,44 @@ namespace Last_Dance_System.Controllers
             }
 
 
-            // -----------------------------------------------------
-            // PREVENT DUPLICATE PACKAGE PURCHASE
-            // -----------------------------------------------------
+            // =====================================================
+            // CHECK EXISTING PACKAGE
+            // =====================================================
 
             var existingPackage =
                 db.StudentPackages
-                .FirstOrDefault(sp =>
-                    sp.RegistrationId ==
-                    student.RegistrationId &&
+                    .FirstOrDefault(sp =>
+                        sp.RegistrationId ==
+                            student.RegistrationId &&
 
-                    sp.LessonPackageId ==
-                    package.LessonPackageId &&
-
-                    (
-                        sp.PaymentStatus == "Pending" ||
+                        !sp.IsCancelled &&
 
                         (
-                            sp.PaymentStatus == "Paid" &&
-                            sp.IsActive &&
-                            !sp.IsCancelled
-                        )
-                    ));
+                            sp.PaymentStatus == "Pending"
 
+                            ||
+
+                            (
+                                sp.PaymentStatus == "Paid" &&
+                                sp.IsActive &&
+                                sp.LessonsRemaining > 0
+                            )
+                        ));
 
             if (existingPackage != null)
             {
-                if (existingPackage.PaymentStatus ==
-                    "Pending")
+                if (existingPackage.PaymentStatus == "Pending")
                 {
                     TempData["Error"] =
-                        "You already have a pending purchase for this package. Please complete the payment before purchasing it again.";
+                        "You already have a pending package purchase. " +
+                        "Please complete the payment or remove the pending " +
+                        "package before purchasing another package.";
                 }
                 else
                 {
                     TempData["Error"] =
-                        "You already have an active package of this type.";
+                        "You already have an active package with lesson " +
+                        "credits remaining.";
                 }
 
                 return RedirectToAction(
@@ -220,9 +217,9 @@ namespace Last_Dance_System.Controllers
             }
 
 
-            // -----------------------------------------------------
+            // =====================================================
             // VALIDATE PAYMENT METHOD
-            // -----------------------------------------------------
+            // =====================================================
 
             if (string.IsNullOrWhiteSpace(paymentMethod))
             {
@@ -231,12 +228,8 @@ namespace Last_Dance_System.Controllers
 
                 return RedirectToAction(
                     "Purchase",
-                    new
-                    {
-                        id = id
-                    });
+                    new { id = id });
             }
-
 
             string[] allowedPaymentMethods =
             {
@@ -245,25 +238,20 @@ namespace Last_Dance_System.Controllers
                 "EFT"
             };
 
-
-            if (!allowedPaymentMethods
-                .Contains(paymentMethod))
+            if (!allowedPaymentMethods.Contains(paymentMethod))
             {
                 TempData["Error"] =
                     "Invalid payment method.";
 
                 return RedirectToAction(
                     "Purchase",
-                    new
-                    {
-                        id = id
-                    });
+                    new { id = id });
             }
 
 
-            // -----------------------------------------------------
+            // =====================================================
             // CREATE PENDING PACKAGE
-            // -----------------------------------------------------
+            // =====================================================
 
             var studentPackage =
                 new StudentPackage
@@ -299,25 +287,40 @@ namespace Last_Dance_System.Controllers
                         null
                 };
 
-
             db.StudentPackages.Add(
                 studentPackage);
 
             db.SaveChanges();
 
 
-            // -----------------------------------------------------
-            // GO TO PAYMENT
-            // -----------------------------------------------------
+            // =====================================================
+            // CARD → STRIPE
+            // =====================================================
+
+            if (paymentMethod == "Card")
+            {
+                return RedirectToAction(
+                    "Pay",
+                    new
+                    {
+                        id =
+                            studentPackage.StudentPackageId
+                    });
+            }
+
+
+            // =====================================================
+            // CASH / EFT
+            // =====================================================
+
+            TempData["Success"] =
+                "Your package has been created. Please complete your " +
+                paymentMethod +
+                " payment. Your package will be activated once payment " +
+                "is confirmed.";
 
             return RedirectToAction(
-                "Pay",
-                new
-                {
-                    id =
-                        studentPackage
-                            .StudentPackageId
-                });
+                "MyPackages");
         }
 
 
@@ -332,8 +335,8 @@ namespace Last_Dance_System.Controllers
 
             var student =
                 db.Registrations
-                .FirstOrDefault(r =>
-                    r.ApplicationUserId == userId);
+                    .FirstOrDefault(r =>
+                        r.ApplicationUserId == userId);
 
             if (student == null)
             {
@@ -343,28 +346,156 @@ namespace Last_Dance_System.Controllers
             }
 
 
-            // -----------------------------------------------------
-            // ONLY SHOW ACTIVE / NON-CANCELLED PACKAGES
-            // -----------------------------------------------------
+            // =====================================================
+            // LOAD PACKAGE + LESSON PACKAGE + PAYMENTS
+            // =====================================================
 
             var packages =
                 db.StudentPackages
-                .Include(p => p.LessonPackage)
-                .Where(p =>
-                    p.RegistrationId ==
-                    student.RegistrationId &&
 
-                    p.IsActive &&
+                    .Include(p =>
+                        p.LessonPackage)
 
-                    !p.IsCancelled)
+                    .Include(p =>
+                        p.Payments)
 
-                .OrderByDescending(p =>
-                    p.PurchaseDate)
+                    .Where(p =>
+                        p.RegistrationId ==
+                            student.RegistrationId &&
 
-                .ToList();
+                        !p.IsCancelled &&
 
+                        (
+                            (
+                                p.PaymentStatus ==
+                                    "Paid" &&
+
+                                p.IsActive
+                            )
+
+                            ||
+
+                            p.PaymentStatus ==
+                                "Pending"
+                        ))
+
+                    .OrderByDescending(p =>
+                        p.PurchaseDate)
+
+                    .ToList();
 
             return View(packages);
+        }
+
+
+        // =========================================================
+        // DELETE PENDING PACKAGE - GET
+        // =========================================================
+
+        [HttpGet]
+        public ActionResult DeletePendingPackage(int id)
+        {
+            string userId =
+                User.Identity.GetUserId();
+
+            var student =
+                db.Registrations
+                    .FirstOrDefault(r =>
+                        r.ApplicationUserId == userId);
+
+            if (student == null)
+            {
+                return RedirectToAction(
+                    "Register",
+                    "Account");
+            }
+
+            var studentPackage =
+                db.StudentPackages
+
+                    .Include(p =>
+                        p.LessonPackage)
+
+                    .FirstOrDefault(p =>
+                        p.StudentPackageId == id &&
+
+                        p.RegistrationId ==
+                            student.RegistrationId &&
+
+                        p.PaymentStatus ==
+                            "Pending" &&
+
+                        !p.IsCancelled);
+
+            if (studentPackage == null)
+            {
+                TempData["Error"] =
+                    "The pending package could not be found.";
+
+                return RedirectToAction(
+                    "MyPackages");
+            }
+
+            return View(studentPackage);
+        }
+
+
+        // =========================================================
+        // DELETE PENDING PACKAGE - POST
+        // =========================================================
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeletePendingPackageConfirmed(
+            int id)
+        {
+            string userId =
+                User.Identity.GetUserId();
+
+            var student =
+                db.Registrations
+                    .FirstOrDefault(r =>
+                        r.ApplicationUserId == userId);
+
+            if (student == null)
+            {
+                return RedirectToAction(
+                    "Register",
+                    "Account");
+            }
+
+            var studentPackage =
+                db.StudentPackages
+                    .FirstOrDefault(p =>
+                        p.StudentPackageId == id &&
+
+                        p.RegistrationId ==
+                            student.RegistrationId &&
+
+                        p.PaymentStatus ==
+                            "Pending" &&
+
+                        !p.IsCancelled);
+
+            if (studentPackage == null)
+            {
+                TempData["Error"] =
+                    "The pending package could not be found.";
+
+                return RedirectToAction(
+                    "MyPackages");
+            }
+
+            db.StudentPackages.Remove(
+                studentPackage);
+
+            db.SaveChanges();
+
+            TempData["Success"] =
+                "Your pending package has been removed successfully.";
+
+            return RedirectToAction(
+                "MyPackages");
         }
 
 
@@ -378,15 +509,10 @@ namespace Last_Dance_System.Controllers
             string userId =
                 User.Identity.GetUserId();
 
-
-            // -----------------------------------------------------
-            // FIND STUDENT
-            // -----------------------------------------------------
-
             var student =
                 db.Registrations
-                .FirstOrDefault(r =>
-                    r.ApplicationUserId == userId);
+                    .FirstOrDefault(r =>
+                        r.ApplicationUserId == userId);
 
             if (student == null)
             {
@@ -395,24 +521,21 @@ namespace Last_Dance_System.Controllers
                     "Account");
             }
 
-
-            // -----------------------------------------------------
-            // FIND ACTIVE PACKAGE BELONGING TO STUDENT
-            // -----------------------------------------------------
-
             var studentPackage =
                 db.StudentPackages
-                .Include(p => p.LessonPackage)
-                .FirstOrDefault(p =>
-                    p.StudentPackageId == id &&
 
-                    p.RegistrationId ==
-                    student.RegistrationId &&
+                    .Include(p =>
+                        p.LessonPackage)
 
-                    p.IsActive &&
+                    .FirstOrDefault(p =>
+                        p.StudentPackageId == id &&
 
-                    !p.IsCancelled);
+                        p.RegistrationId ==
+                            student.RegistrationId &&
 
+                        p.IsActive &&
+
+                        !p.IsCancelled);
 
             if (studentPackage == null)
             {
@@ -422,11 +545,6 @@ namespace Last_Dance_System.Controllers
                 return RedirectToAction(
                     "MyPackages");
             }
-
-
-            // -----------------------------------------------------
-            // SEND PACKAGE TO CONFIRMATION PAGE
-            // -----------------------------------------------------
 
             return View(studentPackage);
         }
@@ -434,28 +552,20 @@ namespace Last_Dance_System.Controllers
 
         // =========================================================
         // CANCEL PACKAGE - POST
-        //
-        // IMPORTANT:
-        // Cancelling a package automatically cancels every
-        // booking that was created using that package.
         // =========================================================
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CancelPackageConfirmed(int id)
+        public ActionResult CancelPackageConfirmed(
+            int id)
         {
             string userId =
                 User.Identity.GetUserId();
 
-
-            // -----------------------------------------------------
-            // FIND STUDENT
-            // -----------------------------------------------------
-
             var student =
                 db.Registrations
-                .FirstOrDefault(r =>
-                    r.ApplicationUserId == userId);
+                    .FirstOrDefault(r =>
+                        r.ApplicationUserId == userId);
 
             if (student == null)
             {
@@ -464,23 +574,17 @@ namespace Last_Dance_System.Controllers
                     "Account");
             }
 
-
-            // -----------------------------------------------------
-            // FIND ACTIVE PACKAGE
-            // -----------------------------------------------------
-
             var studentPackage =
                 db.StudentPackages
-                .FirstOrDefault(p =>
-                    p.StudentPackageId == id &&
+                    .FirstOrDefault(p =>
+                        p.StudentPackageId == id &&
 
-                    p.RegistrationId ==
-                    student.RegistrationId &&
+                        p.RegistrationId ==
+                            student.RegistrationId &&
 
-                    p.IsActive &&
+                        p.IsActive &&
 
-                    !p.IsCancelled);
-
+                        !p.IsCancelled);
 
             if (studentPackage == null)
             {
@@ -493,59 +597,49 @@ namespace Last_Dance_System.Controllers
 
 
             // =====================================================
-            // FIND ALL ACTIVE BOOKINGS FROM THIS PACKAGE
+            // FIND BOOKINGS
             // =====================================================
 
             var bookings =
                 db.Bookings
-                .Include(b => b.LessonSchedule)
-                .Where(b =>
-                    b.StudentPackageId ==
-                    studentPackage.StudentPackageId &&
 
-                    b.RegistrationId ==
-                    student.RegistrationId &&
+                    .Include(b =>
+                        b.LessonSchedule)
 
-                    b.Status != "Cancelled")
-                .ToList();
+                    .Where(b =>
+                        b.StudentPackageId ==
+                            studentPackage.StudentPackageId &&
+
+                        b.RegistrationId ==
+                            student.RegistrationId &&
+
+                        b.Status !=
+                            "Cancelled")
+
+                    .ToList();
 
 
             // =====================================================
-            // CANCEL ALL BOOKINGS
+            // CANCEL BOOKINGS
             // =====================================================
 
             foreach (var booking in bookings)
             {
-                // -------------------------------------------------
-                // CANCEL BOOKING
-                // -------------------------------------------------
-
                 booking.Status =
                     "Cancelled";
-
-
-                // -------------------------------------------------
-                // CHECK WHETHER ANOTHER ACTIVE BOOKING EXISTS
-                // -------------------------------------------------
-                //
-                // We do NOT blindly set the schedule to Available.
-                //
-                // If another student has booked the same schedule,
-                // it must remain unavailable.
-                // -------------------------------------------------
 
                 if (booking.LessonSchedule != null)
                 {
                     bool anotherActiveBooking =
                         db.Bookings.Any(b =>
                             b.BookingId !=
-                            booking.BookingId &&
+                                booking.BookingId &&
 
                             b.LessonScheduleId ==
-                            booking.LessonScheduleId &&
+                                booking.LessonScheduleId &&
 
                             b.Status !=
-                            "Cancelled");
+                                "Cancelled");
 
                     if (!anotherActiveBooking)
                     {
@@ -572,11 +666,6 @@ namespace Last_Dance_System.Controllers
             studentPackage.PaymentStatus =
                 "Cancelled";
 
-
-            // =====================================================
-            // SAVE EVERYTHING
-            // =====================================================
-
             db.SaveChanges();
 
 
@@ -597,7 +686,6 @@ namespace Last_Dance_System.Controllers
                     "Your package has been cancelled successfully.";
             }
 
-
             return RedirectToAction(
                 "MyPackages");
         }
@@ -613,15 +701,10 @@ namespace Last_Dance_System.Controllers
             string userId =
                 User.Identity.GetUserId();
 
-
-            // -----------------------------------------------------
-            // FIND STUDENT
-            // -----------------------------------------------------
-
             var student =
                 db.Registrations
-                .FirstOrDefault(r =>
-                    r.ApplicationUserId == userId);
+                    .FirstOrDefault(r =>
+                        r.ApplicationUserId == userId);
 
             if (student == null)
             {
@@ -630,20 +713,17 @@ namespace Last_Dance_System.Controllers
                     "Account");
             }
 
-
-            // -----------------------------------------------------
-            // FIND STUDENT PACKAGE
-            // -----------------------------------------------------
-
             var studentPackage =
                 db.StudentPackages
-                .Include(p => p.LessonPackage)
-                .FirstOrDefault(p =>
-                    p.StudentPackageId == id &&
 
-                    p.RegistrationId ==
-                    student.RegistrationId);
+                    .Include(p =>
+                        p.LessonPackage)
 
+                    .FirstOrDefault(p =>
+                        p.StudentPackageId == id &&
+
+                        p.RegistrationId ==
+                            student.RegistrationId);
 
             if (studentPackage == null)
             {
@@ -651,9 +731,9 @@ namespace Last_Dance_System.Controllers
             }
 
 
-            // -----------------------------------------------------
-            // DO NOT PAY CANCELLED PACKAGE
-            // -----------------------------------------------------
+            // =====================================================
+            // PACKAGE STATUS
+            // =====================================================
 
             if (studentPackage.IsCancelled)
             {
@@ -664,47 +744,44 @@ namespace Last_Dance_System.Controllers
                     "MyPackages");
             }
 
-
-            // -----------------------------------------------------
-            // ALREADY PAID?
-            // -----------------------------------------------------
-
             if (studentPackage.PaymentStatus == "Paid" &&
-                studentPackage.IsActive &&
-                !studentPackage.IsCancelled)
+                studentPackage.IsActive)
             {
                 TempData["Success"] =
-                    "This package has already been paid for and activated.";
+                    "This package has already been paid for.";
 
                 return RedirectToAction(
                     "MyPackages");
             }
 
+            if (studentPackage.PaymentStatus != "Pending")
+            {
+                TempData["Error"] =
+                    "This package is not available for payment.";
 
-            // -----------------------------------------------------
-            // ONLY CARD PAYMENTS GO TO STRIPE
-            // -----------------------------------------------------
+                return RedirectToAction(
+                    "MyPackages");
+            }
 
             if (studentPackage.PaymentMethod != "Card")
             {
                 TempData["Error"] =
-                    "Stripe checkout is currently available for card payments only.";
+                    "Stripe checkout is available for card payments only.";
 
                 return RedirectToAction(
                     "MyPackages");
             }
 
 
+            // =====================================================
+            // STRIPE CONFIGURATION
+            // =====================================================
+
             try
             {
-                // -------------------------------------------------
-                // GET STRIPE SECRET KEY
-                // -------------------------------------------------
-
                 string stripeSecretKey =
-                    ConfigurationManager.AppSettings[
-                        "StripeSecretKey"];
-
+                    ConfigurationManager
+                        .AppSettings["StripeSecretKey"];
 
                 if (string.IsNullOrWhiteSpace(
                     stripeSecretKey))
@@ -716,18 +793,13 @@ namespace Last_Dance_System.Controllers
                         "MyPackages");
                 }
 
-
-                // -------------------------------------------------
-                // CONFIGURE STRIPE
-                // -------------------------------------------------
-
                 StripeConfiguration.ApiKey =
                     stripeSecretKey;
 
 
-                // -------------------------------------------------
+                // =================================================
                 // SUCCESS URL
-                // -------------------------------------------------
+                // =================================================
 
                 string successUrl =
                     Url.Action(
@@ -735,12 +807,13 @@ namespace Last_Dance_System.Controllers
                         "Package",
                         null,
                         Request.Url.Scheme)
+
                     + "?session_id={CHECKOUT_SESSION_ID}";
 
 
-                // -------------------------------------------------
+                // =================================================
                 // CANCEL URL
-                // -------------------------------------------------
+                // =================================================
 
                 string cancelUrl =
                     Url.Action(
@@ -755,9 +828,9 @@ namespace Last_Dance_System.Controllers
                         Request.Url.Scheme);
 
 
-                // -------------------------------------------------
+                // =================================================
                 // STRIPE CHECKOUT OPTIONS
-                // -------------------------------------------------
+                // =================================================
 
                 var options =
                     new SessionCreateOptions
@@ -772,7 +845,9 @@ namespace Last_Dance_System.Controllers
                             cancelUrl,
 
                         Metadata =
-                            new Dictionary<string, string>
+                            new Dictionary<
+                                string,
+                                string>
                             {
                                 {
                                     "StudentPackageId",
@@ -795,8 +870,7 @@ namespace Last_Dance_System.Controllers
                             {
                                 new SessionLineItemOptions
                                 {
-                                    Quantity =
-                                        1,
+                                    Quantity = 1,
 
                                     PriceData =
                                         new SessionLineItemPriceDataOptions
@@ -828,20 +902,15 @@ namespace Last_Dance_System.Controllers
                     };
 
 
-                // -------------------------------------------------
+                // =================================================
                 // CREATE STRIPE SESSION
-                // -------------------------------------------------
+                // =================================================
 
                 var service =
                     new SessionService();
 
                 Session session =
                     service.Create(options);
-
-
-                // -------------------------------------------------
-                // REDIRECT TO STRIPE
-                // -------------------------------------------------
 
                 return Redirect(
                     session.Url);
@@ -884,17 +953,15 @@ namespace Last_Dance_System.Controllers
                     "MyPackages");
             }
 
-
             try
             {
-                // -------------------------------------------------
-                // GET STRIPE SECRET KEY
-                // -------------------------------------------------
+                // =================================================
+                // STRIPE CONFIGURATION
+                // =================================================
 
                 string stripeSecretKey =
-                    ConfigurationManager.AppSettings[
-                        "StripeSecretKey"];
-
+                    ConfigurationManager
+                        .AppSettings["StripeSecretKey"];
 
                 if (string.IsNullOrWhiteSpace(
                     stripeSecretKey))
@@ -906,25 +973,40 @@ namespace Last_Dance_System.Controllers
                         "MyPackages");
                 }
 
-
                 StripeConfiguration.ApiKey =
                     stripeSecretKey;
 
 
-                // -------------------------------------------------
-                // RETRIEVE STRIPE SESSION
-                // -------------------------------------------------
+                // =================================================
+                // GET STRIPE SESSION
+                // =================================================
 
                 var service =
                     new SessionService();
 
                 Session session =
-                    service.Get(session_id);
+                    service.Get(
+                        session_id);
 
 
-                // -------------------------------------------------
-                // GET PACKAGE ID
-                // -------------------------------------------------
+                // =================================================
+                // VERIFY PAYMENT STATUS
+                // =================================================
+
+                if (session.PaymentStatus !=
+                    "paid")
+                {
+                    TempData["Error"] =
+                        "Payment has not been confirmed by Stripe yet.";
+
+                    return RedirectToAction(
+                        "MyPackages");
+                }
+
+
+                // =================================================
+                // CHECK STRIPE METADATA
+                // =================================================
 
                 if (session.Metadata == null ||
                     !session.Metadata.ContainsKey(
@@ -937,9 +1019,23 @@ namespace Last_Dance_System.Controllers
                         "MyPackages");
                 }
 
+                if (session.Metadata == null ||
+                    !session.Metadata.ContainsKey(
+                        "RegistrationId"))
+                {
+                    TempData["Error"] =
+                        "Student information could not be verified.";
+
+                    return RedirectToAction(
+                        "MyPackages");
+                }
+
+
+                // =================================================
+                // GET PACKAGE ID
+                // =================================================
 
                 int studentPackageId;
-
 
                 if (!int.TryParse(
                     session.Metadata[
@@ -954,17 +1050,60 @@ namespace Last_Dance_System.Controllers
                 }
 
 
-                // -------------------------------------------------
-                // FIND PACKAGE
-                // -------------------------------------------------
+                // =================================================
+                // GET CURRENT STUDENT
+                // =================================================
+
+                string userId =
+                    User.Identity.GetUserId();
+
+                var student =
+                    db.Registrations
+                        .FirstOrDefault(r =>
+                            r.ApplicationUserId ==
+                                userId);
+
+                if (student == null)
+                {
+                    return new HttpStatusCodeResult(
+                        403,
+                        "Student account not found.");
+                }
+
+
+                // =================================================
+                // VERIFY STRIPE STUDENT
+                // =================================================
+
+                string stripeRegistrationId =
+                    session.Metadata[
+                        "RegistrationId"];
+
+                if (stripeRegistrationId !=
+                    student.RegistrationId)
+                {
+                    return new HttpStatusCodeResult(
+                        403,
+                        "This payment does not belong to the current student.");
+                }
+
+
+                // =================================================
+                // GET STUDENT PACKAGE
+                // =================================================
 
                 var studentPackage =
                     db.StudentPackages
-                    .Include(p => p.LessonPackage)
-                    .FirstOrDefault(p =>
-                        p.StudentPackageId ==
-                        studentPackageId);
 
+                        .Include(p =>
+                            p.LessonPackage)
+
+                        .FirstOrDefault(p =>
+                            p.StudentPackageId ==
+                                studentPackageId &&
+
+                            p.RegistrationId ==
+                                student.RegistrationId);
 
                 if (studentPackage == null)
                 {
@@ -972,34 +1111,9 @@ namespace Last_Dance_System.Controllers
                 }
 
 
-                // -------------------------------------------------
-                // SECURITY CHECK
-                // -------------------------------------------------
-
-                string userId =
-                    User.Identity.GetUserId();
-
-
-                var student =
-                    db.Registrations
-                    .FirstOrDefault(r =>
-                        r.ApplicationUserId ==
-                        userId);
-
-
-                if (student == null ||
-                    studentPackage.RegistrationId !=
-                    student.RegistrationId)
-                {
-                    return new HttpStatusCodeResult(
-                        403,
-                        "Unauthorized payment access.");
-                }
-
-
-                // -------------------------------------------------
-                // DO NOT ACTIVATE CANCELLED PACKAGE
-                // -------------------------------------------------
+                // =================================================
+                // CHECK CANCELLATION
+                // =================================================
 
                 if (studentPackage.IsCancelled)
                 {
@@ -1011,32 +1125,22 @@ namespace Last_Dance_System.Controllers
                 }
 
 
-                // -------------------------------------------------
-                // CHECK PAYMENT STATUS
-                // -------------------------------------------------
-
-                if (session.PaymentStatus != "paid")
-                {
-                    TempData["Error"] =
-                        "Payment has not been confirmed by Stripe yet.";
-
-                    return RedirectToAction(
-                        "MyPackages");
-                }
-
-
-                // -------------------------------------------------
+                // =================================================
                 // PREVENT DUPLICATE PAYMENT
-                // -------------------------------------------------
+                // =================================================
 
                 bool paymentAlreadyExists =
                     db.Payments.Any(p =>
                         p.StudentPackageId ==
-                        studentPackage.StudentPackageId &&
+                            studentPackage.StudentPackageId &&
 
                         p.PaymentStatus ==
-                        "Paid");
+                            "Paid");
 
+
+                // =================================================
+                // CREATE PAYMENT RECORD
+                // =================================================
 
                 if (!paymentAlreadyExists)
                 {
@@ -1072,19 +1176,20 @@ namespace Last_Dance_System.Controllers
                                 DateTime.Now,
 
                             Notes =
-                                "Payment successfully processed through Stripe. " +
-                                "Stripe Checkout Session: " +
+                                "Payment successfully processed " +
+                                "through Stripe. Stripe Checkout " +
+                                "Session: " +
                                 session.Id
                         };
 
-
-                    db.Payments.Add(payment);
+                    db.Payments.Add(
+                        payment);
                 }
 
 
-                // -------------------------------------------------
+                // =================================================
                 // ACTIVATE PACKAGE
-                // -------------------------------------------------
+                // =================================================
 
                 studentPackage.PaymentStatus =
                     "Paid";
@@ -1099,16 +1204,20 @@ namespace Last_Dance_System.Controllers
                     null;
 
 
-                // -------------------------------------------------
+                // =================================================
                 // SAVE
-                // -------------------------------------------------
+                // =================================================
 
                 db.SaveChanges();
 
 
-                TempData["Success"] =
-                    "Payment successful! Your lesson package is now active.";
+                // =================================================
+                // SUCCESS MESSAGE
+                // =================================================
 
+                TempData["Success"] =
+                    "Payment successful! Your lesson package " +
+                    "is now active.";
 
                 return RedirectToAction(
                     "MyPackages");
@@ -1138,18 +1247,63 @@ namespace Last_Dance_System.Controllers
         // =========================================================
 
         [HttpGet]
-        public ActionResult PaymentCancel(int id)
+        public ActionResult PaymentCancel(
+            int id)
         {
             string userId =
                 User.Identity.GetUserId();
 
+            var student =
+                db.Registrations
+                    .FirstOrDefault(r =>
+                        r.ApplicationUserId == userId);
+
+            if (student == null)
+            {
+                return RedirectToAction(
+                    "Register",
+                    "Account");
+            }
+
+            var studentPackage =
+                db.StudentPackages
+                    .FirstOrDefault(p =>
+                        p.StudentPackageId == id &&
+
+                        p.RegistrationId ==
+                            student.RegistrationId);
+
+            if (studentPackage == null)
+            {
+                return HttpNotFound();
+            }
+
+            TempData["Error"] =
+                "Payment was cancelled. Your package is still pending payment.";
+
+            return RedirectToAction(
+                "MyPackages");
+        }
+
+
+        // =========================================================
+        // PROOF OF PAYMENT
+        // =========================================================
+
+        [HttpGet]
+        public ActionResult ProofOfPayment(int id)
+        {
+            // =====================================================
+            // GET CURRENT USER
+            // =====================================================
+
+            string userId =
+                User.Identity.GetUserId();
 
             var student =
                 db.Registrations
-                .FirstOrDefault(r =>
-                    r.ApplicationUserId ==
-                    userId);
-
+                    .FirstOrDefault(r =>
+                        r.ApplicationUserId == userId);
 
             if (student == null)
             {
@@ -1159,27 +1313,71 @@ namespace Last_Dance_System.Controllers
             }
 
 
+            // =====================================================
+            // FIND STUDENT PACKAGE
+            // =====================================================
+
             var studentPackage =
                 db.StudentPackages
-                .FirstOrDefault(p =>
-                    p.StudentPackageId == id &&
 
-                    p.RegistrationId ==
-                    student.RegistrationId);
+                    .Include(p =>
+                        p.LessonPackage)
 
+                    .FirstOrDefault(p =>
+                        p.StudentPackageId == id &&
+
+                        p.RegistrationId ==
+                            student.RegistrationId);
 
             if (studentPackage == null)
             {
-                return HttpNotFound();
+                TempData["Error"] =
+                    "The student package could not be found.";
+
+                return RedirectToAction(
+                    "MyPackages");
             }
 
 
-            TempData["Error"] =
-                "Payment was cancelled. Your package is still pending payment.";
+            // =====================================================
+            // FIND PAID PAYMENT FOR THIS PACKAGE
+            // =====================================================
+
+            var payment =
+                db.Payments
+
+                    .Include(p =>
+                        p.StudentPackage)
+
+                    .Include(p =>
+                        p.StudentPackage
+                            .LessonPackage)
+
+                    .FirstOrDefault(p =>
+                        p.StudentPackageId ==
+                            studentPackage.StudentPackageId &&
+
+                        p.RegistrationId ==
+                            student.RegistrationId &&
+
+                        p.PaymentStatus ==
+                            "Paid");
+
+            if (payment == null)
+            {
+                TempData["Error"] =
+                    "No completed payment was found for this package.";
+
+                return RedirectToAction(
+                    "MyPackages");
+            }
 
 
-            return RedirectToAction(
-                "MyPackages");
+            // =====================================================
+            // SHOW PROOF OF PAYMENT
+            // =====================================================
+
+            return View(payment);
         }
 
 

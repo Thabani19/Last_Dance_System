@@ -1,0 +1,1337 @@
+﻿
+@model Last_Dance_System.Models.Payment
+
+@{
+    Layout = null;
+    ViewBag.Title = "Proof of Payment";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>Proof of Payment</title>
+
+    <!-- =========================================================
+         FONT AWESOME
+         ========================================================= -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <!-- =========================================================
+         GOOGLE FONT
+         ========================================================= -->
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com" />
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin />
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet" />
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+           ===================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #172b4d;
+            font-family: "Inter", "Segoe UI", Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        /* =====================================================
+           PAGE WRAPPER
+           ===================================================== */
+
+        .page-wrapper {
+            width: 100%;
+            padding: 40px 20px 60px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 950px;
+            margin: 0 auto;
+        }
+
+        /* =====================================================
+           TOP NAVIGATION
+           ===================================================== */
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 11px 18px;
+            background: #ffffff;
+            border: 1px solid #dbe5f1;
+            border-radius: 10px;
+            color: #1d4ed8;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+        }
+
+            .back-button:hover {
+                background: #eff6ff;
+                border-color: #bfdbfe;
+                color: #1e40af;
+                transform: translateY(-1px);
+            }
+
+            .back-button i {
+                font-size: 13px;
+            }
+
+        .print-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 11px 18px;
+            border: none;
+            border-radius: 10px;
+            background: #2563eb;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.20);
+        }
+
+            .print-button:hover {
+                background: #1d4ed8;
+                transform: translateY(-1px);
+                box-shadow: 0 7px 18px rgba(37, 99, 235, 0.25);
+            }
+
+        /* =====================================================
+           RECEIPT
+           ===================================================== */
+
+        .receipt {
+            background: #ffffff;
+            border: 1px solid #e3eaf3;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 15px 45px rgba(15, 23, 42, 0.08);
+        }
+
+        /* =====================================================
+           RECEIPT HEADER
+           ===================================================== */
+
+        .receipt-header {
+            position: relative;
+            padding: 35px 40px;
+            background: linear-gradient( 135deg, #0f3d91 0%, #2563eb 60%, #3b82f6 100% );
+            color: #ffffff;
+        }
+
+            .receipt-header::after {
+                content: "";
+                position: absolute;
+                right: -70px;
+                top: -90px;
+                width: 230px;
+                height: 230px;
+                border-radius: 50%;
+                background: rgba(255,255,255,0.08);
+            }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+        }
+
+        .brand-area {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .brand-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 15px;
+            background: rgba(255,255,255,0.16);
+            border: 1px solid rgba(255,255,255,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+        }
+
+        .header-title {
+            margin: 0 0 6px;
+            font-size: 27px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .header-subtitle {
+            margin: 0;
+            color: rgba(255,255,255,0.82);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .payment-status {
+            position: relative;
+            z-index: 3;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border-radius: 30px;
+            background: #ffffff;
+            color: #15803d;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.10);
+        }
+
+            .payment-status i {
+                font-size: 15px;
+            }
+
+        /* =====================================================
+           RECEIPT BODY
+           ===================================================== */
+
+        .receipt-body {
+            padding: 38px 40px;
+        }
+
+        /* =====================================================
+           SECTION
+           ===================================================== */
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+            .section:last-child {
+                margin-bottom: 0;
+            }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            margin-bottom: 18px;
+        }
+
+        .section-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 9px;
+            background: #eff6ff;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        .section-heading h2 {
+            margin: 0;
+            font-size: 16px;
+            color: #172b4d;
+            font-weight: 700;
+        }
+
+        .section-heading span {
+            margin-left: auto;
+            color: #94a3b8;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        /* =====================================================
+           DETAILS GRID
+           ===================================================== */
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .detail-card {
+            border: 1px solid #e6edf5;
+            background: #fbfdff;
+            border-radius: 11px;
+            padding: 16px;
+            min-height: 78px;
+        }
+
+        .detail-label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 7px;
+            color: #64748b;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+            .detail-label i {
+                color: #3b82f6;
+                font-size: 11px;
+            }
+
+        .detail-value {
+            color: #172b4d;
+            font-size: 14px;
+            font-weight: 600;
+            word-break: break-word;
+        }
+
+            .detail-value.reference {
+                font-family: "Consolas", "Courier New", monospace;
+                font-size: 12px;
+            }
+
+        /* =====================================================
+           PACKAGE CARD
+           ===================================================== */
+
+        .package-card {
+            border: 1px solid #dbeafe;
+            background: #f8fbff;
+            border-radius: 13px;
+            padding: 22px;
+        }
+
+        .package-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .package-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .package-icon {
+            width: 50px;
+            height: 50px;
+            flex-shrink: 0;
+            border-radius: 12px;
+            background: #2563eb;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 5px 14px rgba(37,99,235,0.18);
+        }
+
+        .package-name {
+            margin: 0 0 5px;
+            color: #172b4d;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .package-description {
+            margin: 0;
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .package-price {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .package-price-label {
+            display: block;
+            margin-bottom: 4px;
+            color: #64748b;
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .package-price-value {
+            color: #1d4ed8;
+            font-size: 21px;
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           PACKAGE STATS
+           ===================================================== */
+
+        .package-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid #dbeafe;
+        }
+
+        .package-stat {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .package-stat-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: #ffffff;
+            border: 1px solid #dbeafe;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+        }
+
+        .package-stat-text small {
+            display: block;
+            color: #64748b;
+            font-size: 10px;
+            margin-bottom: 3px;
+        }
+
+        .package-stat-text strong {
+            display: block;
+            color: #172b4d;
+            font-size: 13px;
+        }
+
+        /* =====================================================
+           TOTAL
+           ===================================================== */
+
+        .total-box {
+            margin-top: 25px;
+            padding: 22px 24px;
+            border-radius: 13px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        .total-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .total-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .total-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #eff6ff;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+        }
+
+        .total-label {
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .total-subtitle {
+            margin-top: 3px;
+            color: #94a3b8;
+            font-size: 10px;
+        }
+
+        .total-amount {
+            color: #0f3d91;
+            font-size: 26px;
+            font-weight: 800;
+        }
+
+        /* =====================================================
+           VERIFIED NOTICE
+           ===================================================== */
+
+        .verified-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 18px;
+            border-radius: 12px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+        }
+
+        .verified-icon {
+            width: 39px;
+            height: 39px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: #dcfce7;
+            color: #15803d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        .verified-content h3 {
+            margin: 0 0 5px;
+            color: #166534;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .verified-content p {
+            margin: 0;
+            color: #4b7a5b;
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        /* =====================================================
+           NOTES
+           ===================================================== */
+
+        .notes-box {
+            padding: 16px 18px;
+            border-left: 3px solid #3b82f6;
+            background: #f8fafc;
+            border-radius: 0 9px 9px 0;
+        }
+
+            .notes-box p {
+                margin: 0;
+                color: #64748b;
+                font-size: 12px;
+                line-height: 1.6;
+            }
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        .receipt-footer {
+            padding: 22px 40px;
+            background: #f8fafc;
+            border-top: 1px solid #e6edf5;
+            text-align: center;
+        }
+
+        .footer-main {
+            margin: 0 0 6px;
+            color: #475569;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .footer-sub {
+            margin: 0;
+            color: #94a3b8;
+            font-size: 10px;
+        }
+
+            .footer-sub i {
+                margin-right: 4px;
+                color: #2563eb;
+            }
+
+        /* =====================================================
+           BOTTOM ACTIONS
+           ===================================================== */
+
+        .bottom-actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .action-primary {
+            background: #2563eb;
+            color: #ffffff;
+            box-shadow: 0 5px 15px rgba(37,99,235,0.18);
+        }
+
+            .action-primary:hover {
+                background: #1d4ed8;
+                color: #ffffff;
+                transform: translateY(-1px);
+            }
+
+        .action-secondary {
+            background: #ffffff;
+            color: #2563eb;
+            border: 1px solid #dbe5f1;
+        }
+
+            .action-secondary:hover {
+                background: #eff6ff;
+                color: #1d4ed8;
+                border-color: #bfdbfe;
+            }
+
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @@media (max-width: 700px) {
+
+            .page-wrapper {
+                padding: 20px 12px 40px;
+            }
+
+            .top-bar {
+                margin-bottom: 15px;
+            }
+
+            .receipt-header {
+                padding: 25px 22px;
+            }
+
+            .header-content {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .header-title {
+                font-size: 22px;
+            }
+
+            .receipt-body {
+                padding: 25px 20px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .package-top {
+                flex-direction: column;
+            }
+
+            .package-price {
+                text-align: left;
+            }
+
+            .package-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .total-row {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .total-amount {
+                font-size: 24px;
+            }
+
+            .receipt-footer {
+                padding: 20px;
+            }
+
+            .bottom-actions {
+                flex-direction: column;
+            }
+
+            .action-button {
+                width: 100%;
+            }
+
+            .print-button {
+                padding: 10px 14px;
+            }
+
+            .back-button {
+                padding: 10px 14px;
+            }
+        }
+
+        /* =====================================================
+           PRINT
+           ===================================================== */
+
+        @@media print {
+
+            body {
+                background: #ffffff;
+            }
+
+            .page-wrapper {
+                padding: 0;
+            }
+
+            .top-bar,
+            .bottom-actions {
+                display: none !important;
+            }
+
+            .container {
+                max-width: none;
+            }
+
+            .receipt {
+                border: none;
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            .receipt-header {
+                border-radius: 0;
+            }
+
+            .receipt-body {
+                padding: 30px;
+            }
+
+            .receipt-footer {
+                padding: 20px 30px;
+            }
+
+            @@page {
+                margin: 10mm;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="page-wrapper">
+
+        <div class="container">
+
+            <!-- =================================================
+                 TOP BAR
+                 ================================================= -->
+
+            <div class="top-bar">
+
+                <a href="@Url.Action("MyPackages", "Package")"
+                   class="back-button">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    <span>Back to My Packages</span>
+
+                </a>
+
+                <button type="button"
+                        class="print-button"
+                        onclick="window.print();">
+
+                    <i class="fa-solid fa-print"></i>
+
+                    <span>Print / Save PDF</span>
+
+                </button>
+
+            </div>
+
+
+            <!-- =================================================
+                 RECEIPT
+                 ================================================= -->
+
+            <div class="receipt">
+
+
+                <!-- =============================================
+                     HEADER
+                     ============================================= -->
+
+                <div class="receipt-header">
+
+                    <div class="header-content">
+
+                        <div class="brand-area">
+
+                            <div class="brand-icon">
+
+                                <i class="fa-solid fa-file-invoice-dollar"></i>
+
+                            </div>
+
+                            <div>
+
+                                <h1 class="header-title">
+                                    Proof of Payment
+                                </h1>
+
+                                <p class="header-subtitle">
+                                    Official payment confirmation
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="payment-status">
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                            <span>Payment Confirmed</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     BODY
+                     ============================================= -->
+
+                <div class="receipt-body">
+
+
+                    <!-- =========================================
+                         PAYMENT INFORMATION
+                         ========================================= -->
+
+                    <div class="section">
+
+                        <div class="section-heading">
+
+                            <div class="section-icon">
+
+                                <i class="fa-solid fa-receipt"></i>
+
+                            </div>
+
+                            <h2>
+                                Payment Information
+                            </h2>
+
+                            <span>
+                                Transaction
+                            </span>
+
+                        </div>
+
+
+                        <div class="details-grid">
+
+
+                            <!-- Payment ID -->
+
+                            <div class="detail-card">
+
+                                <div class="detail-label">
+
+                                    <i class="fa-solid fa-hashtag"></i>
+
+                                    Payment ID
+
+                                </div>
+
+                                <div class="detail-value">
+
+                                    #@Model.PaymentId
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Payment Date -->
+
+                            <div class="detail-card">
+
+                                <div class="detail-label">
+
+                                    <i class="fa-solid fa-calendar-check"></i>
+
+                                    Payment Date
+
+                                </div>
+
+                                <div class="detail-value">
+
+                                    @Model.PaymentDate.ToString("dd MMMM yyyy")
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Payment Method -->
+
+                            <div class="detail-card">
+
+                                <div class="detail-label">
+
+                                    <i class="fa-solid fa-credit-card"></i>
+
+                                    Payment Method
+
+                                </div>
+
+                                <div class="detail-value">
+
+                                    @Model.PaymentMethod
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Payment Status -->
+
+                            <div class="detail-card">
+
+                                <div class="detail-label">
+
+                                    <i class="fa-solid fa-shield-halved"></i>
+
+                                    Status
+
+                                </div>
+
+                                <div class="detail-value">
+
+                                    @Model.PaymentStatus
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Transaction Reference -->
+
+                            <div class="detail-card"
+                                 style="grid-column: 1 / -1;">
+
+                                <div class="detail-label">
+
+                                    <i class="fa-solid fa-barcode"></i>
+
+                                    Transaction Reference
+
+                                </div>
+
+                                <div class="detail-value reference">
+
+                                    @(string.IsNullOrWhiteSpace(Model.TransactionReference)
+                                        ? "Not available"
+                                        : Model.TransactionReference)
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =========================================
+                         PACKAGE INFORMATION
+                         ========================================= -->
+
+                    @if (Model.StudentPackage != null)
+                    {
+
+                        <div class="section">
+
+                            <div class="section-heading">
+
+                                <div class="section-icon">
+
+                                    <i class="fa-solid fa-box-open"></i>
+
+                                </div>
+
+                                <h2>
+                                    Package Information
+                                </h2>
+
+                                <span>
+                                    Purchased Package
+                                </span>
+
+                            </div>
+
+
+                            <div class="package-card">
+
+                                <div class="package-top">
+
+
+                                    <div class="package-info">
+
+                                        <div class="package-icon">
+
+                                            <i class="fa-solid fa-graduation-cap"></i>
+
+                                        </div>
+
+
+                                        <div>
+
+                                            <h3 class="package-name">
+
+                                                @(Model.StudentPackage.LessonPackage != null
+                                                    ? Model.StudentPackage.LessonPackage.PackageName
+                                                    : "Lesson Package")
+
+                                            </h3>
+
+
+                                            @if (Model.StudentPackage.LessonPackage != null &&
+                                                 !string.IsNullOrWhiteSpace(
+                                                     Model.StudentPackage.LessonPackage.Description))
+                                            {
+                                                <p class="package-description">
+
+                                                    @Model.StudentPackage.LessonPackage.Description
+
+                                                </p>
+                                            }
+                                            else
+                                            {
+                                                <p class="package-description">
+
+                                                    Driving lesson package
+
+                                                </p>
+                                            }
+
+                                        </div>
+
+                                    </div>
+
+
+                                    @if (Model.StudentPackage.LessonPackage != null)
+                                    {
+
+                                        <div class="package-price">
+
+                                            <span class="package-price-label">
+                                                Package Price
+                                            </span>
+
+                                            <span class="package-price-value">
+
+                                                R @Model.StudentPackage.LessonPackage.Price.ToString("N2")
+
+                                            </span>
+
+                                        </div>
+
+                                    }
+
+                                </div>
+
+
+                                <!-- Package Statistics -->
+
+                                <div class="package-stats">
+
+
+                                    <div class="package-stat">
+
+                                        <div class="package-stat-icon">
+
+                                            <i class="fa-solid fa-book-open"></i>
+
+                                        </div>
+
+                                        <div class="package-stat-text">
+
+                                            <small>
+                                                Lessons Purchased
+                                            </small>
+
+                                            <strong>
+                                                @Model.StudentPackage.LessonsPurchased
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="package-stat">
+
+                                        <div class="package-stat-icon">
+
+                                            <i class="fa-solid fa-clock-rotate-left"></i>
+
+                                        </div>
+
+                                        <div class="package-stat-text">
+
+                                            <small>
+                                                Lessons Remaining
+                                            </small>
+
+                                            <strong>
+                                                @Model.StudentPackage.LessonsRemaining
+                                            </strong>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    }
+
+
+                    <!-- =========================================
+                         TOTAL AMOUNT
+                         ========================================= -->
+
+                    <div class="total-box">
+
+                        <div class="total-row">
+
+
+                            <div class="total-left">
+
+                                <div class="total-icon">
+
+                                    <i class="fa-solid fa-money-bill-wave"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <div class="total-label">
+                                        Total Amount Paid
+                                    </div>
+
+                                    <div class="total-subtitle">
+                                        Payment successfully recorded
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="total-amount">
+
+                                R @Model.Amount.ToString("N2")
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =========================================
+                         VERIFICATION
+                         ========================================= -->
+
+                    <div class="section"
+                         style="margin-top: 30px;">
+
+                        <div class="verified-box">
+
+                            <div class="verified-icon">
+
+                                <i class="fa-solid fa-shield-check"></i>
+
+                            </div>
+
+
+                            <div class="verified-content">
+
+                                <h3>
+                                    Payment Verified
+                                </h3>
+
+                                <p>
+                                    This payment has been successfully recorded
+                                    in the Last Dance Driving School system.
+                                    Keep this document as your official proof
+                                    of payment.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =========================================
+                         NOTES
+                         ========================================= -->
+
+                    @if (!string.IsNullOrWhiteSpace(Model.Notes))
+                    {
+
+                        <div class="section">
+
+                            <div class="section-heading">
+
+                                <div class="section-icon">
+
+                                    <i class="fa-solid fa-note-sticky"></i>
+
+                                </div>
+
+                                <h2>
+                                    Payment Notes
+                                </h2>
+
+                            </div>
+
+
+                            <div class="notes-box">
+
+                                <p>
+                                    @Model.Notes
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    }
+
+                </div>
+
+
+                <!-- =============================================
+                     FOOTER
+                     ============================================= -->
+
+                <div class="receipt-footer">
+
+                    <p class="footer-main">
+
+                        Last Dance Driving School
+
+                    </p>
+
+                    <p class="footer-sub">
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        Secure payment record • Official proof of payment
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 BOTTOM ACTIONS
+                 ================================================= -->
+
+            <div class="bottom-actions">
+
+                <a href="@Url.Action("MyPackages", "Package")"
+                   class="action-button action-secondary">
+
+                    <i class="fa-solid fa-box-open"></i>
+
+                    My Packages
+
+                </a>
+
+
+                <button type="button"
+                        class="action-button action-primary"
+                        onclick="window.print();">
+
+                    <i class="fa-solid fa-print"></i>
+
+                    Print / Save PDF
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
+

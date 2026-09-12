@@ -1,0 +1,721 @@
+﻿@model Last_Dance_System.Models.LessonPackage
+
+@{
+    Layout = null;
+    ViewBag.Title = "Package Details";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>Package Details - Last Dance Driving School</title>
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #172033;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        .page {
+            min-height: 100vh;
+            padding: 40px 20px 70px;
+            background: radial-gradient( circle at 90% 0%, rgba(37, 99, 235, .08), transparent 30% ), linear-gradient( 180deg, #f8fbff 0%, #f3f7fc 100% );
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .header {
+            position: relative;
+            overflow: hidden;
+            background: #ffffff;
+            border: 1px solid #e1e8f2;
+            border-radius: 17px;
+            padding: 25px 28px;
+            margin-bottom: 22px;
+            box-shadow: 0 8px 25px rgba(20, 33, 61, .05);
+        }
+
+            .header::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 4px;
+                height: 100%;
+                background: #2563eb;
+            }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-icon {
+            width: 55px;
+            height: 55px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            border-radius: 13px;
+            color: #2563eb;
+            font-size: 21px;
+        }
+
+        .header h1 {
+            margin: 0 0 5px;
+            color: #14213d;
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+        .header p {
+            margin: 0;
+            color: #748196;
+            font-size: 13px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e1e8f2;
+            border-radius: 17px;
+            box-shadow: 0 8px 25px rgba(20, 33, 61, .05);
+            overflow: hidden;
+        }
+
+        .package-hero {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 25px 30px;
+            background: linear-gradient( 135deg, #ffffff 0%, #f8fbff 100% );
+            border-bottom: 1px solid #e8eef5;
+        }
+
+        .package-icon {
+            width: 65px;
+            height: 65px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 15px;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            color: #2563eb;
+            font-size: 25px;
+        }
+
+        .package-title {
+            min-width: 0;
+        }
+
+            .package-title h2 {
+                margin: 0 0 5px;
+                color: #14213d;
+                font-size: 22px;
+                font-weight: 800;
+            }
+
+            .package-title p {
+                margin: 0;
+                color: #7b8799;
+                font-size: 11px;
+            }
+
+        .status-badge {
+            margin-left: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 13px;
+            border-radius: 30px;
+            font-size: 10px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .status-active {
+            background: #ecfdf5;
+            border: 1px solid #bbf7d0;
+            color: #15803d;
+        }
+
+        .status-inactive {
+            background: #f8fafc;
+            border: 1px solid #dce3ea;
+            color: #64748b;
+        }
+
+        .details-body {
+            padding: 30px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 18px;
+            color: #172033;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+            .section-title i {
+                color: #2563eb;
+            }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .detail-box {
+            padding: 18px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 11px;
+            transition: .2s ease;
+        }
+
+            .detail-box:hover {
+                border-color: #bfdbfe;
+                background: #f8fbff;
+            }
+
+        .detail-label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 8px;
+            color: #7b8799;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+        }
+
+            .detail-label i {
+                color: #2563eb;
+                font-size: 11px;
+            }
+
+        .detail-value {
+            color: #172033;
+            font-size: 16px;
+            font-weight: 800;
+        }
+
+            .detail-value.price {
+                color: #2563eb;
+                font-size: 20px;
+            }
+
+        .description-box {
+            padding: 20px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 11px;
+            margin-bottom: 25px;
+        }
+
+        .description-text {
+            color: #526176;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .description-empty {
+            color: #94a3b8;
+            font-size: 12px;
+            font-style: italic;
+        }
+
+        .package-id {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 7px;
+            color: #94a3b8;
+            font-size: 10px;
+        }
+
+            .package-id i {
+                color: #2563eb;
+            }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding-top: 22px;
+            border-top: 1px solid #edf1f6;
+        }
+
+        .action-left,
+        .action-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 18px;
+            border-radius: 9px;
+            font-size: 11px;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .btn-back {
+            background: #ffffff;
+            border: 1px solid #d9e2ef;
+            color: #455468;
+        }
+
+            .btn-back i {
+                color: #2563eb;
+            }
+
+            .btn-back:hover {
+                background: #f8fafc;
+                border-color: #2563eb;
+                color: #2563eb;
+                text-decoration: none;
+            }
+
+        .btn-edit {
+            background: #2563eb;
+            border: 1px solid #2563eb;
+            color: #ffffff;
+            box-shadow: 0 5px 14px rgba(37, 99, 235, .15);
+        }
+
+            .btn-edit:hover {
+                background: #1d4ed8;
+                border-color: #1d4ed8;
+                color: #ffffff;
+                text-decoration: none;
+                transform: translateY(-1px);
+            }
+
+        .btn-delete {
+            background: #ffffff;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+        }
+
+            .btn-delete:hover {
+                background: #fff7f7;
+                border-color: #dc2626;
+                color: #b91c1c;
+                text-decoration: none;
+                transform: translateY(-1px);
+            }
+
+        @@media (max-width: 700px) {
+
+            .page {
+                padding: 25px 14px 50px;
+            }
+
+            .header {
+                padding: 22px 20px;
+            }
+
+                .header h1 {
+                    font-size: 22px;
+                }
+
+            .package-hero {
+                align-items: flex-start;
+                flex-wrap: wrap;
+                padding: 22px;
+            }
+
+            .status-badge {
+                margin-left: 0;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .details-body {
+                padding: 20px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .action-left,
+            .action-right {
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @@media (max-width: 450px) {
+
+            .header-content {
+                align-items: flex-start;
+            }
+
+            .header-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 18px;
+            }
+
+            .package-icon {
+                width: 55px;
+                height: 55px;
+                font-size: 21px;
+            }
+
+            .package-title h2 {
+                font-size: 18px;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="page">
+
+        <div class="container">
+
+            <!-- HEADER -->
+
+            <div class="header">
+
+                <div class="header-content">
+
+                    <div class="header-icon">
+                        <i class="fa-solid fa-box-open"></i>
+                    </div>
+
+                    <div>
+
+                        <h1>
+                            Package Details
+                        </h1>
+
+                        <p>
+                            View the complete information for this lesson package.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CARD -->
+
+            <div class="card">
+
+                <!-- PACKAGE HERO -->
+
+                <div class="package-hero">
+
+                    <div class="package-icon">
+                        <i class="fa-solid fa-box"></i>
+                    </div>
+
+                    <div class="package-title">
+
+                        <h2>
+                            @Model.PackageName
+                        </h2>
+
+                        <p>
+                            Driving lesson package
+                        </p>
+
+                        <div class="package-id">
+
+                            <i class="fa-solid fa-hashtag"></i>
+
+                            Package ID:
+                            @Model.LessonPackageId
+
+                        </div>
+
+                    </div>
+
+
+                    @if (Model.IsActive)
+                    {
+                        <div class="status-badge status-active">
+
+                            <i class="fa-solid fa-circle-check"></i>
+
+                            Active
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="status-badge status-inactive">
+
+                            <i class="fa-solid fa-circle-xmark"></i>
+
+                            Inactive
+
+                        </div>
+                    }
+
+                </div>
+
+
+                <!-- DETAILS -->
+
+                <div class="details-body">
+
+                    <div class="section-title">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        Package Information
+
+                    </div>
+
+
+                    <div class="details-grid">
+
+                        <div class="detail-box">
+
+                            <div class="detail-label">
+
+                                <i class="fa-solid fa-list-ol"></i>
+
+                                Number of Lessons
+
+                            </div>
+
+                            <div class="detail-value">
+
+                                @Model.NumberOfLessons
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <div class="detail-label">
+
+                                <i class="fa-solid fa-money-bill-wave"></i>
+
+                                Package Price
+
+                            </div>
+
+                            <div class="detail-value price">
+
+                                R @Model.Price.ToString("N2")
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <div class="detail-label">
+
+                                <i class="fa-solid fa-toggle-on"></i>
+
+                                Availability
+
+                            </div>
+
+                            <div class="detail-value">
+
+                                @if (Model.IsActive)
+                                {
+                                    @:Available
+                                }
+                                else
+                                {
+                                    @:Unavailable
+                                }
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="detail-box">
+
+                            <div class="detail-label">
+
+                                <i class="fa-solid fa-calculator"></i>
+
+                                Price Per Lesson
+
+                            </div>
+
+                            <div class="detail-value">
+
+                                @if (Model.NumberOfLessons > 0)
+                                {
+                                    @:R @((Model.Price / Model.NumberOfLessons).ToString("N2"))
+                                }
+                                else
+                                {
+                                    @:N/A
+                                }
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="section-title">
+
+                        <i class="fa-solid fa-align-left"></i>
+
+                        Description
+
+                    </div>
+
+                    <div class="description-box">
+
+                        @if (!string.IsNullOrWhiteSpace(Model.Description))
+                        {
+                            <div class="description-text">
+                                @Model.Description
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="description-empty">
+                                No description has been added for this package.
+                            </div>
+                        }
+
+                    </div>
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="actions">
+
+                        <div class="action-left">
+
+                            <a href="@Url.Action("Index", "AdminLessonPackages")"
+                               class="btn btn-back">
+
+                                <i class="fa-solid fa-arrow-left"></i>
+
+                                Back to Packages
+
+                            </a>
+
+                        </div>
+
+
+                        <div class="action-right">
+
+                            <a href="@Url.Action(
+                                "Edit",
+                                "AdminLessonPackages",
+                                new
+                                {
+                                    id = Model.LessonPackageId
+                                })"
+                               class="btn btn-edit">
+
+                                <i class="fa-solid fa-pen-to-square"></i>
+
+                                Edit Package
+
+                            </a>
+
+
+                            <a href="@Url.Action(
+                                "Delete",
+                                "AdminLessonPackages",
+                                new
+                                {
+                                    id = Model.LessonPackageId
+                                })"
+                               class="btn btn-delete">
+
+                                <i class="fa-solid fa-trash"></i>
+
+                                Delete
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

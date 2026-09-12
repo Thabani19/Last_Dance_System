@@ -1,0 +1,780 @@
+﻿@model Last_Dance_System.Models.Instructor
+
+@{
+    Layout = null;
+    ViewBag.Title = "My Profile";
+}
+
+<style>
+
+    /* =========================================================
+       GLOBAL
+       ========================================================= */
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #f4f7fb;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: #172033;
+    }
+
+
+    /* =========================================================
+       MAIN PROFILE PAGE
+       ========================================================= */
+
+    .profile-page {
+        min-height: 100vh;
+        padding: 35px 25px 70px;
+        background: #f4f7fb;
+    }
+
+    .profile-wrapper {
+        width: 100%;
+        max-width: 1050px;
+        margin: 0 auto;
+    }
+
+
+    /* =========================================================
+       PROFILE HEADER
+       ========================================================= */
+
+    .profile-header {
+        position: relative;
+        overflow: hidden;
+        background: #ffffff;
+        border: 1px solid #e1e8f0;
+        border-radius: 18px 18px 0 0;
+        padding: 35px;
+        text-align: center;
+        box-shadow: 0 8px 25px rgba(30, 70, 110, 0.07);
+    }
+
+        .profile-header::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient( 180deg, #1976d2, #0d47a1 );
+        }
+
+        .profile-header::after {
+            content: "";
+            position: absolute;
+            right: -100px;
+            top: -120px;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient( circle, rgba(25, 118, 210, 0.09), transparent 70% );
+            pointer-events: none;
+        }
+
+
+    /* =========================================================
+       PROFILE AVATAR
+       ========================================================= */
+
+    .profile-avatar {
+        position: relative;
+        z-index: 2;
+        width: 105px;
+        height: 105px;
+        margin: 0 auto 18px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient( 135deg, #1976d2, #0d47a1 );
+        border: 4px solid #ffffff;
+        color: #ffffff;
+        font-size: 32px;
+        font-weight: 800;
+        text-transform: uppercase;
+        box-shadow: 0 8px 25px rgba(25, 118, 210, 0.25), 0 0 0 1px #d9e6f3;
+    }
+
+
+    /* =========================================================
+       PROFILE AVATAR ICON
+       ========================================================= */
+
+    .avatar-icon {
+        position: absolute;
+        bottom: -3px;
+        right: -3px;
+        width: 31px;
+        height: 31px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #ffffff;
+        border: 2px solid #1976d2;
+        border-radius: 50%;
+        color: #1976d2;
+        font-size: 14px;
+        font-weight: 800;
+        box-shadow: 0 3px 10px rgba(25, 118, 210, 0.18);
+    }
+
+
+    /* =========================================================
+       PROFILE HEADER TEXT
+       ========================================================= */
+
+    .profile-header h2 {
+        position: relative;
+        z-index: 2;
+        margin: 0 0 7px;
+        color: #142033;
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.4px;
+    }
+
+    .profile-header p {
+        position: relative;
+        z-index: 2;
+        margin: 0;
+        color: #718096;
+        font-size: 14px;
+    }
+
+    .profile-role {
+        color: #1976d2;
+        font-weight: 700;
+    }
+
+
+    /* =========================================================
+       PROFILE CARD
+       ========================================================= */
+
+    .profile-card {
+        background: #ffffff;
+        border: 1px solid #e1e8f0;
+        border-top: none;
+        border-radius: 0 0 18px 18px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(30, 70, 110, 0.07);
+    }
+
+
+    /* =========================================================
+       PROFILE SECTION
+       ========================================================= */
+
+    .profile-section {
+        margin-bottom: 30px;
+    }
+
+        .profile-section:last-of-type {
+            margin-bottom: 0;
+        }
+
+
+    /* =========================================================
+       SECTION TITLE
+       ========================================================= */
+
+    .profile-section-title {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        color: #172033;
+        font-size: 18px;
+        font-weight: 750;
+        padding-bottom: 14px;
+        margin-bottom: 18px;
+        border-bottom: 1px solid #edf1f5;
+        position: relative;
+    }
+
+        .profile-section-title::before {
+            content: "";
+            width: 4px;
+            height: 21px;
+            border-radius: 5px;
+            background: linear-gradient( 180deg, #1976d2, #0d47a1 );
+        }
+
+    .section-title-icon {
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #eef6ff;
+        border: 1px solid #d4e7fa;
+        border-radius: 9px;
+        color: #1976d2;
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+
+    /* =========================================================
+       INFORMATION GRID
+       ========================================================= */
+
+    .profile-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+
+    /* =========================================================
+       INFORMATION ITEM
+       ========================================================= */
+
+    .profile-item {
+        position: relative;
+        background: #fbfdff;
+        border: 1px solid #e1e8f0;
+        border-radius: 13px;
+        padding: 17px 18px 17px 20px;
+        min-height: 78px;
+        transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .profile-item:hover {
+            border-color: #bfd6ed;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(30, 70, 110, 0.08);
+        }
+
+
+        /* =========================================================
+       BLUE SIDE ACCENT
+       ========================================================= */
+
+        .profile-item::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 16px;
+            width: 3px;
+            height: 35px;
+            border-radius: 4px;
+            background: linear-gradient( 180deg, #1976d2, #64b5f6 );
+        }
+
+
+    /* =========================================================
+       LABEL
+       ========================================================= */
+
+    .profile-label {
+        display: block;
+        color: #718096;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.55px;
+        margin-bottom: 7px;
+    }
+
+
+    /* =========================================================
+       VALUE
+       ========================================================= */
+
+    .profile-value {
+        display: block;
+        color: #172033;
+        font-size: 15px;
+        font-weight: 650;
+        word-break: break-word;
+    }
+
+        .profile-value.empty {
+            color: #8a97a8;
+            font-weight: 500;
+        }
+
+
+    /* =========================================================
+       STATUS
+       ========================================================= */
+
+    .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 13px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+        .status::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .status.active {
+            background: #edf9f1;
+            border: 1px solid #d0ecd8;
+            color: #2e8b57;
+        }
+
+            .status.active::before {
+                background: #43a047;
+            }
+
+        .status.inactive {
+            background: #fff1f1;
+            border: 1px solid #f1d0d0;
+            color: #c62828;
+        }
+
+            .status.inactive::before {
+                background: #e53935;
+            }
+
+
+    /* =========================================================
+       ACTION AREA
+       ========================================================= */
+
+    .profile-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-top: 30px;
+        padding-top: 22px;
+        border-top: 1px solid #edf1f5;
+    }
+
+
+    /* =========================================================
+       BACK BUTTON
+       ========================================================= */
+
+    .back-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 20px;
+        border-radius: 9px;
+        background: #ffffff;
+        border: 1px solid #cbd7e4;
+        color: #526275 !important;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .back-btn:hover {
+            background: #eef6ff;
+            border-color: #1976d2;
+            color: #0d47a1 !important;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(25, 118, 210, 0.10);
+        }
+
+
+    /* =========================================================
+       EDIT BUTTON
+       ========================================================= */
+
+    .edit-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 22px;
+        border-radius: 9px;
+        background: linear-gradient( 135deg, #1976d2, #0d47a1 );
+        border: 1px solid #1976d2;
+        color: #ffffff !important;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        box-shadow: 0 5px 15px rgba(25, 118, 210, 0.18);
+        transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .edit-btn:hover {
+            background: linear-gradient( 135deg, #2196f3, #1565c0 );
+            border-color: #2196f3;
+            color: #ffffff !important;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(25, 118, 210, 0.25);
+        }
+
+
+    /* =========================================================
+       RESPONSIVE TABLET
+       ========================================================= */
+
+    @@media (max-width: 768px) {
+
+        .profile-page {
+            padding: 20px 15px 45px;
+        }
+
+        .profile-header {
+            padding: 30px 20px;
+        }
+
+        .profile-card {
+            padding: 22px 18px;
+        }
+
+        .profile-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .profile-actions {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .back-btn,
+        .edit-btn {
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+
+    /* =========================================================
+       RESPONSIVE MOBILE
+       ========================================================= */
+
+    @@media (max-width: 576px) {
+
+        .profile-page {
+            padding: 15px 10px 40px;
+        }
+
+        .profile-header {
+            padding: 25px 18px;
+        }
+
+        .profile-avatar {
+            width: 85px;
+            height: 85px;
+            font-size: 27px;
+        }
+
+        .avatar-icon {
+            width: 27px;
+            height: 27px;
+            font-size: 12px;
+        }
+
+        .profile-header h2 {
+            font-size: 23px;
+        }
+
+        .profile-card {
+            padding: 20px 15px;
+        }
+
+        .profile-section-title {
+            font-size: 17px;
+        }
+
+        .profile-item {
+            padding: 15px 15px 15px 18px;
+        }
+    }
+</style>
+
+
+<div class="profile-page">
+
+    <div class="profile-wrapper">
+
+
+        <!-- =====================================================
+             PROFILE HEADER
+             ===================================================== -->
+
+        <div class="profile-header">
+
+            <div class="profile-avatar">
+
+                @if (Model != null &&
+                     !string.IsNullOrEmpty(Model.FirstName) &&
+                     !string.IsNullOrEmpty(Model.LastName))
+                {
+                    @Model.FirstName.Substring(0, 1)
+                    @Model.LastName.Substring(0, 1)
+                }
+                else
+                {
+                    @:IN
+                }
+
+                <span class="avatar-icon">
+                    ✓
+                </span>
+
+            </div>
+
+
+            <h2>
+                @Model.FirstName @Model.LastName
+            </h2>
+
+
+            <p>
+                <span class="profile-role">
+                    Driving Instructor
+                </span>
+            </p>
+
+        </div>
+
+
+        <!-- =====================================================
+             PROFILE INFORMATION
+             ===================================================== -->
+
+        <div class="profile-card">
+
+
+            <!-- =================================================
+                 PERSONAL INFORMATION
+                 ================================================= -->
+
+            <div class="profile-section">
+
+                <div class="profile-section-title">
+
+                    <span class="section-title-icon">
+                        👤
+                    </span>
+
+                    Personal Information
+
+                </div>
+
+
+                <div class="profile-grid">
+
+
+                    <!-- INSTRUCTOR ID -->
+
+                    <div class="profile-item">
+
+                        <span class="profile-label">
+                            Instructor ID
+                        </span>
+
+                        <span class="profile-value">
+                            @Model.InstructorId
+                        </span>
+
+                    </div>
+
+
+                    <!-- FULL NAME -->
+
+                    <div class="profile-item">
+
+                        <span class="profile-label">
+                            Full Name
+                        </span>
+
+                        <span class="profile-value">
+                            @Model.FirstName @Model.LastName
+                        </span>
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="profile-item">
+
+                        <span class="profile-label">
+                            Email Address
+                        </span>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.Email))
+                        {
+                            <span class="profile-value">
+                                @Model.Email
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="profile-value empty">
+                                Not provided
+                            </span>
+                        }
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="profile-item">
+
+                        <span class="profile-label">
+                            Phone Number
+                        </span>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.Phone))
+                        {
+                            <span class="profile-value">
+                                @Model.Phone
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="profile-value empty">
+                                Not provided
+                            </span>
+                        }
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 PROFESSIONAL INFORMATION
+                 ================================================= -->
+
+            <div class="profile-section">
+
+                <div class="profile-section-title">
+
+                    <span class="section-title-icon">
+                        ★
+                    </span>
+
+                    Professional Information
+
+                </div>
+
+
+                <div class="profile-grid">
+
+
+                    <!-- LICENSE NUMBER -->
+
+                    <div class="profile-item">
+
+                        <span class="profile-label">
+                            License Number
+                        </span>
+
+                        @if (!string.IsNullOrWhiteSpace(Model.LicenseNumber))
+                        {
+                            <span class="profile-value">
+                                @Model.LicenseNumber
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="profile-value empty">
+                                Not provided
+                            </span>
+                        }
+
+                    </div>
+
+
+                    <!-- EXPERIENCE -->
+
+                    <div class="profile-item">
+
+                        <span class="profile-label">
+                            Experience
+                        </span>
+
+                        <span class="profile-value">
+                            @Model.Experience Years
+                        </span>
+
+                    </div>
+
+
+                    <!-- ACCOUNT STATUS -->
+
+                    <div class="profile-item">
+
+                        <span class="profile-label">
+                            Account Status
+                        </span>
+
+                        @if (Model.IsActive)
+                        {
+                            <span class="status active">
+                                Active
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="status inactive">
+                                Inactive
+                            </span>
+                        }
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 ACTIONS
+                 ================================================= -->
+
+            <div class="profile-actions">
+
+
+                <!-- BACK TO DASHBOARD -->
+
+                @Html.ActionLink(
+                    "←  Back to Dashboard",
+                    "Index",
+                    "InstructorDashboard",
+                    null,
+                    new { @class = "back-btn" }
+                )
+
+
+                <!-- EDIT PROFILE -->
+
+                @Html.ActionLink(
+                    "Edit Profile  ✎",
+                    "EditProfile",
+                    "InstructorDashboard",
+                    null,
+                    new { @class = "edit-btn" }
+                )
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+</div>

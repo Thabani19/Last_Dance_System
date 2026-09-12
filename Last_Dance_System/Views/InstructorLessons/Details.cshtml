@@ -1,0 +1,834 @@
+﻿@using System
+@using Last_Dance_System.Models
+
+@model LessonSchedule
+
+@{
+    ViewBag.Title = "Lesson Details";
+
+    var instructor = ViewBag.Instructor as Instructor;
+
+    var booking = Model.Bookings
+        .FirstOrDefault(b =>
+            !string.Equals(
+                b.Status,
+                "Cancelled",
+                StringComparison.OrdinalIgnoreCase
+            ));
+
+    string existingFeedback =
+        ViewBag.ExistingFeedback as string;
+
+    DateTime? feedbackDate =
+        ViewBag.FeedbackDate as DateTime?;
+}
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #050a12;
+    }
+
+    .details-page {
+        min-height: 100vh;
+        padding: 35px 25px 60px;
+        background: radial-gradient( circle at 10% 20%, rgba(33, 150, 243, 0.10), transparent 30% ), linear-gradient( 135deg, #03070d 0%, #07111e 50%, #02060b 100% );
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: #ffffff;
+    }
+
+    .details-wrapper {
+        width: 100%;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    /* =========================================
+       HEADER
+       ========================================= */
+
+    .details-header {
+        background: linear-gradient( 135deg, #03070d 0%, #07111e 55%, #0d2b4d 100% );
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 22px;
+        padding: 30px 35px;
+        margin-bottom: 25px;
+        box-shadow: 0 25px 60px rgba(0,0,0,0.50), 0 0 40px rgba(33,150,243,0.05);
+    }
+
+        .details-header h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .details-header p {
+            margin: 0;
+            color: #7f91a5;
+            font-size: 14px;
+        }
+
+    /* =========================================
+       ALERTS
+       ========================================= */
+
+    .alert {
+        border-radius: 14px;
+        padding: 15px 18px;
+        margin-bottom: 20px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .alert-success {
+        background: rgba(76,175,80,0.12);
+        border: 1px solid rgba(76,175,80,0.25);
+        color: #81c784;
+    }
+
+    .alert-error {
+        background: rgba(244,67,54,0.12);
+        border: 1px solid rgba(244,67,54,0.25);
+        color: #ef5350;
+    }
+
+    /* =========================================
+       CARD
+       ========================================= */
+
+    .details-card {
+        background: #0c1724;
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 20px;
+        padding: 30px;
+        margin-bottom: 25px;
+        box-shadow: 0 20px 45px rgba(0,0,0,0.35);
+    }
+
+    .card-title {
+        margin: 0 0 22px;
+        font-size: 19px;
+        font-weight: 750;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* =========================================
+       INFORMATION GRID
+       ========================================= */
+
+    .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+
+    .info-item {
+        background: #09121d;
+        border: 1px solid #1d2e40;
+        border-radius: 14px;
+        padding: 18px;
+    }
+
+    .info-label {
+        color: #71859a;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        margin-bottom: 7px;
+    }
+
+    .info-value {
+        color: #ffffff;
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    /* =========================================
+       STATUS
+       ========================================= */
+
+    .status {
+        display: inline-block;
+        padding: 7px 13px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .status-active {
+        background: rgba(33,150,243,0.12);
+        border: 1px solid rgba(33,150,243,0.20);
+        color: #42a5f5;
+    }
+
+    .status-completed {
+        background: rgba(76,175,80,0.12);
+        border: 1px solid rgba(76,175,80,0.20);
+        color: #66bb6a;
+    }
+
+    .status-cancelled {
+        background: rgba(244,67,54,0.12);
+        border: 1px solid rgba(244,67,54,0.20);
+        color: #ef5350;
+    }
+
+    /* =========================================
+       NOTES
+       ========================================= */
+
+    .notes-box {
+        background: #09121d;
+        border: 1px solid #1d2e40;
+        border-radius: 14px;
+        padding: 18px;
+        color: #b8c7d6;
+        line-height: 1.6;
+        font-size: 14px;
+        white-space: pre-wrap;
+    }
+
+    /* =========================================
+       FEEDBACK
+       ========================================= */
+
+    .feedback-label {
+        display: block;
+        margin-bottom: 9px;
+        color: #b8c7d6;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .feedback-textarea {
+        width: 100%;
+        min-height: 160px;
+        resize: vertical;
+        background: #09121d;
+        color: #ffffff;
+        border: 1px solid #1d2e40;
+        border-radius: 14px;
+        padding: 16px;
+        font-family: "Segoe UI", Arial, sans-serif;
+        font-size: 14px;
+        line-height: 1.6;
+        outline: none;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .feedback-textarea:focus {
+            border-color: #2196f3;
+            box-shadow: 0 0 0 3px rgba(33,150,243,0.10);
+        }
+
+    .feedback-help {
+        margin-top: 8px;
+        color: #71859a;
+        font-size: 12px;
+    }
+
+    .existing-feedback {
+        background: rgba(33,150,243,0.06);
+        border: 1px solid rgba(33,150,243,0.18);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 22px;
+    }
+
+    .existing-feedback-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 12px;
+        flex-wrap: wrap;
+    }
+
+    .existing-feedback-title {
+        font-size: 13px;
+        font-weight: 800;
+        color: #42a5f5;
+    }
+
+    .existing-feedback-date {
+        font-size: 11px;
+        color: #71859a;
+    }
+
+    .existing-feedback-text {
+        color: #d7e1eb;
+        line-height: 1.7;
+        font-size: 14px;
+        white-space: pre-wrap;
+    }
+
+    /* =========================================
+       BUTTONS
+       ========================================= */
+
+    .actions {
+        display: flex;
+        gap: 12px;
+        margin-top: 25px;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        display: inline-block;
+        padding: 12px 20px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+        cursor: pointer;
+    }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            text-decoration: none;
+        }
+
+    .btn-primary {
+        background: linear-gradient( 135deg, #2196f3, #0d47a1 );
+        color: #ffffff;
+        border: 1px solid rgba(33,150,243,0.35);
+        box-shadow: 0 8px 20px rgba(33,150,243,0.15);
+    }
+
+    .btn-secondary {
+        background: #09121d;
+        color: #b8c7d6;
+        border: 1px solid #1d2e40;
+    }
+
+        .btn-secondary:hover {
+            color: #ffffff;
+            border-color: #2d5273;
+        }
+
+    /* =========================================
+       RESPONSIVE
+       ========================================= */
+
+    @@media (max-width: 700px) {
+
+        .info-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .details-page {
+            padding: 20px 12px 40px;
+        }
+
+        .details-header {
+            padding: 25px 20px;
+        }
+
+        .details-card {
+            padding: 20px;
+        }
+
+        .details-header h1 {
+            font-size: 23px;
+        }
+    }
+</style>
+
+
+<div class="details-page">
+
+    <div class="details-wrapper">
+
+
+        <!-- =========================================
+             HEADER
+             ========================================= -->
+
+        <div class="details-header">
+
+            <h1>
+                Lesson Details
+            </h1>
+
+            <p>
+                View lesson information and provide
+                feedback to the student.
+            </p>
+
+        </div>
+
+
+        <!-- =========================================
+             SUCCESS MESSAGE
+             ========================================= -->
+
+        @if (TempData["InstructorSuccess"] != null)
+        {
+            <div class="alert alert-success">
+
+                @TempData["InstructorSuccess"]
+
+            </div>
+        }
+
+
+        <!-- =========================================
+             ERROR MESSAGE
+             ========================================= -->
+
+        @if (TempData["InstructorError"] != null)
+        {
+            <div class="alert alert-error">
+
+                @TempData["InstructorError"]
+
+            </div>
+        }
+
+
+        <!-- =========================================
+             LESSON INFORMATION
+             ========================================= -->
+
+        <div class="details-card">
+
+            <h2 class="card-title">
+                Lesson Information
+            </h2>
+
+
+            <div class="info-grid">
+
+
+                <!-- DATE -->
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Date
+                    </div>
+
+                    <div class="info-value">
+
+                        @Model.LessonDate.ToString(
+                            "dd MMMM yyyy")
+
+                    </div>
+
+                </div>
+
+
+                <!-- TIME -->
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Time
+                    </div>
+
+                    <div class="info-value">
+
+                        @Model.StartTime.ToString(@"hh\:mm")
+                        -
+                        @Model.EndTime.ToString(@"hh\:mm")
+
+                    </div>
+
+                </div>
+
+
+                <!-- LESSON TYPE -->
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Lesson Type
+                    </div>
+
+                    <div class="info-value">
+
+                        @if (Model.LessonType != null)
+                        {
+                            @Model.LessonType.LessonTypeName
+                        }
+                        else
+                        {
+                            @:Not available
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <!-- VEHICLE -->
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Vehicle
+                    </div>
+
+                    <div class="info-value">
+
+                        @if (Model.Vehicle != null)
+                        {
+                            @Model.Vehicle.VehicleId
+                        }
+                        else
+                        {
+                            @:Not assigned
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <!-- LESSON STATUS -->
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Lesson Status
+                    </div>
+
+                    <div class="info-value">
+
+                        @if (booking != null &&
+                            string.Equals(
+                                booking.Status,
+                                "Completed",
+                                StringComparison.OrdinalIgnoreCase))
+                        {
+                            <span class="status status-completed">
+                                Completed
+                            </span>
+                        }
+                        else if (booking != null &&
+                                 string.Equals(
+                                     booking.Status,
+                                     "Cancelled",
+                                     StringComparison.OrdinalIgnoreCase))
+                        {
+                            <span class="status status-cancelled">
+                                Cancelled
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="status status-active">
+                                Scheduled
+                            </span>
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <!-- ATTENDANCE -->
+
+                <div class="info-item">
+
+                    <div class="info-label">
+                        Attendance
+                    </div>
+
+                    <div class="info-value">
+
+                        @if (booking != null)
+                        {
+                            if (string.Equals(
+                                booking.AttendanceStatus,
+                                "Attended",
+                                StringComparison.OrdinalIgnoreCase))
+                            {
+                                <span class="status status-completed">
+                                    Attended
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="status status-active">
+                                    Not Confirmed
+                                </span>
+                            }
+                        }
+                        else
+                        {
+                            @:No booking
+                        }
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+             STUDENT INFORMATION
+             ========================================= -->
+
+        <div class="details-card">
+
+            <h2 class="card-title">
+                Student Information
+            </h2>
+
+
+            @if (booking != null &&
+                 booking.Registration != null)
+            {
+                <div class="info-grid">
+
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            First Name
+                        </div>
+
+                        <div class="info-value">
+
+                            @booking.Registration.FirstName
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            Last Name
+                        </div>
+
+                        <div class="info-value">
+
+                            @booking.Registration.LastName
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <div class="info-label">
+                            Registration ID
+                        </div>
+
+                        <div class="info-value">
+
+                            @booking.Registration.RegistrationId
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            }
+            else
+            {
+                <div class="notes-box">
+
+                    No active student booking is associated
+                    with this lesson.
+
+                </div>
+            }
+
+        </div>
+
+
+        <!-- =========================================
+             BOOKING NOTES
+             ========================================= -->
+
+        <div class="details-card">
+
+            <h2 class="card-title">
+                Booking Notes
+            </h2>
+
+
+            @if (booking != null &&
+                 !String.IsNullOrWhiteSpace(booking.Notes))
+            {
+                <div class="notes-box">
+
+                    @booking.Notes
+
+                </div>
+            }
+            else
+            {
+                <div class="notes-box">
+
+                    No notes were provided for this lesson.
+
+                </div>
+            }
+
+        </div>
+
+
+        <!-- =========================================
+             INSTRUCTOR FEEDBACK
+             ========================================= -->
+
+        @if (booking != null &&
+             booking.Registration != null &&
+             !string.Equals(
+                 booking.Status,
+                 "Cancelled",
+                 StringComparison.OrdinalIgnoreCase))
+        {
+            <div class="details-card">
+
+                <h2 class="card-title">
+                    Instructor Feedback
+                </h2>
+
+
+                @if (!String.IsNullOrWhiteSpace(
+                    existingFeedback))
+                {
+                    <div class="existing-feedback">
+
+                        <div class="existing-feedback-header">
+
+                            <div class="existing-feedback-title">
+                                Previously Submitted Feedback
+                            </div>
+
+                            @if (feedbackDate.HasValue)
+                            {
+                                <div class="existing-feedback-date">
+
+                                    Last updated:
+                                    @feedbackDate.Value.ToString(
+                                        "dd MMMM yyyy HH:mm")
+
+                                </div>
+                            }
+
+                        </div>
+
+
+                        <div class="existing-feedback-text">
+
+                            @existingFeedback
+
+                        </div>
+
+                    </div>
+                }
+
+
+                @using (Html.BeginForm(
+                    "SaveFeedback",
+                    "InstructorLessons",
+                    FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    @Html.Hidden(
+                        "id",
+                        Model.LessonScheduleId)
+
+
+                    <label class="feedback-label"
+                           for="instructorNotes">
+
+                        @(String.IsNullOrWhiteSpace(existingFeedback)
+                            ? "Write feedback for the student"
+                            : "Update student feedback")
+
+                    </label>
+
+
+                    <textarea id="instructorNotes"
+                              name="instructorNotes"
+                              class="feedback-textarea"
+                              maxlength="1000"
+                              placeholder="Write constructive feedback about the student's lesson progress, strengths, areas for improvement, and recommendations..."
+                              required>@existingFeedback</textarea>
+
+
+                    <div class="feedback-help">
+
+                        Maximum 1000 characters.
+                        This feedback will be visible to the student
+                        on their dashboard.
+
+                    </div>
+
+
+                    <div class="actions">
+
+                        <button type="submit"
+                                class="btn btn-primary">
+
+                            @(String.IsNullOrWhiteSpace(existingFeedback)
+                                ? "Submit Feedback"
+                                : "Update Feedback")
+
+                        </button>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+
+        <!-- =========================================
+             ACTION BUTTONS
+             ========================================= -->
+
+        <div class="details-card">
+
+            <div class="actions">
+
+                <a href="@Url.Action(
+                    "Index",
+                    "InstructorLessons")"
+                   class="btn btn-primary">
+
+                    Back to My Lessons
+
+                </a>
+
+
+                <a href="@Url.Action(
+                    "Index",
+                    "InstructorDashboard")"
+                   class="btn btn-secondary">
+
+                    Back to Dashboard
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>

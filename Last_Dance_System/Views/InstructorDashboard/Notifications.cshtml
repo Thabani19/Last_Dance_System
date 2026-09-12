@@ -1,0 +1,967 @@
+﻿@model IEnumerable<Last_Dance_System.Models.Notification>
+
+@{
+    Layout = null;
+    ViewBag.Title = "Notifications";
+
+
+var instructor =
+ViewBag.Instructor as Last_Dance_System.Models.Instructor;
+
+    int unreadCount = 0;
+
+    if (Model != null)
+    {
+        unreadCount = Model.Count(n => !n.IsRead);
+    }
+
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>Notifications - Last Dance Driving School</title>
+
+    <!-- =========================================================
+         FONT AWESOME ICONS
+         ========================================================= -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+
+    <style>
+
+         /* =========================================================
+        PAGE
+        ========================================================= */
+
+         * {
+             box-sizing: border-box;
+         }
+
+         body {
+             margin: 0;
+             font-family: Arial, Helvetica, sans-serif;
+             background: #f5f8fc;
+             color: #12355b;
+         }
+
+         .notifications-page {
+             min-height: 100vh;
+             background: #f5f8fc;
+             padding: 30px;
+         }
+
+
+         /* =========================================================
+        HEADER
+        ========================================================= */
+
+         .notifications-header {
+             background: white;
+             border-radius: 18px;
+             padding: 25px 30px;
+             margin-bottom: 25px;
+             box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             gap: 20px;
+         }
+
+
+         .notifications-title {
+             display: flex;
+             align-items: center;
+             gap: 15px;
+         }
+
+
+         .notification-header-icon {
+             width: 52px;
+             height: 52px;
+             border-radius: 14px;
+             background: #eaf3ff;
+             color: #0d6efd;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             font-size: 23px;
+             box-shadow: 0 4px 10px rgba(13, 110, 253, 0.08);
+         }
+
+
+         .notifications-title h2 {
+             margin: 0;
+             color: #12355b;
+             font-weight: 700;
+             font-size: 26px;
+         }
+
+
+         .notifications-title p {
+             margin: 5px 0 0;
+             color: #718096;
+             font-size: 14px;
+         }
+
+
+         /* =========================================================
+        HEADER BUTTONS
+        ========================================================= */
+
+         .notification-actions {
+             display: flex;
+             align-items: center;
+             gap: 10px;
+         }
+
+
+         .btn-dashboard {
+             display: inline-flex;
+             align-items: center;
+             justify-content: center;
+             gap: 8px;
+             background: #ffffff;
+             color: #0d6efd;
+             border: 1px solid #d7e5f5;
+             border-radius: 10px;
+             padding: 10px 16px;
+             text-decoration: none;
+             font-size: 14px;
+             font-weight: 600;
+             transition: 0.2s;
+         }
+
+
+             .btn-dashboard i {
+                 font-size: 14px;
+             }
+
+
+             .btn-dashboard:hover {
+                 background: #f0f7ff;
+                 color: #0b5ed7;
+                 text-decoration: none;
+                 transform: translateY(-1px);
+             }
+
+
+         .btn-mark-all {
+             display: inline-flex;
+             align-items: center;
+             justify-content: center;
+             gap: 8px;
+             background: #0d6efd;
+             color: white;
+             border: none;
+             border-radius: 10px;
+             padding: 10px 16px;
+             font-size: 14px;
+             font-weight: 600;
+             cursor: pointer;
+             transition: 0.2s;
+         }
+
+
+             .btn-mark-all i {
+                 font-size: 14px;
+             }
+
+
+             .btn-mark-all:hover {
+                 background: #0b5ed7;
+                 transform: translateY(-1px);
+             }
+
+
+         /* =========================================================
+        SUMMARY
+        ========================================================= */
+
+         .notification-summary {
+             display: grid;
+             grid-template-columns: repeat(2, 1fr);
+             gap: 18px;
+             margin-bottom: 25px;
+         }
+
+
+         .summary-card {
+             background: white;
+             border-radius: 16px;
+             padding: 20px;
+             box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+             display: flex;
+             align-items: center;
+             gap: 15px;
+             transition: 0.2s;
+         }
+
+
+             .summary-card:hover {
+                 transform: translateY(-2px);
+                 box-shadow: 0 7px 22px rgba(0, 0, 0, 0.08);
+             }
+
+
+         .summary-icon {
+             width: 45px;
+             height: 45px;
+             min-width: 45px;
+             border-radius: 12px;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             background: #eaf3ff;
+             color: #0d6efd;
+             font-size: 20px;
+         }
+
+
+         .summary-card h4 {
+             margin: 0;
+             color: #12355b;
+             font-size: 22px;
+             font-weight: 700;
+         }
+
+
+         .summary-card span {
+             color: #718096;
+             font-size: 13px;
+         }
+
+
+         /* =========================================================
+        NOTIFICATION LIST
+        ========================================================= */
+
+         .notification-list {
+             display: flex;
+             flex-direction: column;
+             gap: 15px;
+         }
+
+
+         .notification-card {
+             background: white;
+             border-radius: 16px;
+             padding: 22px;
+             box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+             border: 1px solid #edf2f7;
+             position: relative;
+             transition: 0.2s;
+         }
+
+
+             .notification-card:hover {
+                 transform: translateY(-2px);
+                 box-shadow: 0 7px 22px rgba(0, 0, 0, 0.08);
+             }
+
+
+             /* =========================================================
+        UNREAD
+        ========================================================= */
+
+             .notification-card.unread {
+                 border-left: 5px solid #0d6efd;
+                 background: #f8fbff;
+             }
+
+
+                 .notification-card.unread::before {
+                     content: "";
+                     position: absolute;
+                     top: 24px;
+                     right: 22px;
+                     width: 9px;
+                     height: 9px;
+                     border-radius: 50%;
+                     background: #0d6efd;
+                     box-shadow: 0 0 0 4px #eaf3ff;
+                 }
+
+
+         /* =========================================================
+        NOTIFICATION TOP
+        ========================================================= */
+
+         .notification-top {
+             display: flex;
+             justify-content: space-between;
+             align-items: flex-start;
+             gap: 15px;
+         }
+
+
+         .notification-heading {
+             display: flex;
+             align-items: flex-start;
+             gap: 13px;
+         }
+
+
+         /* =========================================================
+        NOTIFICATION ICON
+        ========================================================= */
+
+         .notification-icon {
+             width: 42px;
+             height: 42px;
+             min-width: 42px;
+             border-radius: 11px;
+             background: #eaf3ff;
+             color: #0d6efd;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             font-size: 18px;
+             box-shadow: 0 3px 8px rgba(13, 110, 253, 0.08);
+         }
+
+
+         .notification-heading h3 {
+             margin: 0;
+             color: #12355b;
+             font-size: 17px;
+             font-weight: 700;
+         }
+
+
+         /* =========================================================
+        NOTIFICATION TYPE
+        ========================================================= */
+
+         .notification-type {
+             display: inline-flex;
+             align-items: center;
+             gap: 5px;
+             margin-top: 5px;
+             padding: 4px 9px;
+             border-radius: 20px;
+             background: #eaf3ff;
+             color: #0d6efd;
+             font-size: 11px;
+             font-weight: 600;
+         }
+
+
+         /* =========================================================
+        DATE
+        ========================================================= */
+
+         .notification-date {
+             color: #718096;
+             font-size: 12px;
+             white-space: nowrap;
+         }
+
+
+             .notification-date i {
+                 margin-right: 5px;
+                 color: #0d6efd;
+             }
+
+
+         /* =========================================================
+        MESSAGE
+        ========================================================= */
+
+         .notification-message {
+             margin: 17px 0 18px 55px;
+             color: #4a5568;
+             font-size: 14px;
+             line-height: 1.7;
+             white-space: pre-line;
+         }
+
+
+         /* =========================================================
+        BOTTOM
+        ========================================================= */
+
+         .notification-bottom {
+             margin-left: 55px;
+             padding-top: 15px;
+             border-top: 1px solid #edf2f7;
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             gap: 15px;
+         }
+
+
+         .read-status {
+             font-size: 12px;
+             font-weight: 600;
+         }
+
+
+             .read-status.read {
+                 color: #718096;
+             }
+
+
+             .read-status.unread {
+                 color: #0d6efd;
+             }
+
+
+             .read-status i {
+                 margin-right: 5px;
+             }
+
+
+         /* =========================================================
+        MARK READ
+        ========================================================= */
+
+         .btn-mark-read {
+             display: inline-flex;
+             align-items: center;
+             justify-content: center;
+             gap: 7px;
+             background: #0d6efd;
+             color: white;
+             border: none;
+             border-radius: 8px;
+             padding: 8px 13px;
+             font-size: 12px;
+             font-weight: 600;
+             cursor: pointer;
+             transition: 0.2s;
+         }
+
+
+             .btn-mark-read i {
+                 font-size: 11px;
+             }
+
+
+             .btn-mark-read:hover {
+                 background: #0b5ed7;
+                 transform: translateY(-1px);
+             }
+
+
+         /* =========================================================
+        EMPTY STATE
+        ========================================================= */
+
+         .empty-notifications {
+             background: white;
+             border-radius: 18px;
+             padding: 70px 30px;
+             text-align: center;
+             box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+         }
+
+
+         .empty-icon {
+             width: 75px;
+             height: 75px;
+             margin: 0 auto 20px;
+             border-radius: 50%;
+             background: #eaf3ff;
+             color: #0d6efd;
+             display: flex;
+             align-items: center;
+             justify-content: center;
+             font-size: 30px;
+         }
+
+
+         .empty-notifications h3 {
+             color: #12355b;
+             margin-bottom: 8px;
+             font-size: 20px;
+         }
+
+
+         .empty-notifications p {
+             color: #718096;
+             font-size: 14px;
+             margin: 0;
+         }
+
+
+         /* =========================================================
+        SUCCESS MESSAGE
+        ========================================================= */
+
+         .notification-success {
+             background: #eaf3ff;
+             border: 1px solid #cfe2ff;
+             color: #0b5ed7;
+             border-radius: 10px;
+             padding: 13px 17px;
+             margin-bottom: 20px;
+             font-size: 14px;
+             font-weight: 500;
+         }
+
+
+             .notification-success i {
+                 margin-right: 7px;
+             }
+
+
+         /* =========================================================
+        RESPONSIVE
+        ========================================================= */
+
+         @@media (max-width: 768px) {
+
+             .notifications-page {
+                 padding: 15px;
+             }
+
+
+             .notifications-header {
+                 flex-direction: column;
+                 align-items: flex-start;
+             }
+
+
+             .notification-actions {
+                 width: 100%;
+                 flex-wrap: wrap;
+             }
+
+
+             .btn-dashboard,
+             .btn-mark-all {
+                 flex: 1;
+             }
+
+
+             .notification-summary {
+                 grid-template-columns: 1fr;
+             }
+
+
+             .notification-top {
+                 flex-direction: column;
+             }
+
+
+             .notification-date {
+                 margin-left: 55px;
+             }
+
+
+             .notification-message {
+                 margin-left: 0;
+             }
+
+
+             .notification-bottom {
+                 margin-left: 0;
+                 flex-direction: column;
+                 align-items: flex-start;
+             }
+         }
+    </style>
+    
+
+</head>
+
+<body>
+
+    <div class="notifications-page">
+
+        
+        <!-- =========================================================
+             HEADER
+             ========================================================= -->
+
+        <div class="notifications-header">
+
+            <div class="notifications-title">
+
+                <div class="notification-header-icon">
+
+                    <i class="fas fa-bell"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h2>
+                        Notifications
+                    </h2>
+
+                    <p>
+                        Stay updated with your latest lesson notifications.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="notification-actions">
+
+
+                <!-- DASHBOARD -->
+
+                <a href="@Url.Action("Index", "InstructorDashboard")"
+                   class="btn-dashboard">
+
+                    <i class="fas fa-arrow-left"></i>
+
+                    Dashboard
+
+                </a>
+
+
+                <!-- MARK ALL -->
+
+                @if (unreadCount > 0)
+                {
+                    using (Html.BeginForm(
+                        "MarkAllNotificationsAsRead",
+                        "InstructorDashboard",
+                        FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit"
+                                class="btn-mark-all">
+
+                            <i class="fas fa-check-double"></i>
+
+                            Mark All as Read
+
+                        </button>
+                    }
+                }
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================================
+             SUCCESS MESSAGE
+             ========================================================= -->
+
+        @if (TempData["NotificationSuccess"] != null)
+        {
+            <div class="notification-success">
+
+                <i class="fas fa-check-circle"></i>
+
+                @TempData["NotificationSuccess"]
+
+            </div>
+        }
+
+
+        <!-- =========================================================
+             SUMMARY
+             ========================================================= -->
+
+        <div class="notification-summary">
+
+
+            <!-- TOTAL -->
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+
+                    <i class="fas fa-bell"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h4>
+                        @(Model == null ? 0 : Model.Count())
+                    </h4>
+
+                    <span>
+                        Total Notifications
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- UNREAD -->
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+
+                    <i class="fas fa-envelope"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h4>
+                        @unreadCount
+                    </h4>
+
+                    <span>
+                        Unread Notifications
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================================
+             NOTIFICATION LIST
+             ========================================================= -->
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="notification-list">
+
+                @foreach (var notification in Model)
+                {
+
+                    <div class="notification-card @(notification.IsRead ? "" : "unread")">
+
+
+                        <!-- =================================================
+                             TOP
+                             ================================================= -->
+
+                        <div class="notification-top">
+
+
+                            <div class="notification-heading">
+
+
+                                <!-- NOTIFICATION ICON -->
+
+                                <div class="notification-icon">
+
+                                    @if (notification.NotificationType == "Cancellation")
+                                    {
+                                        <i class="fas fa-calendar-times"></i>
+                                    }
+                                    else if (notification.NotificationType == "Booking")
+                                    {
+                                        <i class="fas fa-calendar-check"></i>
+                                    }
+                                    else if (notification.NotificationType == "Reminder")
+                                    {
+                                        <i class="fas fa-clock"></i>
+                                    }
+                                    else if (notification.NotificationType == "Payment")
+                                    {
+                                        <i class="fas fa-credit-card"></i>
+                                    }
+                                    else
+                                    {
+                                        <i class="fas fa-bell"></i>
+                                    }
+
+                                </div>
+
+
+                                <!-- TITLE -->
+
+                                <div>
+
+                                    <h3>
+                                        @notification.Title
+                                    </h3>
+
+
+                                    <span class="notification-type">
+
+                                        @if (notification.NotificationType == "Cancellation")
+                                        {
+                                            <i class="fas fa-calendar-times"></i>
+                                        }
+                                        else if (notification.NotificationType == "Booking")
+                                        {
+                                            <i class="fas fa-calendar-check"></i>
+                                        }
+                                        else if (notification.NotificationType == "Reminder")
+                                        {
+                                            <i class="fas fa-clock"></i>
+                                        }
+                                        else if (notification.NotificationType == "Payment")
+                                        {
+                                            <i class="fas fa-credit-card"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fas fa-info-circle"></i>
+                                        }
+
+                                        @notification.NotificationType
+
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- DATE -->
+
+                            <div class="notification-date">
+
+                                <i class="far fa-clock"></i>
+
+                                @notification.CreatedAt.ToString(
+                                    "dd MMM yyyy, HH:mm")
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             MESSAGE
+                             ================================================= -->
+
+                        <div class="notification-message">
+
+                            @notification.Message
+
+                        </div>
+
+
+                        <!-- =================================================
+                             BOTTOM
+                             ================================================= -->
+
+                        <div class="notification-bottom">
+
+
+                            @if (notification.IsRead)
+                            {
+
+                                <span class="read-status read">
+
+                                    <i class="fas fa-check-circle"></i>
+
+                                    Read
+
+                                    @if (notification.ReadAt.HasValue)
+                                    {
+                                        <span>
+
+                                            ·
+
+                                            @notification.ReadAt.Value.ToString(
+                                                "dd MMM yyyy, HH:mm")
+
+                                        </span>
+                                    }
+
+                                </span>
+
+                            }
+                            else
+                            {
+
+                                <span class="read-status unread">
+
+                                    <i class="fas fa-circle"></i>
+
+                                    Unread
+
+                                </span>
+
+
+                                using (Html.BeginForm(
+                                    "MarkNotificationAsRead",
+                                    "InstructorDashboard",
+                                    FormMethod.Post))
+                                {
+
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden"
+                                           name="id"
+                                           value="@notification.NotificationId" />
+
+
+                                    <button type="submit"
+                                            class="btn-mark-read">
+
+                                        <i class="fas fa-check"></i>
+
+                                        Mark as Read
+
+                                    </button>
+
+                                }
+
+                            }
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+
+        }
+        else
+        {
+
+            <!-- =========================================================
+                 EMPTY STATE
+                 ========================================================= -->
+
+            <div class="empty-notifications">
+
+
+                <div class="empty-icon">
+
+                    <i class="far fa-bell-slash"></i>
+
+                </div>
+
+
+                <h3>
+                    No Notifications
+                </h3>
+
+
+                <p>
+
+                    You don't have any notifications at the moment.
+
+                    We'll let you know when something important happens.
+
+                </p>
+
+            </div>
+
+        }
+        
+
+    </div>
+
+</body>
+</html>

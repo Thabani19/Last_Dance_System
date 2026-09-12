@@ -1,14 +1,17 @@
 ﻿@model Last_Dance_System.Models.RegisterViewModel
 
 @{
+    Layout = null;
     ViewBag.Title = "TK Driving School — Student Registration";
 }
 
 <style>
 
-    /* =========================================
-       TK DRIVING SCHOOL - RED AUTOMOTIVE THEME
-       ========================================= */
+    /* =========================================================
+       TK DRIVING SCHOOL
+       BLUE + WHITE REGISTRATION DESIGN
+       SHOW PASSWORD INCLUDED
+       ========================================================= */
 
     * {
         box-sizing: border-box;
@@ -21,36 +24,36 @@
     body {
         margin: 0;
         padding: 0;
-        background: #050a12;
-        color: #ffffff;
+        background: #f3f7fc;
+        color: #172033;
         font-family: Arial, Helvetica, sans-serif;
     }
 
 
-    /* =========================================
+    /* =========================================================
        MAIN PAGE
-       ========================================= */
+       ========================================================= */
 
     .register-page {
         min-height: 100vh;
-        background: radial-gradient( circle at 85% 15%, rgba(229, 57, 53, 0.12), transparent 28% ), radial-gradient( circle at 10% 90%, rgba(229, 57, 53, 0.07), transparent 25% ), linear-gradient( 135deg, #050a12 0%, #07111e 50%, #03070d 100% );
+        background: radial-gradient( circle at 10% 20%, rgba(37, 99, 235, 0.08), transparent 25% ), radial-gradient( circle at 90% 80%, rgba(14, 165, 233, 0.08), transparent 25% ), #f4f7fb;
     }
 
 
-    /* =========================================
-       RED HAZARD STRIPE
-       ========================================= */
+    /* =========================================================
+       TOP BLUE LINE
+       ========================================================= */
 
     .hazard-stripe {
-        height: 8px;
         width: 100%;
-        background: repeating-linear-gradient( -45deg, #e53935 0, #e53935 14px, #07111e 14px, #07111e 28px );
+        height: 6px;
+        background: linear-gradient( 90deg, #0b3b8f, #1769d1, #2196f3 );
     }
 
 
-    /* =========================================
+    /* =========================================================
        NAVIGATION
-       ========================================= */
+       ========================================================= */
 
     .register-nav {
         width: 100%;
@@ -63,7 +66,9 @@
     }
 
 
-    /* BRAND */
+    /* =========================================================
+       BRAND
+       ========================================================= */
 
     .brand {
         display: flex;
@@ -73,18 +78,18 @@
 
 
     .logo {
-        width: 48px;
-        height: 48px;
+        width: 50px;
+        height: 50px;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 12px;
-        background: linear-gradient( 135deg, #ef5350, #b71c1c );
+        background: linear-gradient( 135deg, #0b3b8f, #1976d2 );
         color: #ffffff;
-        font-size: 20px;
+        font-size: 19px;
         font-weight: 900;
         letter-spacing: -1px;
-        box-shadow: 0 8px 25px rgba(229, 57, 53, 0.30);
+        box-shadow: 0 8px 22px rgba(11, 59, 143, 0.22);
     }
 
 
@@ -95,55 +100,106 @@
 
 
     .brand-name {
+        color: #12213a;
         font-size: 19px;
-        font-weight: 800;
-        letter-spacing: 1px;
+        font-weight: 900;
+        letter-spacing: 0.5px;
         text-transform: uppercase;
     }
 
 
     .brand-subtitle {
-        color: #718397;
-        font-size: 11px;
-        margin-top: 2px;
-        letter-spacing: 1.5px;
+        margin-top: 3px;
+        color: #718096;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1.3px;
         text-transform: uppercase;
     }
 
 
-    /* LOGIN NAV BUTTON */
+    /* =========================================================
+       NAVIGATION ACTIONS
+       ========================================================= */
+
+    .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+
+    /* =========================================================
+       HOME BUTTON
+       ========================================================= */
+
+    .nav-home {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 11px 18px;
+        border: 1px solid #d8e2ef;
+        border-radius: 8px;
+        background: #ffffff;
+        color: #0b3b8f;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 800;
+        box-shadow: 0 3px 12px rgba(20, 50, 90, 0.05);
+        transition: all 0.25s ease;
+    }
+
+
+        .nav-home:hover {
+            background: #eaf2ff;
+            border-color: #1976d2;
+            color: #0b3b8f;
+            text-decoration: none;
+            transform: translateY(-1px);
+            box-shadow: 0 7px 20px rgba(25, 118, 210, 0.15);
+        }
+
+
+    /* =========================================================
+       LOGIN NAV BUTTON
+       ========================================================= */
 
     .nav-login {
-        color: #ffffff;
-        text-decoration: none;
-        border: 1px solid rgba(255,255,255,0.12);
-        background: rgba(255,255,255,0.04);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         padding: 11px 18px;
+        border: 1px solid #d8e2ef;
         border-radius: 8px;
-        font-size: 13px;
-        font-weight: 700;
+        background: #ffffff;
+        color: #1d4ed8;
+        text-decoration: none;
+        font-size: 12px;
+        font-weight: 800;
+        box-shadow: 0 3px 12px rgba(20, 50, 90, 0.05);
         transition: all 0.25s ease;
     }
 
 
         .nav-login:hover {
-            background: #e53935;
-            border-color: #e53935;
+            background: #0b3b8f;
+            border-color: #0b3b8f;
             color: #ffffff;
             text-decoration: none;
-            box-shadow: 0 6px 20px rgba(229,57,53,0.25);
+            transform: translateY(-1px);
+            box-shadow: 0 7px 20px rgba(11, 59, 143, 0.22);
         }
 
 
-    /* =========================================
+    /* =========================================================
        MAIN
-       ========================================= */
+       ========================================================= */
 
     .register-main {
         width: 100%;
         max-width: 1250px;
         margin: 0 auto;
-        padding: 25px 30px 70px;
+        padding: 20px 30px 60px;
     }
 
 
@@ -151,22 +207,22 @@
         display: grid;
         grid-template-columns: 0.85fr 1.15fr;
         min-height: 780px;
-        background: #0b1420;
-        border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 24px;
+        background: #ffffff;
+        border: 1px solid #dce6f2;
+        border-radius: 22px;
         overflow: hidden;
-        box-shadow: 0 30px 80px rgba(0,0,0,0.65), 0 0 60px rgba( 229, 57, 53, 0.06 );
+        box-shadow: 0 25px 70px rgba(24, 55, 90, 0.12);
     }
 
 
-    /* =========================================
-       LEFT AUTOMOTIVE SIDE
-       ========================================= */
+    /* =========================================================
+       LEFT BLUE INTRO
+       ========================================================= */
 
     .register-intro {
         position: relative;
         overflow: hidden;
-        background: linear-gradient( 135deg, rgba(2,7,14,0.96), rgba(5,18,32,0.82) ), url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1400&q=85") center / cover no-repeat;
+        background: linear-gradient( 135deg, rgba(5, 31, 78, 0.97), rgba(13, 78, 161, 0.92) ), url("https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1400&q=85") center / cover no-repeat;
     }
 
 
@@ -174,7 +230,7 @@
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient( 90deg, rgba(3,8,15,0.97) 0%, rgba(3,8,15,0.70) 55%, rgba(3,8,15,0.88) 100% );
+            background: radial-gradient( circle at 85% 15%, rgba(255,255,255,0.16), transparent 25% ), linear-gradient( 135deg, rgba(5,31,78,0.90), rgba(13,78,161,0.80) );
         }
 
 
@@ -184,8 +240,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            height: 180px;
-            background: linear-gradient( to top, rgba(3,8,15,0.95), transparent );
+            height: 220px;
+            background: linear-gradient( to top, rgba(3,24,61,0.85), transparent );
         }
 
 
@@ -199,23 +255,23 @@
     }
 
 
-    /* =========================================
+    /* =========================================================
        INTRO LABEL
-       ========================================= */
+       ========================================================= */
 
     .intro-label {
+        width: fit-content;
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        width: fit-content;
         padding: 8px 13px;
         border-radius: 50px;
-        background: rgba(229,57,53,0.10);
-        border: 1px solid rgba(229,57,53,0.25);
-        color: #ef5350;
-        font-size: 11px;
+        background: rgba(255,255,255,0.10);
+        border: 1px solid rgba(255,255,255,0.20);
+        color: #ffffff;
+        font-size: 10px;
         font-weight: 800;
-        letter-spacing: 1.5px;
+        letter-spacing: 1.4px;
         text-transform: uppercase;
     }
 
@@ -224,48 +280,76 @@
         width: 7px;
         height: 7px;
         border-radius: 50%;
-        background: #e53935;
-        box-shadow: 0 0 10px rgba( 229, 57, 53, 0.8 );
+        background: #60a5fa;
+        box-shadow: 0 0 12px rgba(96,165,250,0.9);
     }
 
 
-    /* =========================================
-       HERO
-       ========================================= */
+    /* =========================================================
+       INTRO HERO
+       ========================================================= */
 
     .intro-hero {
+        max-width: 440px;
         margin-top: auto;
         margin-bottom: auto;
-        max-width: 430px;
     }
 
 
         .intro-hero h1 {
             margin: 22px 0 18px;
+            color: #ffffff;
             font-size: 52px;
-            line-height: 1.03;
+            line-height: 1.04;
             font-weight: 900;
             letter-spacing: -2px;
         }
 
 
             .intro-hero h1 span {
-                color: #e53935;
+                display: block;
+                color: #60a5fa;
             }
 
 
         .intro-hero p {
+            max-width: 410px;
             margin: 0;
-            max-width: 400px;
-            color: #b7c3d0;
+            color: #dbeafe;
             font-size: 15px;
-            line-height: 1.7;
+            line-height: 1.75;
         }
 
 
-    /* =========================================
-       FEATURES
-       ========================================= */
+    /* =========================================================
+       ENCOURAGEMENT
+       ========================================================= */
+
+    .encouragement {
+        margin-top: 25px;
+        padding: 16px 18px;
+        border-left: 3px solid #60a5fa;
+        background: rgba(255,255,255,0.08);
+        border-radius: 0 10px 10px 0;
+        color: #ffffff;
+        font-size: 13px;
+        line-height: 1.6;
+    }
+
+
+        .encouragement strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #93c5fd;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+
+    /* =========================================================
+       INTRO FEATURES
+       ========================================================= */
 
     .intro-features {
         display: flex;
@@ -281,35 +365,35 @@
         align-items: center;
         gap: 10px;
         padding: 11px 15px;
-        background: rgba(255,255,255,0.045);
-        border: 1px solid rgba(255,255,255,0.08);
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
         border-radius: 9px;
-        color: #d6e0ea;
+        color: #e5efff;
         font-size: 12px;
-        font-weight: 600;
+        font-weight: 700;
     }
 
 
     .intro-feature-icon {
-        width: 20px;
-        height: 20px;
+        width: 21px;
+        height: 21px;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: 50%;
-        background: rgba(229,57,53,0.12);
-        color: #ef5350;
+        background: #ffffff;
+        color: #1455a0;
         font-size: 11px;
         font-weight: 900;
     }
 
 
-    /* =========================================
+    /* =========================================================
        RIGHT FORM SIDE
-       ========================================= */
+       ========================================================= */
 
     .register-form-side {
-        background: #0c1724;
+        background: #ffffff;
         padding: 48px 55px;
         max-height: 900px;
         overflow-y: auto;
@@ -323,9 +407,9 @@
     }
 
 
-    /* =========================================
+    /* =========================================================
        FORM HEADER
-       ========================================= */
+       ========================================================= */
 
     .form-header {
         margin-bottom: 30px;
@@ -334,16 +418,16 @@
 
         .form-header h2 {
             margin: 0 0 8px;
-            color: #ffffff;
+            color: #132238;
             font-size: 31px;
-            font-weight: 800;
-            letter-spacing: -0.7px;
+            font-weight: 900;
+            letter-spacing: -0.8px;
         }
 
 
         .form-header p {
             margin: 0;
-            color: #718397;
+            color: #718096;
             font-size: 13px;
             line-height: 1.6;
         }
@@ -351,33 +435,32 @@
 
     .form-header-line {
         width: 55px;
-        height: 3px;
+        height: 4px;
         margin-top: 17px;
         border-radius: 5px;
-        background: #e53935;
-        box-shadow: 0 0 12px rgba( 229, 57, 53, 0.45 );
+        background: linear-gradient( 90deg, #0b3b8f, #2196f3 );
     }
 
 
-    /* =========================================
+    /* =========================================================
        VALIDATION SUMMARY
-       ========================================= */
+       ========================================================= */
 
     .validation-summary-errors {
-        background: rgba(220,53,69,0.10);
-        border: 1px solid rgba(220,53,69,0.25);
-        border-radius: 10px;
-        padding: 12px 15px;
-        color: #ff7b86;
         margin-bottom: 22px;
+        padding: 12px 15px;
+        background: #fff5f5;
+        border: 1px solid #fecaca;
+        border-radius: 9px;
+        color: #dc2626;
         font-size: 12px;
         line-height: 1.5;
     }
 
 
-    /* =========================================
+    /* =========================================================
        SECTION TITLE
-       ========================================= */
+       ========================================================= */
 
     .section-title {
         display: flex;
@@ -385,11 +468,11 @@
         gap: 10px;
         margin: 29px 0 19px;
         padding-bottom: 11px;
-        border-bottom: 1px solid #1c2b3b;
-        color: #ffffff;
-        font-size: 14px;
-        font-weight: 800;
-        letter-spacing: 0.4px;
+        border-bottom: 1px solid #e3eaf2;
+        color: #172b4d;
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 0.5px;
         text-transform: uppercase;
     }
 
@@ -401,17 +484,17 @@
         align-items: center;
         justify-content: center;
         border-radius: 8px;
-        background: rgba(229,57,53,0.11);
-        border: 1px solid rgba(229,57,53,0.24);
-        color: #ef5350;
+        background: #eaf2ff;
+        border: 1px solid #c7dcfa;
+        color: #1558b0;
         font-size: 11px;
         font-weight: 900;
     }
 
 
-    /* =========================================
+    /* =========================================================
        ROW
-       ========================================= */
+       ========================================================= */
 
     .row {
         display: flex;
@@ -428,9 +511,9 @@
     }
 
 
-    /* =========================================
+    /* =========================================================
        FORM GROUP
-       ========================================= */
+       ========================================================= */
 
     .form-group {
         margin-bottom: 17px;
@@ -440,25 +523,25 @@
     .form-label {
         display: block;
         margin-bottom: 7px;
-        color: #d9e2ec;
+        color: #334155;
         font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.2px;
+        font-weight: 800;
+        letter-spacing: 0.1px;
     }
 
 
-    /* =========================================
+    /* =========================================================
        INPUTS
-       ========================================= */
+       ========================================================= */
 
     .form-control {
         width: 100%;
         height: 48px;
         padding: 10px 13px;
-        border: 1px solid #26384b;
+        border: 1px solid #d5dfeb;
         border-radius: 9px;
-        background: #09121d;
-        color: #ffffff;
+        background: #f8fafc;
+        color: #172033;
         font-family: Arial, Helvetica, sans-serif;
         font-size: 13px;
         outline: none;
@@ -467,19 +550,20 @@
 
 
         .form-control::placeholder {
-            color: #52667b;
+            color: #94a3b8;
         }
 
 
         .form-control:hover {
-            border-color: #35506b;
+            border-color: #a9bfd8;
+            background: #ffffff;
         }
 
 
         .form-control:focus {
-            border-color: #e53935;
-            background: #0a1522;
-            box-shadow: 0 0 0 3px rgba(229,57,53,0.09), 0 0 18px rgba(229,57,53,0.07);
+            border-color: #1976d2;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(25,118,210,0.10);
         }
 
 
@@ -491,13 +575,67 @@
 
 
     input[type="date"] {
-        color-scheme: dark;
+        color-scheme: light;
     }
 
 
-    /* =========================================
+    /* =========================================================
+       PASSWORD WRAPPER
+       ========================================================= */
+
+    .password-wrapper {
+        position: relative;
+        width: 100%;
+    }
+
+
+        .password-wrapper .form-control {
+            padding-right: 75px;
+        }
+
+
+    /* =========================================================
+       SHOW PASSWORD
+       ========================================================= */
+
+    .show-password {
+        position: absolute;
+        right: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin: 0;
+        padding: 3px;
+        color: #1769d1;
+        font-size: 10px;
+        font-weight: 800;
+        cursor: pointer;
+        user-select: none;
+        z-index: 3;
+        white-space: nowrap;
+    }
+
+
+        .show-password:hover {
+            color: #0b3b8f;
+        }
+
+
+        .show-password input {
+            width: 14px;
+            height: 14px;
+            margin: 0;
+            padding: 0;
+            accent-color: #1976d2;
+            cursor: pointer;
+        }
+
+
+    /* =========================================================
        GENDER
-       ========================================= */
+       ========================================================= */
 
     .gender-container {
         min-height: 48px;
@@ -513,8 +651,9 @@
             align-items: center;
             gap: 7px;
             margin: 0;
-            color: #9aabba;
+            color: #64748b;
             font-size: 12px;
+            font-weight: 600;
             cursor: pointer;
         }
 
@@ -522,26 +661,26 @@
         .gender-container input {
             width: 16px;
             height: 16px;
-            accent-color: #e53935;
+            accent-color: #1976d2;
             cursor: pointer;
         }
 
 
-    /* =========================================
+    /* =========================================================
        VALIDATION
-       ========================================= */
+       ========================================================= */
 
     .field-validation-error {
         display: block;
         margin-top: 5px;
-        color: #ff7b86;
+        color: #dc2626;
         font-size: 11px;
     }
 
 
-    /* =========================================
+    /* =========================================================
        REGISTER BUTTON
-       ========================================= */
+       ========================================================= */
 
     .register-button {
         width: 100%;
@@ -549,7 +688,7 @@
         margin-top: 10px;
         border: none;
         border-radius: 9px;
-        background: linear-gradient( 135deg, #e53935, #b71c1c );
+        background: linear-gradient( 135deg, #0b3b8f, #1976d2 );
         color: #ffffff;
         font-family: Arial, Helvetica, sans-serif;
         font-size: 12px;
@@ -557,14 +696,14 @@
         letter-spacing: 1px;
         cursor: pointer;
         transition: all 0.25s ease;
-        box-shadow: 0 8px 25px rgba(229,57,53,0.20);
+        box-shadow: 0 8px 22px rgba(25,118,210,0.20);
     }
 
 
         .register-button:hover {
             transform: translateY(-2px);
-            background: linear-gradient( 135deg, #ef5350, #d32f2f );
-            box-shadow: 0 12px 32px rgba(229,57,53,0.32);
+            background: linear-gradient( 135deg, #082e70, #1565c0 );
+            box-shadow: 0 12px 30px rgba(25,118,210,0.30);
         }
 
 
@@ -573,35 +712,35 @@
         }
 
 
-    /* =========================================
+    /* =========================================================
        LOGIN LINK
-       ========================================= */
+       ========================================================= */
 
     .login-link {
         text-align: center;
         margin-top: 20px;
-        color: #718397;
+        color: #718096;
         font-size: 12px;
     }
 
 
         .login-link a {
-            color: #ef5350;
-            font-weight: 700;
+            color: #1769d1;
+            font-weight: 800;
             text-decoration: none;
             transition: color 0.2s ease;
         }
 
 
             .login-link a:hover {
-                color: #ff8a80;
+                color: #0b3b8f;
                 text-decoration: none;
             }
 
 
-    /* =========================================
+    /* =========================================================
        SECURITY
-       ========================================= */
+       ========================================================= */
 
     .security-note {
         display: flex;
@@ -609,19 +748,19 @@
         justify-content: center;
         gap: 7px;
         margin-top: 19px;
-        color: #52667b;
+        color: #94a3b8;
         font-size: 10px;
     }
 
 
         .security-note span {
-            color: #ef5350;
+            color: #1976d2;
         }
 
 
-    /* =========================================
+    /* =========================================================
        SCROLLBAR
-       ========================================= */
+       ========================================================= */
 
     .register-form-side::-webkit-scrollbar {
         width: 7px;
@@ -629,38 +768,38 @@
 
 
     .register-form-side::-webkit-scrollbar-track {
-        background: #08111c;
+        background: #f1f5f9;
     }
 
 
     .register-form-side::-webkit-scrollbar-thumb {
-        background: #26384b;
+        background: #c5d2e2;
         border-radius: 10px;
     }
 
 
         .register-form-side::-webkit-scrollbar-thumb:hover {
-            background: #35506b;
+            background: #9fb3ca;
         }
 
 
-    /* =========================================
+    /* =========================================================
        FOOTER
-       ========================================= */
+       ========================================================= */
 
     .register-footer {
         max-width: 1250px;
         margin: 0 auto;
         padding: 0 30px 30px;
         text-align: center;
-        color: #52667b;
+        color: #8290a3;
         font-size: 11px;
     }
 
 
-    /* =========================================
-       RESPONSIVE
-       ========================================= */
+    /* =========================================================
+       RESPONSIVE - TABLET
+       ========================================================= */
 
     @@media (max-width: 1000px) {
 
@@ -668,31 +807,38 @@
             padding: 20px;
         }
 
+
         .register-main {
             padding: 20px;
         }
+
 
         .register-layout {
             grid-template-columns: 1fr;
         }
 
+
         .register-intro {
-            min-height: 430px;
+            min-height: 470px;
         }
 
+
         .intro-content {
-            min-height: 430px;
+            min-height: 470px;
             padding: 40px;
         }
+
 
         .intro-hero {
             margin-top: 50px;
             margin-bottom: 40px;
         }
 
+
             .intro-hero h1 {
                 font-size: 43px;
             }
+
 
         .register-form-side {
             max-height: none;
@@ -701,19 +847,26 @@
     }
 
 
+    /* =========================================================
+       RESPONSIVE - MOBILE
+       ========================================================= */
+
     @@media (max-width: 700px) {
 
         .register-nav {
             padding: 16px;
         }
 
+
         .brand-subtitle {
             display: none;
         }
 
+
         .brand-name {
             font-size: 16px;
         }
+
 
         .logo {
             width: 42px;
@@ -721,55 +874,94 @@
             font-size: 17px;
         }
 
-        .nav-login {
-            padding: 9px 13px;
+
+        .nav-actions {
+            gap: 6px;
+        }
+
+
+        .nav-home {
+            padding: 9px 11px;
             font-size: 11px;
         }
+
+
+        .nav-login {
+            padding: 9px 11px;
+            font-size: 10px;
+        }
+
 
         .register-main {
             padding: 12px;
         }
 
+
         .register-layout {
             border-radius: 17px;
         }
 
+
         .register-intro {
-            min-height: 390px;
+            min-height: 440px;
         }
 
+
         .intro-content {
-            min-height: 390px;
+            min-height: 440px;
             padding: 28px;
         }
+
 
         .intro-hero h1 {
             font-size: 36px;
             letter-spacing: -1px;
         }
 
+
         .intro-hero p {
             font-size: 13px;
         }
+
 
         .intro-features {
             display: none;
         }
 
+
+        .encouragement {
+            font-size: 12px;
+        }
+
+
         .register-form-side {
             padding: 30px 20px;
         }
+
 
         .form-header h2 {
             font-size: 26px;
         }
 
+
         .col-md-6 {
             width: 100%;
         }
 
+
         .register-footer {
             padding: 0 15px 25px;
+        }
+
+
+        .show-password {
+            right: 9px;
+            font-size: 9px;
+        }
+
+
+        .password-wrapper .form-control {
+            padding-right: 68px;
         }
     }
 </style>
@@ -778,16 +970,16 @@
 <div class="register-page">
 
 
-    <!-- =========================================
-         HAZARD STRIPE
-         ========================================= -->
+    <!-- =====================================================
+         TOP BLUE LINE
+         ===================================================== -->
 
     <div class="hazard-stripe"></div>
 
 
-    <!-- =========================================
+    <!-- =====================================================
          NAVIGATION
-         ========================================= -->
+         ===================================================== -->
 
     <nav class="register-nav">
 
@@ -807,6 +999,7 @@
                     TK Driving School
                 </div>
 
+
                 <div class="brand-subtitle">
                     Learn to drive with confidence
                 </div>
@@ -816,35 +1009,49 @@
         </div>
 
 
-        <!-- LOGIN -->
+        <!-- NAVIGATION BUTTONS -->
 
-        <a href="@Url.Action("Login", "Account")"
-           class="nav-login">
+        <div class="nav-actions">
 
-            Already have an account?
 
-            &nbsp;
+            <!-- HOME BUTTON -->
 
-            Log in
+            <a href="@Url.Action("Index", "Home")"
+               class="nav-home">
 
-        </a>
+                Home
+
+            </a>
+
+
+            <!-- LOGIN BUTTON -->
+
+            <a href="@Url.Action("Login", "Account")"
+               class="nav-login">
+
+                Already have an account?
+                &nbsp;
+                Log in
+
+            </a>
+
+        </div>
 
     </nav>
 
 
-
-    <!-- =========================================
+    <!-- =====================================================
          MAIN REGISTRATION AREA
-         ========================================= -->
+         ===================================================== -->
 
     <main class="register-main">
 
         <div class="register-layout">
 
 
-            <!-- =====================================
-                 LEFT AUTOMOTIVE SIDE
-                 ===================================== -->
+            <!-- =================================================
+                 LEFT INTRODUCTION
+                 ================================================= -->
 
             <div class="register-intro">
 
@@ -886,6 +1093,23 @@
 
                         </p>
 
+
+                        <!-- ENCOURAGEMENT -->
+
+                        <div class="encouragement">
+
+                            <strong>
+                                Believe in yourself
+                            </strong>
+
+                            Every confident driver started
+                            exactly where you are today.
+                            Take the first step, keep learning,
+                            and we'll help you get closer to
+                            your licence.
+
+                        </div>
+
                     </div>
 
 
@@ -926,6 +1150,7 @@
 
                         </div>
 
+
                     </div>
 
                 </div>
@@ -933,17 +1158,16 @@
             </div>
 
 
-
-            <!-- =====================================
+            <!-- =================================================
                  RIGHT REGISTRATION FORM
-                 ===================================== -->
+                 ================================================= -->
 
             <div class="register-form-side">
 
                 <div class="register-form-container">
 
 
-                    <!-- HEADER -->
+                    <!-- FORM HEADER -->
 
                     <div class="form-header">
 
@@ -951,10 +1175,12 @@
                             Create Your Account
                         </h2>
 
+
                         <p>
                             Register as a student to begin
                             your driving journey.
                         </p>
+
 
                         <div class="form-header-line"></div>
 
@@ -981,9 +1207,9 @@
                         )
 
 
-                        <!-- =================================
+                        <!-- =================================================
                              PERSONAL INFORMATION
-                             ================================= -->
+                             ================================================= -->
 
                         <div class="section-title">
 
@@ -1045,7 +1271,6 @@
                             </div>
 
 
-
                             <div class="col-md-6">
 
                                 <div class="form-group">
@@ -1088,7 +1313,6 @@
                             </div>
 
                         </div>
-
 
 
                         <!-- LAST NAME + GENDER -->
@@ -1138,7 +1362,6 @@
                             </div>
 
 
-
                             <div class="col-md-6">
 
                                 <div class="form-group">
@@ -1179,6 +1402,7 @@
 
                                         </label>
 
+
                                     </div>
 
 
@@ -1197,7 +1421,6 @@
                             </div>
 
                         </div>
-
 
 
                         <!-- DOB + PHONE -->
@@ -1247,7 +1470,6 @@
                             </div>
 
 
-
                             <div class="col-md-6">
 
                                 <div class="form-group">
@@ -1294,10 +1516,10 @@
                         </div>
 
 
-
                         <!-- ADDRESS -->
 
                         <div class="form-group">
+
 
                             @Html.LabelFor(
                                 m => m.Address,
@@ -1335,10 +1557,9 @@
                         </div>
 
 
-
-                        <!-- =================================
+                        <!-- =================================================
                              ACCOUNT INFORMATION
-                             ================================= -->
+                             ================================================= -->
 
                         <div class="section-title">
 
@@ -1351,10 +1572,10 @@
                         </div>
 
 
-
                         <!-- EMAIL -->
 
                         <div class="form-group">
+
 
                             @Html.LabelFor(
                                 m => m.Email,
@@ -1397,15 +1618,19 @@
                         </div>
 
 
-
-                        <!-- PASSWORDS -->
+                        <!-- =================================================
+                             PASSWORDS
+                             ================================================= -->
 
                         <div class="row">
 
 
+                            <!-- PASSWORD -->
+
                             <div class="col-md-6">
 
                                 <div class="form-group">
+
 
                                     @Html.LabelFor(
                                         m => m.Password,
@@ -1417,20 +1642,38 @@
                                     )
 
 
-                                    @Html.PasswordFor(
-                                        m => m.Password,
-                                        new
-                                        {
-                                            @class =
-                                                "form-control",
+                                    <div class="password-wrapper">
 
-                                            placeholder =
-                                                "Create password",
 
-                                            autocomplete =
-                                                "new-password"
-                                        }
-                                    )
+                                        @Html.PasswordFor(
+                                            m => m.Password,
+                                            new
+                                            {
+                                                @class =
+                                                    "form-control",
+
+                                                placeholder =
+                                                    "Create password",
+
+                                                autocomplete =
+                                                    "new-password",
+
+                                                id = "Password"
+                                            }
+                                        )
+
+
+                                        <label class="show-password">
+
+                                            <input type="checkbox"
+                                                   onclick="togglePassword('Password')" />
+
+                                            
+
+                                        </label>
+
+
+                                    </div>
 
 
                                     @Html.ValidationMessageFor(
@@ -1448,10 +1691,12 @@
                             </div>
 
 
+                            <!-- CONFIRM PASSWORD -->
 
                             <div class="col-md-6">
 
                                 <div class="form-group">
+
 
                                     @Html.LabelFor(
                                         m => m.ConfirmPassword,
@@ -1463,20 +1708,38 @@
                                     )
 
 
-                                    @Html.PasswordFor(
-                                        m => m.ConfirmPassword,
-                                        new
-                                        {
-                                            @class =
-                                                "form-control",
+                                    <div class="password-wrapper">
 
-                                            placeholder =
-                                                "Confirm password",
 
-                                            autocomplete =
-                                                "new-password"
-                                        }
-                                    )
+                                        @Html.PasswordFor(
+                                            m => m.ConfirmPassword,
+                                            new
+                                            {
+                                                @class =
+                                                    "form-control",
+
+                                                placeholder =
+                                                    "Confirm password",
+
+                                                autocomplete =
+                                                    "new-password",
+
+                                                id = "ConfirmPassword"
+                                            }
+                                        )
+
+
+                                        <label class="show-password">
+
+                                            <input type="checkbox"
+                                                   onclick="togglePassword('ConfirmPassword')" />
+
+                                            
+
+                                        </label>
+
+
+                                    </div>
 
 
                                     @Html.ValidationMessageFor(
@@ -1496,10 +1759,9 @@
                         </div>
 
 
-
-                        <!-- =================================
+                        <!-- =================================================
                              REGISTER BUTTON
-                             ================================= -->
+                             ================================================= -->
 
                         <button type="submit"
                                 class="register-button">
@@ -1509,10 +1771,7 @@
                         </button>
 
 
-
-                        <!-- =================================
-                             LOGIN LINK
-                             ================================= -->
+                        <!-- LOGIN LINK -->
 
                         <div class="login-link">
 
@@ -1527,10 +1786,7 @@
                         </div>
 
 
-
-                        <!-- =================================
-                             SECURITY
-                             ================================= -->
+                        <!-- SECURITY -->
 
                         <div class="security-note">
 
@@ -1553,10 +1809,9 @@
     </main>
 
 
-
-    <!-- =========================================
+    <!-- =====================================================
          FOOTER
-         ========================================= -->
+         ===================================================== -->
 
     <footer class="register-footer">
 
@@ -1570,6 +1825,32 @@
 
 </div>
 
+
+<!-- =========================================================
+     SHOW PASSWORD JAVASCRIPT
+     ========================================================= -->
+
+<script>
+
+    function togglePassword(inputId) {
+
+        var passwordInput =
+            document.getElementById(inputId);
+
+        if (passwordInput.type === "password") {
+
+            passwordInput.type = "text";
+
+        }
+        else {
+
+            passwordInput.type = "password";
+
+        }
+
+    }
+
+</script>
 
 
 @section Scripts {

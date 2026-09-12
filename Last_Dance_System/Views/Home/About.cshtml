@@ -1,9 +1,616 @@
 ﻿@{
-    ViewBag.Title = "About";
+    Layout = null;
+    ViewBag.Title = "About Us";
 }
-<main aria-labelledby="title">
-    <h2 id="title">@ViewBag.Title.</h2>
-    <h3>@ViewBag.Message</h3>
 
-    <p>Use this area to provide additional information.</p>
-</main>
+<style>
+
+    /* =========================================
+       TK DRIVING SCHOOL - ABOUT PAGE
+       BLUE + WHITE PROFESSIONAL DESIGN
+       ========================================= */
+
+    .about-page {
+        background: #f5f8fc;
+        min-height: 100vh;
+        padding-bottom: 70px;
+    }
+
+
+    /* =========================================
+       HERO
+       ========================================= */
+
+    .about-hero {
+        background: linear-gradient(135deg, #084298, #0d6efd);
+        color: white;
+        text-align: center;
+        padding: 75px 20px;
+    }
+
+    .about-badge {
+        display: inline-block;
+        padding: 8px 18px;
+        border-radius: 30px;
+        background: rgba(255,255,255,0.15);
+        border: 1px solid rgba(255,255,255,0.3);
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+    }
+
+    .about-hero h1 {
+        font-size: 48px;
+        font-weight: 800;
+        margin-bottom: 18px;
+    }
+
+    .about-hero p {
+        max-width: 720px;
+        margin: auto;
+        color: #eaf3ff;
+        font-size: 18px;
+        line-height: 1.7;
+    }
+
+
+    /* =========================================
+       MAIN CONTAINER
+       ========================================= */
+
+    .about-container {
+        max-width: 1100px;
+        margin: -40px auto 0;
+        padding: 0 20px;
+        position: relative;
+    }
+
+
+    /* =========================================
+       INTRO CARD
+       ========================================= */
+
+    .about-intro {
+        background: white;
+        border-radius: 15px;
+        padding: 40px;
+        box-shadow: 0 10px 35px rgba(0,0,0,0.08);
+        border: 1px solid #e1e8f0;
+        margin-bottom: 30px;
+    }
+
+    .about-intro h2 {
+        color: #084298;
+        font-size: 30px;
+        font-weight: 800;
+        margin-bottom: 15px;
+    }
+
+    .about-intro p {
+        color: #5b6470;
+        font-size: 16px;
+        line-height: 1.8;
+        margin-bottom: 12px;
+    }
+
+
+    /* =========================================
+       VALUES
+       ========================================= */
+
+    .section-title {
+        text-align: center;
+        margin: 55px 0 30px;
+    }
+
+    .section-title span {
+        color: #0d6efd;
+        font-size: 13px;
+        font-weight: 800;
+        letter-spacing: 2px;
+    }
+
+    .section-title h2 {
+        color: #1f2937;
+        font-size: 32px;
+        font-weight: 800;
+        margin-top: 8px;
+    }
+
+    .section-title p {
+        color: #6b7280;
+        max-width: 650px;
+        margin: 10px auto 0;
+    }
+
+
+    .values-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+    }
+
+    .value-card {
+        background: white;
+        padding: 30px;
+        border-radius: 14px;
+        border: 1px solid #e1e8f0;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+        transition: all 0.25s ease;
+    }
+
+    .value-card:hover {
+        transform: translateY(-6px);
+        border-color: #0d6efd;
+        box-shadow: 0 12px 30px rgba(13,110,253,0.12);
+    }
+
+    .value-icon {
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #eaf3ff;
+        color: #0d6efd;
+        border-radius: 12px;
+        font-size: 22px;
+        font-weight: 800;
+        margin-bottom: 18px;
+    }
+
+    .value-card h3 {
+        color: #1f2937;
+        font-size: 20px;
+        font-weight: 750;
+        margin-bottom: 10px;
+    }
+
+    .value-card p {
+        color: #6b7280;
+        font-size: 14px;
+        line-height: 1.7;
+        margin: 0;
+    }
+
+
+    /* =========================================
+       WHAT WE OFFER
+       ========================================= */
+
+    .offer-section {
+        margin-top: 55px;
+        background: white;
+        border-radius: 15px;
+        padding: 40px;
+        border: 1px solid #e1e8f0;
+        box-shadow: 0 7px 25px rgba(0,0,0,0.05);
+    }
+
+    .offer-section h2 {
+        color: #084298;
+        font-size: 28px;
+        font-weight: 800;
+        margin-bottom: 25px;
+    }
+
+    .offer-list {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .offer-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: #f5f8fc;
+        padding: 15px;
+        border-radius: 9px;
+        color: #374151;
+        font-weight: 600;
+    }
+
+    .offer-check {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #0d6efd;
+        color: white;
+        border-radius: 50%;
+        font-size: 14px;
+        font-weight: 800;
+    }
+
+
+    /* =========================================
+       ENCOURAGEMENT SECTION
+       ========================================= */
+
+    .motivation {
+        margin-top: 30px;
+        padding: 45px 30px;
+        text-align: center;
+        border-radius: 15px;
+        background: linear-gradient(135deg, #084298, #0d6efd);
+        color: white;
+        box-shadow: 0 10px 30px rgba(13,110,253,0.18);
+    }
+
+    .motivation h2 {
+        color: white;
+        font-size: 30px;
+        font-weight: 800;
+        margin-bottom: 12px;
+    }
+
+    .motivation p {
+        max-width: 700px;
+        margin: auto;
+        color: #eaf3ff;
+        font-size: 16px;
+        line-height: 1.8;
+    }
+
+    .motivation-button {
+        display: inline-block;
+        margin-top: 25px;
+        padding: 13px 25px;
+        background: white;
+        color: #0d6efd;
+        border-radius: 8px;
+        font-weight: 800;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .motivation-button:hover {
+        background: #eaf3ff;
+        color: #084298;
+        transform: translateY(-2px);
+    }
+
+
+    /* =========================================
+       MOBILE
+       ========================================= */
+
+    @@media (max-width: 768px) {
+
+        .about-hero {
+            padding: 55px 20px;
+        }
+
+        .about-hero h1 {
+            font-size: 36px;
+        }
+
+        .about-hero p {
+            font-size: 16px;
+        }
+
+        .about-container {
+            margin-top: -25px;
+        }
+
+        .about-intro,
+        .offer-section {
+            padding: 25px;
+        }
+
+        .values-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .offer-list {
+            grid-template-columns: 1fr;
+        }
+
+        .section-title h2 {
+            font-size: 27px;
+        }
+
+        .motivation h2 {
+            font-size: 25px;
+        }
+    }
+
+</style>
+
+<div class="about-page">
+
+    
+    <!-- =========================================
+         HERO
+         ========================================= -->
+
+    <section class="about-hero">
+
+        <div class="about-badge">
+            TK DRIVING SCHOOL
+        </div>
+
+        <h1>
+            Driving Your Success
+        </h1>
+
+        <p>
+            We believe that learning to drive is more than simply
+            passing a test. It's about building confidence, developing
+            safe driving habits and giving every learner the skills
+            they need for the road ahead.
+        </p>
+
+    </section>
+
+
+    <div class="about-container">
+
+
+        <!-- =========================================
+             INTRODUCTION
+             ========================================= -->
+
+        <section class="about-intro">
+
+            <h2>
+                About TK Driving School
+            </h2>
+
+            <p>
+                TK Driving School is focused on providing professional,
+                reliable and learner-friendly driving training for
+                aspiring South African motorists.
+            </p>
+
+            <p>
+                Our system makes the learning experience easier by
+                allowing students to register, book lessons, manage
+                lesson packages, make payments and keep track of their
+                driving progress online.
+            </p>
+
+            <p>
+                Whether you're preparing for your first driving licence
+                or looking to develop your commercial driving skills,
+                our goal is to help you become a safe and confident
+                driver.
+            </p>
+
+        </section>
+
+
+        <!-- =========================================
+             OUR VALUES
+             ========================================= -->
+
+        <div class="section-title">
+
+            <span>
+                WHAT WE STAND FOR
+            </span>
+
+            <h2>
+                Built Around Our Learners
+            </h2>
+
+            <p>
+                Everything we do is focused on helping learners
+                develop confidence and become responsible drivers.
+            </p>
+
+        </div>
+
+
+        <div class="values-grid">
+
+
+            <!-- CONFIDENCE -->
+
+            <div class="value-card">
+
+                <div class="value-icon">
+                    ✓
+                </div>
+
+                <h3>
+                    Confidence
+                </h3>
+
+                <p>
+                    We help learners become comfortable behind the
+                    wheel through patient instruction and consistent
+                    practical training.
+                </p>
+
+            </div>
+
+
+            <!-- SAFETY -->
+
+            <div class="value-card">
+
+                <div class="value-icon">
+                    ★
+                </div>
+
+                <h3>
+                    Safety First
+                </h3>
+
+                <p>
+                    Safe driving habits are at the heart of every
+                    lesson. We prepare learners to make responsible
+                    decisions on the road.
+                </p>
+
+            </div>
+
+
+            <!-- PROFESSIONALISM -->
+
+            <div class="value-card">
+
+                <div class="value-icon">
+                    +
+                </div>
+
+                <h3>
+                    Professional Training
+                </h3>
+
+                <p>
+                    Our approach is structured and focused on helping
+                    every learner progress toward their driving goals.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================================
+             WHAT WE OFFER
+             ========================================= -->
+
+        <section class="offer-section">
+
+            <h2>
+                What We Offer
+            </h2>
+
+            <div class="offer-list">
+
+                <div class="offer-item">
+
+                    <span class="offer-check">
+                        ✓
+                    </span>
+
+                    Online lesson booking
+
+                </div>
+
+
+                <div class="offer-item">
+
+                    <span class="offer-check">
+                        ✓
+                    </span>
+
+                    Professional driving instructors
+
+                </div>
+
+
+                <div class="offer-item">
+
+                    <span class="offer-check">
+                        ✓
+                    </span>
+
+                    Code 8 driving training
+
+                </div>
+
+
+                <div class="offer-item">
+
+                    <span class="offer-check">
+                        ✓
+                    </span>
+
+                    Code 10 driving training
+
+                </div>
+
+
+                <div class="offer-item">
+
+                    <span class="offer-check">
+                        ✓
+                    </span>
+
+                    Code 14 driving training
+
+                </div>
+
+
+                <div class="offer-item">
+
+                    <span class="offer-check">
+                        ✓
+                    </span>
+
+                    Lesson packages and payments
+
+                </div>
+
+
+                <div class="offer-item">
+
+                    <span class="offer-check">
+                        ✓
+                    </span>
+
+                    Progress tracking
+
+                </div>
+
+
+                <div class="offer-item">
+
+                    <span class="offer-check">
+                        ✓
+                    </span>
+
+                    Instructor feedback
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================================
+             MOTIVATION
+             ========================================= -->
+
+        <section class="motivation">
+
+            <h2>
+                Believe in Yourself. Keep Moving Forward.
+            </h2>
+
+            <p>
+                Learning to drive can feel difficult at first, but
+                every experienced driver started as a learner.
+                Don't be discouraged by mistakes. Learn from them,
+                keep practising and keep improving.
+
+                <br /><br />
+
+                Your first lesson is only the beginning.
+                Your confidence grows one kilometre at a time.
+            </p>
+
+
+            <a href="@Url.Action("Register", "Account")"
+               class="motivation-button">
+
+                Start Your Journey →
+
+            </a>
+
+        </section>
+
+
+    </div>
+    
+
+</div>

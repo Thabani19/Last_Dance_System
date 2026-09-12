@@ -204,14 +204,22 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AdminLessonPackagesController.cs" />
     <Compile Include="Controllers\BookingController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\InstructorController.cs" />
+    <Compile Include="Controllers\instructorController.cs" />
+    <Compile Include="Controllers\InstructorDashboardController.cs" />
+    <Compile Include="Controllers\InstructorLessonsController.cs" />
     <Compile Include="Controllers\LessonsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\PackageController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="Controllers\ReviewController.cs" />
+    <Compile Include="Controllers\StudentFeedbackController.cs" />
+    <Compile Include="Controllers\VehicleController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -271,6 +279,22 @@
     <Compile Include="Migrations\202608231934228_AddBookingAttendance.Designer.cs">
       <DependentUpon>202608231934228_AddBookingAttendance.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202608290005269_AddVehicleToInstructor.cs" />
+    <Compile Include="Migrations\202608290005269_AddVehicleToInstructor.Designer.cs">
+      <DependentUpon>202608290005269_AddVehicleToInstructor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202608290723156_AddInstructorNotifications.cs" />
+    <Compile Include="Migrations\202608290723156_AddInstructorNotifications.Designer.cs">
+      <DependentUpon>202608290723156_AddInstructorNotifications.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202608292154096_AddInstructorSessionReviews.cs" />
+    <Compile Include="Migrations\202608292154096_AddInstructorSessionReviews.Designer.cs">
+      <DependentUpon>202608292154096_AddInstructorSessionReviews.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202608312045266_AddInstructorFeedback.cs" />
+    <Compile Include="Migrations\202608312045266_AddInstructorFeedback.Designer.cs">
+      <DependentUpon>202608312045266_AddInstructorFeedback.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Administrator.cs" />
@@ -279,6 +303,7 @@
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Instructor.cs" />
+    <Compile Include="Models\InstructorFeedback.cs" />
     <Compile Include="Models\LessonCodeGenerator.cs" />
     <Compile Include="Models\LessonPackage.cs" />
     <Compile Include="Models\LessonProgress.cs" />
@@ -295,6 +320,8 @@
     <Compile Include="Models\StudentPackage.cs" />
     <Compile Include="Models\Vehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\EmailService.cs" />
+    <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -383,11 +410,44 @@
     <Content Include="Views\Booking\MyLessons.cshtml" />
     <Content Include="Views\Package\CancelPackage.cshtml" />
     <Content Include="Views\Dashboard\Profile.cshtml" />
+    <Content Include="Views\InstructorDashboard\Index.cshtml" />
+    <Content Include="Views\InstructorLessons\Details.cshtml" />
+    <Content Include="Views\InstructorLessons\Index.cshtml" />
+    <Content Include="Views\InstructorDashboard\MyLessons.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\InstructorDashboard\Profile.cshtml" />
+    <Content Include="Views\InstructorDashboard\EditProfile.cshtml" />
+    <Content Include="Views\Instructor\Index.cshtml" />
+    <Content Include="Views\Admin\Students.cshtml" />
+    <Content Include="Views\Admin\Vehicles.cshtml" />
+    <Content Include="Views\Admin\Bookings.cshtml" />
+    <Content Include="Views\Admin\Payments.cshtml" />
+    <Content Include="Views\Admin\LessonSchedules.cshtml" />
+    <Content Include="Views\Admin\LessonPackages.cshtml" />
+    <Content Include="Views\Admin\CreateVehicle.cshtml" />
+    <Content Include="Views\Admin\EditVehicle.cshtml" />
+    <Content Include="Views\Admin\EditInstructor.cshtml" />
+    <Content Include="Views\Admin\Instructors.cshtml" />
+    <Content Include="Views\InstructorDashboard\Notifications.cshtml" />
+    <Content Include="Views\Dashboard\Notifications.cshtml" />
+    <Content Include="Views\Notification\Index.cshtml" />
+    <Content Include="Views\Package\ProofOfPayment.cshtml" />
+    <Content Include="Views\AdminLessonPackages\Index.cshtml" />
+    <Content Include="Views\AdminLessonPackages\Create.cshtml" />
+    <Content Include="Views\AdminLessonPackages\Edit.cshtml" />
+    <Content Include="Views\AdminLessonPackages\Details.cshtml" />
+    <Content Include="Views\AdminLessonPackages\Delete.cshtml" />
+    <Content Include="Views\Review\Create.cshtml" />
+    <Content Include="Views\StudentFeedback\Details.cshtml" />
+    <Content Include="Views\InstructorDashboard\GiveFeedback.cshtml" />
+    <Content Include="Views\Dashboard\MyLessons.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Images\" />
+    <Folder Include="NewFolder1\" />
     <Folder Include="Views\NewFolder1\" />
+    <Folder Include="Views\Vehicle\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
@@ -458,6 +518,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202608231934228_AddBookingAttendance.resx">
       <DependentUpon>202608231934228_AddBookingAttendance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608290005269_AddVehicleToInstructor.resx">
+      <DependentUpon>202608290005269_AddVehicleToInstructor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608290723156_AddInstructorNotifications.resx">
+      <DependentUpon>202608290723156_AddInstructorNotifications.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608292154096_AddInstructorSessionReviews.resx">
+      <DependentUpon>202608292154096_AddInstructorSessionReviews.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202608312045266_AddInstructorFeedback.resx">
+      <DependentUpon>202608312045266_AddInstructorFeedback.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

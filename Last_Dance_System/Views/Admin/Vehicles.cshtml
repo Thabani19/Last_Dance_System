@@ -1,0 +1,851 @@
+﻿@model IEnumerable<Last_Dance_System.Models.Vehicle>
+
+@{
+    ViewBag.Title = "Vehicles";
+    Layout = null;
+}
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+<style>
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+    }
+
+    body {
+        background: #f4f8fc;
+        color: #172b4d;
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+
+    /* =========================================================
+       PAGE
+       ========================================================= */
+
+    .vehicle-page {
+        min-height: 100vh;
+        padding: 40px 25px 70px;
+        background: radial-gradient( circle at 10% 10%, rgba(33, 150, 243, 0.10), transparent 28% ), radial-gradient( circle at 90% 90%, rgba(13, 71, 161, 0.07), transparent 30% ), linear-gradient( 135deg, #f8fbff 0%, #f1f6fb 50%, #eaf2f9 100% );
+    }
+
+
+    .vehicle-container {
+        width: 100%;
+        max-width: 1250px;
+        margin: 0 auto;
+    }
+
+
+    /* =========================================================
+       MAIN CARD
+       ========================================================= */
+
+    .vehicle-card {
+        background: #ffffff;
+        border: 1px solid #dce7f1;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 20px 55px rgba(23, 43, 77, 0.10), 0 4px 15px rgba(23, 43, 77, 0.05);
+    }
+
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .page-header {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 28px 35px;
+        background: linear-gradient( 135deg, #ffffff 0%, #f7fbff 55%, #eaf4ff 100% );
+        border-bottom: 1px solid #dbe7f2;
+    }
+
+
+        .page-header::before {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            right: -100px;
+            top: -150px;
+            background: rgba(33, 150, 243, 0.06);
+        }
+
+
+    .header-left {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+
+    .header-icon {
+        width: 58px;
+        height: 58px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 15px;
+        background: linear-gradient( 135deg, #2196f3, #1565c0 );
+        color: #ffffff;
+        font-size: 23px;
+        box-shadow: 0 8px 22px rgba(33, 150, 243, 0.25);
+    }
+
+
+    .header-text h1 {
+        margin: 0 0 5px;
+        color: #172b4d;
+        font-size: 26px;
+        font-weight: 800;
+    }
+
+
+    .header-text p {
+        margin: 0;
+        color: #71859a;
+        font-size: 12px;
+    }
+
+
+    /* =========================================================
+       HEADER BUTTONS
+       ========================================================= */
+
+    .header-actions {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        gap: 9px;
+    }
+
+
+    .header-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 42px;
+        padding: 10px 15px;
+        border-radius: 9px;
+        font-size: 11px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all .2s ease;
+    }
+
+
+    .back-button {
+        background: #ffffff;
+        border: 1px solid #d4e0eb;
+        color: #526b84;
+    }
+
+
+        .back-button:hover {
+            background: #f4f9fe;
+            border-color: #b9d3ea;
+            color: #1565c0;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+
+
+    .add-button {
+        background: linear-gradient( 135deg, #2196f3, #1565c0 );
+        border: 1px solid #1976d2;
+        color: #ffffff;
+        box-shadow: 0 7px 18px rgba(33, 150, 243, 0.18);
+    }
+
+
+        .add-button:hover {
+            background: linear-gradient( 135deg, #42a5f5, #1976d2 );
+            color: #ffffff;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+
+
+    /* =========================================================
+       CONTENT
+       ========================================================= */
+
+    .vehicle-content {
+        padding: 30px 35px 35px;
+    }
+
+
+    /* =========================================================
+       SUCCESS MESSAGE
+       ========================================================= */
+
+    .success-message {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 22px;
+        padding: 13px 16px;
+        background: #f0fbf6;
+        border: 1px solid #c8eadb;
+        border-left: 4px solid #22a06b;
+        border-radius: 9px;
+        color: #16734c;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+
+        .success-message i {
+            font-size: 15px;
+        }
+
+
+    /* =========================================================
+       VEHICLE GRID
+       ========================================================= */
+
+    .vehicle-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+
+
+    /* =========================================================
+       VEHICLE CARD
+       ========================================================= */
+
+    .vehicle-item {
+        position: relative;
+        padding: 20px;
+        background: #ffffff;
+        border: 1px solid #dce7f1;
+        border-radius: 14px;
+        box-shadow: 0 5px 18px rgba(23, 43, 77, 0.05);
+        transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+
+
+        .vehicle-item:hover {
+            transform: translateY(-3px);
+            border-color: #b9d7f1;
+            box-shadow: 0 12px 28px rgba(23, 43, 77, 0.09);
+        }
+
+
+    /* =========================================================
+       VEHICLE TOP
+       ========================================================= */
+
+    .vehicle-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 17px;
+    }
+
+
+    .vehicle-icon {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 11px;
+        background: #edf6ff;
+        border: 1px solid #cfe6fa;
+        color: #1976d2;
+        font-size: 18px;
+    }
+
+
+    /* =========================================================
+       STATUS
+       ========================================================= */
+
+    .vehicle-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 9px;
+        border-radius: 20px;
+        font-size: 9px;
+        font-weight: 800;
+        text-transform: uppercase;
+    }
+
+
+    .status-available {
+        background: #eefaf5;
+        border: 1px solid #c8eadb;
+        color: #16845a;
+    }
+
+
+    .status-unavailable {
+        background: #fff4f4;
+        border: 1px solid #f3c7c7;
+        color: #c62828;
+    }
+
+
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+
+    /* =========================================================
+       VEHICLE NAME
+       ========================================================= */
+
+    .vehicle-name {
+        margin-bottom: 5px;
+        color: #172b4d;
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+
+    .vehicle-registration {
+        display: inline-block;
+        margin-bottom: 17px;
+        padding: 5px 8px;
+        background: #f4f8fc;
+        border: 1px solid #e0e9f2;
+        border-radius: 6px;
+        color: #587089;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: .5px;
+    }
+
+
+    /* =========================================================
+       VEHICLE DETAILS
+       ========================================================= */
+
+    .vehicle-details {
+        padding-top: 14px;
+        border-top: 1px solid #e7eef5;
+    }
+
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 7px 0;
+    }
+
+
+    .detail-label {
+        color: #8294a8;
+        font-size: 10px;
+    }
+
+
+    .detail-value {
+        color: #34495e;
+        font-size: 10px;
+        font-weight: 700;
+        text-align: right;
+    }
+
+
+    /* =========================================================
+       ACTIONS
+       ========================================================= */
+
+    .vehicle-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 17px;
+    }
+
+
+    .vehicle-action {
+        flex: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        min-height: 36px;
+        border-radius: 8px;
+        font-size: 10px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: all .2s ease;
+    }
+
+
+    .edit-action {
+        background: #edf6ff;
+        border: 1px solid #cfe6fa;
+        color: #1976d2;
+    }
+
+
+        .edit-action:hover {
+            background: #dceeff;
+            color: #0d47a1;
+            text-decoration: none;
+        }
+
+
+    .toggle-action {
+        background: #f5f7fa;
+        border: 1px solid #dce5ed;
+        color: #65788c;
+        cursor: pointer;
+    }
+
+
+        .toggle-action:hover {
+            background: #edf2f7;
+            color: #34495e;
+        }
+
+
+    /* =========================================================
+       EMPTY STATE
+       ========================================================= */
+
+    .empty-state {
+        padding: 70px 20px;
+        text-align: center;
+        background: #fbfdff;
+        border: 1px dashed #d4e0eb;
+        border-radius: 14px;
+    }
+
+
+    .empty-icon {
+        width: 65px;
+        height: 65px;
+        margin: 0 auto 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 17px;
+        background: #edf6ff;
+        color: #1976d2;
+        font-size: 25px;
+    }
+
+
+    .empty-state h3 {
+        margin: 0 0 7px;
+        color: #34495e;
+        font-size: 16px;
+    }
+
+
+    .empty-state p {
+        margin: 0 0 18px;
+        color: #8193a7;
+        font-size: 11px;
+    }
+
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @@media (max-width: 1000px) {
+
+        .vehicle-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+
+    @@media (max-width: 700px) {
+
+        .vehicle-page {
+            padding: 15px;
+        }
+
+
+        .page-header {
+            flex-direction: column;
+            align-items: stretch;
+            padding: 23px;
+        }
+
+
+        .header-actions {
+            flex-direction: column;
+        }
+
+
+        .header-button {
+            width: 100%;
+        }
+
+
+        .vehicle-content {
+            padding: 23px;
+        }
+
+
+        .vehicle-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+
+    @@media (max-width: 450px) {
+
+        .header-left {
+            align-items: flex-start;
+        }
+
+
+        .header-icon {
+            width: 50px;
+            height: 50px;
+        }
+
+
+        .header-text h1 {
+            font-size: 22px;
+        }
+    }
+</style>
+
+<div class="vehicle-page">
+
+    
+    <div class="vehicle-container">
+
+        <div class="vehicle-card">
+
+
+            <!-- =================================================
+                 HEADER
+                 ================================================= -->
+
+            <div class="page-header">
+
+                <div class="header-left">
+
+                    <div class="header-icon">
+
+                        <i class="fa-solid fa-car"></i>
+
+                    </div>
+
+
+                    <div class="header-text">
+
+                        <h1>
+                            Vehicle Management
+                        </h1>
+
+                        <p>
+                            Manage driving school vehicles and availability.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="header-actions">
+
+                    <a href="@Url.Action("Index", "Admin")"
+                       class="header-button back-button">
+
+                        <i class="fa-solid fa-arrow-left"></i>
+
+                        Dashboard
+
+                    </a>
+
+
+                    <a href="@Url.Action("CreateVehicle", "Admin")"
+                       class="header-button add-button">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Add Vehicle
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 CONTENT
+                 ================================================= -->
+
+            <div class="vehicle-content">
+
+
+                @if (TempData["SuccessMessage"] != null)
+                {
+
+                    <div class="success-message">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        @TempData["SuccessMessage"]
+
+                    </div>
+
+                }
+
+
+                @if (Model != null && Model.Any())
+                {
+
+                    <div class="vehicle-grid">
+
+                        @foreach (var vehicle in Model)
+                        {
+
+                            <div class="vehicle-item">
+
+
+                                <!-- VEHICLE TOP -->
+
+                                <div class="vehicle-top">
+
+                                    <div class="vehicle-icon">
+
+                                        <i class="fa-solid fa-car-side"></i>
+
+                                    </div>
+
+
+                                    @if (vehicle.IsActive)
+                                    {
+
+                                        <span class="vehicle-status status-available">
+
+                                            <span class="status-dot"></span>
+
+                                            @vehicle.Status
+
+                                        </span>
+
+                                    }
+                                    else
+                                    {
+
+                                        <span class="vehicle-status status-unavailable">
+
+                                            <span class="status-dot"></span>
+
+                                            Inactive
+
+                                        </span>
+
+                                    }
+
+                                </div>
+
+
+                                <!-- VEHICLE NAME -->
+
+                                <div class="vehicle-name">
+
+                                    @vehicle.Make @vehicle.Model
+
+                                </div>
+
+
+                                <div class="vehicle-registration">
+
+                                    <i class="fa-solid fa-id-card"></i>
+
+                                    @vehicle.RegistrationNumber
+
+                                </div>
+
+
+                                <!-- DETAILS -->
+
+                                <div class="vehicle-details">
+
+
+                                    <div class="detail-row">
+
+                                        <span class="detail-label">
+                                            Vehicle Type
+                                        </span>
+
+                                        <span class="detail-value">
+                                            @vehicle.VehicleType
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="detail-row">
+
+                                        <span class="detail-label">
+                                            Mileage
+                                        </span>
+
+                                        <span class="detail-value">
+
+                                            @(vehicle.CurrentMileage.HasValue
+                                            ? vehicle.CurrentMileage.Value.ToString("N0") + " km"
+                                            : "Not recorded")
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <div class="detail-row">
+
+                                        <span class="detail-label">
+                                            Status
+                                        </span>
+
+                                        <span class="detail-value">
+
+                                            @(string.IsNullOrWhiteSpace(vehicle.Status)
+                                            ? "Unknown"
+                                            : vehicle.Status)
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- ACTIONS -->
+
+                                <div class="vehicle-actions">
+
+
+                                    <a href="@Url.Action(
+                                    "EditVehicle",
+                                    "Admin",
+                                    new { id = vehicle.VehicleId })"
+                                       class="vehicle-action edit-action">
+
+                                        <i class="fa-solid fa-pen"></i>
+
+                                        Edit
+
+                                    </a>
+
+
+                                    @using (Html.BeginForm(
+                                        "ToggleVehicleStatus",
+                                        "Admin",
+                                        new { id = vehicle.VehicleId },
+                                        FormMethod.Post,
+                                        new { style = "flex:1;" }))
+                                    {
+
+                                        @Html.AntiForgeryToken()
+
+
+                                        <button type="submit"
+                                                class="vehicle-action toggle-action"
+                                                style="width:100%;">
+
+                                            @if (vehicle.IsActive)
+                                            {
+
+                                                <i class="fa-solid fa-toggle-off"></i>
+
+                                                @:Deactivate
+
+                                            }
+                                            else
+                                            {
+
+                                                <i class="fa-solid fa-toggle-on"></i>
+
+                                                @:Activate
+
+                                            }
+
+                                        </button>
+
+                                    }
+
+                                </div>
+
+                            </div>
+
+                        }
+
+                    </div>
+
+                }
+                else
+                {
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+
+                            <i class="fa-solid fa-car"></i>
+
+                        </div>
+
+
+                        <h3>
+                            No Vehicles Found
+                        </h3>
+
+
+                        <p>
+                            There are currently no vehicles registered in the system.
+                        </p>
+
+
+                        <a href="@Url.Action("CreateVehicle", "Admin")"
+                           class="header-button add-button">
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Add First Vehicle
+
+                        </a>
+
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+    
+
+</div>

@@ -1,0 +1,1123 @@
+﻿@model Last_Dance_System.Models.Review
+
+@using System
+@using Last_Dance_System.Models
+
+@{
+    Layout = null;
+
+    var booking = ViewBag.Booking as Booking;
+    var instructor = ViewBag.Instructor as Instructor;
+
+    // =========================================================
+    // SAFE DISPLAY VALUES
+    // =========================================================
+
+    string studentName = "Student information unavailable";
+    string lessonDateText = "N/A";
+    string lessonTimeText = "N/A";
+    string lessonTypeText = "N/A";
+    string vehicleText = "N/A";
+
+    if (booking != null)
+    {
+        if (booking.Registration != null)
+        {
+            studentName =
+                (booking.Registration.FirstName + " " +
+                 booking.Registration.LastName).Trim();
+        }
+
+        if (booking.LessonSchedule != null)
+        {
+            lessonDateText =
+                booking.LessonSchedule.LessonDate.ToString("dd MMM yyyy");
+
+            lessonTimeText =
+                booking.LessonSchedule.StartTime.ToString(@"hh\:mm")
+                + " - " +
+                booking.LessonSchedule.EndTime.ToString(@"hh\:mm");
+
+            if (booking.LessonSchedule.LessonType != null)
+            {
+                lessonTypeText =
+                    booking.LessonSchedule.LessonType.LessonTypeName;
+            }
+
+            if (booking.LessonSchedule.Vehicle != null)
+            {
+                vehicleText =
+                    booking.LessonSchedule.Vehicle.VehicleId.ToString();
+            }
+        }
+    }
+
+    string instructorName = "Instructor";
+
+    if (instructor != null)
+    {
+        instructorName =
+            (instructor.FirstName + " " +
+             instructor.LastName).Trim();
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>Write Student Review</title>
+
+    <!-- =========================================================
+         FONT AWESOME
+    ========================================================== -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <style>
+
+        /* =========================================================
+           GLOBAL
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f7fb;
+            color: #172033;
+            font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+        }
+
+        button,
+        input,
+        textarea {
+            font-family: inherit;
+        }
+
+
+        /* =========================================================
+           PAGE
+        ========================================================= */
+
+        .review-page {
+            min-height: 100vh;
+            padding: 40px 20px 70px;
+            background: radial-gradient( circle at 90% 0%, rgba(37, 99, 235, .08), transparent 30% ), linear-gradient( 180deg, #f8fbff 0%, #f3f7fc 100% );
+        }
+
+        .review-wrapper {
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+
+        /* =========================================================
+           HEADER
+        ========================================================== */
+
+        .review-header {
+            position: relative;
+            background: #ffffff;
+            border: 1px solid #e1e8f2;
+            border-radius: 17px;
+            padding: 25px 28px;
+            margin-bottom: 22px;
+            box-shadow: 0 8px 25px rgba(20, 33, 61, .05);
+            overflow: hidden;
+        }
+
+            .review-header::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 4px;
+                height: 100%;
+                background: #2563eb;
+            }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+
+        /* =========================================================
+           HEADER ICON
+        ========================================================== */
+
+        .header-icon {
+            width: 58px;
+            height: 58px;
+            min-width: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient( 135deg, #eff6ff, #dbeafe );
+            border: 1px solid #cfe0fb;
+            border-radius: 14px;
+            color: #2563eb;
+            font-size: 21px;
+            box-shadow: 0 6px 16px rgba(37, 99, 235, .08);
+        }
+
+            .header-icon i {
+                filter: drop-shadow( 0 2px 3px rgba(37, 99, 235, .12) );
+            }
+
+        .header-text h1 {
+            margin: 0 0 5px;
+            color: #14213d;
+            font-size: 27px;
+            font-weight: 800;
+            letter-spacing: -.4px;
+        }
+
+        .header-text p {
+            margin: 0;
+            color: #748196;
+            font-size: 13px;
+        }
+
+        .instructor-name {
+            color: #2563eb;
+            font-weight: 800;
+        }
+
+
+        /* =========================================================
+           BACK BUTTON
+        ========================================================== */
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 17px;
+            border-radius: 9px;
+            background: #ffffff;
+            border: 1px solid #d9e2ef;
+            color: #455468;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(20, 33, 61, .04);
+            transition: all .2s ease;
+        }
+
+            .back-button i {
+                color: #2563eb;
+            }
+
+            .back-button:hover {
+                background: #2563eb;
+                border-color: #2563eb;
+                color: #ffffff;
+                text-decoration: none;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(37, 99, 235, .18);
+            }
+
+                .back-button:hover i {
+                    color: #ffffff;
+                }
+
+
+        /* =========================================================
+           MAIN CARD
+        ========================================================== */
+
+        .review-card {
+            background: #ffffff;
+            border: 1px solid #e1e8f2;
+            border-radius: 17px;
+            padding: 28px;
+            box-shadow: 0 8px 25px rgba(20, 33, 61, .05);
+        }
+
+
+        /* =========================================================
+           STUDENT INFORMATION
+        ========================================================== */
+
+        .student-summary {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px;
+            margin-bottom: 25px;
+            background: #f8fbff;
+            border: 1px solid #dbeafe;
+            border-radius: 13px;
+        }
+
+        .student-avatar {
+            width: 52px;
+            height: 52px;
+            min-width: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient( 135deg, #eff6ff, #dbeafe );
+            border: 1px solid #cfe0fb;
+            border-radius: 13px;
+            color: #2563eb;
+            font-size: 19px;
+        }
+
+        .student-info {
+            min-width: 0;
+        }
+
+        .student-label {
+            display: block;
+            margin-bottom: 3px;
+            color: #7b8799;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .student-name {
+            color: #17213a;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+
+        /* =========================================================
+           LESSON INFORMATION
+        ========================================================== */
+
+        .lesson-info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .info-box {
+            padding: 13px;
+            background: #f8fafc;
+            border: 1px solid #edf1f6;
+            border-radius: 10px;
+        }
+
+        .info-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #7b8799;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+        }
+
+        .info-value {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+            .info-value i {
+                color: #2563eb;
+                font-size: 11px;
+            }
+
+
+        /* =========================================================
+           DIVIDER
+        ========================================================== */
+
+        .form-divider {
+            height: 1px;
+            background: #edf1f6;
+            margin: 5px 0 25px;
+        }
+
+
+        /* =========================================================
+           FORM TITLE
+        ========================================================== */
+
+        .form-heading {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .form-heading-icon {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            border-radius: 9px;
+            color: #2563eb;
+            font-size: 14px;
+        }
+
+        .form-heading-text h2 {
+            margin: 0 0 2px;
+            color: #17213a;
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .form-heading-text p {
+            margin: 0;
+            color: #7b8799;
+            font-size: 11px;
+        }
+
+
+        /* =========================================================
+           FIELD
+        ========================================================== */
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .required {
+            color: #dc2626;
+        }
+
+
+        /* =========================================================
+           RATING
+        ========================================================== */
+
+        .rating-container {
+            padding: 18px;
+            background: #f8fafc;
+            border: 1px solid #edf1f6;
+            border-radius: 12px;
+        }
+
+        .rating-options {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: flex-end;
+            gap: 7px;
+        }
+
+            .rating-options input {
+                display: none;
+            }
+
+            .rating-options label {
+                cursor: pointer;
+                color: #cbd5e1;
+                font-size: 29px;
+                transition: color .15s ease, transform .15s ease;
+            }
+
+                .rating-options label:hover,
+                .rating-options label:hover ~ label,
+                .rating-options input:checked ~ label {
+                    color: #f59e0b;
+                    transform: scale(1.05);
+                }
+
+        .rating-help {
+            margin-top: 10px;
+            color: #7b8799;
+            font-size: 10px;
+        }
+
+
+        /* =========================================================
+           COMMENT
+        ========================================================== */
+
+        .comment-box {
+            width: 100%;
+            min-height: 150px;
+            resize: vertical;
+            padding: 13px 14px;
+            background: #ffffff;
+            border: 1px solid #d9e2ef;
+            border-radius: 10px;
+            color: #172033;
+            font-size: 13px;
+            line-height: 1.6;
+            outline: none;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+
+            .comment-box:focus {
+                border-color: #2563eb;
+                box-shadow: 0 0 0 3px rgba(37, 99, 235, .08);
+            }
+
+            .comment-box::placeholder {
+                color: #9aa6b7;
+            }
+
+
+        /* =========================================================
+           VALIDATION
+        ========================================================== */
+
+        .validation-summary {
+            margin-bottom: 20px;
+            padding: 13px 15px;
+            background: #fff7f7;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            color: #dc2626;
+            font-size: 11px;
+        }
+
+        .field-validation-error {
+            display: block;
+            margin-top: 6px;
+            color: #dc2626;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+
+        /* =========================================================
+           BUTTONS
+        ========================================================== */
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            padding-top: 5px;
+        }
+
+        .btn-cancel,
+        .btn-submit {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 18px;
+            border-radius: 9px;
+            font-size: 11px;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all .2s ease;
+        }
+
+        .btn-cancel {
+            background: #ffffff;
+            border: 1px solid #d9e2ef;
+            color: #455468;
+        }
+
+            .btn-cancel:hover {
+                background: #f8fafc;
+                border-color: #cbd5e1;
+                color: #172033;
+                text-decoration: none;
+            }
+
+        .btn-submit {
+            background: #2563eb;
+            border: 1px solid #2563eb;
+            color: #ffffff;
+            box-shadow: 0 5px 14px rgba(37, 99, 235, .13);
+        }
+
+            .btn-submit:hover {
+                background: #1d4ed8;
+                border-color: #1d4ed8;
+                transform: translateY(-1px);
+                box-shadow: 0 8px 18px rgba(37, 99, 235, .20);
+            }
+
+
+        /* =========================================================
+           NOTICE
+        ========================================================== */
+
+        .review-notice {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 13px 15px;
+            margin-top: 22px;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            border-radius: 10px;
+            color: #475569;
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+            .review-notice i {
+                margin-top: 2px;
+                color: #2563eb;
+                font-size: 13px;
+            }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================== */
+
+        @@media (max-width: 700px) {
+
+            .header-content {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .back-button {
+                width: 100%;
+            }
+
+            .lesson-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .btn-cancel,
+            .btn-submit {
+                width: 100%;
+            }
+        }
+
+
+        @@media (max-width: 480px) {
+
+            .review-page {
+                padding: 25px 14px 50px;
+            }
+
+            .review-header {
+                padding: 21px 19px;
+            }
+
+            .review-card {
+                padding: 20px;
+            }
+
+            .header-icon {
+                width: 48px;
+                height: 48px;
+                min-width: 48px;
+                font-size: 18px;
+            }
+
+            .header-text h1 {
+                font-size: 23px;
+            }
+
+            .student-summary {
+                align-items: flex-start;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="review-page">
+
+        <div class="review-wrapper">
+
+
+            <!-- =====================================================
+                 HEADER
+            ====================================================== -->
+
+            <div class="review-header">
+
+                <div class="header-content">
+
+                    <div class="header-left">
+
+                        <div class="header-icon">
+
+                            <i class="fa-solid fa-star"></i>
+
+                        </div>
+
+                        <div class="header-text">
+
+                            <h1>
+                                Student Review
+                            </h1>
+
+                            <p>
+                                Provide feedback about
+                                <span class="instructor-name">
+                                    @instructorName
+                                </span>'s student.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <a href="@Url.Action("MyLessons", "InstructorDashboard")"
+                       class="back-button">
+
+                        <i class="fa-solid fa-arrow-left"></i>
+
+                        Back to My Lessons
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 REVIEW CARD
+            ====================================================== -->
+
+            <div class="review-card">
+
+
+                <!-- =================================================
+                     STUDENT
+                ================================================== -->
+
+                <div class="student-summary">
+
+                    <div class="student-avatar">
+
+                        <i class="fa-solid fa-user-graduate"></i>
+
+                    </div>
+
+                    <div class="student-info">
+
+                        <span class="student-label">
+                            Reviewing Student
+                        </span>
+
+                        <div class="student-name">
+                            @studentName
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     LESSON INFORMATION
+                ================================================== -->
+
+                @if (booking != null &&
+                     booking.LessonSchedule != null)
+                {
+
+                    <div class="lesson-info-grid">
+
+
+                        <!-- DATE -->
+
+                        <div class="info-box">
+
+                            <span class="info-label">
+                                Lesson Date
+                            </span>
+
+                            <div class="info-value">
+
+                                <i class="fa-regular fa-calendar"></i>
+
+                                @lessonDateText
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- TIME -->
+
+                        <div class="info-box">
+
+                            <span class="info-label">
+                                Lesson Time
+                            </span>
+
+                            <div class="info-value">
+
+                                <i class="fa-regular fa-clock"></i>
+
+                                @lessonTimeText
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- LESSON TYPE -->
+
+                        <div class="info-box">
+
+                            <span class="info-label">
+                                Lesson Type
+                            </span>
+
+                            <div class="info-value">
+
+                                <i class="fa-solid fa-book-open-reader"></i>
+
+                                @lessonTypeText
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                }
+
+
+                <!-- =================================================
+                     VEHICLE INFORMATION
+                ================================================== -->
+
+                @if (booking != null &&
+                     booking.LessonSchedule != null &&
+                     booking.LessonSchedule.Vehicle != null)
+                {
+
+                    <div class="lesson-info-grid"
+                         style="grid-template-columns: 1fr; margin-top: -18px;">
+
+                        <div class="info-box">
+
+                            <span class="info-label">
+                                Vehicle
+                            </span>
+
+                            <div class="info-value">
+
+                                <i class="fa-solid fa-car-side"></i>
+
+                                @vehicleText
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                }
+
+
+                <div class="form-divider"></div>
+
+
+                <!-- =================================================
+                     FORM HEADING
+                ================================================== -->
+
+                <div class="form-heading">
+
+                    <div class="form-heading-icon">
+
+                        <i class="fa-solid fa-pen-to-square"></i>
+
+                    </div>
+
+                    <div class="form-heading-text">
+
+                        <h2>
+                            Your Feedback
+                        </h2>
+
+                        <p>
+                            Rate the student's performance and provide
+                            constructive feedback.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     FORM
+                ================================================== -->
+
+                @using (Html.BeginForm(
+                    "Create",
+                    "Review",
+                    FormMethod.Post,
+                    new { @class = "review-form" }))
+                {
+
+                    @Html.AntiForgeryToken()
+
+
+                    <!-- =================================================
+                         BOOKING ID
+                    ================================================== -->
+
+                    <input type="hidden"
+                           name="bookingId"
+                           value="@(booking != null ? booking.BookingId.ToString() : "")" />
+
+
+                    <!-- =================================================
+                         RATING
+                    ================================================== -->
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+
+                            Student Rating
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+
+                        <div class="rating-container">
+
+                            <div class="rating-options">
+
+
+                                <!-- 5 -->
+
+                                <input type="radio"
+                                       id="rating5"
+                                       name="Rating"
+                                       value="5"
+                                       @(Model != null && Model.Rating == 5 ? "checked" : "") />
+
+                                <label for="rating5"
+                                       title="Excellent">
+
+                                    <i class="fa-solid fa-star"></i>
+
+                                </label>
+
+
+                                <!-- 4 -->
+
+                                <input type="radio"
+                                       id="rating4"
+                                       name="Rating"
+                                       value="4"
+                                       @(Model != null && Model.Rating == 4 ? "checked" : "") />
+
+                                <label for="rating4"
+                                       title="Very Good">
+
+                                    <i class="fa-solid fa-star"></i>
+
+                                </label>
+
+
+                                <!-- 3 -->
+
+                                <input type="radio"
+                                       id="rating3"
+                                       name="Rating"
+                                       value="3"
+                                       @(Model != null && Model.Rating == 3 ? "checked" : "") />
+
+                                <label for="rating3"
+                                       title="Good">
+
+                                    <i class="fa-solid fa-star"></i>
+
+                                </label>
+
+
+                                <!-- 2 -->
+
+                                <input type="radio"
+                                       id="rating2"
+                                       name="Rating"
+                                       value="2"
+                                       @(Model != null && Model.Rating == 2 ? "checked" : "") />
+
+                                <label for="rating2"
+                                       title="Needs Improvement">
+
+                                    <i class="fa-solid fa-star"></i>
+
+                                </label>
+
+
+                                <!-- 1 -->
+
+                                <input type="radio"
+                                       id="rating1"
+                                       name="Rating"
+                                       value="1"
+                                       @(Model != null && Model.Rating == 1 ? "checked" : "") />
+
+                                <label for="rating1"
+                                       title="Poor">
+
+                                    <i class="fa-solid fa-star"></i>
+
+                                </label>
+
+                            </div>
+
+
+                            <div class="rating-help">
+
+                                1 = Needs significant improvement
+                                &nbsp;&nbsp;•&nbsp;&nbsp;
+                                5 = Excellent performance
+
+                            </div>
+
+                        </div>
+
+
+                        @Html.ValidationMessageFor(
+                            m => m.Rating)
+
+                    </div>
+
+
+                    <!-- =================================================
+                         COMMENT
+                    ================================================== -->
+
+                    <div class="form-group">
+
+                        <label class="form-label"
+                               for="Comment">
+
+                            Instructor Feedback
+
+                            <span class="required">
+                                *
+                            </span>
+
+                        </label>
+
+
+                        @Html.TextAreaFor(
+                            m => m.Comment,
+                            new
+                            {
+                                @class = "comment-box",
+                                id = "Comment",
+                                maxlength = "1000",
+                                placeholder = "Write constructive feedback about the student's driving performance, progress, strengths, and areas that may need improvement..."
+                            })
+
+
+                        @Html.ValidationMessageFor(
+                            m => m.Comment)
+
+                    </div>
+
+
+                    <!-- =================================================
+                         ACTIONS
+                    ================================================== -->
+
+                    <div class="form-actions">
+
+
+                        <a href="@Url.Action("MyLessons", "InstructorDashboard")"
+                           class="btn-cancel">
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                            Cancel
+
+                        </a>
+
+
+                        <button type="submit"
+                                class="btn-submit">
+
+                            <i class="fa-solid fa-paper-plane"></i>
+
+                            Submit Review
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         NOTICE
+                    ================================================== -->
+
+                    <div class="review-notice">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                        <span>
+
+                            This review is linked to the completed lesson
+                            and will be stored as feedback from the
+                            instructor for the student. Please make sure
+                            your feedback is accurate, professional and
+                            constructive before submitting.
+
+                        </span>
+
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

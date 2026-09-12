@@ -1,0 +1,679 @@
+﻿@model Last_Dance_System.Models.LessonPackage
+
+@{
+    Layout = null;
+    ViewBag.Title = "Delete Package";
+
+    var hasStudentPackages =
+        Model.StudentPackages != null &&
+        Model.StudentPackages.Any();
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>Delete Package - Last Dance Driving School</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f7fb;
+            color: #172033;
+            font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+        }
+
+        .delete-page {
+            min-height: 100vh;
+            padding: 45px 20px 70px;
+            background: radial-gradient( circle at 90% 0%, rgba(37, 99, 235, .08), transparent 30% ), linear-gradient( 180deg, #f8fbff 0%, #f3f7fc 100% );
+        }
+
+        .delete-wrapper {
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            background: #ffffff;
+            border: 1px solid #e1e8f2;
+            border-radius: 17px;
+            padding: 25px 28px;
+            margin-bottom: 22px;
+            box-shadow: 0 8px 25px rgba(20, 33, 61, .05);
+            position: relative;
+            overflow: hidden;
+        }
+
+            .page-header::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 4px;
+                height: 100%;
+                background: #dc2626;
+            }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-icon {
+            width: 55px;
+            height: 55px;
+            min-width: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 13px;
+            color: #dc2626;
+            font-size: 21px;
+        }
+
+        .header-text h1 {
+            margin: 0 0 5px;
+            color: #14213d;
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+        .header-text p {
+            margin: 0;
+            color: #748196;
+            font-size: 13px;
+        }
+
+        .delete-card {
+            background: #ffffff;
+            border: 1px solid #e1e8f2;
+            border-radius: 17px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(20, 33, 61, .05);
+        }
+
+        .warning-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 17px;
+            margin-bottom: 25px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 11px;
+            color: #9a3412;
+        }
+
+        .warning-icon {
+            width: 38px;
+            height: 38px;
+            min-width: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffedd5;
+            border-radius: 9px;
+            color: #ea580c;
+        }
+
+        .warning-content strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .warning-content span {
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .package-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: #17213a;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+            .package-title i {
+                color: #2563eb;
+            }
+
+        .package-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            margin-bottom: 28px;
+        }
+
+        .info-box {
+            padding: 17px;
+            background: #f8fafc;
+            border: 1px solid #e7edf5;
+            border-radius: 10px;
+        }
+
+        .info-label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 7px;
+            color: #7b8799;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+        }
+
+            .info-label i {
+                color: #2563eb;
+            }
+
+        .info-value {
+            color: #17213a;
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .description-box {
+            grid-column: 1 / -1;
+        }
+
+        .description-value {
+            color: #59677b;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .status-active,
+        .status-inactive {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .status-active {
+            background: #ecfdf5;
+            border: 1px solid #bbf7d0;
+            color: #15803d;
+        }
+
+        .status-inactive {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            color: #64748b;
+        }
+
+        .protected-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            padding: 16px;
+            margin-bottom: 25px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 11px;
+            color: #1e40af;
+        }
+
+        .protected-icon {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #dbeafe;
+            border-radius: 9px;
+            color: #2563eb;
+        }
+
+        .protected-content strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .protected-content span {
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            padding-top: 22px;
+            border-top: 1px solid #edf1f6;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 17px;
+            border-radius: 9px;
+            font-size: 11px;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all .2s ease;
+        }
+
+        .btn-cancel {
+            background: #ffffff;
+            border: 1px solid #d9e2ef;
+            color: #455468;
+        }
+
+            .btn-cancel:hover {
+                background: #f8fafc;
+                border-color: #cbd5e1;
+                color: #172033;
+                text-decoration: none;
+                transform: translateY(-1px);
+            }
+
+        .btn-delete {
+            background: #dc2626;
+            border: 1px solid #dc2626;
+            color: #ffffff;
+            box-shadow: 0 5px 14px rgba(220, 38, 38, .14);
+        }
+
+            .btn-delete:hover {
+                background: #b91c1c;
+                border-color: #b91c1c;
+                color: #ffffff;
+                text-decoration: none;
+                transform: translateY(-1px);
+            }
+
+        .btn-disabled {
+            background: #e2e8f0;
+            border: 1px solid #cbd5e1;
+            color: #64748b;
+            cursor: not-allowed;
+        }
+
+        @@media (max-width: 650px) {
+
+            .delete-page {
+                padding: 25px 14px 50px;
+            }
+
+            .page-header {
+                padding: 22px 20px;
+            }
+
+            .delete-card {
+                padding: 20px;
+            }
+
+            .package-info {
+                grid-template-columns: 1fr;
+            }
+
+            .description-box {
+                grid-column: auto;
+            }
+
+            .actions {
+                flex-direction: column-reverse;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="delete-page">
+
+        <div class="delete-wrapper">
+
+            <!-- HEADER -->
+
+            <div class="page-header">
+
+                <div class="header-content">
+
+                    <div class="header-icon">
+
+                        <i class="fa-solid fa-trash-can"></i>
+
+                    </div>
+
+                    <div class="header-text">
+
+                        <h1>
+                            Delete Package
+                        </h1>
+
+                        <p>
+                            Remove a lesson package from the system
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- MAIN CARD -->
+
+            <div class="delete-card">
+
+                <!-- WARNING -->
+
+                <div class="warning-box">
+
+                    <div class="warning-icon">
+
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+
+                    </div>
+
+                    <div class="warning-content">
+
+                        <strong>
+                            Are you sure you want to delete this package?
+                        </strong>
+
+                        <span>
+                            Please review the package information below
+                            before continuing.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PACKAGE INFORMATION -->
+
+                <div class="package-title">
+
+                    <i class="fa-solid fa-box-open"></i>
+
+                    Package Information
+
+                </div>
+
+
+                <div class="package-info">
+
+                    <!-- NAME -->
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+
+                            <i class="fa-solid fa-tag"></i>
+
+                            Package Name
+
+                        </div>
+
+                        <div class="info-value">
+
+                            @Model.PackageName
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- LESSONS -->
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+
+                            <i class="fa-solid fa-book-open"></i>
+
+                            Number of Lessons
+
+                        </div>
+
+                        <div class="info-value">
+
+                            @Model.NumberOfLessons
+
+                            @(Model.NumberOfLessons == 1
+                                ? "Lesson"
+                                : "Lessons")
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PRICE -->
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+
+                            <i class="fa-solid fa-money-bill-wave"></i>
+
+                            Price
+
+                        </div>
+
+                        <div class="info-value">
+
+                            R @Model.Price.ToString("N2")
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- STATUS -->
+
+                    <div class="info-box">
+
+                        <div class="info-label">
+
+                            <i class="fa-solid fa-circle-info"></i>
+
+                            Status
+
+                        </div>
+
+                        <div class="info-value">
+
+                            @if (Model.IsActive)
+                            {
+                                <span class="status-active">
+
+                                    <i class="fa-solid fa-circle-check"></i>
+
+                                    Active
+
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="status-inactive">
+
+                                    <i class="fa-solid fa-circle-minus"></i>
+
+                                    Inactive
+
+                                </span>
+                            }
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="info-box description-box">
+
+                        <div class="info-label">
+
+                            <i class="fa-solid fa-align-left"></i>
+
+                            Description
+
+                        </div>
+
+                        <div class="description-value">
+
+                            @if (!string.IsNullOrWhiteSpace(Model.Description))
+                            {
+                                @Model.Description
+                            }
+                            else
+                            {
+                                <span>
+                                    No description provided.
+                                </span>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PURCHASE PROTECTION -->
+
+                @if (hasStudentPackages)
+                {
+
+                    <div class="protected-box">
+
+                        <div class="protected-icon">
+
+                            <i class="fa-solid fa-shield-halved"></i>
+
+                        </div>
+
+                        <div class="protected-content">
+
+                            <strong>
+                                Package cannot be permanently deleted
+                            </strong>
+
+                            <span>
+                                Students have already purchased this
+                                package. To protect existing student
+                                records, this package cannot be deleted.
+                                Please deactivate it instead.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                }
+
+
+                <!-- ACTIONS -->
+
+                <div class="actions">
+
+                    <a href="@Url.Action("Index", "AdminLessonPackages")"
+                       class="btn btn-cancel">
+
+                        <i class="fa-solid fa-arrow-left"></i>
+
+                        Cancel
+
+                    </a>
+
+
+                    @if (hasStudentPackages)
+                    {
+
+                        <button type="button"
+                                class="btn btn-disabled"
+                                disabled>
+
+                            <i class="fa-solid fa-lock"></i>
+
+                            Delete Protected
+
+                        </button>
+
+                    }
+                    else
+                    {
+
+                        using (Html.BeginForm(
+                            "DeleteConfirmed",
+                            "AdminLessonPackages",
+                            FormMethod.Post))
+                        {
+
+                            @Html.AntiForgeryToken()
+
+                            <input type="hidden"
+                                   name="id"
+                                   value="@Model.LessonPackageId" />
+
+                            <button type="submit"
+                                    class="btn btn-delete"
+                                    onclick="return confirm('Are you absolutely sure you want to permanently delete this lesson package? This action cannot be undone.');">
+
+                                <i class="fa-solid fa-trash-can"></i>
+
+                                Permanently Delete
+
+                            </button>
+
+                        }
+
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

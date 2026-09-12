@@ -25,7 +25,9 @@ namespace Last_Dance_System.Models
         // LESSON BOOKING
         // =========================================================
 
-        // Nullable because package payments do not have a BookingId
+        // Nullable because package payments
+        // do not have a BookingId.
+
         public int? BookingId { get; set; }
 
         [ForeignKey("BookingId")]
@@ -36,7 +38,9 @@ namespace Last_Dance_System.Models
         // STUDENT PACKAGE
         // =========================================================
 
-        // Nullable because normal lesson payments do not have a package
+        // Nullable because normal lesson payments
+        // do not have a StudentPackageId.
+
         public int? StudentPackageId { get; set; }
 
         [ForeignKey("StudentPackageId")]

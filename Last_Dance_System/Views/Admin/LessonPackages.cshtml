@@ -1,0 +1,1966 @@
+﻿@model IEnumerable<Last_Dance_System.Models.LessonPackage>
+
+@{
+    ViewBag.Title = "Lesson Packages";
+    Layout = null;
+
+
+var packages = Model ?? Enumerable.Empty<Last_Dance_System.Models.LessonPackage>();
+    var totalPackages = packages.Count();
+    var activePackages = packages.Count(p => p.IsActive);
+    var inactivePackages = packages.Count(p => !p.IsActive);
+
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>Lesson Packages - Last Dance Driving School</title>
+
+    <!-- FONT AWESOME -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <style>
+
+    /* =========================================================
+       GLOBAL
+    ========================================================= */
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+    }
+
+    body {
+        background: #f4f7fb;
+        color: #172033;
+        font-family: "Segoe UI", Arial, sans-serif;
+    }
+
+
+    /* =========================================================
+       PAGE
+    ========================================================= */
+
+    .package-page {
+        min-height: 100vh;
+        padding: 35px 25px 70px;
+        background:
+            radial-gradient(
+                circle at 10% 10%,
+                rgba(37, 99, 235, .08),
+                transparent 28%
+            ),
+            radial-gradient(
+                circle at 90% 90%,
+                rgba(30, 64, 175, .06),
+                transparent 30%
+            ),
+            linear-gradient(
+                135deg,
+                #f8fbff 0%,
+                #f3f7fc 50%,
+                #edf4fb 100%
+            );
+    }
+
+
+    .package-container {
+        width: 100%;
+        max-width: 1350px;
+        margin: 0 auto;
+    }
+
+
+    /* =========================================================
+       HEADER
+    ========================================================= */
+
+    .page-header {
+        position: relative;
+        overflow: hidden;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        gap: 25px;
+
+        margin-bottom: 22px;
+        padding: 25px 28px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #ffffff 0%,
+                #f9fcff 55%,
+                #eef6ff 100%
+            );
+
+        border: 1px solid #dce7f1;
+        border-radius: 18px;
+
+        box-shadow:
+            0 15px 40px rgba(23, 43, 77, .07),
+            0 4px 12px rgba(23, 43, 77, .04);
+
+        animation: fadeDown .5s ease;
+    }
+
+
+    .page-header::before {
+        content: "";
+
+        position: absolute;
+
+        width: 260px;
+        height: 260px;
+
+        right: -100px;
+        top: -150px;
+
+        border-radius: 50%;
+
+        background: rgba(37, 99, 235, .06);
+    }
+
+
+    .header-left {
+        position: relative;
+        z-index: 2;
+
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+
+    .header-icon {
+        width: 55px;
+        height: 55px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 14px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #2563eb,
+                #1d4ed8
+            );
+
+        color: #ffffff;
+
+        font-size: 21px;
+
+        box-shadow:
+            0 8px 22px rgba(37, 99, 235, .23);
+
+        animation: iconFloat 3s ease-in-out infinite;
+    }
+
+
+    .page-header h1 {
+        margin: 0 0 5px;
+
+        color: #172033;
+
+        font-size: 25px;
+        font-weight: 800;
+
+        letter-spacing: -.3px;
+    }
+
+
+    .page-header p {
+        margin: 0;
+
+        color: #64748b;
+
+        font-size: 12px;
+    }
+
+
+    /* =========================================================
+       HEADER ACTIONS
+    ========================================================= */
+
+    .header-actions {
+        position: relative;
+        z-index: 3;
+
+        display: flex;
+        align-items: center;
+        gap: 9px;
+
+        flex-wrap: wrap;
+    }
+
+
+    .header-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        min-height: 42px;
+
+        padding: 11px 17px;
+
+        border-radius: 10px;
+
+        text-decoration: none !important;
+
+        font-size: 11px;
+        font-weight: 800;
+
+        transition:
+            transform .22s ease,
+            box-shadow .22s ease,
+            background .22s ease;
+    }
+
+
+    /* =========================================================
+       CREATE BUTTON
+    ========================================================= */
+
+    .create-button {
+        position: relative;
+
+        overflow: hidden;
+
+        background:
+            linear-gradient(
+                135deg,
+                #2563eb,
+                #1d4ed8
+            );
+
+        border: 1px solid #1d4ed8;
+
+        color: #ffffff !important;
+
+        box-shadow:
+            0 7px 18px rgba(37, 99, 235, .22);
+    }
+
+
+    .create-button::before {
+        content: "";
+
+        position: absolute;
+
+        top: 0;
+        left: -110%;
+
+        width: 70%;
+        height: 100%;
+
+        background:
+            linear-gradient(
+                90deg,
+                transparent,
+                rgba(255,255,255,.18),
+                transparent
+            );
+
+        transform: skewX(-20deg);
+
+        transition: left .55s ease;
+    }
+
+
+    .create-button:hover::before {
+        left: 140%;
+    }
+
+
+    .create-button:hover {
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 11px 25px rgba(37, 99, 235, .28);
+
+        color: #ffffff !important;
+    }
+
+
+    .create-button i {
+        width: 25px;
+        height: 25px;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 7px;
+
+        background: rgba(255,255,255,.15);
+
+        transition: transform .25s ease;
+    }
+
+
+    .create-button:hover i {
+        transform: rotate(90deg);
+    }
+
+
+    /* =========================================================
+       DASHBOARD BUTTON
+    ========================================================= */
+
+    .dashboard-button {
+        background: #ffffff;
+
+        border: 1px solid #d8e2ed;
+
+        color: #334155;
+    }
+
+
+    .dashboard-button i {
+        color: #2563eb;
+    }
+
+
+    .dashboard-button:hover {
+        background: #eff6ff;
+
+        border-color: #93c5fd;
+
+        color: #1d4ed8;
+
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 7px 16px rgba(37, 99, 235, .10);
+    }
+
+
+    /* =========================================================
+       SUMMARY
+    ========================================================= */
+
+    .summary-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 15px;
+
+        margin-bottom: 27px;
+    }
+
+
+    .summary-card {
+        position: relative;
+
+        overflow: hidden;
+
+        display: flex;
+        align-items: center;
+
+        gap: 15px;
+
+        padding: 19px 20px;
+
+        background: #ffffff;
+
+        border: 1px solid #dfe7ef;
+
+        border-radius: 14px;
+
+        box-shadow:
+            0 7px 22px rgba(15, 23, 42, .05);
+
+        transition:
+            transform .25s ease,
+            box-shadow .25s ease,
+            border-color .25s ease;
+
+        animation: fadeUp .55s ease both;
+    }
+
+
+    .summary-card:hover {
+        transform: translateY(-4px);
+
+        border-color: #bfdbfe;
+
+        box-shadow:
+            0 13px 30px rgba(37, 99, 235, .10);
+    }
+
+
+    .summary-icon {
+        width: 45px;
+        height: 45px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 11px;
+
+        background: #eff6ff;
+
+        color: #2563eb;
+
+        font-size: 15px;
+    }
+
+
+    .summary-icon.green {
+        background: #ecfdf5;
+        color: #16a34a;
+    }
+
+
+    .summary-icon.gray {
+        background: #f1f5f9;
+        color: #64748b;
+    }
+
+
+    .summary-text strong {
+        display: block;
+
+        color: #172033;
+
+        font-size: 21px;
+        font-weight: 900;
+    }
+
+
+    .summary-text span {
+        display: block;
+
+        margin-top: 2px;
+
+        color: #64748b;
+
+        font-size: 10px;
+    }
+
+
+    /* =========================================================
+       SECTION HEADER
+    ========================================================= */
+
+    .section-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        margin-bottom: 15px;
+
+        padding: 0 2px;
+    }
+
+
+    .section-heading-left {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+    }
+
+
+    .section-heading-icon {
+        width: 30px;
+        height: 30px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 8px;
+
+        background: #eff6ff;
+
+        color: #2563eb;
+
+        font-size: 11px;
+    }
+
+
+    .section-heading h2 {
+        margin: 0;
+
+        color: #172033;
+
+        font-size: 16px;
+        font-weight: 800;
+    }
+
+
+    .section-heading span {
+        color: #64748b;
+
+        font-size: 10px;
+        font-weight: 600;
+    }
+
+
+    /* =========================================================
+       PACKAGE GRID
+    ========================================================= */
+
+    .package-grid {
+        display: grid;
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+        gap: 18px;
+    }
+
+
+    /* =========================================================
+       PACKAGE CARD
+    ========================================================= */
+
+    .package-card {
+        position: relative;
+
+        display: flex;
+        flex-direction: column;
+
+        background: #ffffff;
+
+        border: 1px solid #e1e8f0;
+
+        border-radius: 16px;
+
+        overflow: hidden;
+
+        box-shadow:
+            0 8px 25px rgba(15, 23, 42, .05);
+
+        transition:
+            transform .28s ease,
+            box-shadow .28s ease,
+            border-color .28s ease;
+
+        animation: cardAppear .55s ease both;
+    }
+
+
+    .package-card:hover {
+        transform: translateY(-6px);
+
+        border-color: #bfdbfe;
+
+        box-shadow:
+            0 17px 38px rgba(37, 99, 235, .11);
+    }
+
+
+    /* =========================================================
+       TOP LINE
+    ========================================================= */
+
+    .package-card::before {
+        content: "";
+
+        display: block;
+
+        height: 4px;
+
+        background:
+            linear-gradient(
+                90deg,
+                #2563eb,
+                #60a5fa
+            );
+    }
+
+
+    /* =========================================================
+       CARD HEADER
+    ========================================================= */
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        gap: 12px;
+
+        padding: 20px;
+
+        border-bottom: 1px solid #edf1f5;
+    }
+
+
+    .package-title {
+        min-width: 0;
+    }
+
+
+    .package-title h3 {
+        margin: 0 0 5px;
+
+        color: #172033;
+
+        font-size: 16px;
+        font-weight: 800;
+
+        word-break: break-word;
+    }
+
+
+    .package-title span {
+        color: #64748b;
+
+        font-size: 9px;
+    }
+
+
+    /* =========================================================
+       STATUS
+    ========================================================= */
+
+    .status {
+        display: inline-flex;
+        align-items: center;
+
+        gap: 5px;
+
+        padding: 6px 9px;
+
+        border-radius: 20px;
+
+        font-size: 8px;
+        font-weight: 800;
+
+        text-transform: uppercase;
+
+        white-space: nowrap;
+    }
+
+
+    .status-active {
+        background: #ecfdf5;
+
+        border: 1px solid #bbf7d0;
+
+        color: #15803d;
+    }
+
+
+    .status-inactive {
+        background: #f1f5f9;
+
+        border: 1px solid #e2e8f0;
+
+        color: #64748b;
+    }
+
+
+    /* =========================================================
+       PRICE
+    ========================================================= */
+
+    .price-section {
+        padding: 21px 20px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #f8fafc,
+                #f3f7fc
+            );
+
+        border-bottom: 1px solid #edf1f5;
+    }
+
+
+    .price-label {
+        display: block;
+
+        margin-bottom: 4px;
+
+        color: #64748b;
+
+        font-size: 9px;
+
+        text-transform: uppercase;
+
+        letter-spacing: .5px;
+    }
+
+
+    .price {
+        color: #2563eb;
+
+        font-size: 27px;
+
+        font-weight: 900;
+
+        letter-spacing: -.5px;
+    }
+
+
+    /* =========================================================
+       CARD BODY
+    ========================================================= */
+
+    .card-body {
+        flex: 1;
+
+        padding: 20px;
+    }
+
+
+    .info-row {
+        display: flex;
+
+        align-items: flex-start;
+
+        gap: 11px;
+
+        margin-bottom: 15px;
+    }
+
+
+    .info-row:last-child {
+        margin-bottom: 0;
+    }
+
+
+    .info-icon {
+        width: 31px;
+        height: 31px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 8px;
+
+        background: #eff6ff;
+
+        color: #2563eb;
+
+        font-size: 11px;
+    }
+
+
+    .info-content {
+        min-width: 0;
+    }
+
+
+    .info-label {
+        display: block;
+
+        margin-bottom: 3px;
+
+        color: #64748b;
+
+        font-size: 9px;
+
+        text-transform: uppercase;
+
+        letter-spacing: .4px;
+    }
+
+
+    .info-value {
+        display: block;
+
+        color: #334155;
+
+        font-size: 11px;
+
+        font-weight: 700;
+    }
+
+
+    /* =========================================================
+       DESCRIPTION
+    ========================================================= */
+
+    .description {
+        margin-top: 18px;
+
+        padding-top: 17px;
+
+        border-top: 1px solid #edf1f5;
+    }
+
+
+    .description-label {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #64748b;
+
+        font-size: 9px;
+
+        text-transform: uppercase;
+
+        letter-spacing: .4px;
+    }
+
+
+    .description-text {
+        margin: 0;
+
+        color: #64748b;
+
+        font-size: 10px;
+
+        line-height: 1.65;
+
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+
+    /* =========================================================
+       CARD FOOTER
+    ========================================================= */
+
+    .card-footer {
+        padding: 15px 20px;
+
+        background: #f8fafc;
+
+        border-top: 1px solid #edf1f5;
+    }
+
+
+    .package-meta {
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        margin-bottom: 13px;
+    }
+
+
+    .package-id {
+        color: #64748b;
+
+        font-size: 9px;
+    }
+
+
+    .package-id strong {
+        color: #334155;
+    }
+
+
+    .package-badge {
+        display: inline-flex;
+        align-items: center;
+
+        gap: 5px;
+
+        color: #2563eb;
+
+        font-size: 9px;
+
+        font-weight: 700;
+    }
+
+
+    /* =========================================================
+       ACTIONS
+    ========================================================= */
+
+    .card-actions {
+        display: grid;
+
+        grid-template-columns:
+            repeat(4, 1fr);
+
+        gap: 7px;
+    }
+
+
+    .card-action {
+        min-height: 34px;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 5px;
+
+        padding: 7px 8px;
+
+        border-radius: 8px;
+
+        text-decoration: none !important;
+
+        font-size: 9px;
+        font-weight: 800;
+
+        transition:
+            transform .2s ease,
+            box-shadow .2s ease,
+            background .2s ease;
+    }
+
+
+    .card-action:hover {
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 5px 12px rgba(15, 23, 42, .10);
+    }
+
+
+    /* VIEW */
+
+    .view-action {
+        background: #eff6ff;
+
+        border: 1px solid #bfdbfe;
+
+        color: #2563eb;
+    }
+
+
+    .view-action:hover {
+        background: #dbeafe;
+
+        color: #1d4ed8;
+    }
+
+
+    /* EDIT */
+
+    .edit-action {
+        background: #f0fdf4;
+
+        border: 1px solid #bbf7d0;
+
+        color: #16a34a;
+    }
+
+
+    .edit-action:hover {
+        background: #dcfce7;
+
+        color: #15803d;
+    }
+
+
+    /* STATUS */
+
+    .status-action {
+        background: #fff7ed;
+
+        border: 1px solid #fed7aa;
+
+        color: #ea580c;
+    }
+
+
+    .status-action:hover {
+        background: #ffedd5;
+
+        color: #c2410c;
+    }
+
+
+    /* DELETE */
+
+    .delete-action {
+        background: #fff1f2;
+
+        border: 1px solid #fecdd3;
+
+        color: #dc2626;
+    }
+
+
+    .delete-action:hover {
+        background: #ffe4e6;
+
+        color: #b91c1c;
+    }
+
+
+    /* =========================================================
+       EMPTY STATE
+    ========================================================= */
+
+    .empty-card {
+        padding: 75px 30px;
+
+        background: #ffffff;
+
+        border: 1px solid #e1e8f0;
+
+        border-radius: 17px;
+
+        text-align: center;
+
+        box-shadow:
+            0 8px 25px rgba(15, 23, 42, .05);
+
+        animation: fadeUp .55s ease;
+    }
+
+
+    .empty-icon {
+        width: 70px;
+        height: 70px;
+
+        margin: 0 auto 18px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 18px;
+
+        background: #eff6ff;
+
+        color: #2563eb;
+
+        font-size: 26px;
+    }
+
+
+    .empty-card h3 {
+        margin: 0 0 7px;
+
+        color: #172033;
+
+        font-size: 17px;
+
+        font-weight: 800;
+    }
+
+
+    .empty-card p {
+        margin: 0 0 20px;
+
+        color: #64748b;
+
+        font-size: 11px;
+    }
+
+
+    /* =========================================================
+       EMPTY CREATE BUTTON
+    ========================================================= */
+
+    .empty-create-button {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        padding: 11px 17px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #2563eb,
+                #1d4ed8
+            );
+
+        color: #ffffff !important;
+
+        border: 1px solid #1d4ed8;
+
+        border-radius: 9px;
+
+        text-decoration: none !important;
+
+        font-size: 10px;
+
+        font-weight: 800;
+
+        transition: .2s ease;
+    }
+
+
+    .empty-create-button:hover {
+        transform: translateY(-2px);
+
+        box-shadow:
+            0 8px 18px rgba(37, 99, 235, .22);
+    }
+
+
+    /* =========================================================
+       ANIMATIONS
+    ========================================================= */
+
+    @@keyframes fadeDown {
+
+        from {
+            opacity: 0;
+            transform: translateY(-15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    }
+
+
+    @@keyframes fadeUp {
+
+        from {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    }
+
+
+    @@keyframes cardAppear {
+
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    }
+
+
+    @@keyframes iconFloat {
+
+        0%,
+        100% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-3px);
+        }
+
+    }
+
+
+    /* =========================================================
+       RESPONSIVE
+    ========================================================= */
+
+    @@media (max-width: 1150px) {
+
+        .package-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+    }
+
+
+    @@media (max-width: 800px) {
+
+        .package-page {
+            padding: 22px 15px 50px;
+        }
+
+
+        .page-header {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+
+        .header-actions {
+            width: 100%;
+
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+        }
+
+
+        .header-button {
+            width: 100%;
+        }
+
+
+        .summary-grid {
+            grid-template-columns: 1fr;
+        }
+
+
+        .package-grid {
+            grid-template-columns: 1fr;
+        }
+
+    }
+
+
+    @@media (max-width: 520px) {
+
+        .header-actions {
+            grid-template-columns: 1fr;
+        }
+
+
+        .header-left {
+            align-items: flex-start;
+        }
+
+
+        .header-icon {
+            width: 48px;
+            height: 48px;
+
+            font-size: 18px;
+        }
+
+
+        .page-header h1 {
+            font-size: 21px;
+        }
+
+
+        .page-header p {
+            font-size: 11px;
+        }
+
+
+        .card-actions {
+            grid-template-columns:
+                repeat(2, 1fr);
+        }
+
+
+        .card-action {
+            min-height: 38px;
+        }
+
+    }
+
+    </style>
+    
+
+</head>
+
+<body>
+
+    <div class="package-page">
+
+        
+        <div class="package-container">
+
+
+            <!-- =====================================================
+                 HEADER
+            ====================================================== -->
+
+            <div class="page-header">
+
+
+                <div class="header-left">
+
+
+                    <div class="header-icon">
+
+                        <i class="fa-solid fa-box-open"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h1>
+                            Lesson Packages
+                        </h1>
+
+                        <p>
+                            Create, manage and control driving lesson packages.
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- HEADER BUTTONS -->
+
+                <div class="header-actions">
+
+
+                    <!-- CREATE -->
+
+                    <a href="@Url.Action("Create", "AdminLessonPackages")"
+                       class="header-button create-button">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        <span>
+                            Add Package
+                        </span>
+
+                    </a>
+
+
+                    <!-- DASHBOARD -->
+
+                    <a href="@Url.Action("Index", "Admin")"
+                       class="header-button dashboard-button">
+
+                        <i class="fa-solid fa-arrow-left"></i>
+
+                        <span>
+                            Dashboard
+                        </span>
+
+                    </a>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =====================================================
+                 SUMMARY
+            ====================================================== -->
+
+            <div class="summary-grid">
+
+
+                <!-- TOTAL -->
+
+                <div class="summary-card">
+
+                    <div class="summary-icon">
+
+                        <i class="fa-solid fa-boxes-stacked"></i>
+
+                    </div>
+
+                    <div class="summary-text">
+
+                        <strong>
+                            @totalPackages
+                        </strong>
+
+                        <span>
+                            Total Packages
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIVE -->
+
+                <div class="summary-card">
+
+                    <div class="summary-icon green">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+                    <div class="summary-text">
+
+                        <strong>
+                            @activePackages
+                        </strong>
+
+                        <span>
+                            Active Packages
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INACTIVE -->
+
+                <div class="summary-card">
+
+                    <div class="summary-icon gray">
+
+                        <i class="fa-solid fa-circle-pause"></i>
+
+                    </div>
+
+                    <div class="summary-text">
+
+                        <strong>
+                            @inactivePackages
+                        </strong>
+
+                        <span>
+                            Inactive Packages
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =====================================================
+                 SECTION HEADING
+            ====================================================== -->
+
+            <div class="section-heading">
+
+
+                <div class="section-heading-left">
+
+                    <div class="section-heading-icon">
+
+                        <i class="fa-solid fa-layer-group"></i>
+
+                    </div>
+
+                    <h2>
+                        All Lesson Packages
+                    </h2>
+
+                </div>
+
+
+                <span>
+
+                    @totalPackages
+                    @(totalPackages == 1 ? "package" : "packages")
+
+                </span>
+
+
+            </div>
+
+
+
+            <!-- =====================================================
+                 PACKAGES
+            ====================================================== -->
+
+            @if (packages.Any())
+            {
+
+
+                <div class="package-grid">
+
+
+                    @foreach (var package in packages)
+                    {
+
+
+                        <div class="package-card">
+
+
+                            <!-- =================================================
+                                 CARD HEADER
+                            ================================================== -->
+
+                            <div class="card-header">
+
+
+                                <div class="package-title">
+
+
+                                    <h3>
+                                        @package.PackageName
+                                    </h3>
+
+
+                                    <span>
+                                        Driving Lesson Package
+                                    </span>
+
+
+                                </div>
+
+
+                                @if (package.IsActive)
+                                {
+
+                                    <span class="status status-active">
+
+                                        <i class="fa-solid fa-circle-check"></i>
+
+                                        Active
+
+                                    </span>
+
+                                }
+                                else
+                                {
+
+                                    <span class="status status-inactive">
+
+                                        <i class="fa-solid fa-circle-xmark"></i>
+
+                                        Inactive
+
+                                    </span>
+
+                                }
+
+
+                            </div>
+
+
+
+                            <!-- =================================================
+                                 PRICE
+                            ================================================== -->
+
+                            <div class="price-section">
+
+
+                                <span class="price-label">
+                                    Package Price
+                                </span>
+
+
+                                <div>
+
+                                    <span class="price">
+                                        R @package.Price.ToString("N2")
+                                    </span>
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <!-- =================================================
+                                 BODY
+                            ================================================== -->
+
+                            <div class="card-body">
+
+
+                                <!-- LESSONS -->
+
+                                <div class="info-row">
+
+
+                                    <div class="info-icon">
+
+                                        <i class="fa-solid fa-car-side"></i>
+
+                                    </div>
+
+
+                                    <div class="info-content">
+
+                                        <span class="info-label">
+                                            Lessons Included
+                                        </span>
+
+
+                                        <span class="info-value">
+
+                                            @package.NumberOfLessons
+
+                                            @(package.NumberOfLessons == 1
+                                        ? "Lesson"
+                                        : "Lessons")
+
+                                        </span>
+
+                                    </div>
+
+
+                                </div>
+
+
+
+                                <!-- PRICE PER LESSON -->
+
+                                <div class="info-row">
+
+
+                                    <div class="info-icon">
+
+                                        <i class="fa-solid fa-calculator"></i>
+
+                                    </div>
+
+
+                                    <div class="info-content">
+
+                                        <span class="info-label">
+                                            Price Per Lesson
+                                        </span>
+
+
+                                        <span class="info-value">
+
+
+                                            @if (package.NumberOfLessons > 0)
+                                            {
+
+                                                @:R @((package.Price / package.NumberOfLessons).ToString("N2"))
+
+                                            }
+                                            else
+                                            {
+
+                                                @:Not available
+
+                                            }
+
+
+                                        </span>
+
+
+                                    </div>
+
+
+                                </div>
+
+
+
+                                <!-- DESCRIPTION -->
+
+                                <div class="description">
+
+
+                                    <span class="description-label">
+                                        Description
+                                    </span>
+
+
+                                    <p class="description-text">
+
+                                        @(string.IsNullOrWhiteSpace(package.Description)
+                                    ? "No description provided."
+                                    : package.Description)
+
+                                    </p>
+
+
+                                </div>
+
+
+                            </div>
+
+
+
+                            <!-- =================================================
+                                 FOOTER
+                            ================================================== -->
+
+                            <div class="card-footer">
+
+
+                                <div class="package-meta">
+
+
+                                    <span class="package-id">
+
+                                        Package ID:
+
+                                        <strong>
+                                            #@package.LessonPackageId
+                                        </strong>
+
+                                    </span>
+
+
+                                    <span class="package-badge">
+
+                                        <i class="fa-solid fa-shield-halved"></i>
+
+                                        Managed
+
+                                    </span>
+
+
+                                </div>
+
+
+
+                                <!-- =================================================
+                                     ACTION BUTTONS
+                                ================================================== -->
+
+                                <div class="card-actions">
+
+
+                                    <!-- VIEW DETAILS -->
+
+                                    <a href="@Url.Action(
+                                "Details",
+                                "AdminLessonPackages",
+                                new
+                                {
+                                    id = package.LessonPackageId
+                                })"
+                                       class="card-action view-action"
+                                       title="View Package Details">
+
+                                        <i class="fa-solid fa-eye"></i>
+
+                                        <span>
+                                            Details
+                                        </span>
+
+                                    </a>
+
+
+
+                                    <!-- EDIT -->
+
+                                    <a href="@Url.Action(
+                                "Edit",
+                                "AdminLessonPackages",
+                                new
+                                {
+                                    id = package.LessonPackageId
+                                })"
+                                       class="card-action edit-action"
+                                       title="Edit Package">
+
+                                        <i class="fa-solid fa-pen"></i>
+
+                                        <span>
+                                            Edit
+                                        </span>
+
+                                    </a>
+
+
+
+                                    <!-- ACTIVATE / DEACTIVATE -->
+
+                                    <a href="@Url.Action(
+                                "ToggleStatus",
+                                "AdminLessonPackages",
+                                new
+                                {
+                                    id = package.LessonPackageId
+                                })"
+                                       class="card-action status-action"
+                                       title="@(package.IsActive ? "Deactivate Package" : "Activate Package")"
+                                       onclick="return confirmStatus('@package.PackageName', @package.IsActive.ToString().ToLower());">
+
+                                        @if (package.IsActive)
+                                        {
+
+                                            <i class="fa-solid fa-toggle-on"></i>
+
+                                            <span>
+                                                Disable
+                                            </span>
+
+                                        }
+                                        else
+                                        {
+
+                                            <i class="fa-solid fa-toggle-off"></i>
+
+                                            <span>
+                                                Enable
+                                            </span>
+
+                                        }
+
+                                    </a>
+
+
+
+                                    <!-- DELETE -->
+
+                                    <a href="@Url.Action(
+                                "Delete",
+                                "AdminLessonPackages",
+                                new
+                                {
+                                    id = package.LessonPackageId
+                                })"
+                                       class="card-action delete-action"
+                                       title="Delete Package"
+                                       onclick="return confirmDelete('@package.PackageName');">
+
+                                        <i class="fa-solid fa-trash-can"></i>
+
+                                        <span>
+                                            Delete
+                                        </span>
+
+                                    </a>
+
+
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    }
+
+
+                </div>
+
+
+            }
+            else
+            {
+
+
+                <!-- =====================================================
+                     EMPTY STATE
+                ====================================================== -->
+
+                <div class="empty-card">
+
+
+                    <div class="empty-icon">
+
+                        <i class="fa-solid fa-box-open"></i>
+
+                    </div>
+
+
+                    <h3>
+                        No Lesson Packages Found
+                    </h3>
+
+
+                    <p>
+                        You haven't created any driving lesson packages yet.
+                    </p>
+
+
+                    <a href="@Url.Action("Create", "AdminLessonPackages")"
+                       class="empty-create-button">
+
+                        <i class="fa-solid fa-plus"></i>
+
+                        Create First Package
+
+                    </a>
+
+
+                </div>
+
+
+            }
+
+
+        </div>
+        
+
+    </div>
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================= -->
+
+    <script>
+
+
+        /* =========================================================
+           DELETE CONFIRMATION
+        ========================================================= */
+
+        function confirmDelete(packageName) {
+
+            return confirm(
+                "Delete \"" +
+                packageName +
+                "\"?\n\n" +
+                "This action may permanently remove the lesson package."
+            );
+
+        }
+
+
+        /* =========================================================
+           STATUS CONFIRMATION
+        ========================================================= */
+
+        function confirmStatus(packageName, isActive) {
+
+            if (isActive) {
+
+                return confirm(
+                    "Deactivate \"" +
+                    packageName +
+                    "\"?\n\n" +
+                    "Students will no longer be able to purchase this package."
+                );
+
+            }
+
+            return confirm(
+                "Activate \"" +
+                packageName +
+                "\"?\n\n" +
+                "This package will become available to students."
+            );
+
+        }
+
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,581 @@
+﻿@model Last_Dance_System.Models.Instructor
+
+@{
+    Layout = null;
+    ViewBag.Title = "Edit Instructor";
+}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+
+    <title>Edit Instructor</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #f4f7fb;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #172033;
+        }
+
+        .page {
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e1e8f0;
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 8px 25px rgba(30,70,110,.08);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #edf1f5;
+        }
+
+        .header-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 14px;
+            background: linear-gradient(135deg,#1976d2,#0d47a1);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 25px;
+        }
+
+        .header p {
+            margin: 4px 0 0;
+            color: #718096;
+            font-size: 13px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+            .form-group.full {
+                grid-column: 1 / -1;
+            }
+
+        label {
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #425466;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #cbd7e4;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #ffffff;
+            outline: none;
+        }
+
+            input:focus,
+            select:focus {
+                border-color: #1976d2;
+                box-shadow: 0 0 0 3px rgba(25,118,210,.10);
+            }
+
+        .vehicle-box {
+            background: #f4f8fd;
+            border: 1px solid #d8e5f2;
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .vehicle-title {
+            font-weight: 750;
+            color: #172033;
+            margin-bottom: 8px;
+        }
+
+            .vehicle-title i {
+                color: #1976d2;
+                margin-right: 5px;
+            }
+
+        .vehicle-description {
+            color: #718096;
+            font-size: 12px;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .vehicle-notice {
+            margin-top: 10px;
+            padding: 10px 12px;
+            background: #edf6ff;
+            border: 1px solid #cfe6fa;
+            border-radius: 7px;
+            color: #1976d2;
+            font-size: 11px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+            .checkbox-group input {
+                width: auto;
+            }
+
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #edf1f5;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .save-button {
+            background: linear-gradient(135deg,#1976d2,#0d47a1);
+            color: white;
+        }
+
+            .save-button:hover {
+                background: linear-gradient(135deg,#2196f3,#1565c0);
+                color: white;
+            }
+
+        .back-button {
+            background: #ffffff;
+            border: 1px solid #cbd7e4;
+            color: #425466;
+        }
+
+            .back-button:hover {
+                background: #f4f7fb;
+                color: #425466;
+            }
+
+        .validation {
+            color: #c62828;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .validation-summary {
+            margin-bottom: 20px;
+            padding: 12px 15px;
+            background: #fff1f1;
+            border: 1px solid #f1caca;
+            border-radius: 8px;
+            color: #c62828;
+            font-size: 12px;
+        }
+
+        @@media (max-width:700px) {
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .card {
+                padding: 22px;
+            }
+
+            .actions {
+                flex-direction: column-reverse;
+            }
+
+            .button {
+                width: 100%;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="page">
+
+        <div class="container">
+
+            <div class="card">
+
+
+                <!-- =================================================
+                     HEADER
+                     ================================================= -->
+
+                <div class="header">
+
+                    <div class="header-icon">
+
+                        <i class="fa-solid fa-user-gear"></i>
+
+                    </div>
+
+                    <div>
+
+                        <h1>
+                            Edit Instructor
+                        </h1>
+
+                        <p>
+                            Update instructor information and vehicle assignment.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     FORM
+                     ================================================= -->
+
+                @using (Html.BeginForm(
+                    "EditInstructor",
+                    "Admin",
+                    FormMethod.Post))
+                {
+
+                    @Html.AntiForgeryToken()
+
+                    @Html.HiddenFor(
+                        model => model.InstructorId)
+
+                    @Html.HiddenFor(
+                        model => model.ApplicationUserId)
+
+
+                    @Html.ValidationSummary(
+                        true,
+                        "",
+                        new { @class = "validation-summary" })
+
+
+                    <div class="form-grid">
+
+
+                        <!-- FIRST NAME -->
+
+                        <div class="form-group">
+
+                            @Html.LabelFor(
+                                model => model.FirstName)
+
+                            @Html.TextBoxFor(
+                                model => model.FirstName,
+                                new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "First name"
+                                })
+
+                            @Html.ValidationMessageFor(
+                                model => model.FirstName,
+                                "",
+                                new { @class = "validation" })
+
+                        </div>
+
+
+                        <!-- LAST NAME -->
+
+                        <div class="form-group">
+
+                            @Html.LabelFor(
+                                model => model.LastName)
+
+                            @Html.TextBoxFor(
+                                model => model.LastName,
+                                new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "Last name"
+                                })
+
+                            @Html.ValidationMessageFor(
+                                model => model.LastName,
+                                "",
+                                new { @class = "validation" })
+
+                        </div>
+
+
+                        <!-- PHONE -->
+
+                        <div class="form-group">
+
+                            @Html.LabelFor(
+                                model => model.Phone)
+
+                            @Html.TextBoxFor(
+                                model => model.Phone,
+                                new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "Phone number"
+                                })
+
+                            @Html.ValidationMessageFor(
+                                model => model.Phone,
+                                "",
+                                new { @class = "validation" })
+
+                        </div>
+
+
+                        <!-- EMAIL -->
+
+                        <div class="form-group">
+
+                            @Html.LabelFor(
+                                model => model.Email)
+
+                            @Html.TextBoxFor(
+                                model => model.Email,
+                                new
+                                {
+                                    @class = "form-control",
+                                    type = "email",
+                                    placeholder = "Email address"
+                                })
+
+                            @Html.ValidationMessageFor(
+                                model => model.Email,
+                                "",
+                                new { @class = "validation" })
+
+                        </div>
+
+
+                        <!-- LICENSE -->
+
+                        <div class="form-group">
+
+                            @Html.LabelFor(
+                                model => model.LicenseNumber)
+
+                            @Html.TextBoxFor(
+                                model => model.LicenseNumber,
+                                new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "License number"
+                                })
+
+                            @Html.ValidationMessageFor(
+                                model => model.LicenseNumber,
+                                "",
+                                new { @class = "validation" })
+
+                        </div>
+
+
+                        <!-- EXPERIENCE -->
+
+                        <div class="form-group">
+
+                            @Html.LabelFor(
+                                model => model.Experience)
+
+                            @Html.TextBoxFor(
+                                model => model.Experience,
+                                new
+                                {
+                                    @class = "form-control",
+                                    type = "number",
+                                    min = "0",
+                                    max = "50"
+                                })
+
+                            @Html.ValidationMessageFor(
+                                model => model.Experience,
+                                "",
+                                new { @class = "validation" })
+
+                        </div>
+
+
+                        <!-- =================================================
+                             VEHICLE
+                             ================================================= -->
+
+                        <div class="form-group full">
+
+                            <div class="vehicle-box">
+
+                                <div class="vehicle-title">
+
+                                    <i class="fa-solid fa-car"></i>
+
+                                    Assign Vehicle
+
+                                </div>
+
+
+                                <div class="vehicle-description">
+
+                                    Select an active vehicle for this instructor.
+                                    Vehicles already assigned to another
+                                    instructor are automatically excluded.
+
+                                </div>
+
+
+                                @Html.DropDownListFor(
+                                    model => model.VehicleId,
+                                    (SelectList)ViewBag.Vehicles,
+                                    "-- No Vehicle Assigned --",
+                                    new
+                                    {
+                                        @class = "form-control"
+                                    })
+
+
+                                @Html.ValidationMessageFor(
+                                    model => model.VehicleId,
+                                    "",
+                                    new { @class = "validation" })
+
+
+                                <div class="vehicle-notice">
+
+                                    <i class="fa-solid fa-circle-info"></i>
+
+                                    Each vehicle can only be assigned to one
+                                    instructor at a time.
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             ACTIVE
+                             ================================================= -->
+
+                        <div class="form-group full">
+
+                            <div class="checkbox-group">
+
+                                @Html.CheckBoxFor(
+                                    model => model.IsActive)
+
+                                <label for="IsActive">
+
+                                    Instructor is active
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         ACTIONS
+                         ================================================= -->
+
+                    <div class="actions">
+
+
+                        <a href="@Url.Action(
+                            "Instructors",
+                            "Admin")"
+                           class="button back-button">
+
+                            <i class="fa-solid fa-arrow-left"></i>
+
+                            Back to Instructors
+
+                        </a>
+
+
+                        <button type="submit"
+                                class="button save-button">
+
+                            <i class="fa-solid fa-floppy-disk"></i>
+
+                            Save Changes
+
+                        </button>
+
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

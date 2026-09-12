@@ -1,0 +1,1372 @@
+﻿
+@model Last_Dance_System.Models.Vehicle
+
+@{
+    ViewBag.Title = "Add Vehicle";
+    Layout = null;
+}
+
+<!-- =========================================================
+     FONT AWESOME
+     ========================================================= -->
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+
+<style>
+
+    /* =========================================================
+       GLOBAL
+       ========================================================= */
+
+    * {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+    }
+
+    body {
+        background: #f4f8fc;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: #172b4d;
+    }
+
+
+    /* =========================================================
+       PAGE
+       ========================================================= */
+
+    .vehicle-page {
+        min-height: 100vh;
+        padding: 45px 25px 70px;
+
+        background:
+            radial-gradient(
+                circle at 10% 10%,
+                rgba(33, 150, 243, 0.10),
+                transparent 28%
+            ),
+            radial-gradient(
+                circle at 90% 90%,
+                rgba(13, 71, 161, 0.07),
+                transparent 30%
+            ),
+            linear-gradient(
+                135deg,
+                #f8fbff 0%,
+                #f1f6fb 50%,
+                #eaf2f9 100%
+            );
+    }
+
+
+    /* =========================================================
+       WRAPPER
+       ========================================================= */
+
+    .vehicle-wrapper {
+        width: 100%;
+        max-width: 1050px;
+        margin: 0 auto;
+    }
+
+
+    /* =========================================================
+       MAIN CARD
+       ========================================================= */
+
+    .vehicle-card {
+        background: #ffffff;
+        border: 1px solid #dce7f1;
+        border-radius: 22px;
+        overflow: hidden;
+
+        box-shadow:
+            0 20px 55px rgba(23, 43, 77, 0.10),
+            0 4px 15px rgba(23, 43, 77, 0.05);
+    }
+
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .page-header {
+        position: relative;
+        overflow: hidden;
+
+        background:
+            linear-gradient(
+                135deg,
+                #ffffff 0%,
+                #f7fbff 55%,
+                #eaf4ff 100%
+            );
+
+        padding: 32px 42px;
+
+        border-bottom: 1px solid #dbe7f2;
+    }
+
+
+    .page-header::before {
+        content: "";
+
+        position: absolute;
+
+        width: 280px;
+        height: 280px;
+
+        border-radius: 50%;
+
+        background: rgba(33, 150, 243, 0.06);
+
+        right: -100px;
+        top: -150px;
+    }
+
+
+    .page-header::after {
+        content: "";
+
+        position: absolute;
+
+        width: 180px;
+        height: 180px;
+
+        border-radius: 50%;
+
+        background: rgba(13, 71, 161, 0.045);
+
+        left: 40%;
+        bottom: -120px;
+    }
+
+
+    .header-content {
+        position: relative;
+        z-index: 2;
+
+        display: flex;
+        align-items: center;
+
+        gap: 18px;
+    }
+
+
+    /* =========================================================
+       HEADER ICON
+       ========================================================= */
+
+    .header-icon {
+        width: 62px;
+        height: 62px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 16px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #2196f3,
+                #1565c0
+            );
+
+        color: #ffffff;
+
+        font-size: 25px;
+
+        box-shadow:
+            0 8px 22px rgba(33, 150, 243, 0.25);
+    }
+
+
+    /* =========================================================
+       HEADER TEXT
+       ========================================================= */
+
+    .header-text h2 {
+        margin: 0 0 5px;
+
+        color: #172b4d;
+
+        font-size: 28px;
+        font-weight: 800;
+
+        letter-spacing: -0.4px;
+    }
+
+
+    .header-text p {
+        margin: 0;
+
+        color: #71859a;
+
+        font-size: 13px;
+    }
+
+
+    /* =========================================================
+       FORM AREA
+       ========================================================= */
+
+    .vehicle-form-area {
+        padding: 38px 45px 42px;
+
+        background: #ffffff;
+    }
+
+
+    /* =========================================================
+       VALIDATION
+       ========================================================= */
+
+    .validation-summary-errors {
+        background: #fff4f4;
+
+        border: 1px solid #f3c7c7;
+
+        border-left: 4px solid #dc3545;
+
+        border-radius: 10px;
+
+        padding: 13px 16px;
+
+        margin-bottom: 25px;
+
+        color: #b4232f;
+
+        font-size: 13px;
+    }
+
+
+    .text-danger {
+        display: block;
+
+        color: #d93025;
+
+        font-size: 11px;
+
+        margin-top: 6px;
+    }
+
+
+    /* =========================================================
+       FORM SECTION
+       ========================================================= */
+
+    .form-section {
+        margin-bottom: 34px;
+    }
+
+
+    /* =========================================================
+       SECTION HEADING
+       ========================================================= */
+
+    .section-heading {
+        display: flex;
+        align-items: center;
+
+        gap: 12px;
+
+        margin-bottom: 25px;
+
+        padding-bottom: 15px;
+
+        border-bottom: 1px solid #e5edf5;
+    }
+
+
+    .section-number {
+        width: 36px;
+        height: 36px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background: #edf6ff;
+
+        border: 1px solid #cfe6fa;
+
+        color: #1976d2;
+
+        font-size: 11px;
+        font-weight: 800;
+    }
+
+
+    .section-heading h3 {
+        margin: 0 0 3px;
+
+        color: #172b4d;
+
+        font-size: 17px;
+        font-weight: 750;
+    }
+
+
+    .section-heading p {
+        margin: 0;
+
+        color: #8193a7;
+
+        font-size: 12px;
+    }
+
+
+    /* =========================================================
+       FORM GROUP
+       ========================================================= */
+
+    .form-group {
+        margin-bottom: 21px;
+    }
+
+
+    .form-label {
+        display: block;
+
+        margin-bottom: 8px;
+
+        color: #34495e;
+
+        font-size: 12px;
+        font-weight: 700;
+
+        letter-spacing: 0.2px;
+    }
+
+
+    /* =========================================================
+       INPUT WRAPPER
+       ========================================================= */
+
+    .input-wrapper {
+        position: relative;
+    }
+
+
+    /* =========================================================
+       INPUT ICON
+       ========================================================= */
+
+    .input-icon {
+        position: absolute;
+
+        left: 15px;
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        width: 20px;
+
+        color: #7d93aa;
+
+        font-size: 14px;
+
+        text-align: center;
+
+        pointer-events: none;
+
+        z-index: 2;
+    }
+
+
+    /* =========================================================
+       INPUTS
+       ========================================================= */
+
+    .form-control {
+        width: 100%;
+        height: 50px;
+
+        border-radius: 10px;
+
+        border: 1px solid #d4e0eb;
+
+        background: #fbfdff;
+
+        color: #172b4d;
+
+        padding: 12px 15px 12px 44px;
+
+        font-family: "Segoe UI", Arial, sans-serif;
+
+        font-size: 13px;
+
+        outline: none;
+
+        transition:
+            border-color 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+    }
+
+
+    .form-control::placeholder {
+        color: #9aabba;
+    }
+
+
+    .form-control:hover {
+        border-color: #b8cadb;
+
+        background: #ffffff;
+    }
+
+
+    .form-control:focus {
+        background: #ffffff;
+
+        border-color: #2196f3;
+
+        box-shadow:
+            0 0 0 3px rgba(33, 150, 243, 0.10),
+            0 4px 12px rgba(33, 150, 243, 0.06);
+    }
+
+
+    /* =========================================================
+       SELECT
+       ========================================================= */
+
+    .select-control {
+        appearance: none;
+        -webkit-appearance: none;
+
+        cursor: pointer;
+
+        padding-right: 45px;
+    }
+
+
+    .select-arrow {
+        position: absolute;
+
+        right: 16px;
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        color: #7d93aa;
+
+        font-size: 12px;
+
+        pointer-events: none;
+    }
+
+
+    /* =========================================================
+       CHECKBOX
+       ========================================================= */
+
+    .active-box {
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        padding: 15px;
+
+        border: 1px solid #dce7f1;
+
+        background: #f8fbff;
+
+        border-radius: 10px;
+    }
+
+
+    .active-box input {
+        width: 18px;
+        height: 18px;
+
+        accent-color: #2196f3;
+
+        cursor: pointer;
+    }
+
+
+    .active-box label {
+        margin: 0;
+
+        color: #34495e;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+    }
+
+
+    .active-description {
+        display: block;
+
+        margin-top: 3px;
+
+        color: #8193a7;
+
+        font-size: 10px;
+
+        font-weight: 400;
+    }
+
+
+    /* =========================================================
+       BUTTON AREA
+       ========================================================= */
+
+    .button-area {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 12px;
+
+        margin-top: 5px;
+    }
+
+
+    /* =========================================================
+       CREATE BUTTON
+       ========================================================= */
+
+    .btn-create {
+        width: 100%;
+        height: 53px;
+
+        border: none;
+
+        border-radius: 10px;
+
+        background:
+            linear-gradient(
+                135deg,
+                #2196f3,
+                #1565c0
+            );
+
+        color: #ffffff;
+
+        font-size: 13px;
+
+        font-weight: 800;
+
+        letter-spacing: 0.7px;
+
+        cursor: pointer;
+
+        box-shadow:
+            0 8px 20px rgba(33, 150, 243, 0.20);
+
+        transition:
+            transform 0.2s ease,
+            box-shadow 0.2s ease,
+            background 0.2s ease;
+    }
+
+
+    .btn-create i {
+        margin-right: 8px;
+    }
+
+
+    .btn-create:hover {
+        transform: translateY(-2px);
+
+        background:
+            linear-gradient(
+                135deg,
+                #42a5f5,
+                #1976d2
+            );
+
+        box-shadow:
+            0 12px 28px rgba(33, 150, 243, 0.28);
+    }
+
+
+    .btn-create:active {
+        transform: translateY(0);
+    }
+
+
+    /* =========================================================
+       BACK BUTTON
+       ========================================================= */
+
+    .btn-back {
+        width: 100%;
+        height: 53px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        border-radius: 10px;
+
+        border: 1px solid #cfdde9;
+
+        background: #f7fbff;
+
+        color: #4d6680;
+
+        text-decoration: none;
+
+        font-size: 13px;
+
+        font-weight: 800;
+
+        transition: all 0.2s ease;
+    }
+
+
+    .btn-back:hover {
+        background: #edf6ff;
+
+        border-color: #2196f3;
+
+        color: #1565c0;
+
+        text-decoration: none;
+
+        transform: translateY(-2px);
+    }
+
+
+    /* =========================================================
+       FOOTER NOTE
+       ========================================================= */
+
+    .form-note {
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 7px;
+
+        text-align: center;
+
+        margin-top: 18px;
+
+        color: #8193a7;
+
+        font-size: 11px;
+    }
+
+
+    .form-note i {
+        color: #2196f3;
+
+        font-size: 11px;
+    }
+
+
+    .form-note strong {
+        color: #587089;
+    }
+
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @@media (max-width: 850px) {
+
+        .vehicle-page {
+            padding: 25px 18px 50px;
+        }
+
+        .page-header {
+            padding: 30px;
+        }
+
+        .vehicle-form-area {
+            padding: 32px 30px 38px;
+        }
+    }
+
+
+    @@media (max-width: 576px) {
+
+        .vehicle-page {
+            padding: 10px;
+        }
+
+        .vehicle-card {
+            border-radius: 17px;
+        }
+
+        .page-header {
+            padding: 25px 20px;
+        }
+
+        .header-content {
+            align-items: flex-start;
+        }
+
+        .header-icon {
+            width: 52px;
+            height: 52px;
+
+            border-radius: 13px;
+
+            font-size: 21px;
+        }
+
+        .header-text h2 {
+            font-size: 22px;
+        }
+
+        .header-text p {
+            font-size: 11px;
+        }
+
+        .vehicle-form-area {
+            padding: 28px 20px 32px;
+        }
+
+        .section-heading {
+            align-items: flex-start;
+        }
+
+        .section-number {
+            width: 33px;
+            height: 33px;
+        }
+
+        .row {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .col-md-6 {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        .form-control {
+            height: 49px;
+        }
+
+        .button-area {
+            grid-template-columns: 1fr;
+        }
+
+        .btn-create,
+        .btn-back {
+            height: 52px;
+        }
+    }
+
+</style>
+
+
+<!-- =========================================================
+     PAGE
+     ========================================================= -->
+
+<div class="vehicle-page">
+
+    <div class="vehicle-wrapper">
+
+        <div class="vehicle-card">
+
+
+            <!-- =================================================
+                 HEADER
+                 ================================================= -->
+
+            <div class="page-header">
+
+                <div class="header-content">
+
+                    <div class="header-icon">
+
+                        <i class="fa-solid fa-car"></i>
+
+                    </div>
+
+
+                    <div class="header-text">
+
+                        <h2>
+                            Add Vehicle
+                        </h2>
+
+                        <p>
+                            Register a vehicle for the driving school
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 FORM
+                 ================================================= -->
+
+            <div class="vehicle-form-area">
+
+                @using (Html.BeginForm(
+                    "CreateVehicle",
+                    "Admin",
+                    FormMethod.Post))
+                {
+
+                    @Html.AntiForgeryToken()
+
+
+                    <!-- =================================================
+                         VALIDATION
+                         ================================================= -->
+
+                    @Html.ValidationSummary(
+                        true,
+                        "",
+                        new
+                        {
+                            @class = "validation-summary-errors"
+                        }
+                    )
+
+
+                    <!-- =================================================
+                         VEHICLE INFORMATION
+                         ================================================= -->
+
+                    <div class="form-section">
+
+                        <div class="section-heading">
+
+                            <div class="section-number">
+                                01
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Vehicle Information
+                                </h3>
+
+                                <p>
+                                    Enter the vehicle details and identification information
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             MAKE / MODEL
+                             ================================================= -->
+
+                        <div class="row">
+
+
+                            <!-- MAKE -->
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+
+                                    @Html.LabelFor(
+                                        m => m.Make,
+                                        new
+                                        {
+                                            @class = "form-label"
+                                        }
+                                    )
+
+
+                                    <div class="input-wrapper">
+
+                                        <span class="input-icon">
+
+                                            <i class="fa-solid fa-car-side"></i>
+
+                                        </span>
+
+
+                                        @Html.TextBoxFor(
+                                            m => m.Make,
+                                            new
+                                            {
+                                                @class = "form-control",
+                                                placeholder = "e.g. Toyota",
+                                                autocomplete = "off"
+                                            }
+                                        )
+
+                                    </div>
+
+
+                                    @Html.ValidationMessageFor(
+                                        m => m.Make,
+                                        "",
+                                        new
+                                        {
+                                            @class = "text-danger"
+                                        }
+                                    )
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- MODEL -->
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+
+                                    @Html.LabelFor(
+                                        m => m.Model,
+                                        new
+                                        {
+                                            @class = "form-label"
+                                        }
+                                    )
+
+
+                                    <div class="input-wrapper">
+
+                                        <span class="input-icon">
+
+                                            <i class="fa-solid fa-car"></i>
+
+                                        </span>
+
+
+                                        @Html.TextBoxFor(
+                                            m => m.Model,
+                                            new
+                                            {
+                                                @class = "form-control",
+                                                placeholder = "e.g. Corolla",
+                                                autocomplete = "off"
+                                            }
+                                        )
+
+                                    </div>
+
+
+                                    @Html.ValidationMessageFor(
+                                        m => m.Model,
+                                        "",
+                                        new
+                                        {
+                                            @class = "text-danger"
+                                        }
+                                    )
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             REGISTRATION / TYPE
+                             ================================================= -->
+
+                        <div class="row">
+
+
+                            <!-- REGISTRATION -->
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+
+                                    @Html.LabelFor(
+                                        m => m.RegistrationNumber,
+                                        new
+                                        {
+                                            @class = "form-label"
+                                        }
+                                    )
+
+
+                                    <div class="input-wrapper">
+
+                                        <span class="input-icon">
+
+                                            <i class="fa-solid fa-id-card"></i>
+
+                                        </span>
+
+
+                                        @Html.TextBoxFor(
+                                            m => m.RegistrationNumber,
+                                            new
+                                            {
+                                                @class = "form-control",
+                                                placeholder = "e.g. ABC 123 GP",
+                                                autocomplete = "off"
+                                            }
+                                        )
+
+                                    </div>
+
+
+                                    @Html.ValidationMessageFor(
+                                        m => m.RegistrationNumber,
+                                        "",
+                                        new
+                                        {
+                                            @class = "text-danger"
+                                        }
+                                    )
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- VEHICLE TYPE -->
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+
+                                    @Html.LabelFor(
+                                        m => m.VehicleType,
+                                        new
+                                        {
+                                            @class = "form-label"
+                                        }
+                                    )
+
+
+                                    <div class="input-wrapper">
+
+                                        <span class="input-icon">
+
+                                            <i class="fa-solid fa-gears"></i>
+
+                                        </span>
+
+
+                                        @Html.DropDownListFor(
+                                            m => m.VehicleType,
+                                            new SelectList(
+                                                new[]
+                                                {
+                                                    "Manual",
+                                                    "Automatic"
+                                                }
+                                            ),
+                                            "Select vehicle type",
+                                            new
+                                            {
+                                                @class = "form-control select-control"
+                                            }
+                                        )
+
+
+                                        <span class="select-arrow">
+
+                                            <i class="fa-solid fa-chevron-down"></i>
+
+                                        </span>
+
+                                    </div>
+
+
+                                    @Html.ValidationMessageFor(
+                                        m => m.VehicleType,
+                                        "",
+                                        new
+                                        {
+                                            @class = "text-danger"
+                                        }
+                                    )
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         VEHICLE STATUS
+                         ================================================= -->
+
+                    <div class="form-section">
+
+                        <div class="section-heading">
+
+                            <div class="section-number">
+                                02
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    Vehicle Status
+                                </h3>
+
+                                <p>
+                                    Set the current condition and mileage of the vehicle
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="row">
+
+
+                            <!-- STATUS -->
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+
+                                    @Html.LabelFor(
+                                        m => m.Status,
+                                        new
+                                        {
+                                            @class = "form-label"
+                                        }
+                                    )
+
+
+                                    <div class="input-wrapper">
+
+                                        <span class="input-icon">
+
+                                            <i class="fa-solid fa-circle-check"></i>
+
+                                        </span>
+
+
+                                        @Html.DropDownListFor(
+                                            m => m.Status,
+                                            new SelectList(
+                                                new[]
+                                                {
+                                                    "Available",
+                                                    "Assigned",
+                                                    "Maintenance",
+                                                    "Unavailable"
+                                                }
+                                            ),
+                                            "Select status",
+                                            new
+                                            {
+                                                @class = "form-control select-control"
+                                            }
+                                        )
+
+
+                                        <span class="select-arrow">
+
+                                            <i class="fa-solid fa-chevron-down"></i>
+
+                                        </span>
+
+                                    </div>
+
+
+                                    @Html.ValidationMessageFor(
+                                        m => m.Status,
+                                        "",
+                                        new
+                                        {
+                                            @class = "text-danger"
+                                        }
+                                    )
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- MILEAGE -->
+
+                            <div class="col-md-6">
+
+                                <div class="form-group">
+
+                                    @Html.LabelFor(
+                                        m => m.CurrentMileage,
+                                        new
+                                        {
+                                            @class = "form-label"
+                                        }
+                                    )
+
+
+                                    <div class="input-wrapper">
+
+                                        <span class="input-icon">
+
+                                            <i class="fa-solid fa-gauge-high"></i>
+
+                                        </span>
+
+
+                                        @Html.TextBoxFor(
+                                            m => m.CurrentMileage,
+                                            new
+                                            {
+                                                @class = "form-control",
+                                                type = "number",
+                                                min = "0",
+                                                placeholder = "e.g. 45000"
+                                            }
+                                        )
+
+                                    </div>
+
+
+                                    @Html.ValidationMessageFor(
+                                        m => m.CurrentMileage,
+                                        "",
+                                        new
+                                        {
+                                            @class = "text-danger"
+                                        }
+                                    )
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- =================================================
+                             ACTIVE VEHICLE
+                             ================================================= -->
+
+                        <div class="form-group">
+
+                            <label class="form-label">
+                                Account Status
+                            </label>
+
+
+                            <div class="active-box">
+
+                                @Html.CheckBoxFor(
+                                    m => m.IsActive
+                                )
+
+
+                                <label for="IsActive">
+
+                                    Vehicle is active
+
+                                    <span class="active-description">
+
+                                        Active vehicles can be used for driving lessons.
+
+                                    </span>
+
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         BUTTONS
+                         ================================================= -->
+
+                    <div class="button-area">
+
+
+                        <!-- BACK -->
+
+                        <a href="@Url.Action(
+                            "Vehicles",
+                            "Admin"
+                        )"
+                           class="btn-back">
+
+                            <i class="fa-solid fa-arrow-left"></i>
+
+                            Back to Vehicles
+
+                        </a>
+
+
+                        <!-- CREATE -->
+
+                        <button type="submit"
+                                class="btn-create">
+
+                            <i class="fa-solid fa-car"></i>
+
+                            ADD VEHICLE
+
+                        </button>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         SECURITY NOTE
+                         ================================================= -->
+
+                    <div class="form-note">
+
+                        <i class="fa-solid fa-shield-halved"></i>
+
+                        <span>
+
+                            Vehicle information will be securely stored
+                            in the driving school system.
+
+                        </span>
+
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+

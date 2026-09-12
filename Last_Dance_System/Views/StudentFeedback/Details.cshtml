@@ -1,0 +1,830 @@
+﻿
+@model Last_Dance_System.Models.InstructorFeedback
+
+@{
+    Layout = null;
+    ViewBag.Title = "Instructor Feedback";
+
+    // =========================================================
+    // SAFE OBJECT REFERENCES
+    // =========================================================
+
+    var booking = Model != null
+        ? Model.Booking
+        : null;
+
+    var schedule = booking != null
+        ? booking.LessonSchedule
+        : null;
+
+    var instructor = Model != null
+        ? Model.Instructor
+        : null;
+
+
+    // =========================================================
+    // INSTRUCTOR NAME
+    // =========================================================
+
+    string instructorName = "Instructor";
+
+    if (instructor != null)
+    {
+        instructorName =
+            ((instructor.FirstName ?? "") + " " +
+             (instructor.LastName ?? "")).Trim();
+
+        if (string.IsNullOrWhiteSpace(instructorName))
+        {
+            instructorName = "Instructor";
+        }
+    }
+
+
+    // =========================================================
+    // LESSON NAME
+    // =========================================================
+
+    string lessonName = "Driving Lesson";
+
+    if (schedule != null &&
+        schedule.LessonType != null)
+    {
+        if (!string.IsNullOrWhiteSpace(
+            schedule.LessonType.LessonTypeName))
+        {
+            lessonName =
+                schedule.LessonType.LessonTypeName;
+        }
+    }
+
+
+    // =========================================================
+    // LESSON DATE
+    // =========================================================
+
+    string lessonDate = "Not available";
+
+    if (schedule != null)
+    {
+        lessonDate =
+            schedule.LessonDate.ToString(
+                "dddd, dd MMMM yyyy");
+    }
+
+
+    // =========================================================
+    // LESSON TIME
+    // =========================================================
+
+    string lessonTime = "Not available";
+
+    if (schedule != null)
+    {
+        lessonTime =
+            schedule.StartTime.ToString(@"hh\:mm")
+            + " - " +
+            schedule.EndTime.ToString(@"hh\:mm");
+    }
+
+
+    // =========================================================
+    // VEHICLE
+    // =========================================================
+
+    string vehicleName = "Not available";
+
+    if (schedule != null &&
+        schedule.Vehicle != null)
+    {
+        if (!string.IsNullOrWhiteSpace(
+            schedule.Vehicle.RegistrationNumber))
+        {
+            vehicleName =
+                schedule.Vehicle.RegistrationNumber;
+        }
+    }
+
+
+    // =========================================================
+    // FEEDBACK TEXT
+    // =========================================================
+
+    string overallFeedback =
+        !string.IsNullOrWhiteSpace(Model.Feedback)
+            ? Model.Feedback
+            : "No overall feedback was provided.";
+
+
+    string areasToImprove =
+        !string.IsNullOrWhiteSpace(Model.AreasToImprove)
+            ? Model.AreasToImprove
+            : "No specific areas to improve were provided.";
+
+
+    string recommendations =
+        !string.IsNullOrWhiteSpace(Model.Recommendations)
+            ? Model.Recommendations
+            : "No additional recommendations were provided.";
+}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>Instructor Feedback</title>
+
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            background: #f4f8fc;
+            color: #172b4d;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+
+        .feedback-page {
+            min-height: 100vh;
+            padding: 35px;
+            background: linear-gradient( 135deg, #f7fbff 0%, #eef6ff 100% );
+        }
+
+
+        .feedback-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+
+        /* =====================================================
+           HEADER
+        ====================================================== */
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding: 24px 26px;
+            background: #ffffff;
+            border: 1px solid #dce8f5;
+            border-radius: 17px;
+            box-shadow: 0 8px 25px rgba( 30, 90, 140, 0.08 );
+        }
+
+
+        .header-icon {
+            width: 52px;
+            height: 52px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 13px;
+            background: #0d6efd;
+            color: #ffffff;
+            font-size: 20px;
+            box-shadow: 0 7px 18px rgba( 13, 110, 253, 0.20 );
+        }
+
+
+        .page-header h1 {
+            margin: 0 0 5px;
+            color: #17365d;
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+
+        .page-header p {
+            margin: 0;
+            color: #72849a;
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           MAIN CARD
+        ====================================================== */
+
+        .feedback-card {
+            background: #ffffff;
+            border: 1px solid #dce8f5;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba( 30, 90, 140, 0.08 );
+        }
+
+
+        /* =====================================================
+           LESSON INFORMATION
+        ====================================================== */
+
+        .lesson-info {
+            padding: 22px 25px;
+            background: #f8fbff;
+            border-bottom: 1px solid #e1ebf5;
+        }
+
+
+        .lesson-info-title {
+            margin-bottom: 15px;
+            color: #17365d;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+
+        .lesson-info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+
+        .info-box {
+            padding: 13px;
+            background: #ffffff;
+            border: 1px solid #e0eaf4;
+            border-radius: 9px;
+        }
+
+
+        .info-label {
+            display: block;
+            margin-bottom: 5px;
+            color: #8a9bad;
+            font-size: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .3px;
+        }
+
+
+        .info-value {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: #28496b;
+            font-size: 10px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+
+            .info-value i {
+                flex-shrink: 0;
+                color: #0d6efd;
+                font-size: 11px;
+            }
+
+
+        /* =====================================================
+           INSTRUCTOR
+        ====================================================== */
+
+        .instructor-section {
+            padding: 25px;
+            border-bottom: 1px solid #e1ebf5;
+        }
+
+
+        .instructor-box {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+
+        .instructor-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 12px;
+            background: #eaf3ff;
+            color: #0d6efd;
+            font-size: 18px;
+        }
+
+
+        .instructor-label {
+            display: block;
+            margin-bottom: 3px;
+            color: #8a9bad;
+            font-size: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+
+        .instructor-name {
+            color: #17365d;
+            font-size: 14px;
+            font-weight: 800;
+        }
+
+
+        /* =====================================================
+           FEEDBACK SECTIONS
+        ====================================================== */
+
+        .feedback-section {
+            padding: 25px;
+            border-bottom: 1px solid #e1ebf5;
+        }
+
+
+            .feedback-section:last-of-type {
+                border-bottom: none;
+            }
+
+
+        .feedback-section-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 14px;
+            color: #17365d;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+
+            .feedback-section-title i {
+                color: #0d6efd;
+            }
+
+
+        .feedback-box {
+            padding: 20px;
+            background: #f8fbff;
+            border: 1px solid #dce8f5;
+            border-left: 4px solid #0d6efd;
+            border-radius: 10px;
+        }
+
+
+            .feedback-box p {
+                margin: 0;
+                color: #40566f;
+                font-size: 12px;
+                line-height: 1.8;
+                white-space: pre-wrap;
+                word-break: break-word;
+            }
+
+
+        .empty-feedback {
+            color: #94a3b8 !important;
+            font-style: italic;
+        }
+
+
+        /* =====================================================
+           DATE
+        ====================================================== */
+
+        .feedback-date {
+            margin-top: 15px;
+            color: #8a9bad;
+            font-size: 9px;
+            text-align: right;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ====================================================== */
+
+        .feedback-footer {
+            padding: 18px 25px;
+            background: #fbfdff;
+            border-top: 1px solid #e5edf5;
+        }
+
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 40px;
+            padding: 10px 16px;
+            border-radius: 8px;
+            background: #f4f8fd;
+            border: 1px solid #d5e3f1;
+            color: #31506f;
+            font-size: 10px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: .25s ease;
+        }
+
+
+            .back-button:hover {
+                background: #eaf3ff;
+                border-color: #9fc5ec;
+                color: #0d6efd;
+                text-decoration: none;
+                transform: translateY(-1px);
+            }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @@media (max-width: 850px) {
+
+            .lesson-info-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+
+        @@media (max-width: 700px) {
+
+            .feedback-page {
+                padding: 18px;
+            }
+
+
+            .lesson-info-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .page-header {
+                padding: 20px;
+            }
+
+
+            .feedback-section,
+            .instructor-section {
+                padding: 20px;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+    <div class="feedback-page">
+
+        <div class="feedback-container">
+
+
+            <!-- =================================================
+                 HEADER
+            ================================================== -->
+
+            <div class="page-header">
+
+                <div class="header-icon">
+
+                    <i class="fa-solid fa-comments"></i>
+
+                </div>
+
+
+                <div>
+
+                    <h1>
+                        Instructor Feedback
+                    </h1>
+
+                    <p>
+                        Feedback provided by your instructor
+                        after your driving lesson.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 FEEDBACK CARD
+            ================================================== -->
+
+            <div class="feedback-card">
+
+
+                <!-- =================================================
+                     LESSON INFORMATION
+                ================================================== -->
+
+                <div class="lesson-info">
+
+                    <div class="lesson-info-title">
+
+                        <i class="fa-solid fa-car-side"></i>
+
+                        &nbsp;
+
+                        Lesson Information
+
+                    </div>
+
+
+                    <div class="lesson-info-grid">
+
+
+                        <!-- LESSON -->
+
+                        <div class="info-box">
+
+                            <span class="info-label">
+                                Lesson
+                            </span>
+
+                            <span class="info-value">
+
+                                <i class="fa-solid fa-road"></i>
+
+                                @lessonName
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- DATE -->
+
+                        <div class="info-box">
+
+                            <span class="info-label">
+                                Date
+                            </span>
+
+                            <span class="info-value">
+
+                                <i class="fa-solid fa-calendar"></i>
+
+                                @lessonDate
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- TIME -->
+
+                        <div class="info-box">
+
+                            <span class="info-label">
+                                Time
+                            </span>
+
+                            <span class="info-value">
+
+                                <i class="fa-solid fa-clock"></i>
+
+                                @lessonTime
+
+                            </span>
+
+                        </div>
+
+
+                        <!-- VEHICLE -->
+
+                        <div class="info-box">
+
+                            <span class="info-label">
+                                Vehicle
+                            </span>
+
+                            <span class="info-value">
+
+                                <i class="fa-solid fa-car"></i>
+
+                                @vehicleName
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     INSTRUCTOR
+                ================================================== -->
+
+                <div class="instructor-section">
+
+                    <div class="instructor-box">
+
+                        <div class="instructor-icon">
+
+                            <i class="fa-solid fa-user-tie"></i>
+
+                        </div>
+
+
+                        <div>
+
+                            <span class="instructor-label">
+                                Feedback From
+                            </span>
+
+                            <div class="instructor-name">
+
+                                @instructorName
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     OVERALL FEEDBACK
+                ================================================== -->
+
+                <div class="feedback-section">
+
+                    <div class="feedback-section-title">
+
+                        <i class="fa-solid fa-message"></i>
+
+                        Overall Feedback
+
+                    </div>
+
+
+                    <div class="feedback-box">
+
+                        <p>
+                            @overallFeedback
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     AREAS TO IMPROVE
+                ================================================== -->
+
+                <div class="feedback-section">
+
+                    <div class="feedback-section-title">
+
+                        <i class="fa-solid fa-bullseye"></i>
+
+                        Areas to Improve
+
+                    </div>
+
+
+                    <div class="feedback-box">
+
+                        @if (!string.IsNullOrWhiteSpace(
+                            Model.AreasToImprove))
+                        {
+                            <p>
+                                @Model.AreasToImprove
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="empty-feedback">
+                                No specific areas to improve
+                                were provided.
+                            </p>
+                        }
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     RECOMMENDATIONS
+                ================================================== -->
+
+                <div class="feedback-section">
+
+                    <div class="feedback-section-title">
+
+                        <i class="fa-solid fa-lightbulb"></i>
+
+                        Instructor Recommendations
+
+                    </div>
+
+
+                    <div class="feedback-box">
+
+                        @if (!string.IsNullOrWhiteSpace(
+                            Model.Recommendations))
+                        {
+                            <p>
+                                @Model.Recommendations
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="empty-feedback">
+                                No additional recommendations
+                                were provided.
+                            </p>
+                        }
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     SUBMITTED DATE
+                ================================================== -->
+
+                <div class="feedback-section">
+
+                    <div class="feedback-date">
+
+                        <i class="fa-regular fa-clock"></i>
+
+                        &nbsp;
+
+                        Submitted on
+
+                        @Model.CreatedDate.ToString(
+                            "dd MMMM yyyy, HH:mm")
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     FOOTER
+                ================================================== -->
+
+                <div class="feedback-footer">
+
+                    <a href="@Url.Action(
+                        "MyLessons",
+                        "Dashboard")"
+                       class="back-button">
+
+                        <i class="fa-solid fa-arrow-left"></i>
+
+                        Back to My Lessons
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

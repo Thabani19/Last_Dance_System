@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Last_Dance_System.Models
@@ -35,14 +34,28 @@ namespace Last_Dance_System.Models
 
         public bool IsActive { get; set; }
 
-        // Connection to ASP.NET Identity
+        // =========================================================
+        // ASP.NET IDENTITY CONNECTION
+        // =========================================================
+
         public string ApplicationUserId { get; set; }
 
         public virtual ApplicationUser ApplicationUser { get; set; }
 
-        // Navigation property
-        public virtual ICollection<LessonSchedule> LessonSchedules { get; set; }
-        public virtual ICollection<Review> Reviews { get; set; }
+        // =========================================================
+        // VEHICLE ASSIGNMENT
+        // =========================================================
 
+        public int? VehicleId { get; set; }
+
+        public virtual Vehicle Vehicle { get; set; }
+
+        // =========================================================
+        // NAVIGATION PROPERTIES
+        // =========================================================
+
+        public virtual ICollection<LessonSchedule> LessonSchedules { get; set; }
+
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }

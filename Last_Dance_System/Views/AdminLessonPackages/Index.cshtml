@@ -1,0 +1,1264 @@
+﻿@model IEnumerable<Last_Dance_System.Models.LessonPackage>
+
+@{
+    Layout = null;
+    ViewBag.Title = "Lesson Packages";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+   
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>Lesson Packages - Last Dance Driving School</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <style>
+
+            /* =========================================================
+           GLOBAL
+        ========================================================= */
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                background: #f4f7fb;
+                color: #172033;
+                font-family: "Segoe UI", Arial, sans-serif;
+            }
+
+            a {
+                text-decoration: none;
+            }
+
+
+            /* =========================================================
+           PAGE
+        ========================================================= */
+
+            .page {
+                min-height: 100vh;
+                padding: 35px 25px 60px;
+                background: radial-gradient( circle at 90% 0%, rgba(37,99,235,.08), transparent 30% ), linear-gradient( 180deg, #f8fbff 0%, #f3f7fc 100% );
+            }
+
+            .container {
+                width: 100%;
+                max-width: 1250px;
+                margin: 0 auto;
+            }
+
+
+            /* =========================================================
+           HEADER
+        ========================================================= */
+
+            .header {
+                position: relative;
+                background: #ffffff;
+                border: 1px solid #e1e8f2;
+                border-radius: 18px;
+                padding: 25px 28px;
+                margin-bottom: 20px;
+                box-shadow: 0 8px 25px rgba(20,33,61,.05);
+                overflow: hidden;
+            }
+
+                .header::before {
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 5px;
+                    height: 100%;
+                    background: #2563eb;
+                }
+
+            .header-content {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 25px;
+            }
+
+            .header-left {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .header-icon {
+                width: 56px;
+                height: 56px;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #eff6ff;
+                border: 1px solid #dbeafe;
+                border-radius: 14px;
+                color: #2563eb;
+                font-size: 22px;
+            }
+
+            .header-text h1 {
+                margin: 0 0 5px;
+                color: #14213d;
+                font-size: 27px;
+                font-weight: 800;
+                letter-spacing: -.3px;
+            }
+
+            .header-text p {
+                margin: 0;
+                color: #748196;
+                font-size: 12px;
+            }
+
+
+            /* =========================================================
+           HEADER BUTTONS
+        ========================================================= */
+
+            .header-actions {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                min-height: 42px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                padding: 10px 16px;
+                border-radius: 9px;
+                font-size: 11px;
+                font-weight: 800;
+                cursor: pointer;
+                transition: .2s ease;
+                white-space: nowrap;
+            }
+
+            /* Dashboard */
+
+            .btn-dashboard {
+                background: #ffffff;
+                color: #475569;
+                border: 1px solid #d9e2ef;
+            }
+
+                .btn-dashboard i {
+                    color: #2563eb;
+                }
+
+                .btn-dashboard:hover {
+                    background: #eff6ff;
+                    border-color: #bfdbfe;
+                    color: #2563eb;
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 15px rgba(37,99,235,.08);
+                }
+
+
+            /* Create */
+
+            .btn-create {
+                background: linear-gradient( 135deg, #2563eb, #1d4ed8 );
+                color: #ffffff !important;
+                border: 1px solid #1d4ed8;
+                box-shadow: 0 6px 16px rgba(37,99,235,.20);
+            }
+
+                .btn-create:hover {
+                    background: linear-gradient( 135deg, #1d4ed8, #1e40af );
+                    color: #ffffff !important;
+                    transform: translateY(-2px);
+                    box-shadow: 0 10px 22px rgba(37,99,235,.25);
+                }
+
+                .btn-create i {
+                    font-size: 11px;
+                }
+
+
+            /* =========================================================
+           MESSAGES
+        ========================================================= */
+
+            .message {
+                display: flex;
+                align-items: center;
+                gap: 9px;
+                margin-bottom: 18px;
+                padding: 13px 16px;
+                border-radius: 10px;
+                font-size: 11px;
+                font-weight: 700;
+            }
+
+            .success {
+                background: #ecfdf5;
+                border: 1px solid #bbf7d0;
+                color: #15803d;
+            }
+
+            .error {
+                background: #fff7f7;
+                border: 1px solid #fecaca;
+                color: #dc2626;
+            }
+
+
+            /* =========================================================
+           SUMMARY CARDS
+        ========================================================= */
+
+            .summary-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+                margin-bottom: 20px;
+            }
+
+            .summary-card {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                padding: 18px 20px;
+                background: #ffffff;
+                border: 1px solid #e1e8f2;
+                border-radius: 14px;
+                box-shadow: 0 6px 20px rgba(20,33,61,.04);
+                transition: .2s ease;
+            }
+
+                .summary-card:hover {
+                    transform: translateY(-3px);
+                    border-color: #bfdbfe;
+                    box-shadow: 0 10px 25px rgba(37,99,235,.08);
+                }
+
+            .summary-icon {
+                width: 44px;
+                height: 44px;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 11px;
+                background: #eff6ff;
+                color: #2563eb;
+            }
+
+                .summary-icon.green {
+                    background: #ecfdf5;
+                    color: #16a34a;
+                }
+
+                .summary-icon.gray {
+                    background: #f1f5f9;
+                    color: #64748b;
+                }
+
+            .summary-text strong {
+                display: block;
+                color: #172033;
+                font-size: 21px;
+                font-weight: 900;
+            }
+
+            .summary-text span {
+                display: block;
+                margin-top: 2px;
+                color: #7b8799;
+                font-size: 10px;
+            }
+
+
+            /* =========================================================
+           MAIN CARD
+        ========================================================= */
+
+            .card {
+                background: #ffffff;
+                border: 1px solid #e1e8f2;
+                border-radius: 17px;
+                overflow: hidden;
+                box-shadow: 0 8px 25px rgba(20,33,61,.05);
+            }
+
+
+            /* =========================================================
+           CARD HEADER
+        ========================================================= */
+
+            .card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px 24px;
+                border-bottom: 1px solid #edf1f6;
+            }
+
+            .card-title {
+                display: flex;
+                align-items: center;
+                gap: 9px;
+                margin: 0;
+                color: #172033;
+                font-size: 15px;
+                font-weight: 800;
+            }
+
+                .card-title i {
+                    color: #2563eb;
+                }
+
+            .package-count {
+                padding: 6px 10px;
+                background: #f8fafc;
+                border: 1px solid #e2e8f0;
+                border-radius: 20px;
+                color: #64748b;
+                font-size: 10px;
+                font-weight: 700;
+            }
+
+
+            /* =========================================================
+           TABLE
+        ========================================================= */
+
+            .table-wrapper {
+                width: 100%;
+                overflow-x: auto;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                min-width: 900px;
+            }
+
+            th {
+                padding: 13px 20px;
+                text-align: left;
+                background: #f8fafc;
+                color: #64748b;
+                font-size: 9px;
+                font-weight: 800;
+                text-transform: uppercase;
+                letter-spacing: .5px;
+                border-bottom: 1px solid #e5eaf1;
+            }
+
+            td {
+                padding: 16px 20px;
+                color: #334155;
+                font-size: 11px;
+                border-bottom: 1px solid #edf1f6;
+                vertical-align: middle;
+            }
+
+            tbody tr {
+                transition: .15s ease;
+            }
+
+                tbody tr:hover td {
+                    background: #f8fbff;
+                }
+
+                tbody tr:last-child td {
+                    border-bottom: none;
+                }
+
+
+            /* =========================================================
+           PACKAGE NAME
+        ========================================================= */
+
+            .package-name {
+                display: flex;
+                align-items: center;
+                gap: 11px;
+                min-width: 200px;
+            }
+
+            .package-icon {
+                width: 39px;
+                height: 39px;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 10px;
+                background: #eff6ff;
+                border: 1px solid #dbeafe;
+                color: #2563eb;
+            }
+
+            .package-info strong {
+                display: block;
+                color: #172033;
+                font-size: 12px;
+                font-weight: 800;
+            }
+
+            .package-info span {
+                display: block;
+                margin-top: 3px;
+                color: #94a3b8;
+                font-size: 9px;
+            }
+
+
+            /* =========================================================
+           LESSONS
+        ========================================================= */
+
+            .lesson-count {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                color: #334155;
+                font-weight: 700;
+            }
+
+                .lesson-count i {
+                    color: #2563eb;
+                    font-size: 10px;
+                }
+
+
+            /* =========================================================
+           PRICE
+        ========================================================= */
+
+            .price {
+                color: #2563eb;
+                font-size: 12px;
+                font-weight: 900;
+            }
+
+
+            /* =========================================================
+           STATUS
+        ========================================================= */
+
+            .status {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 10px;
+                border-radius: 20px;
+                font-size: 9px;
+                font-weight: 800;
+            }
+
+            .active {
+                background: #ecfdf5;
+                color: #15803d;
+                border: 1px solid #bbf7d0;
+            }
+
+            .inactive {
+                background: #f1f5f9;
+                color: #64748b;
+                border: 1px solid #e2e8f0;
+            }
+
+
+            /* =========================================================
+           ACTIONS
+        ========================================================= */
+
+            .actions {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                flex-wrap: wrap;
+            }
+
+            .action {
+                width: 34px;
+                height: 34px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 8px;
+                border: 1px solid transparent;
+                transition: .2s ease;
+                cursor: pointer;
+            }
+
+                .action:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 5px 12px rgba(20,33,61,.10);
+                }
+
+            /* Details */
+
+            .action-view {
+                background: #eff6ff;
+                color: #2563eb;
+                border-color: #dbeafe;
+            }
+
+                .action-view:hover {
+                    background: #2563eb;
+                    color: #ffffff;
+                }
+
+            /* Edit */
+
+            .action-edit {
+                background: #f0fdf4;
+                color: #16a34a;
+                border-color: #bbf7d0;
+            }
+
+                .action-edit:hover {
+                    background: #16a34a;
+                    color: #ffffff;
+                }
+
+            /* Activate */
+
+            .action-activate {
+                background: #ecfdf5;
+                color: #15803d;
+                border-color: #bbf7d0;
+            }
+
+                .action-activate:hover {
+                    background: #15803d;
+                    color: #ffffff;
+                }
+
+            /* Deactivate */
+
+            .action-deactivate {
+                background: #fff7ed;
+                color: #ea580c;
+                border-color: #fed7aa;
+            }
+
+                .action-deactivate:hover {
+                    background: #ea580c;
+                    color: #ffffff;
+                }
+
+            /* Delete */
+
+            .action-delete {
+                background: #fff7f7;
+                color: #dc2626;
+                border-color: #fecaca;
+            }
+
+                .action-delete:hover {
+                    background: #dc2626;
+                    color: #ffffff;
+                }
+
+
+            /* =========================================================
+           EMPTY STATE
+        ========================================================= */
+
+            .empty {
+                padding: 70px 20px;
+                text-align: center;
+            }
+
+            .empty-icon {
+                width: 68px;
+                height: 68px;
+                margin: 0 auto 17px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 17px;
+                background: #eff6ff;
+                border: 1px solid #dbeafe;
+                color: #2563eb;
+                font-size: 25px;
+            }
+
+            .empty h3 {
+                margin: 0 0 7px;
+                color: #172033;
+                font-size: 17px;
+                font-weight: 800;
+            }
+
+            .empty p {
+                margin: 0 0 18px;
+                color: #7b8799;
+                font-size: 11px;
+            }
+
+
+            /* =========================================================
+           TOOLTIP
+        ========================================================= */
+
+            [title] {
+                position: relative;
+            }
+
+
+            /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+            @@media (max-width: 900px) {
+
+                .summary-grid {
+                    grid-template-columns: 1fr;
+                }
+
+                .header-content {
+                    align-items: flex-start;
+                    flex-direction: column;
+                }
+
+                .header-actions {
+                    width: 100%;
+                }
+
+                    .header-actions .btn {
+                        flex: 1;
+                    }
+            }
+
+
+            @@media (max-width: 600px) {
+
+                .page {
+                    padding: 20px 12px 45px;
+                }
+
+                .header {
+                    padding: 20px;
+                }
+
+                .header-left {
+                    align-items: flex-start;
+                }
+
+                .header-text h1 {
+                    font-size: 22px;
+                }
+
+                .header-actions {
+                    flex-direction: column;
+                }
+
+                    .header-actions .btn {
+                        width: 100%;
+                    }
+
+                .card-header {
+                    align-items: flex-start;
+                    flex-direction: column;
+                    gap: 10px;
+                }
+
+                .package-count {
+                    align-self: flex-start;
+                }
+            }
+    </style>
+   
+
+</head>
+
+<body>
+
+    
+    <div class="page">
+
+        <div class="container">
+
+
+            <!-- =====================================================
+                 HEADER
+            ====================================================== -->
+
+            <div class="header">
+
+                <div class="header-content">
+
+
+                    <div class="header-left">
+
+                        <div class="header-icon">
+
+                            <i class="fa-solid fa-boxes-stacked"></i>
+
+                        </div>
+
+
+                        <div class="header-text">
+
+                            <h1>
+                                Lesson Packages
+                            </h1>
+
+                            <p>
+                                Create, edit and manage driving lesson packages.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =================================================
+                         HEADER ACTIONS
+                    ================================================== -->
+
+                    <div class="header-actions">
+
+
+                        <!-- BACK TO DASHBOARD -->
+
+                        <a href="@Url.Action("Index", "Admin")"
+                           class="btn btn-dashboard">
+
+                            <i class="fa-solid fa-arrow-left"></i>
+
+                            Back to Dashboard
+
+                        </a>
+
+
+                        <!-- CREATE PACKAGE -->
+
+                        <a href="@Url.Action("Create", "AdminLessonPackages")"
+                           class="btn btn-create">
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Add Package
+
+                        </a>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 MESSAGES
+            ====================================================== -->
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+
+                <div class="message success">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    <span>
+                        @TempData["SuccessMessage"]
+                    </span>
+
+                </div>
+
+            }
+
+
+            @if (TempData["ErrorMessage"] != null)
+            {
+
+                <div class="message error">
+
+                    <i class="fa-solid fa-circle-exclamation"></i>
+
+                    <span>
+                        @TempData["ErrorMessage"]
+                    </span>
+
+                </div>
+
+            }
+
+
+            <!-- =====================================================
+                 SUMMARY
+            ====================================================== -->
+
+            <div class="summary-grid">
+
+
+                <!-- TOTAL -->
+
+                <div class="summary-card">
+
+                    <div class="summary-icon">
+
+                        <i class="fa-solid fa-boxes-stacked"></i>
+
+                    </div>
+
+                    <div class="summary-text">
+
+                        <strong>
+                            @(Model == null ? 0 : Model.Count())
+                        </strong>
+
+                        <span>
+                            Total Packages
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ACTIVE -->
+
+                <div class="summary-card">
+
+                    <div class="summary-icon green">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+                    <div class="summary-text">
+
+                        <strong>
+                            @(Model == null
+                            ? 0
+                            : Model.Count(p => p.IsActive))
+                        </strong>
+
+                        <span>
+                            Active Packages
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- INACTIVE -->
+
+                <div class="summary-card">
+
+                    <div class="summary-icon gray">
+
+                        <i class="fa-solid fa-circle-xmark"></i>
+
+                    </div>
+
+                    <div class="summary-text">
+
+                        <strong>
+                            @(Model == null
+                            ? 0
+                            : Model.Count(p => !p.IsActive))
+                        </strong>
+
+                        <span>
+                            Inactive Packages
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =====================================================
+                 MAIN CARD
+            ====================================================== -->
+
+            <div class="card">
+
+
+                <!-- CARD HEADER -->
+
+                <div class="card-header">
+
+                    <h2 class="card-title">
+
+                        <i class="fa-solid fa-layer-group"></i>
+
+                        All Lesson Packages
+
+                    </h2>
+
+
+                    <span class="package-count">
+
+                        @(Model == null ? 0 : Model.Count())
+                        @(Model != null && Model.Count() == 1
+                        ? "Package"
+                        : "Packages")
+
+                    </span>
+
+                </div>
+
+
+                <!-- =================================================
+                     PACKAGES EXIST
+                ================================================== -->
+
+                @if (Model != null && Model.Any())
+                {
+
+                    <div class="table-wrapper">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Package
+                                    </th>
+
+                                    <th>
+                                        Lessons
+                                    </th>
+
+                                    <th>
+                                        Price
+                                    </th>
+
+                                    <th>
+                                        Status
+                                    </th>
+
+                                    <th>
+                                        Actions
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+
+                                @foreach (var package in Model)
+                                {
+
+                                    <tr>
+
+
+                                        <!-- PACKAGE -->
+
+                                        <td>
+
+                                            <div class="package-name">
+
+                                                <div class="package-icon">
+
+                                                    <i class="fa-solid fa-box"></i>
+
+                                                </div>
+
+                                                <div class="package-info">
+
+                                                    <strong>
+                                                        @package.PackageName
+                                                    </strong>
+
+                                                    <span>
+                                                        Package #@package.LessonPackageId
+                                                    </span>
+
+                                                </div>
+
+                                            </div>
+
+                                        </td>
+
+
+                                        <!-- LESSONS -->
+
+                                        <td>
+
+                                            <span class="lesson-count">
+
+                                                <i class="fa-solid fa-car"></i>
+
+                                                @package.NumberOfLessons
+
+                                                @(package.NumberOfLessons == 1
+                                                ? "Lesson"
+                                                : "Lessons")
+
+                                            </span>
+
+                                        </td>
+
+
+                                        <!-- PRICE -->
+
+                                        <td>
+
+                                            <span class="price">
+
+                                                R @package.Price.ToString("N2")
+
+                                            </span>
+
+                                        </td>
+
+
+                                        <!-- STATUS -->
+
+                                        <td>
+
+                                            @if (package.IsActive)
+                                            {
+
+                                                <span class="status active">
+
+                                                    <i class="fa-solid fa-circle-check"></i>
+
+                                                    Active
+
+                                                </span>
+
+                                            }
+                                            else
+                                            {
+
+                                                <span class="status inactive">
+
+                                                    <i class="fa-solid fa-circle-xmark"></i>
+
+                                                    Inactive
+
+                                                </span>
+
+                                            }
+
+                                        </td>
+
+
+                                        <!-- ACTIONS -->
+
+                                        <td>
+
+                                            <div class="actions">
+
+
+                                                <!-- DETAILS -->
+
+                                                <a href="@Url.Action(
+                                                "Details",
+                                                "AdminLessonPackages",
+                                                new
+                                                {
+                                                    id = package.LessonPackageId
+                                                })"
+                                                   class="action action-view"
+                                                   title="View Details">
+
+                                                    <i class="fa-solid fa-eye"></i>
+
+                                                </a>
+
+
+                                                <!-- EDIT -->
+
+                                                <a href="@Url.Action(
+                                                "Edit",
+                                                "AdminLessonPackages",
+                                                new
+                                                {
+                                                    id = package.LessonPackageId
+                                                })"
+                                                   class="action action-edit"
+                                                   title="Edit Package">
+
+                                                    <i class="fa-solid fa-pen"></i>
+
+                                                </a>
+
+
+                                                <!-- ACTIVATE -->
+
+                                                @if (!package.IsActive)
+                                                {
+
+                                                    using (Html.BeginForm(
+                                                        "Activate",
+                                                        "AdminLessonPackages",
+                                                        new
+                                                        {
+                                                            id = package.LessonPackageId
+                                                        },
+                                                        FormMethod.Post,
+                                                        new
+                                                        {
+                                                            style = "display:inline;"
+                                                        }))
+                                                    {
+
+                                                        @Html.AntiForgeryToken()
+
+                                                        <button type="submit"
+                                                                class="action action-activate"
+                                                                title="Activate Package"
+                                                                onclick="return confirm('Are you sure you want to activate this package?');">
+
+                                                            <i class="fa-solid fa-toggle-on"></i>
+
+                                                        </button>
+
+                                                    }
+
+                                                }
+
+
+                                                <!-- DEACTIVATE -->
+
+                                                @if (package.IsActive)
+                                                {
+
+                                                    using (Html.BeginForm(
+                                                        "Deactivate",
+                                                        "AdminLessonPackages",
+                                                        new
+                                                        {
+                                                            id = package.LessonPackageId
+                                                        },
+                                                        FormMethod.Post,
+                                                        new
+                                                        {
+                                                            style = "display:inline;"
+                                                        }))
+                                                    {
+
+                                                        @Html.AntiForgeryToken()
+
+                                                        <button type="submit"
+                                                                class="action action-deactivate"
+                                                                title="Deactivate Package"
+                                                                onclick="return confirm('Are you sure you want to deactivate this package?');">
+
+                                                            <i class="fa-solid fa-toggle-off"></i>
+
+                                                        </button>
+
+                                                    }
+
+                                                }
+
+
+                                                <!-- DELETE -->
+
+                                                <a href="@Url.Action(
+                                                "Delete",
+                                                "AdminLessonPackages",
+                                                new
+                                                {
+                                                    id = package.LessonPackageId
+                                                })"
+                                                   class="action action-delete"
+                                                   title="Delete Package"
+                                                   onclick="return confirm('Are you sure you want to delete this lesson package? This action cannot be undone.');">
+
+                                                    <i class="fa-solid fa-trash"></i>
+
+                                                </a>
+
+
+                                            </div>
+
+                                        </td>
+
+
+                                    </tr>
+
+                                }
+
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                }
+                else
+                {
+
+                    <!-- =================================================
+                         EMPTY STATE
+                    ================================================== -->
+
+                    <div class="empty">
+
+                        <div class="empty-icon">
+
+                            <i class="fa-solid fa-box-open"></i>
+
+                        </div>
+
+
+                        <h3>
+                            No Lesson Packages
+                        </h3>
+
+
+                        <p>
+                            There are currently no lesson packages.
+                        </p>
+
+
+                        <a href="@Url.Action("Create", "AdminLessonPackages")"
+                           class="btn btn-create">
+
+                            <i class="fa-solid fa-plus"></i>
+
+                            Create First Package
+
+                        </a>
+
+                    </div>
+
+                }
+
+
+            </div>
+
+        </div>
+
+    </div>
+    
+
+</body>
+
+</html>

@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Mvc;
@@ -10,15 +12,24 @@ namespace Last_Dance_System.Controllers
     [Authorize]
     public class LessonsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ApplicationDbContext db;
+
+        public LessonsController()
+        {
+            db = new ApplicationDbContext();
+        }
 
         // ============================================================
         // MY LESSONS
         // ============================================================
 
+        [HttpGet]
         public ActionResult Index()
         {
-            // Get currently logged-in Application User ID
+            // ========================================================
+            // GET CURRENTLY LOGGED-IN USER
+            // ========================================================
+
             string userId = User.Identity.GetUserId();
 
             if (string.IsNullOrEmpty(userId))
@@ -27,7 +38,7 @@ namespace Last_Dance_System.Controllers
             }
 
             // ========================================================
-            // FIND THE STUDENT REGISTRATION
+            // FIND STUDENT REGISTRATION
             // ========================================================
 
             var student = db.Registrations
@@ -43,17 +54,72 @@ namespace Last_Dance_System.Controllers
             // ========================================================
 
             var bookings = db.Bookings
+                .Include(b => b.Registration)
+                .Include(b => b.StudentPackage)
+
                 .Include(b => b.LessonSchedule)
                 .Include(b => b.LessonSchedule.LessonType)
                 .Include(b => b.LessonSchedule.Instructor)
                 .Include(b => b.LessonSchedule.Vehicle)
-                .Where(b => b.RegistrationId == student.RegistrationId)
+
+                .Where(b =>
+                    b.RegistrationId == student.RegistrationId)
+
                 .OrderBy(b => b.LessonSchedule.LessonDate)
                 .ThenBy(b => b.LessonSchedule.StartTime)
+
                 .ToList();
 
             // ========================================================
-            // SHOW ALL STUDENT BOOKINGS
+            // GET INSTRUCTOR FEEDBACK
+            // ========================================================
+            //
+            // Instructor feedback is stored in the Review table.
+            //
+            // ReviewType = "InstructorSession"
+            //
+            // BookingId connects the feedback to the exact lesson.
+            //
+            // IsApproved = true means the feedback is approved and
+            // can be shown to the student.
+            // ========================================================
+
+            var bookingIds = bookings
+                .Select(b => b.BookingId)
+                .ToList();
+
+            var instructorFeedback = db.Reviews
+                .Where(r =>
+                    bookingIds.Contains(r.BookingId) &&
+                    r.ReviewType == "InstructorSession" &&
+                    r.IsApproved)
+                .OrderByDescending(r => r.ReviewDate)
+                .ToList();
+
+            // ========================================================
+            // CREATE DICTIONARY
+            // ========================================================
+            //
+            // This allows the Razor view to quickly find the feedback
+            // belonging to each BookingId.
+            // ========================================================
+
+            var instructorFeedbackByBooking =
+                instructorFeedback
+                    .GroupBy(r => r.BookingId)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.First());
+
+            // ========================================================
+            // SEND INSTRUCTOR FEEDBACK TO VIEW
+            // ========================================================
+
+            ViewBag.InstructorFeedback =
+                instructorFeedbackByBooking;
+
+            // ========================================================
+            // RETURN ALL BOOKINGS TO MY LESSONS VIEW
             // ========================================================
 
             return View(bookings);
@@ -64,14 +130,22 @@ namespace Last_Dance_System.Controllers
         // LESSON DETAILS
         // ============================================================
 
+        [HttpGet]
         public ActionResult Details(int? id)
         {
+            // ========================================================
+            // VALIDATE BOOKING ID
+            // ========================================================
+
             if (!id.HasValue)
             {
                 return RedirectToAction("Index");
             }
 
-            // Get currently logged-in Application User ID
+            // ========================================================
+            // GET CURRENTLY LOGGED-IN USER
+            // ========================================================
+
             string userId = User.Identity.GetUserId();
 
             if (string.IsNullOrEmpty(userId))
@@ -80,34 +154,72 @@ namespace Last_Dance_System.Controllers
             }
 
             // ========================================================
-            // FIND STUDENT
+            // FIND STUDENT REGISTRATION
             // ========================================================
 
             var student = db.Registrations
-                .FirstOrDefault(r => r.ApplicationUserId == userId);
+                .FirstOrDefault(r =>
+                    r.ApplicationUserId == userId);
 
             if (student == null)
             {
-                return RedirectToAction("Register", "Account");
+                return RedirectToAction(
+                    "Register",
+                    "Account");
             }
 
             // ========================================================
-            // FIND BOOKING BELONGING TO THIS STUDENT
+            // FIND BOOKING
+            //
+            // IMPORTANT:
+            // The booking must belong to the logged-in student.
             // ========================================================
 
             var booking = db.Bookings
+                .Include(b => b.Registration)
+                .Include(b => b.StudentPackage)
+
                 .Include(b => b.LessonSchedule)
                 .Include(b => b.LessonSchedule.LessonType)
                 .Include(b => b.LessonSchedule.Instructor)
                 .Include(b => b.LessonSchedule.Vehicle)
+
                 .FirstOrDefault(b =>
                     b.BookingId == id.Value &&
-                    b.RegistrationId == student.RegistrationId);
+                    b.RegistrationId ==
+                    student.RegistrationId);
+
+            // ========================================================
+            // BOOKING NOT FOUND
+            // ========================================================
 
             if (booking == null)
             {
-                return HttpNotFound("Lesson booking was not found.");
+                return HttpNotFound(
+                    "Lesson booking was not found.");
             }
+
+            // ========================================================
+            // GET INSTRUCTOR FEEDBACK FOR THIS LESSON
+            // ========================================================
+
+            var instructorFeedback = db.Reviews
+                .Include(r => r.ReviewerInstructor)
+                .FirstOrDefault(r =>
+                    r.BookingId == booking.BookingId &&
+                    r.ReviewType == "InstructorSession" &&
+                    r.IsApproved);
+
+            // ========================================================
+            // SEND FEEDBACK TO DETAILS VIEW
+            // ========================================================
+
+            ViewBag.InstructorFeedback =
+                instructorFeedback;
+
+            // ========================================================
+            // RETURN DETAILS VIEW
+            // ========================================================
 
             return View(booking);
         }
@@ -117,7 +229,8 @@ namespace Last_Dance_System.Controllers
         // DISPOSE
         // ============================================================
 
-        protected override void Dispose(bool disposing)
+        protected override void Dispose(
+            bool disposing)
         {
             if (disposing)
             {
@@ -128,3 +241,4 @@ namespace Last_Dance_System.Controllers
         }
     }
 }
+

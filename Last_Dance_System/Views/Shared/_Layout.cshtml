@@ -1,41 +1,188 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html>
 <head>
+
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewBag.Title - Last Dance Driving School</title>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <!-- Main CSS -->
     @Styles.Render("~/Content/css")
+
     @Scripts.Render("~/bundles/modernizr")
 
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+
+    <!-- =====================================================
+         NAVIGATION BAR
+         ===================================================== -->
+
+    <nav class="navbar navbar-expand-sm navbar-light lastdance-navbar">
+
         <div class="container">
-            @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+
+            <!-- BRAND -->
+
+            @Html.ActionLink(
+                "Last Dance",
+                "Index",
+                "Home",
+                new { area = "" },
+                new
+                {
+                    @class = "navbar-brand lastdance-brand"
+                }
+            )
+
+
+            <!-- MOBILE MENU BUTTON -->
+
+            <button type="button"
+                    class="navbar-toggler"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#mainNavigation"
+                    aria-controls="mainNavigation"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation">
+
                 <span class="navbar-toggler-icon"></span>
+
             </button>
-            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+
+
+            <!-- NAVIGATION -->
+
+            <div class="collapse navbar-collapse"
+                 id="mainNavigation">
+
+                <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+
+                    <!-- HOME -->
+
+                    <li class="nav-item">
+
+                        @Html.ActionLink(
+                            "Home",
+                            "Index",
+                            "Home",
+                            new { area = "" },
+                            new
+                            {
+                                @class = "nav-link"
+                            }
+                        )
+
+                    </li>
+
+
+                    <!-- ABOUT -->
+
+                    <li class="nav-item">
+
+                        @Html.ActionLink(
+                            "About",
+                            "About",
+                            "Home",
+                            new { area = "" },
+                            new
+                            {
+                                @class = "nav-link"
+                            }
+                        )
+
+                    </li>
+
+
+                    <!-- CONTACT -->
+
+                    <li class="nav-item">
+
+                        @Html.ActionLink(
+                            "Contact",
+                            "Contact",
+                            "Home",
+                            new { area = "" },
+                            new
+                            {
+                                @class = "nav-link"
+                            }
+                        )
+
+                    </li>
+
                 </ul>
-                @Html.Partial("_LoginPartial")
+
+
+                <!-- LOGIN / ACCOUNT -->
+
+                <div class="lastdance-account">
+
+                    @Html.Partial("_LoginPartial")
+
+                </div>
+
             </div>
+
         </div>
+
     </nav>
-    <div class="container body-content">
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+
+    <main class="body-content">
+
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
-    </div>
+
+    </main>
+
+
+    <!-- =====================================================
+         FOOTER
+         ===================================================== -->
+
+    <footer class="lastdance-footer">
+
+        <div class="container">
+
+            <p>
+
+                &copy; @DateTime.Now.Year
+
+                <span>
+                    Last Dance Driving School
+                </span>
+
+                — All Rights Reserved.
+
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
 
     @Scripts.Render("~/bundles/jquery")
+
     @Scripts.Render("~/bundles/bootstrap")
+
     @RenderSection("scripts", required: false)
+
 </body>
 </html>
+

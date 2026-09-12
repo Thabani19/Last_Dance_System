@@ -1,0 +1,941 @@
+﻿
+@model Last_Dance_System.Models.InstructorFeedback
+
+@{
+    Layout = null;
+
+    ViewBag.Title = "Give Student Feedback";
+
+    var booking =
+        ViewBag.Booking as Last_Dance_System.Models.Booking;
+
+    var instructor =
+        ViewBag.Instructor as Last_Dance_System.Models.Instructor;
+
+
+    // =========================================================
+    // SAFE DISPLAY VALUES
+    // =========================================================
+
+    string studentName = "Student";
+
+    if (booking != null &&
+        booking.Registration != null)
+    {
+        studentName =
+            (
+                booking.Registration.FirstName +
+                " " +
+                booking.Registration.LastName
+            ).Trim();
+    }
+
+
+    string lessonDate = "N/A";
+    string lessonTime = "N/A";
+    string lessonType = "Driving Lesson";
+    string vehicleInfo = "N/A";
+
+
+    if (booking != null &&
+        booking.LessonSchedule != null)
+    {
+        lessonDate =
+            booking.LessonSchedule.LessonDate
+                .ToString("dd MMMM yyyy");
+
+        lessonTime =
+            booking.LessonSchedule.StartTime
+                .ToString(@"hh\:mm")
+            + " - "
+            +
+            booking.LessonSchedule.EndTime
+                .ToString(@"hh\:mm");
+
+
+        if (booking.LessonSchedule.LessonType != null)
+        {
+            lessonType =
+                booking.LessonSchedule.LessonType
+                    .LessonTypeName;
+        }
+
+
+        if (booking.LessonSchedule.Vehicle != null)
+        {
+            vehicleInfo =
+                booking.LessonSchedule.Vehicle
+                    .RegistrationNumber;
+        }
+    }
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>
+        Give Student Feedback
+    </title>
+
+
+    <!-- =====================================================
+         FONT AWESOME
+    ====================================================== -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+
+    <style>
+
+        /* =====================================================
+           GLOBAL
+        ====================================================== */
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: #f4f8fc;
+            color: #1f2937;
+        }
+
+
+        /* =====================================================
+           TOP NAVIGATION
+        ====================================================== */
+
+        .topbar {
+            height: 72px;
+            background: #ffffff;
+            border-bottom: 1px solid #e3ebf4;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #0d47a1;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #e8f1ff;
+            color: #1565c0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #1565c0;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+
+            .back-link:hover {
+                color: #0d47a1;
+                transform: translateX(-2px);
+            }
+
+
+        /* =====================================================
+           PAGE CONTAINER
+        ====================================================== */
+
+        .page-container {
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 40px 20px 60px;
+        }
+
+
+        /* =====================================================
+           PAGE HEADER
+        ====================================================== */
+
+        .page-header {
+            margin-bottom: 28px;
+        }
+
+
+            .page-header h1 {
+                margin: 0 0 8px;
+                font-size: 30px;
+                color: #0d47a1;
+                font-weight: 700;
+            }
+
+
+            .page-header p {
+                margin: 0;
+                color: #64748b;
+                font-size: 15px;
+            }
+
+
+        /* =====================================================
+           LESSON INFORMATION CARD
+        ====================================================== */
+
+        .lesson-card {
+            background: #ffffff;
+            border: 1px solid #e1eaf3;
+            border-radius: 16px;
+            padding: 26px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(30, 64, 175, 0.06);
+        }
+
+
+        .lesson-card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 22px;
+            color: #0d47a1;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+
+            .lesson-card-title i {
+                color: #1565c0;
+            }
+
+
+        .lesson-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 15px;
+            background: #f7faff;
+            border: 1px solid #e8eef6;
+            border-radius: 12px;
+        }
+
+
+        .info-icon {
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            border-radius: 10px;
+            background: #e8f1ff;
+            color: #1565c0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+
+        .info-label {
+            font-size: 12px;
+            color: #64748b;
+            margin-bottom: 3px;
+        }
+
+
+        .info-value {
+            font-size: 15px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+
+        /* =====================================================
+           FEEDBACK FORM CARD
+        ====================================================== */
+
+        .form-card {
+            background: #ffffff;
+            border: 1px solid #e1eaf3;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(30, 64, 175, 0.06);
+        }
+
+
+        .form-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #0d47a1;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+
+        .form-description {
+            color: #64748b;
+            font-size: 14px;
+            margin: 0 0 25px;
+        }
+
+
+        /* =====================================================
+           FORM GROUP
+        ====================================================== */
+
+        .form-group {
+            margin-bottom: 23px;
+        }
+
+
+            .form-group label {
+                display: block;
+                font-size: 14px;
+                font-weight: 600;
+                color: #334155;
+                margin-bottom: 8px;
+            }
+
+
+        .required {
+            color: #dc2626;
+        }
+
+
+        textarea {
+            width: 100%;
+            min-height: 145px;
+            padding: 14px 15px;
+            border: 1px solid #d5dfeb;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 14px;
+            color: #1e293b;
+            background: #ffffff;
+            resize: vertical;
+            outline: none;
+            transition: 0.2s;
+        }
+
+
+            textarea:focus {
+                border-color: #1976d2;
+                box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.10);
+            }
+
+
+            textarea::placeholder {
+                color: #94a3b8;
+            }
+
+
+        .field-hint {
+            margin-top: 7px;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           VALIDATION
+        ====================================================== */
+
+        .validation-summary {
+            background: #fff1f2;
+            border: 1px solid #fecdd3;
+            color: #be123c;
+            border-radius: 10px;
+            padding: 13px 15px;
+            margin-bottom: 22px;
+            font-size: 14px;
+        }
+
+
+        .field-validation-error {
+            display: block;
+            color: #dc2626;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ====================================================== */
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            padding-top: 8px;
+            border-top: 1px solid #edf2f7;
+        }
+
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+
+
+        .btn-primary {
+            background: #1565c0;
+            color: #ffffff;
+        }
+
+
+            .btn-primary:hover {
+                background: #0d47a1;
+                transform: translateY(-1px);
+                box-shadow: 0 5px 14px rgba(21, 101, 192, 0.22);
+            }
+
+
+        .btn-secondary {
+            background: #ffffff;
+            color: #475569;
+            border: 1px solid #d5dfeb;
+        }
+
+
+            .btn-secondary:hover {
+                background: #f8fafc;
+                border-color: #b9c7d8;
+            }
+
+
+        /* =====================================================
+           RESPONSIVE
+        ====================================================== */
+
+        @@media (max-width: 700px) {
+
+            .topbar {
+                padding: 0 18px;
+            }
+
+
+            .page-container {
+                padding: 28px 15px 45px;
+            }
+
+
+            .page-header h1 {
+                font-size: 25px;
+            }
+
+
+            .lesson-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .lesson-card,
+            .form-card {
+                padding: 20px;
+            }
+
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         TOP BAR
+    ====================================================== -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+
+                <i class="fa-solid fa-comment-dots"></i>
+
+            </div>
+
+            <span>
+                Instructor Feedback
+            </span>
+
+        </div>
+
+
+        <a href="@Url.Action("MyLessons", "InstructorDashboard")"
+           class="back-link">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Back to My Lessons
+
+        </a>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
+    <main class="page-container">
+
+
+        <!-- =================================================
+             PAGE HEADER
+        ================================================== -->
+
+        <div class="page-header">
+
+            <h1>
+                Give Student Feedback
+            </h1>
+
+            <p>
+                Provide constructive feedback about the student's
+                completed driving lesson.
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             LESSON INFORMATION
+        ================================================== -->
+
+        <section class="lesson-card">
+
+            <div class="lesson-card-title">
+
+                <i class="fa-solid fa-car-side"></i>
+
+                Lesson Information
+
+            </div>
+
+
+            <div class="lesson-grid">
+
+
+                <!-- STUDENT -->
+
+                <div class="info-item">
+
+                    <div class="info-icon">
+
+                        <i class="fa-solid fa-user"></i>
+
+                    </div>
+
+                    <div>
+
+                        <div class="info-label">
+                            Student
+                        </div>
+
+                        <div class="info-value">
+                            @studentName
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- DATE -->
+
+                <div class="info-item">
+
+                    <div class="info-icon">
+
+                        <i class="fa-solid fa-calendar-days"></i>
+
+                    </div>
+
+                    <div>
+
+                        <div class="info-label">
+                            Lesson Date
+                        </div>
+
+                        <div class="info-value">
+                            @lessonDate
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TIME -->
+
+                <div class="info-item">
+
+                    <div class="info-icon">
+
+                        <i class="fa-solid fa-clock"></i>
+
+                    </div>
+
+                    <div>
+
+                        <div class="info-label">
+                            Lesson Time
+                        </div>
+
+                        <div class="info-value">
+                            @lessonTime
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- LESSON TYPE -->
+
+                <div class="info-item">
+
+                    <div class="info-icon">
+
+                        <i class="fa-solid fa-road"></i>
+
+                    </div>
+
+                    <div>
+
+                        <div class="info-label">
+                            Lesson Type
+                        </div>
+
+                        <div class="info-value">
+                            @lessonType
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- VEHICLE -->
+
+                <div class="info-item">
+
+                    <div class="info-icon">
+
+                        <i class="fa-solid fa-car"></i>
+
+                    </div>
+
+                    <div>
+
+                        <div class="info-label">
+                            Vehicle
+                        </div>
+
+                        <div class="info-value">
+                            @vehicleInfo
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- STATUS -->
+
+                <div class="info-item">
+
+                    <div class="info-icon">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+                    <div>
+
+                        <div class="info-label">
+                            Lesson Status
+                        </div>
+
+                        <div class="info-value">
+                            Completed
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             FEEDBACK FORM
+        ================================================== -->
+
+        <section class="form-card">
+
+
+            <div class="form-title">
+
+                <i class="fa-solid fa-pen-to-square"></i>
+
+                Student Performance Feedback
+
+            </div>
+
+
+            <p class="form-description">
+
+                Share your observations from the lesson.
+                Focus on the student's progress, strengths,
+                and areas that require further practice.
+
+            </p>
+
+
+            @using (Html.BeginForm(
+                "GiveFeedback",
+                "InstructorDashboard",
+                FormMethod.Post,
+                new { autocomplete = "off" }))
+            {
+
+                @Html.AntiForgeryToken()
+
+                @Html.HiddenFor(
+                    m => m.BookingId)
+
+
+                <!-- VALIDATION -->
+
+                if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="validation-summary">
+
+                        @Html.ValidationSummary(
+                            true,
+                            "Please correct the following before submitting.")
+
+                    </div>
+                }
+
+
+                <!-- =================================================
+                     FEEDBACK
+                ================================================== -->
+
+                <div class="form-group">
+
+                    <label for="Feedback">
+
+                        Overall Feedback
+
+                        <span class="required">
+                            *
+                        </span>
+
+                    </label>
+
+
+                    @Html.TextAreaFor(
+                        m => m.Feedback,
+                        new
+                        {
+                            placeholder =
+                                "Describe the student's performance during the lesson, including progress, strengths and important observations..."
+                        })
+
+
+                    @Html.ValidationMessageFor(
+                        m => m.Feedback)
+
+
+                    <div class="field-hint">
+
+                        Example: Describe how the student handled
+                        vehicle control, road awareness, observations,
+                        and practical driving skills.
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     AREAS TO IMPROVE
+                ================================================== -->
+
+                <div class="form-group">
+
+                    <label for="AreasToImprove">
+
+                        Areas to Improve
+
+                    </label>
+
+
+                    @Html.TextAreaFor(
+                        m => m.AreasToImprove,
+                        new
+                        {
+                            placeholder =
+                                "Mention specific skills or areas the student should continue practising..."
+                        })
+
+
+                    @Html.ValidationMessageFor(
+                        m => m.AreasToImprove)
+
+
+                    <div class="field-hint">
+
+                        Be specific and constructive so the student
+                        knows what to work on before the next lesson.
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     RECOMMENDATIONS
+                ================================================== -->
+
+                <div class="form-group">
+
+                    <label for="Recommendations">
+
+                        Instructor Recommendations
+
+                    </label>
+
+
+                    @Html.TextAreaFor(
+                        m => m.Recommendations,
+                        new
+                        {
+                            placeholder =
+                                "Provide recommendations for the student's next lesson or future practice..."
+                        })
+
+
+                    @Html.ValidationMessageFor(
+                        m => m.Recommendations)
+
+
+                    <div class="field-hint">
+
+                        Suggest practical steps that can help the
+                        student improve.
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     ACTION BUTTONS
+                ================================================== -->
+
+                <div class="form-actions">
+
+
+                    <a href="@Url.Action(
+                        "MyLessons",
+                        "InstructorDashboard")"
+                       class="btn btn-secondary">
+
+                        <i class="fa-solid fa-xmark"></i>
+
+                        Cancel
+
+                    </a>
+
+
+                    <button type="submit"
+                            class="btn btn-primary">
+
+                        <i class="fa-solid fa-paper-plane"></i>
+
+                        Submit Feedback
+
+                    </button>
+
+                </div>
+
+            }
+
+        </section>
+
+    </main>
+
+
+</body>
+
+</html>

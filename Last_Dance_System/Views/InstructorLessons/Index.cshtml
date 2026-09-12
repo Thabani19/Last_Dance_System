@@ -1,0 +1,1551 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Linq
+@using Last_Dance_System.Models
+
+@model IEnumerable<LessonSchedule>
+
+@{
+    Layout = null;
+    ViewBag.Title = "My Lessons";
+
+    var instructor = ViewBag.Instructor as Instructor;
+
+    var allLessons = Model ?? Enumerable.Empty<LessonSchedule>();
+
+    var today = DateTime.Today;
+
+
+    // =========================================================
+    // TODAY'S ACTIVE LESSONS
+    // =========================================================
+
+    var todaysLessons = allLessons
+        .Where(l =>
+            l.LessonDate.Date == today &&
+            l.Bookings != null &&
+            l.Bookings.Any(b =>
+                b.Registration != null &&
+                !string.Equals(
+                    b.Status,
+                    "Cancelled",
+                    StringComparison.OrdinalIgnoreCase) &&
+                !string.Equals(
+                    b.Status,
+                    "Completed",
+                    StringComparison.OrdinalIgnoreCase)))
+        .OrderBy(l => l.StartTime)
+        .ToList();
+
+
+    // =========================================================
+    // UPCOMING LESSONS
+    // =========================================================
+
+    var upcomingLessons = allLessons
+        .Where(l =>
+            l.LessonDate.Date > today &&
+            l.Bookings != null &&
+            l.Bookings.Any(b =>
+                b.Registration != null &&
+                !string.Equals(
+                    b.Status,
+                    "Cancelled",
+                    StringComparison.OrdinalIgnoreCase) &&
+                !string.Equals(
+                    b.Status,
+                    "Completed",
+                    StringComparison.OrdinalIgnoreCase)))
+        .OrderBy(l => l.LessonDate)
+        .ThenBy(l => l.StartTime)
+        .ToList();
+
+
+    // =========================================================
+    // COMPLETED LESSONS
+    // =========================================================
+
+    var completedLessons = allLessons
+        .Where(l =>
+            l.Bookings != null &&
+            l.Bookings.Any(b =>
+                b.Registration != null &&
+                string.Equals(
+                    b.Status,
+                    "Completed",
+                    StringComparison.OrdinalIgnoreCase)))
+        .OrderByDescending(l => l.LessonDate)
+        .ThenByDescending(l => l.StartTime)
+        .ToList();
+}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>My Lessons</title>
+
+
+    <!-- =========================================================
+         FONT AWESOME
+    ========================================================== -->
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+
+    <style>
+
+        /* =========================================================
+           GLOBAL
+        ========================================================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f7fb;
+            color: #172033;
+            font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+        }
+
+        button,
+        input,
+        textarea {
+            font-family: inherit;
+        }
+
+
+        /* =========================================================
+           PAGE
+        ========================================================= */
+
+        .lessons-page {
+            min-height: 100vh;
+            padding: 40px 25px 70px;
+            background: radial-gradient( circle at 90% 0%, rgba(37, 99, 235, .08), transparent 30% ), linear-gradient( 180deg, #f8fbff 0%, #f3f7fc 100% );
+        }
+
+        .lessons-wrapper {
+            width: 100%;
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+
+
+        /* =========================================================
+           HEADER
+        ========================================================= */
+
+        .lessons-header {
+            position: relative;
+            background: #ffffff;
+            border: 1px solid #e1e8f2;
+            border-radius: 17px;
+            padding: 25px 28px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(20, 33, 61, .05);
+            overflow: hidden;
+        }
+
+            .lessons-header::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 4px;
+                height: 100%;
+                background: #2563eb;
+            }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+
+        /* =========================================================
+           HEADER ICON
+        ========================================================= */
+
+        .header-icon {
+            width: 58px;
+            height: 58px;
+            min-width: 58px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient( 135deg, #eff6ff, #dbeafe );
+            border: 1px solid #cfe0fb;
+            border-radius: 14px;
+            color: #2563eb;
+            font-size: 21px;
+            box-shadow: 0 6px 16px rgba(37, 99, 235, .08);
+        }
+
+        .header-text h1 {
+            margin: 0 0 5px;
+            color: #14213d;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -.4px;
+        }
+
+        .header-text p {
+            margin: 0;
+            color: #748196;
+            font-size: 13px;
+        }
+
+        .instructor-name {
+            color: #2563eb;
+            font-weight: 800;
+        }
+
+
+        /* =========================================================
+           BACK BUTTON
+        ========================================================= */
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 17px;
+            border-radius: 9px;
+            background: #ffffff;
+            border: 1px solid #d9e2ef;
+            color: #455468;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(20, 33, 61, .04);
+            transition: all .2s ease;
+        }
+
+            .back-button i {
+                color: #2563eb;
+            }
+
+            .back-button:hover {
+                background: #2563eb;
+                border-color: #2563eb;
+                color: #ffffff;
+                text-decoration: none;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(37, 99, 235, .18);
+            }
+
+                .back-button:hover i {
+                    color: #ffffff;
+                }
+
+
+        /* =========================================================
+           MESSAGES
+        ========================================================= */
+
+        .message-success,
+        .message-error {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 17px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .message-success {
+            background: #ecfdf5;
+            border: 1px solid #bbf7d0;
+            color: #15803d;
+        }
+
+            .message-success i {
+                color: #16a34a;
+            }
+
+        .message-error {
+            background: #fff7f7;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+        }
+
+            .message-error i {
+                color: #dc2626;
+            }
+
+
+        /* =========================================================
+           SECTION
+        ========================================================= */
+
+        .lesson-section {
+            background: #ffffff;
+            border: 1px solid #e1e8f2;
+            border-radius: 17px;
+            padding: 24px;
+            margin-bottom: 22px;
+            box-shadow: 0 8px 25px rgba(20, 33, 61, .05);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 16px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #edf1f6;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 0;
+            color: #17213a;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+            .section-title i {
+                width: 32px;
+                height: 32px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                background: #eff6ff;
+                border: 1px solid #dbeafe;
+                border-radius: 8px;
+                color: #2563eb;
+                font-size: 14px;
+            }
+
+        .section-count {
+            min-width: 34px;
+            text-align: center;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            color: #2563eb;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+
+        /* =========================================================
+           LESSON CARD
+        ========================================================= */
+
+        .lesson-card {
+            position: relative;
+            background: #ffffff;
+            border: 1px solid #e1e8f2;
+            border-radius: 13px;
+            padding: 20px;
+            margin-bottom: 12px;
+            overflow: hidden;
+            transition: border-color .2s ease, transform .2s ease, box-shadow .2s ease;
+        }
+
+            .lesson-card::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 4px;
+                height: 100%;
+                background: #2563eb;
+            }
+
+            .lesson-card:last-child {
+                margin-bottom: 0;
+            }
+
+            .lesson-card:hover {
+                border-color: #c7d9f4;
+                transform: translateY(-2px);
+                box-shadow: 0 10px 25px rgba(37, 99, 235, .07);
+            }
+
+
+        /* =========================================================
+           LESSON MAIN
+        ========================================================= */
+
+        .lesson-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .lesson-student {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: #17213a;
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 11px;
+        }
+
+        .student-icon {
+            width: 31px;
+            height: 31px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            border-radius: 8px;
+            color: #2563eb;
+            font-size: 12px;
+        }
+
+
+        /* =========================================================
+           DETAILS
+        ========================================================= */
+
+        .lesson-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        .lesson-detail {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 10px;
+            background: #f8fafc;
+            border: 1px solid #edf1f6;
+            border-radius: 8px;
+            color: #64748b;
+            font-size: 10px;
+        }
+
+            .lesson-detail i {
+                width: 14px;
+                text-align: center;
+                color: #2563eb;
+                font-size: 10px;
+            }
+
+            .lesson-detail strong {
+                color: #455468;
+                font-weight: 800;
+            }
+
+
+        /* =========================================================
+           STATUS
+        ========================================================= */
+
+        .lesson-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 12px;
+            border-radius: 30px;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            color: #2563eb;
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: .4px;
+            white-space: nowrap;
+        }
+
+            .lesson-status i {
+                font-size: 9px;
+            }
+
+        .completed-status {
+            background: #ecfdf5;
+            border-color: #bbf7d0;
+            color: #15803d;
+        }
+
+
+        /* =========================================================
+           ACTION AREA
+        ========================================================= */
+
+        .lesson-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 18px;
+            padding-top: 15px;
+            border-top: 1px solid #edf1f6;
+        }
+
+
+        /* =========================================================
+           COMPLETE BUTTON
+        ========================================================= */
+
+        .btn-complete {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #2563eb;
+            color: #ffffff !important;
+            border: 1px solid #2563eb;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 5px 14px rgba(37, 99, 235, .13);
+            transition: all .2s ease;
+        }
+
+            .btn-complete:hover {
+                background: #1d4ed8;
+                border-color: #1d4ed8;
+                color: #ffffff !important;
+                text-decoration: none;
+                transform: translateY(-1px);
+            }
+
+
+        /* =========================================================
+           REVIEW BUTTON
+        ========================================================= */
+
+        .btn-review {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #ffffff;
+            color: #2563eb !important;
+            border: 1px solid #2563eb;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 800;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 5px 14px rgba(37, 99, 235, .08);
+            transition: all .2s ease;
+        }
+
+            .btn-review i {
+                color: #f59e0b;
+            }
+
+            .btn-review:hover {
+                background: #2563eb;
+                border-color: #2563eb;
+                color: #ffffff !important;
+                text-decoration: none;
+                transform: translateY(-1px);
+                box-shadow: 0 8px 18px rgba(37, 99, 235, .18);
+            }
+
+                .btn-review:hover i {
+                    color: #ffffff;
+                }
+
+
+        /* =========================================================
+           EMPTY STATE
+        ========================================================= */
+
+        .empty-state {
+            padding: 40px 20px;
+            text-align: center;
+            color: #748196;
+        }
+
+        .empty-icon {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 13px;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            border-radius: 13px;
+            color: #2563eb;
+            font-size: 18px;
+        }
+
+        .empty-state-title {
+            color: #17213a;
+            font-size: 14px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .empty-state-text {
+            color: #7b8799;
+            font-size: 11px;
+            line-height: 1.5;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @@media (max-width: 800px) {
+
+            .header-content {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .back-button {
+                width: 100%;
+            }
+
+            .lesson-main {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .lesson-status {
+                align-self: flex-start;
+            }
+        }
+
+
+        @@media (max-width: 576px) {
+
+            .lessons-page {
+                padding: 25px 14px 50px;
+            }
+
+            .lessons-header {
+                padding: 23px 20px;
+            }
+
+            .header-icon {
+                width: 48px;
+                height: 48px;
+                min-width: 48px;
+                font-size: 18px;
+            }
+
+            .header-text h1 {
+                font-size: 23px;
+            }
+
+            .lesson-section {
+                padding: 18px;
+            }
+
+            .lesson-details {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .lesson-detail {
+                width: 100%;
+            }
+
+            .btn-complete,
+            .btn-review {
+                width: 100%;
+            }
+
+            .lesson-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="lessons-page">
+
+        <div class="lessons-wrapper">
+
+
+            <!-- =====================================================
+                 SUCCESS / ERROR MESSAGES
+            ====================================================== -->
+
+            @if (TempData["InstructorSuccess"] != null)
+            {
+                <div class="message-success">
+
+                    <i class="fa-solid fa-circle-check"></i>
+
+                    <span>
+                        @TempData["InstructorSuccess"]
+                    </span>
+
+                </div>
+            }
+
+
+            @if (TempData["ReviewSuccess"] != null)
+            {
+                <div class="message-success">
+
+                    <i class="fa-solid fa-star"></i>
+
+                    <span>
+                        @TempData["ReviewSuccess"]
+                    </span>
+
+                </div>
+            }
+
+
+            @if (TempData["InstructorError"] != null)
+            {
+                <div class="message-error">
+
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+                    <span>
+                        @TempData["InstructorError"]
+                    </span>
+
+                </div>
+            }
+
+
+            @if (TempData["ReviewError"] != null)
+            {
+                <div class="message-error">
+
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+
+                    <span>
+                        @TempData["ReviewError"]
+                    </span>
+
+                </div>
+            }
+
+
+
+            <!-- =====================================================
+                 HEADER
+            ====================================================== -->
+
+            <div class="lessons-header">
+
+                <div class="header-content">
+
+                    <div class="header-left">
+
+                        <div class="header-icon">
+
+                            <i class="fa-solid fa-chalkboard-user"></i>
+
+                        </div>
+
+
+                        <div class="header-text">
+
+                            <h1>
+                                My Lessons
+                            </h1>
+
+                            <p>
+
+                                Instructor:
+
+                                @if (instructor != null)
+                                {
+                                    <span class="instructor-name">
+
+                                        @instructor.FirstName
+                                        @instructor.LastName
+
+                                    </span>
+                                }
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <a href="@Url.Action(
+                        "Index",
+                        "InstructorDashboard")"
+                       class="back-button">
+
+                        <i class="fa-solid fa-arrow-left"></i>
+
+                        Back to Dashboard
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =====================================================
+                 TODAY'S LESSONS
+            ====================================================== -->
+
+            <div class="lesson-section">
+
+                <div class="section-header">
+
+                    <h2 class="section-title">
+
+                        <i class="fa-solid fa-calendar-day"></i>
+
+                        Today's Lessons
+
+                    </h2>
+
+                    <span class="section-count">
+                        @todaysLessons.Count
+                    </span>
+
+                </div>
+
+
+                @if (todaysLessons.Any())
+                {
+
+                    foreach (var lesson in todaysLessons)
+                    {
+
+                        var activeBooking =
+                            lesson.Bookings.FirstOrDefault(b =>
+                                b.Registration != null &&
+                                !string.Equals(
+                                    b.Status,
+                                    "Cancelled",
+                                    StringComparison.OrdinalIgnoreCase) &&
+                                !string.Equals(
+                                    b.Status,
+                                    "Completed",
+                                    StringComparison.OrdinalIgnoreCase));
+
+
+                        <div class="lesson-card">
+
+                            <div class="lesson-main">
+
+                                <div>
+
+                                    <div class="lesson-student">
+
+                                        <span class="student-icon">
+
+                                            <i class="fa-solid fa-user-graduate"></i>
+
+                                        </span>
+
+
+                                        @if (activeBooking != null &&
+                                            activeBooking.Registration != null)
+                                        {
+                                            <span>
+
+                                                @activeBooking.Registration.FirstName
+                                                @activeBooking.Registration.LastName
+
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span>
+                                                No student assigned
+                                            </span>
+                                        }
+
+                                    </div>
+
+
+                                    <div class="lesson-details">
+
+
+                                        <!-- TIME -->
+
+                                        <div class="lesson-detail">
+
+                                            <i class="fa-regular fa-clock"></i>
+
+                                            <strong>
+                                                Time
+                                            </strong>
+
+                                            @lesson.StartTime.ToString(@"hh\:mm")
+                                            -
+                                            @lesson.EndTime.ToString(@"hh\:mm")
+
+                                        </div>
+
+
+                                        <!-- LESSON -->
+
+                                        <div class="lesson-detail">
+
+                                            <i class="fa-solid fa-book-open-reader"></i>
+
+                                            <strong>
+                                                Lesson
+                                            </strong>
+
+                                            @if (lesson.LessonType != null)
+                                            {
+                                                <span>
+                                                    @lesson.LessonType.LessonTypeName
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span>
+                                                    N/A
+                                                </span>
+                                            }
+
+                                        </div>
+
+
+                                        <!-- VEHICLE -->
+
+                                        <div class="lesson-detail">
+
+                                            <i class="fa-solid fa-car-side"></i>
+
+                                            <strong>
+                                                Vehicle
+                                            </strong>
+
+                                            @if (lesson.Vehicle != null)
+                                            {
+                                                <span>
+                                                    @lesson.Vehicle.VehicleId
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span>
+                                                    N/A
+                                                </span>
+                                            }
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="lesson-status">
+
+                                    <i class="fa-solid fa-calendar-check"></i>
+
+                                    Scheduled
+
+                                </div>
+
+                            </div>
+
+
+                            @if (activeBooking != null)
+                            {
+
+                                <div class="lesson-actions">
+
+                                    @using (Html.BeginForm(
+                                        "MarkCompleted",
+                                        "InstructorLessons",
+                                        FormMethod.Post))
+                                    {
+
+                                        @Html.AntiForgeryToken()
+
+                                        <input type="hidden"
+                                               name="id"
+                                               value="@lesson.LessonScheduleId" />
+
+
+                                        <button type="submit"
+                                                class="btn-complete"
+                                                onclick="return confirm('Are you sure you want to mark this lesson as completed?');">
+
+                                            <i class="fa-solid fa-circle-check"></i>
+
+                                            Mark as Completed
+
+                                        </button>
+
+                                    }
+
+                                </div>
+
+                            }
+
+                        </div>
+
+                    }
+
+                }
+                else
+                {
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+
+                            <i class="fa-regular fa-calendar-xmark"></i>
+
+                        </div>
+
+                        <div class="empty-state-title">
+                            No lessons today
+                        </div>
+
+                        <div class="empty-state-text">
+                            You do not have any active lessons scheduled for today.
+                        </div>
+
+                    </div>
+
+                }
+
+            </div>
+
+
+
+            <!-- =====================================================
+                 UPCOMING LESSONS
+            ====================================================== -->
+
+            <div class="lesson-section">
+
+                <div class="section-header">
+
+                    <h2 class="section-title">
+
+                        <i class="fa-solid fa-calendar-days"></i>
+
+                        Upcoming Lessons
+
+                    </h2>
+
+                    <span class="section-count">
+                        @upcomingLessons.Count
+                    </span>
+
+                </div>
+
+
+                @if (upcomingLessons.Any())
+                {
+
+                    foreach (var lesson in upcomingLessons)
+                    {
+
+                        var activeBooking =
+                            lesson.Bookings.FirstOrDefault(b =>
+                                b.Registration != null &&
+                                !string.Equals(
+                                    b.Status,
+                                    "Cancelled",
+                                    StringComparison.OrdinalIgnoreCase) &&
+                                !string.Equals(
+                                    b.Status,
+                                    "Completed",
+                                    StringComparison.OrdinalIgnoreCase));
+
+
+                        <div class="lesson-card">
+
+                            <div class="lesson-main">
+
+                                <div>
+
+                                    <div class="lesson-student">
+
+                                        <span class="student-icon">
+
+                                            <i class="fa-solid fa-user-graduate"></i>
+
+                                        </span>
+
+
+                                        @if (activeBooking != null &&
+                                            activeBooking.Registration != null)
+                                        {
+                                            <span>
+
+                                                @activeBooking.Registration.FirstName
+                                                @activeBooking.Registration.LastName
+
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span>
+                                                No student assigned
+                                            </span>
+                                        }
+
+                                    </div>
+
+
+                                    <div class="lesson-details">
+
+
+                                        <!-- DATE -->
+
+                                        <div class="lesson-detail">
+
+                                            <i class="fa-regular fa-calendar"></i>
+
+                                            <strong>
+                                                Date
+                                            </strong>
+
+                                            @lesson.LessonDate.ToString("dd MMM yyyy")
+
+                                        </div>
+
+
+                                        <!-- TIME -->
+
+                                        <div class="lesson-detail">
+
+                                            <i class="fa-regular fa-clock"></i>
+
+                                            <strong>
+                                                Time
+                                            </strong>
+
+                                            @lesson.StartTime.ToString(@"hh\:mm")
+                                            -
+                                            @lesson.EndTime.ToString(@"hh\:mm")
+
+                                        </div>
+
+
+                                        <!-- LESSON -->
+
+                                        <div class="lesson-detail">
+
+                                            <i class="fa-solid fa-book-open-reader"></i>
+
+                                            <strong>
+                                                Lesson
+                                            </strong>
+
+                                            @if (lesson.LessonType != null)
+                                            {
+                                                <span>
+                                                    @lesson.LessonType.LessonTypeName
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span>
+                                                    N/A
+                                                </span>
+                                            }
+
+                                        </div>
+
+
+                                        <!-- VEHICLE -->
+
+                                        <div class="lesson-detail">
+
+                                            <i class="fa-solid fa-car-side"></i>
+
+                                            <strong>
+                                                Vehicle
+                                            </strong>
+
+                                            @if (lesson.Vehicle != null)
+                                            {
+                                                <span>
+                                                    @lesson.Vehicle.VehicleId
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span>
+                                                    N/A
+                                                </span>
+                                            }
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="lesson-status">
+
+                                    <i class="fa-solid fa-calendar-check"></i>
+
+                                    Scheduled
+
+                                </div>
+
+                            </div>
+
+
+                            @if (activeBooking != null)
+                            {
+
+                                <div class="lesson-actions">
+
+                                    @using (Html.BeginForm(
+                                        "MarkCompleted",
+                                        "InstructorLessons",
+                                        FormMethod.Post))
+                                    {
+
+                                        @Html.AntiForgeryToken()
+
+                                        <input type="hidden"
+                                               name="id"
+                                               value="@lesson.LessonScheduleId" />
+
+
+                                        <button type="submit"
+                                                class="btn-complete"
+                                                onclick="return confirm('Are you sure you want to mark this lesson as completed?');">
+
+                                            <i class="fa-solid fa-circle-check"></i>
+
+                                            Mark as Completed
+
+                                        </button>
+
+                                    }
+
+                                </div>
+
+                            }
+
+                        </div>
+
+                    }
+
+                }
+                else
+                {
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+
+                            <i class="fa-regular fa-calendar-xmark"></i>
+
+                        </div>
+
+                        <div class="empty-state-title">
+                            No upcoming lessons
+                        </div>
+
+                        <div class="empty-state-text">
+                            You currently have no upcoming lessons.
+                        </div>
+
+                    </div>
+
+                }
+
+            </div>
+
+
+
+            <!-- =====================================================
+                 COMPLETED LESSONS
+            ====================================================== -->
+
+            <div class="lesson-section">
+
+                <div class="section-header">
+
+                    <h2 class="section-title">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                        Completed Lessons
+
+                    </h2>
+
+                    <span class="section-count">
+                        @completedLessons.Count
+                    </span>
+
+                </div>
+
+
+                @if (completedLessons.Any())
+                {
+
+                    foreach (var lesson in completedLessons)
+                    {
+
+                        var completedBooking =
+                            lesson.Bookings.FirstOrDefault(b =>
+                                b.Registration != null &&
+                                string.Equals(
+                                    b.Status,
+                                    "Completed",
+                                    StringComparison.OrdinalIgnoreCase));
+
+
+                        <div class="lesson-card">
+
+
+                            <!-- =================================================
+                                 LESSON INFORMATION
+                            ================================================== -->
+
+                            <div class="lesson-main">
+
+                                <div>
+
+                                    <div class="lesson-student">
+
+                                        <span class="student-icon">
+
+                                            <i class="fa-solid fa-user-graduate"></i>
+
+                                        </span>
+
+
+                                        @if (completedBooking != null &&
+                                            completedBooking.Registration != null)
+                                        {
+                                            <span>
+
+                                                @completedBooking.Registration.FirstName
+                                                @completedBooking.Registration.LastName
+
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span>
+                                                Student unavailable
+                                            </span>
+                                        }
+
+                                    </div>
+
+
+                                    <div class="lesson-details">
+
+
+                                        <!-- DATE -->
+
+                                        <div class="lesson-detail">
+
+                                            <i class="fa-regular fa-calendar-check"></i>
+
+                                            <strong>
+                                                Date
+                                            </strong>
+
+                                            @lesson.LessonDate.ToString("dd MMM yyyy")
+
+                                        </div>
+
+
+                                        <!-- TIME -->
+
+                                        <div class="lesson-detail">
+
+                                            <i class="fa-regular fa-clock"></i>
+
+                                            <strong>
+                                                Time
+                                            </strong>
+
+                                            @lesson.StartTime.ToString(@"hh\:mm")
+                                            -
+                                            @lesson.EndTime.ToString(@"hh\:mm")
+
+                                        </div>
+
+
+                                        <!-- LESSON -->
+
+                                        <div class="lesson-detail">
+
+                                            <i class="fa-solid fa-book-open-reader"></i>
+
+                                            <strong>
+                                                Lesson
+                                            </strong>
+
+                                            @if (lesson.LessonType != null)
+                                            {
+                                                <span>
+                                                    @lesson.LessonType.LessonTypeName
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span>
+                                                    N/A
+                                                </span>
+                                            }
+
+                                        </div>
+
+
+                                        <!-- VEHICLE -->
+
+                                        <div class="lesson-detail">
+
+                                            <i class="fa-solid fa-car-side"></i>
+
+                                            <strong>
+                                                Vehicle
+                                            </strong>
+
+                                            @if (lesson.Vehicle != null)
+                                            {
+                                                <span>
+                                                    @lesson.Vehicle.VehicleId
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span>
+                                                    N/A
+                                                </span>
+                                            }
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <!-- COMPLETED STATUS -->
+
+                                <div class="lesson-status completed-status">
+
+                                    <i class="fa-solid fa-check"></i>
+
+                                    Completed
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- =================================================
+                                 REVIEW BUTTON
+                            ================================================== -->
+
+                            @if (completedBooking != null)
+                            {
+
+                                <div class="lesson-actions">
+
+
+                                    <a href="@Url.Action(
+                                        "Create",
+                                        "Review",
+                                        new
+                                        {
+                                            bookingId =
+                                                completedBooking.BookingId
+                                        })"
+                                       class="btn-review">
+
+                                        <i class="fa-solid fa-star"></i>
+
+                                        Review Student
+
+                                    </a>
+
+
+                                </div>
+
+                            }
+
+
+                        </div>
+
+                    }
+
+                }
+                else
+                {
+
+                    <div class="empty-state">
+
+                        <div class="empty-icon">
+
+                            <i class="fa-regular fa-circle-check"></i>
+
+                        </div>
+
+                        <div class="empty-state-title">
+                            No completed lessons
+                        </div>
+
+                        <div class="empty-state-text">
+                            Completed lessons will appear here.
+                        </div>
+
+                    </div>
+
+                }
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

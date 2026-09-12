@@ -1,24 +1,21 @@
 ﻿@{
     Layout = null;
-    ViewBag.Title = "TK Driving School — Learn to drive with confidence";
+    ViewBag.Title = "TK Driving School — Drive With Confidence";
 }
 
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
+
+    
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>@ViewBag.Title</title>
 
     <meta name="description"
-          content="Book driving lessons online, get an instructor assigned automatically, pay securely and track your progress to test-ready." />
-
-    <meta property="og:title"
-          content="TK Driving School — Learn to drive with confidence" />
-
-    <meta property="og:description"
-          content="Online booking, automatic instructor assignment, payments and progress tracking." />
+          content="TK Driving School provides professional driving lessons, online booking, qualified instructors and progress tracking." />
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -27,205 +24,1228 @@
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Barlow:wght@400;500;600&display=swap" />
 
-    <!-- TK Driving School CSS -->
-    <link rel="stylesheet"
-          href="@Url.Content("~/Content/landing_style.css")" />
+    <style>
+
+    /* =====================================================
+       TK DRIVING SCHOOL
+       BLUE + WHITE LANDING PAGE
+       ===================================================== */
+
+    :root {
+        --blue: #0d6efd;
+        --dark-blue: #084298;
+        --navy: #071a33;
+        --light-blue: #eaf3ff;
+        --white: #ffffff;
+        --light: #f5f8fc;
+        --text: #172033;
+        --muted: #687386;
+        --border: #dce5f0;
+    }
+
+
+    /* =====================================================
+       RESET
+       ===================================================== */
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        font-family: "Barlow", Arial, sans-serif;
+        background: var(--white);
+        color: var(--text);
+        line-height: 1.6;
+    }
+
+    a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+
+    /* =====================================================
+       TOP LINE
+       ===================================================== */
+
+    .top-line {
+        height: 5px;
+        background: var(--blue);
+    }
+
+
+    /* =====================================================
+       NAVIGATION
+       ===================================================== */
+
+    .site-header {
+        background: rgba(255,255,255,0.98);
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    .nav-container {
+        max-width: 1200px;
+        margin: auto;
+        min-height: 78px;
+        padding: 0 25px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+    }
+
+    .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .brand-logo {
+        width: 46px;
+        height: 46px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: var(--blue);
+        color: white;
+
+        font-family: "Archivo", sans-serif;
+        font-size: 16px;
+        font-weight: 800;
+
+        border-radius: 10px;
+        box-shadow: 0 6px 15px rgba(13,110,253,.20);
+    }
+
+    .brand-text {
+        font-family: "Archivo", sans-serif;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        font-size: 16px;
+    }
+
+
+    /* =====================================================
+       NAV LINKS
+       ===================================================== */
+
+    .main-nav {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .main-nav a {
+        padding: 9px 15px;
+        border-radius: 7px;
+
+        font-weight: 600;
+        color: #394457;
+
+        transition: .2s ease;
+    }
+
+    .main-nav a:hover {
+        background: var(--light-blue);
+        color: var(--blue);
+    }
+
+
+    /* =====================================================
+       AUTH BUTTONS
+       ===================================================== */
+
+    .auth-buttons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .login-btn {
+        padding: 10px 18px;
+
+        border: 2px solid var(--blue);
+        border-radius: 7px;
+
+        color: var(--blue);
+        font-weight: 700;
+
+        transition: .2s ease;
+    }
+
+    .login-btn:hover {
+        background: var(--light-blue);
+    }
+
+    .register-btn {
+        padding: 11px 20px;
+
+        background: var(--blue);
+        color: white;
+
+        border-radius: 7px;
+        font-weight: 700;
+
+        box-shadow: 0 5px 15px rgba(13,110,253,.20);
+
+        transition: .2s ease;
+    }
+
+    .register-btn:hover {
+        background: var(--dark-blue);
+        transform: translateY(-2px);
+    }
+
+
+    /* =====================================================
+       HERO
+       ===================================================== */
+
+    .hero {
+        position: relative;
+        min-height: 620px;
+
+        display: flex;
+        align-items: center;
+
+        overflow: hidden;
+
+        background: var(--navy);
+    }
+
+    .hero-image {
+        position: absolute;
+        inset: 0;
+
+        width: 100%;
+        height: 100%;
+
+        object-fit: cover;
+
+        opacity: .32;
+    }
+
+    .hero-overlay {
+        position: absolute;
+        inset: 0;
+
+        background:
+            linear-gradient(
+                90deg,
+                rgba(4,25,55,.98) 0%,
+                rgba(7,45,95,.88) 45%,
+                rgba(13,110,253,.35) 100%
+            );
+    }
+
+    .hero-content {
+        position: relative;
+        z-index: 2;
+
+        width: 100%;
+        max-width: 1200px;
+
+        margin: auto;
+        padding: 90px 25px;
+    }
+
+    .hero-badge {
+        display: inline-block;
+
+        padding: 8px 14px;
+
+        border: 1px solid rgba(255,255,255,.30);
+        border-radius: 30px;
+
+        color: #dbeaff;
+
+        font-family: "Archivo", sans-serif;
+        font-size: 12px;
+        font-weight: 700;
+
+        letter-spacing: 1.5px;
+    }
+
+    .hero h1 {
+        max-width: 760px;
+
+        margin-top: 22px;
+
+        color: white;
+
+        font-family: "Archivo", sans-serif;
+        font-size: 64px;
+        line-height: 1.04;
+        font-weight: 800;
+    }
+
+    .hero h1 span {
+        color: #55a1ff;
+    }
+
+    .hero-description {
+        max-width: 610px;
+
+        margin-top: 24px;
+
+        color: #dbe5f3;
+
+        font-size: 20px;
+    }
+
+    .encouragement {
+        max-width: 600px;
+
+        margin-top: 18px;
+
+        color: white;
+
+        font-size: 17px;
+        font-weight: 600;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 14px;
+        margin-top: 32px;
+        flex-wrap: wrap;
+    }
+
+    .hero-primary-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+
+        padding: 15px 24px;
+
+        background: var(--blue);
+        color: white;
+
+        border-radius: 8px;
+
+        font-weight: 700;
+
+        box-shadow: 0 8px 25px rgba(13,110,253,.30);
+
+        transition: .2s ease;
+    }
+
+    .hero-primary-btn:hover {
+        background: #3b8cff;
+        transform: translateY(-2px);
+    }
+
+    .hero-secondary-btn {
+        display: inline-flex;
+        align-items: center;
+
+        padding: 14px 24px;
+
+        border: 2px solid rgba(255,255,255,.55);
+        color: white;
+
+        border-radius: 8px;
+
+        font-weight: 700;
+
+        transition: .2s ease;
+    }
+
+    .hero-secondary-btn:hover {
+        background: white;
+        color: var(--dark-blue);
+    }
+
+
+    /* =====================================================
+       TRUST BAR
+       ===================================================== */
+
+    .trust-bar {
+        background: white;
+        border-bottom: 1px solid var(--border);
+
+        box-shadow: 0 5px 20px rgba(0,0,0,.04);
+    }
+
+    .trust-container {
+        max-width: 1100px;
+        margin: auto;
+
+        padding: 28px 25px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .trust-item {
+        text-align: center;
+    }
+
+    .trust-item strong {
+        display: block;
+
+        color: var(--blue);
+
+        font-family: "Archivo", sans-serif;
+        font-size: 26px;
+        font-weight: 800;
+    }
+
+    .trust-item span {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .trust-divider {
+        width: 1px;
+        height: 42px;
+        background: var(--border);
+    }
+
+
+    /* =====================================================
+       GENERAL SECTIONS
+       ===================================================== */
+
+    .section-container {
+        max-width: 1200px;
+        margin: auto;
+        padding: 90px 25px;
+    }
+
+    .section-heading {
+        max-width: 680px;
+        margin-bottom: 45px;
+    }
+
+    .section-heading > span {
+        color: var(--blue);
+
+        font-family: "Archivo", sans-serif;
+        font-size: 12px;
+        font-weight: 800;
+
+        letter-spacing: 2px;
+    }
+
+    .section-heading h2 {
+        margin-top: 10px;
+
+        font-family: "Archivo", sans-serif;
+        font-size: 40px;
+        line-height: 1.15;
+        font-weight: 800;
+    }
+
+    .section-heading p {
+        margin-top: 15px;
+
+        color: var(--muted);
+        font-size: 17px;
+    }
+
+
+    /* =====================================================
+       FEATURES
+       ===================================================== */
+
+    .features-section {
+        background: white;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+    }
+
+    .feature-card {
+        padding: 30px;
+
+        background: white;
+
+        border: 1px solid var(--border);
+        border-radius: 12px;
+
+        transition: .25s ease;
+    }
+
+    .feature-card:hover {
+        border-color: #9ec5fe;
+        transform: translateY(-6px);
+
+        box-shadow: 0 15px 35px rgba(13,110,253,.10);
+    }
+
+    .feature-icon {
+        width: 48px;
+        height: 48px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background: var(--light-blue);
+        color: var(--blue);
+
+        border-radius: 10px;
+
+        font-size: 21px;
+        font-weight: 800;
+    }
+
+    .feature-card h3 {
+        margin-top: 20px;
+
+        font-family: "Archivo", sans-serif;
+        font-size: 18px;
+    }
+
+    .feature-card p {
+        margin-top: 9px;
+
+        color: var(--muted);
+        font-size: 14px;
+    }
+
+
+    /* =====================================================
+       COURSES
+       ===================================================== */
+
+    .courses-section {
+        background: var(--light);
+    }
+
+    .courses-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 25px;
+    }
+
+    .course-card {
+        overflow: hidden;
+
+        background: white;
+
+        border: 1px solid var(--border);
+        border-radius: 14px;
+
+        box-shadow: 0 5px 20px rgba(0,0,0,.04);
+
+        transition: .25s ease;
+    }
+
+    .course-card:hover {
+        transform: translateY(-7px);
+
+        border-color: var(--blue);
+
+        box-shadow: 0 18px 40px rgba(13,110,253,.14);
+    }
+
+    .course-image {
+        position: relative;
+        height: 230px;
+        overflow: hidden;
+    }
+
+    .course-image img {
+        width: 100%;
+        height: 100%;
+
+        object-fit: cover;
+
+        display: block;
+
+        transition: transform .4s ease;
+    }
+
+    .course-card:hover .course-image img {
+        transform: scale(1.05);
+    }
+
+    .course-number {
+        position: absolute;
+        left: 18px;
+        bottom: 18px;
+
+        padding: 8px 13px;
+
+        background: var(--blue);
+        color: white;
+
+        border-radius: 6px;
+
+        font-family: "Archivo", sans-serif;
+        font-size: 13px;
+        font-weight: 800;
+    }
+
+    .course-content {
+        padding: 26px;
+    }
+
+    .course-label {
+        color: var(--blue);
+
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+
+    .course-content h3 {
+        margin-top: 5px;
+
+        font-family: "Archivo", sans-serif;
+        font-size: 27px;
+        font-weight: 800;
+    }
+
+    .course-content p {
+        min-height: 65px;
+
+        margin-top: 10px;
+
+        color: var(--muted);
+        font-size: 14px;
+    }
+
+    .course-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+
+        margin-top: 22px;
+
+        padding-top: 18px;
+
+        border-top: 1px solid var(--border);
+    }
+
+    .course-bottom small {
+        display: block;
+
+        color: var(--muted);
+
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .course-bottom strong {
+        display: block;
+
+        margin-top: 3px;
+
+        color: var(--blue);
+
+        font-family: "Archivo", sans-serif;
+        font-size: 21px;
+    }
+
+    .course-arrow {
+        width: 38px;
+        height: 38px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 50%;
+
+        background: var(--light-blue);
+        color: var(--blue);
+
+        font-size: 20px;
+        font-weight: 800;
+    }
+
+
+    /* =====================================================
+       CTA
+       ===================================================== */
+
+    .cta-section {
+        background:
+            linear-gradient(
+                135deg,
+                var(--dark-blue),
+                var(--blue)
+            );
+
+        color: white;
+    }
+
+    .cta-container {
+        max-width: 1200px;
+        margin: auto;
+
+        padding: 70px 25px;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 30px;
+    }
+
+    .cta-container > div > span {
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 2px;
+        color: #dbeaff;
+    }
+
+    .cta-container h2 {
+        margin-top: 7px;
+
+        font-family: "Archivo", sans-serif;
+        font-size: 36px;
+    }
+
+    .cta-container p {
+        margin-top: 8px;
+        color: #dbeaff;
+    }
+
+    .cta-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+
+        padding: 15px 25px;
+
+        background: white;
+        color: var(--dark-blue);
+
+        border-radius: 8px;
+
+        font-weight: 800;
+
+        transition: .2s ease;
+    }
+
+    .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(0,0,0,.18);
+    }
+
+
+    /* =====================================================
+       FOOTER
+       ===================================================== */
+
+    .site-footer {
+        background: #061426;
+        color: #c8d3e2;
+    }
+
+    .footer-container {
+        max-width: 1200px;
+        margin: auto;
+
+        padding: 55px 25px;
+
+        display: flex;
+        justify-content: space-between;
+
+        gap: 40px;
+    }
+
+    .footer-brand {
+        color: white;
+
+        font-family: "Archivo", sans-serif;
+        font-weight: 800;
+        font-size: 19px;
+    }
+
+    .footer-brand span {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        width: 35px;
+        height: 35px;
+
+        margin-right: 7px;
+
+        background: var(--blue);
+        color: white;
+
+        border-radius: 6px;
+
+        font-size: 12px;
+    }
+
+    .footer-container p {
+        max-width: 350px;
+
+        margin-top: 12px;
+
+        color: #8fa1b8;
+        font-size: 14px;
+    }
+
+    .footer-links {
+        display: flex;
+        gap: 22px;
+        align-items: center;
+    }
+
+    .footer-links a {
+        font-weight: 600;
+        color: #c8d3e2;
+    }
+
+    .footer-links a:hover {
+        color: #55a1ff;
+    }
+
+    .footer-bottom {
+        padding: 20px 25px;
+
+        border-top: 1px solid rgba(255,255,255,.08);
+
+        text-align: center;
+
+        color: #71829a;
+        font-size: 12px;
+    }
+
+
+    /* =====================================================
+       RESPONSIVE
+
+       IMPORTANT:
+       Because this CSS is inside a .cshtml Razor file,
+       @@media MUST be written as @@media.
+       ===================================================== */
+
+    @@media (max-width: 900px) {
+
+        .main-nav {
+            display: none;
+        }
+
+        .features-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .courses-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .hero h1 {
+            font-size: 50px;
+        }
+
+    }
+
+
+    @@media (max-width: 650px) {
+
+        .nav-container {
+            padding: 15px 18px;
+        }
+
+        .brand-text {
+            font-size: 13px;
+        }
+
+        .auth-buttons {
+            gap: 5px;
+        }
+
+        .login-btn,
+        .register-btn {
+            padding: 8px 10px;
+            font-size: 12px;
+        }
+
+        .hero {
+            min-height: 570px;
+        }
+
+        .hero-content {
+            padding: 70px 20px;
+        }
+
+        .hero h1 {
+            font-size: 39px;
+        }
+
+        .hero-description {
+            font-size: 17px;
+        }
+
+        .trust-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .trust-divider {
+            display: none;
+        }
+
+        .section-container {
+            padding: 65px 20px;
+        }
+
+        .section-heading h2 {
+            font-size: 31px;
+        }
+
+        .features-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .cta-container {
+            padding: 55px 20px;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .footer-container {
+            flex-direction: column;
+            padding: 45px 20px;
+        }
+
+        .footer-links {
+            flex-wrap: wrap;
+        }
+
+    }
+
+    </style>
+   
+
 </head>
 
 <body>
 
-    <!-- =========================================
-         HAZARD STRIPE
-         ========================================= -->
-    <div class="hazard-stripe"></div>
+    
+    <!-- TOP LINE -->
+    <div class="top-line"></div>
 
 
-    <!-- =========================================
-         HEADER / NAVIGATION
-         ========================================= -->
-    <header class="container nav">
+    <!-- =====================================================
+         NAVIGATION
+         ===================================================== -->
 
-        <div class="brand">
+    <header class="site-header">
 
-            <span class="logo">
-                TK
-            </span>
+        <div class="nav-container">
 
-            <span class="brand-name">
-                Driving School
-            </span>
+            <a href="@Url.Action("Index", "Home")" class="brand">
 
-        </div>
+                <span class="brand-logo">
+                    TK
+                </span>
 
+                <span class="brand-text">
+                    Driving School
+                </span>
 
-        <!-- LOGIN / REGISTER -->
-        <div class="auth-buttons">
-
-            <a href="@Url.Action("Login", "Account")"
-               class="btn">
-                Log in
             </a>
 
-            <a href="@Url.Action("Register", "Account")"
-               class="btn">
-                Register
-            </a>
+
+            <nav class="main-nav">
+
+                <a href="@Url.Action("Index", "Home")">
+                    Home
+                </a>
+
+                <a href="@Url.Action("About", "Home")">
+                    About
+                </a>
+
+                <a href="@Url.Action("Contact", "Home")">
+                    Contact
+                </a>
+
+            </nav>
+
+
+            <div class="auth-buttons">
+
+                <a href="@Url.Action("Login", "Account")"
+                   class="login-btn">
+                    Log in
+                </a>
+
+                <a href="@Url.Action("Register", "Account")"
+                   class="register-btn">
+                    Register
+                </a>
+
+            </div>
 
         </div>
 
     </header>
 
 
-    <!-- =========================================
-         HERO SECTION
-         ========================================= -->
+    <!-- =====================================================
+         HERO
+         ===================================================== -->
+
     <section class="hero">
 
-        <img src="@Url.Content("~/Content/images/ClassBG.jpg")"
-             alt="Instructor taking a student through a driving lesson" />
+        <img class="hero-image"
+             src="@Url.Content("~/Content/images/ClassBG.jpg")"
+             alt="TK Driving School driving lesson" />
+
+        <div class="hero-overlay"></div>
 
 
         <div class="hero-content">
 
-            <p class="hero-eyebrow">
-                Licensed · Insured · Since 2009
-            </p>
+            <div class="hero-badge">
+                PROFESSIONAL DRIVING TRAINING
+            </div>
 
 
             <h1>
 
                 Learn to drive.
 
-                <span class="text-primary">
-                    Book it in sixty seconds.
+                <span>
+                    Drive with confidence.
                 </span>
 
             </h1>
 
 
-            <p class="hero-sub">
+            <p class="hero-description">
 
-                TK Driving School puts your lessons, instructor,
-                payments and progress in one place —
-                no phone calls, no paperwork.
+                Professional driving lessons from qualified
+                instructors, supported by simple online booking,
+                secure payments and progress tracking.
 
             </p>
 
 
-            <!-- BOOK LESSONS -->
-            <a href="@Url.Action("Login", "Account")"
-               class="btn btn-lg">
+            <p class="encouragement">
 
-                Book Lessons
+                🚗 Every confident driver started as a beginner.
+                Take the first step today — your licence is closer
+                than you think.
 
-            </a>
+            </p>
+
+
+            <div class="hero-buttons">
+
+                <a href="@Url.Action("Login", "Account")"
+                   class="hero-primary-btn">
+
+                    Book Your Lessons
+
+                    <span>→</span>
+
+                </a>
+
+
+                <a href="#courses"
+                   class="hero-secondary-btn">
+
+                    View Courses
+
+                </a>
+
+            </div>
 
         </div>
 
     </section>
 
 
+    <!-- =====================================================
+         TRUST BAR
+         ===================================================== -->
 
-    <!-- =========================================
+    <section class="trust-bar">
+
+        <div class="trust-container">
+
+            <div class="trust-item">
+
+                <strong>15+</strong>
+
+                <span>
+                    Years Experience
+                </span>
+
+            </div>
+
+
+            <div class="trust-divider"></div>
+
+
+            <div class="trust-item">
+
+                <strong>3</strong>
+
+                <span>
+                    Licence Categories
+                </span>
+
+            </div>
+
+
+            <div class="trust-divider"></div>
+
+
+            <div class="trust-item">
+
+                <strong>100%</strong>
+
+                <span>
+                    Online Booking
+                </span>
+
+            </div>
+
+
+            <div class="trust-divider"></div>
+
+
+            <div class="trust-item">
+
+                <strong>✓</strong>
+
+                <span>
+                    Qualified Instructors
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
          FEATURES
-         ========================================= -->
-    <section class="container features">
+         ===================================================== -->
 
-        <h2>
-            Why pick us?
-        </h2>
+    <section class="features-section">
 
+        <div class="section-container">
 
-        <div class="features-grid">
+            <div class="section-heading">
 
+                <span>
+                    WHY CHOOSE TK
+                </span>
 
-            <!-- FEATURE 1 -->
-            <div class="feature-card">
-
-                <h3>
-                    Instant booking
-                </h3>
+                <h2>
+                    Everything you need to become a confident driver.
+                </h2>
 
                 <p>
-                    Pick a slot between 08:00 and 16:00
-                    and an available instructor and vehicle
-                    are automatically assigned.
+                    From your first lesson to test day,
+                    we make your journey simple,
+                    organised and professional.
                 </p>
 
             </div>
 
 
-            <!-- FEATURE 2 -->
-            <div class="feature-card">
-
-                <h3>
-                    Simple payments
-                </h3>
-
-                <p>
-                    Pay per lesson or enrol in a course package,
-                    with a full receipt history on your account.
-                </p>
-
-            </div>
+            <div class="features-grid">
 
 
-            <!-- FEATURE 3 -->
-            <div class="feature-card">
+                <div class="feature-card">
 
-                <h3>
-                    Progress tracking
-                </h3>
+                    <div class="feature-icon">
+                        ✓
+                    </div>
 
-                <p>
-                    Hours behind the wheel, completed lessons
-                    and instructor feedback after every session.
-                </p>
+                    <h3>
+                        Easy Online Booking
+                    </h3>
 
-            </div>
+                    <p>
+                        Choose an available lesson slot and
+                        book your driving lesson online.
+                    </p>
 
-
-            <!-- FEATURE 4 -->
-            <div class="feature-card">
-
-                <h3>
-                    Qualified instructors
-                </h3>
-
-                <p>
-                    Patient, licensed instructors who log your
-                    attendance and coach you toward the test.
-                </p>
-
-            </div>
+                </div>
 
 
-            <!-- FEATURE 5 -->
-            <div class="feature-card">
+                <div class="feature-card">
 
-                <h3>
-                    Rate everything
-                </h3>
+                    <div class="feature-icon">
+                        ★
+                    </div>
 
-                <p>
-                    Review your instructor, the vehicle and
-                    the service so the school keeps improving.
-                </p>
+                    <h3>
+                        Qualified Instructors
+                    </h3>
 
-            </div>
+                    <p>
+                        Learn from professional instructors
+                        who help you build confidence.
+                    </p>
+
+                </div>
 
 
-            <!-- FEATURE 6 -->
-            <div class="feature-card">
+                <div class="feature-card">
 
-                <h3>
-                    Maintained fleet
-                </h3>
+                    <div class="feature-icon">
+                        R
+                    </div>
 
-                <p>
-                    Manual and automatic vehicles, tracked and
-                    serviced by the school administrators.
-                </p>
+                    <h3>
+                        Simple Payments
+                    </h3>
+
+                    <p>
+                        Manage your lesson packages and
+                        payment history from your account.
+                    </p>
+
+                </div>
+
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        ✓
+                    </div>
+
+                    <h3>
+                        Track Your Progress
+                    </h3>
+
+                    <p>
+                        See your completed lessons,
+                        upcoming bookings and progress.
+                    </p>
+
+                </div>
 
             </div>
 
@@ -234,169 +1254,253 @@
     </section>
 
 
-
-    <!-- =========================================
+    <!-- =====================================================
          COURSES
-         ========================================= -->
-    <section class="container Courses">
+         ===================================================== -->
 
-        <h2>
-            Courses we offer
-        </h2>
+    <section class="courses-section" id="courses">
 
+        <div class="section-container">
 
-        <div class="features-grid">
+            <div class="section-heading">
 
+                <span>
+                    OUR COURSES
+                </span>
 
-            <!-- =====================================
-                 CODE 8
-                 ===================================== -->
-            <a href="@Url.Action("Login", "Account")"
-               class="course-card">
+                <h2>
+                    Choose your licence.
+                </h2>
 
-                <img class="course-img"
-                     src="@Url.Content("~/Content/images/code8.jpg")"
-                     alt="Sedan-style light motor vehicle used for Code 8 lessons" />
+                <p>
+                    Professional training for different
+                    vehicle categories and driving goals.
+                </p>
 
+            </div>
 
-                <div class="course-body">
 
-                    <span class="course-badge">
-                        Code 8
-                    </span>
+            <div class="courses-grid">
 
 
-                    <h3>
-                        Light Motor Vehicle
-                    </h3>
+                <!-- CODE 8 -->
 
+                <a href="@Url.Action("Login", "Account")"
+                   class="course-card">
 
-                    <p class="course-desc">
+                    <div class="course-image">
 
-                        South Africa's most common licence,
-                        for cars and light vehicles up to
-                        3,500 kg GVM.
+                        <img src="@Url.Content("~/Content/images/code8.jpg")"
+                             alt="Code 8 light motor vehicle" />
 
-                        Ideal for personal use and most jobs
-                        that require a driver's licence.
+                        <div class="course-number">
+                            CODE 8
+                        </div>
 
-                        Choose manual or automatic.
+                    </div>
 
-                    </p>
 
+                    <div class="course-content">
 
-                    <p class="course-price">
+                        <div class="course-label">
+                            LIGHT MOTOR VEHICLE
+                        </div>
 
-                        From R2,500
+                        <h3>
+                            Code 8
+                        </h3>
 
-                        <span>
-                            / 30-lesson package
-                        </span>
+                        <p>
+                            Training for cars and light motor
+                            vehicles. Choose between manual
+                            and automatic lessons.
+                        </p>
 
-                    </p>
 
-                </div>
+                        <div class="course-bottom">
 
-            </a>
+                            <div>
 
+                                <small>
+                                    PACKAGE FROM
+                                </small>
 
+                                <strong>
+                                    R2,500
+                                </strong>
 
-            <!-- =====================================
-                 CODE 10
-                 ===================================== -->
-            <a href="@Url.Action("Login", "Account")"
-               class="course-card">
+                            </div>
 
-                <img class="course-img"
-                     src="@Url.Content("~/Content/images/code10.jpg")"
-                     alt="Minibus and light delivery truck used for Code 10 lessons" />
+                            <span class="course-arrow">
+                                →
+                            </span>
 
+                        </div>
 
-                <div class="course-body">
+                    </div>
 
-                    <span class="course-badge">
-                        Code 10
-                    </span>
+                </a>
 
 
-                    <h3>
-                        Medium Heavy Vehicle
-                    </h3>
+                <!-- CODE 10 -->
 
+                <a href="@Url.Action("Login", "Account")"
+                   class="course-card">
 
-                    <p class="course-desc">
+                    <div class="course-image">
 
-                        Covers minibuses, delivery vans and
-                        trucks between 3,500 kg and 16,000 kg GVM.
+                        <img src="@Url.Content("~/Content/images/code10.jpg")"
+                             alt="Code 10 medium heavy vehicle" />
 
-                        A strong choice for logistics,
-                        transport and commercial driving careers.
+                        <div class="course-number">
+                            CODE 10
+                        </div>
 
-                    </p>
+                    </div>
 
 
-                    <p class="course-price">
+                    <div class="course-content">
 
-                        From R3,000
+                        <div class="course-label">
+                            MEDIUM HEAVY VEHICLE
+                        </div>
 
-                        <span>
-                            / 30-lesson package
-                        </span>
+                        <h3>
+                            Code 10
+                        </h3>
 
-                    </p>
+                        <p>
+                            Training for minibuses, delivery
+                            vehicles and medium-heavy vehicles
+                            for commercial driving.
+                        </p>
 
-                </div>
 
-            </a>
+                        <div class="course-bottom">
 
+                            <div>
 
+                                <small>
+                                    PACKAGE FROM
+                                </small>
 
-            <!-- =====================================
-                 CODE 14
-                 ===================================== -->
-            <a href="@Url.Action("Login", "Account")"
-               class="course-card">
+                                <strong>
+                                    R3,000
+                                </strong>
 
-                <img class="course-img"
-                     src="@Url.Content("~/Content/images/code14.jpg")"
-                     alt="Heavy articulated truck with trailer used for Code 14 lessons" />
+                            </div>
 
+                            <span class="course-arrow">
+                                →
+                            </span>
 
-                <div class="course-body">
+                        </div>
 
-                    <span class="course-badge">
-                        Code 14
-                    </span>
+                    </div>
 
+                </a>
 
-                    <h3>
-                        Heavy Articulated Vehicle
-                    </h3>
 
+                <!-- CODE 14 -->
 
-                    <p class="course-desc">
+                <a href="@Url.Action("Login", "Account")"
+                   class="course-card">
 
-                        For articulated trucks over 16,000 kg GVM,
-                        including trailers.
+                    <div class="course-image">
 
-                        The most in-depth training, built for
-                        learners heading into long-haul and
-                        heavy freight driving.
+                        <img src="@Url.Content("~/Content/images/code14.jpg")"
+                             alt="Code 14 heavy articulated vehicle" />
 
-                    </p>
+                        <div class="course-number">
+                            CODE 14
+                        </div>
 
+                    </div>
 
-                    <p class="course-price">
 
-                        From R4,500
+                    <div class="course-content">
 
-                        <span>
-                            / 30-lesson package
-                        </span>
+                        <div class="course-label">
+                            HEAVY ARTICULATED VEHICLE
+                        </div>
 
-                    </p>
+                        <h3>
+                            Code 14
+                        </h3>
 
-                </div>
+                        <p>
+                            Professional training for heavy
+                            trucks and articulated vehicles
+                            used in freight and logistics.
+                        </p>
+
+
+                        <div class="course-bottom">
+
+                            <div>
+
+                                <small>
+                                    PACKAGE FROM
+                                </small>
+
+                                <strong>
+                                    R4,500
+                                </strong>
+
+                            </div>
+
+                            <span class="course-arrow">
+                                →
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+         CTA
+         ===================================================== -->
+
+    <section class="cta-section">
+
+        <div class="cta-container">
+
+            <div>
+
+                <span>
+                    YOUR JOURNEY STARTS HERE
+                </span>
+
+                <h2>
+                    Believe in yourself. Get behind the wheel.
+                </h2>
+
+                <p>
+                    Start today, practise consistently and
+                    turn your goal of getting your licence
+                    into reality.
+                </p>
+
+            </div>
+
+
+            <a href="@Url.Action("Register", "Account")"
+               class="cta-button">
+
+                Get Started
+
+                <span>
+                    →
+                </span>
 
             </a>
 
@@ -405,32 +1509,70 @@
     </section>
 
 
-
-    <!-- =========================================
+    <!-- =====================================================
          FOOTER
-         ========================================= -->
-    <footer class="container footer">
+         ===================================================== -->
 
-        © <span id="year"></span>
+    <footer class="site-footer">
 
-        TK Driving School.
+        <div class="footer-container">
 
-        Student, instructor and administrator portal.
+            <div>
+
+                <div class="footer-brand">
+
+                    <span>
+                        TK
+                    </span>
+
+                    Driving School
+
+                </div>
+
+                <p>
+                    Professional driving training
+                    for South African motorists.
+                </p>
+
+            </div>
+
+
+            <div class="footer-links">
+
+                <a href="@Url.Action("Index", "Home")">
+                    Home
+                </a>
+
+                <a href="@Url.Action("About", "Home")">
+                    About
+                </a>
+
+                <a href="@Url.Action("Contact", "Home")">
+                    Contact
+                </a>
+
+                <a href="@Url.Action("Login", "Account")">
+                    Login
+                </a>
+
+                <a href="@Url.Action("Register", "Account")">
+                    Register
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © @DateTime.Now.Year TK Driving School.
+            All rights reserved.
+
+        </div>
 
     </footer>
-
-
-
-    <!-- =========================================
-         JAVASCRIPT
-         ========================================= -->
-    <script>
-
-        document.getElementById("year").textContent =
-            new Date().getFullYear();
-
-    </script>
-
+    
 
 </body>
 </html>

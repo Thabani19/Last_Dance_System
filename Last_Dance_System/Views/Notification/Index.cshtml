@@ -1,0 +1,809 @@
+﻿@model IEnumerable<Last_Dance_System.Models.Notification>
+
+@{
+    Layout = null;
+    ViewBag.Title = "Notifications";
+
+    int unreadCount =
+        Model.Count(n => !n.IsRead);
+}
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>
+        Notifications - TK Driving
+    </title>
+
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+
+        body {
+            margin: 0;
+            padding: 0;
+
+            background: #f4f7fb;
+
+            font-family:
+                "Segoe UI",
+                Arial,
+                sans-serif;
+
+            color: #172033;
+        }
+
+
+        .page {
+            min-height: 100vh;
+
+            padding: 30px;
+
+            background:
+                radial-gradient(
+                    circle at 80% 10%,
+                    rgba(21, 101, 192, 0.08),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    135deg,
+                    #f7faff 0%,
+                    #f1f5fa 50%,
+                    #eef3f9 100%
+                );
+        }
+
+
+        .container {
+            max-width: 1100px;
+
+            margin: 0 auto;
+        }
+
+
+        .header {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            gap: 20px;
+
+            margin-bottom: 20px;
+
+            padding: 24px 28px;
+
+            background: #ffffff;
+
+            border: 1px solid #dce5f0;
+
+            border-radius: 18px;
+
+            box-shadow:
+                0 15px 40px
+                rgba(30, 64, 100, 0.08);
+        }
+
+
+        .header-left {
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+        }
+
+
+        .header-icon {
+            width: 50px;
+            height: 50px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: #1565c0;
+
+            color: #ffffff;
+
+            font-size: 19px;
+        }
+
+
+        .header h1 {
+            margin: 0 0 4px;
+
+            font-size: 24px;
+
+            font-weight: 800;
+        }
+
+
+        .header p {
+            margin: 0;
+
+            color: #718096;
+
+            font-size: 12px;
+        }
+
+
+        .back-button {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 10px 15px;
+
+            border-radius: 9px;
+
+            background: #f4f8fd;
+
+            border: 1px solid #dce7f3;
+
+            color: #172033;
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            text-decoration: none;
+
+            transition: 0.25s ease;
+        }
+
+
+        .back-button:hover {
+            background: #edf5ff;
+
+            border-color: #1565c0;
+
+            color: #1565c0;
+        }
+
+
+        .toolbar {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 15px;
+
+            padding: 15px 18px;
+
+            background: #ffffff;
+
+            border: 1px solid #dce5f0;
+
+            border-radius: 12px;
+        }
+
+
+        .notification-count {
+            color: #718096;
+
+            font-size: 11px;
+        }
+
+
+        .notification-count strong {
+            color: #1565c0;
+        }
+
+
+        .mark-all-button {
+            border: none;
+
+            padding: 9px 13px;
+
+            background: #1565c0;
+
+            color: #ffffff;
+
+            border-radius: 8px;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.25s ease;
+        }
+
+
+        .mark-all-button:hover {
+            background: #0d47a1;
+        }
+
+
+        .notification-list {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 10px;
+        }
+
+
+        .notification {
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 15px;
+
+            padding: 18px;
+
+            background: #ffffff;
+
+            border: 1px solid #dce5f0;
+
+            border-radius: 13px;
+
+            box-shadow:
+                0 8px 25px
+                rgba(30, 64, 100, 0.05);
+
+            transition: 0.25s ease;
+        }
+
+
+        .notification:hover {
+            transform: translateY(-2px);
+
+            border-color: #9fc7ed;
+
+            box-shadow:
+                0 12px 30px
+                rgba(21, 101, 192, 0.08);
+        }
+
+
+        .notification.unread {
+            border-left:
+                4px solid #1565c0;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #f4f9ff,
+                    #ffffff
+                );
+        }
+
+
+        .notification-icon {
+            width: 42px;
+            height: 42px;
+
+            flex-shrink: 0;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: #edf5ff;
+
+            border: 1px solid #d5e7fb;
+
+            color: #1565c0;
+
+            font-size: 15px;
+        }
+
+
+        .notification-content {
+            flex: 1;
+
+            min-width: 0;
+        }
+
+
+        .notification-top {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: flex-start;
+
+            gap: 15px;
+        }
+
+
+        .notification-title {
+            margin: 0;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            color: #172033;
+        }
+
+
+        .notification-message {
+            margin: 6px 0 0;
+
+            color: #66758a;
+
+            font-size: 11px;
+
+            line-height: 1.6;
+        }
+
+
+        .notification-date {
+            margin-top: 8px;
+
+            color: #94a0b0;
+
+            font-size: 9px;
+        }
+
+
+        .unread-label {
+            padding: 4px 8px;
+
+            border-radius: 20px;
+
+            background: #e8f2ff;
+
+            color: #1565c0;
+
+            font-size: 8px;
+
+            font-weight: 800;
+
+            text-transform: uppercase;
+
+            white-space: nowrap;
+        }
+
+
+        .read-label {
+            padding: 4px 8px;
+
+            border-radius: 20px;
+
+            background: #f1f5f9;
+
+            color: #8492a6;
+
+            font-size: 8px;
+
+            font-weight: 700;
+
+            text-transform: uppercase;
+
+            white-space: nowrap;
+        }
+
+
+        .notification-action {
+            margin-top: 10px;
+        }
+
+
+        .read-button {
+            padding: 7px 10px;
+
+            background: #f4f8fd;
+
+            border: 1px solid #dce7f3;
+
+            border-radius: 7px;
+
+            color: #1565c0;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.25s ease;
+        }
+
+
+        .read-button:hover {
+            background: #edf5ff;
+
+            border-color: #1565c0;
+        }
+
+
+        .empty {
+            padding: 70px 25px;
+
+            text-align: center;
+
+            background: #ffffff;
+
+            border: 1px solid #dce5f0;
+
+            border-radius: 16px;
+
+            box-shadow:
+                0 10px 28px
+                rgba(30, 64, 100, 0.06);
+        }
+
+
+        .empty-icon {
+            width: 65px;
+            height: 65px;
+
+            margin: 0 auto 15px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 14px;
+
+            background: #edf5ff;
+
+            border: 1px solid #d5e7fb;
+
+            color: #1565c0;
+
+            font-size: 24px;
+        }
+
+
+        .empty h2 {
+            margin: 0 0 7px;
+
+            font-size: 17px;
+        }
+
+
+        .empty p {
+            margin: 0;
+
+            color: #718096;
+
+            font-size: 11px;
+        }
+
+
+        @@media (max-width: 650px) {
+
+            .page {
+                padding: 15px;
+            }
+
+
+            .header {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+
+            .back-button {
+                width: 100%;
+
+                justify-content: center;
+            }
+
+
+            .toolbar {
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 10px;
+            }
+
+
+            .mark-all-button {
+                width: 100%;
+            }
+
+
+            .notification-top {
+                flex-direction: column;
+
+                gap: 8px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <div class="page">
+
+        <div class="container">
+
+
+            <!-- =====================================================
+                 HEADER
+                 ===================================================== -->
+
+            <div class="header">
+
+                <div class="header-left">
+
+                    <div class="header-icon">
+
+                        <i class="fa-solid fa-bell"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h1>
+                            Notifications
+                        </h1>
+
+                        <p>
+                            Stay updated with your driving lessons and account.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <a href="@Url.Action("Index", "Dashboard")"
+                   class="back-button">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    Back to Dashboard
+
+                </a>
+
+            </div>
+
+
+            <!-- =====================================================
+                 TOOLBAR
+                 ===================================================== -->
+
+            <div class="toolbar">
+
+                <div class="notification-count">
+
+                    You have
+
+                    <strong>
+                        @unreadCount
+                    </strong>
+
+                    unread notification@(unreadCount == 1 ? "" : "s").
+
+                </div>
+
+
+                @if (unreadCount > 0)
+                {
+                    using (Html.BeginForm(
+                        "MarkAllAsRead",
+                        "Notification",
+                        FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit"
+                                class="mark-all-button">
+
+                            <i class="fa-solid fa-check-double"></i>
+
+                            Mark All as Read
+
+                        </button>
+                    }
+                }
+
+            </div>
+
+
+            <!-- =====================================================
+                 NOTIFICATIONS
+                 ===================================================== -->
+
+            @if (Model != null && Model.Any())
+            {
+
+                <div class="notification-list">
+
+                    @foreach (var notification in Model)
+                    {
+
+                        <div class="notification @(notification.IsRead ? "" : "unread")">
+
+
+                            <!-- ICON -->
+
+                            <div class="notification-icon">
+
+                                @if (notification.NotificationType == "Booking")
+                                {
+                                    <i class="fa-solid fa-calendar-check"></i>
+                                }
+                                else if (notification.NotificationType == "Cancellation")
+                                {
+                                    <i class="fa-solid fa-calendar-xmark"></i>
+                                }
+                                else if (notification.NotificationType == "Reschedule")
+                                {
+                                    <i class="fa-solid fa-calendar-days"></i>
+                                }
+                                else if (notification.NotificationType == "Payment")
+                                {
+                                    <i class="fa-solid fa-credit-card"></i>
+                                }
+                                else if (notification.NotificationType == "Feedback")
+                                {
+                                    <i class="fa-solid fa-comment-dots"></i>
+                                }
+                                else if (notification.NotificationType == "Lesson")
+                                {
+                                    <i class="fa-solid fa-car-side"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa-solid fa-bell"></i>
+                                }
+
+                            </div>
+
+
+                            <!-- CONTENT -->
+
+                            <div class="notification-content">
+
+
+                                <div class="notification-top">
+
+                                    <h3 class="notification-title">
+
+                                        @notification.Title
+
+                                    </h3>
+
+
+                                    @if (!notification.IsRead)
+                                    {
+                                        <span class="unread-label">
+                                            Unread
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="read-label">
+                                            Read
+                                        </span>
+                                    }
+
+                                </div>
+
+
+                                <p class="notification-message">
+
+                                    @notification.Message
+
+                                </p>
+
+
+                                <div class="notification-date">
+
+                                    <i class="fa-regular fa-clock"></i>
+
+                                    @notification.CreatedAt.ToString(
+                                        "dd MMMM yyyy, HH:mm")
+
+                                </div>
+
+
+                                @if (!notification.IsRead)
+                                {
+
+                                    <div class="notification-action">
+
+                                        @using (Html.BeginForm(
+                                            "MarkAsRead",
+                                            "Notification",
+                                            FormMethod.Post,
+                                            new { style = "display:inline;" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+
+                                            @Html.Hidden(
+                                                "id",
+                                                notification.NotificationId)
+
+                                            <button type="submit"
+                                                    class="read-button">
+
+                                                <i class="fa-solid fa-check"></i>
+
+                                                Mark as Read
+
+                                            </button>
+                                        }
+
+                                    </div>
+
+                                }
+
+                            </div>
+
+                        </div>
+
+                    }
+
+                </div>
+
+            }
+            else
+            {
+
+                <div class="empty">
+
+                    <div class="empty-icon">
+
+                        <i class="fa-regular fa-bell-slash"></i>
+
+                    </div>
+
+
+                    <h2>
+                        No Notifications
+                    </h2>
+
+
+                    <p>
+                        You don't have any notifications yet.
+                    </p>
+
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

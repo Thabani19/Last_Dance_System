@@ -1,0 +1,2420 @@
+﻿@using System
+@using System.Collections.Generic
+@using System.Linq
+@using Last_Dance_System.Models
+
+@model IEnumerable<LessonSchedule>
+
+@{
+    Layout = null;
+    ViewBag.Title = "My Lessons";
+
+
+    var instructor = ViewBag.Instructor as Instructor;
+
+    var allLessons = Model ?? Enumerable.Empty<LessonSchedule>();
+
+    var today = DateTime.Today;
+
+    // =========================================================
+    // TODAY'S ACTIVE LESSONS
+    // =========================================================
+
+    var todaysLessons = allLessons
+        .Where(l =>
+            l.LessonDate.Date == today &&
+            !string.Equals(
+                l.Status,
+                "Cancelled",
+                StringComparison.OrdinalIgnoreCase) &&
+            !string.Equals(
+                l.Status,
+                "Completed",
+                StringComparison.OrdinalIgnoreCase) &&
+            l.Bookings != null &&
+            l.Bookings.Any(b =>
+                b.Registration != null &&
+                !string.Equals(
+                    b.Status,
+                    "Cancelled",
+                    StringComparison.OrdinalIgnoreCase) &&
+                !string.Equals(
+                    b.Status,
+                    "Completed",
+                    StringComparison.OrdinalIgnoreCase)))
+        .OrderBy(l => l.StartTime)
+        .ToList();
+
+    // =========================================================
+    // UPCOMING LESSONS
+    // =========================================================
+
+    var upcomingLessons = allLessons
+        .Where(l =>
+            l.LessonDate.Date > today &&
+            !string.Equals(
+                l.Status,
+                "Cancelled",
+                StringComparison.OrdinalIgnoreCase) &&
+            !string.Equals(
+                l.Status,
+                "Completed",
+                StringComparison.OrdinalIgnoreCase) &&
+            l.Bookings != null &&
+            l.Bookings.Any(b =>
+                b.Registration != null &&
+                !string.Equals(
+                    b.Status,
+                    "Cancelled",
+                    StringComparison.OrdinalIgnoreCase) &&
+                !string.Equals(
+                    b.Status,
+                    "Completed",
+                    StringComparison.OrdinalIgnoreCase)))
+        .OrderBy(l => l.LessonDate)
+        .ThenBy(l => l.StartTime)
+        .ToList();
+
+    // =========================================================
+    // COMPLETED LESSONS
+    // =========================================================
+
+    var completedLessons = allLessons
+        .Where(l =>
+            string.Equals(
+                l.Status,
+                "Completed",
+                StringComparison.OrdinalIgnoreCase) ||
+            (l.Bookings != null &&
+             l.Bookings.Any(b =>
+                b.Registration != null &&
+                string.Equals(
+                    b.Status,
+                    "Completed",
+                    StringComparison.OrdinalIgnoreCase))))
+        .OrderByDescending(l => l.LessonDate)
+        .ThenByDescending(l => l.StartTime)
+        .ToList();
+
+    // =========================================================
+    // CANCELLED LESSONS
+    // =========================================================
+
+    var cancelledLessons = allLessons
+        .Where(l =>
+            string.Equals(
+                l.Status,
+                "Cancelled",
+                StringComparison.OrdinalIgnoreCase) ||
+            (l.Bookings != null &&
+             l.Bookings.Any(b =>
+                b.Registration != null &&
+                string.Equals(
+                    b.Status,
+                    "Cancelled",
+                    StringComparison.OrdinalIgnoreCase))))
+        .OrderByDescending(l => l.LessonDate)
+        .ThenByDescending(l => l.StartTime)
+        .ToList();
+
+
+}
+
+<style>
+
+    /* =========================================================
+       GLOBAL
+       ========================================================= */
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #f5f8fc;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: #172033;
+    }
+
+    .lessons-page {
+        min-height: 100vh;
+        padding: 32px 25px 65px;
+        background: radial-gradient( circle at 100% 0%, rgba(25, 118, 210, 0.07), transparent 30% ), #f5f8fc;
+    }
+
+    .lessons-wrapper {
+        width: 100%;
+        max-width: 1250px;
+        margin: 0 auto;
+    }
+
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .lessons-header {
+        position: relative;
+        overflow: hidden;
+        background: #ffffff;
+        border: 1px solid #dfe7f0;
+        border-radius: 18px;
+        padding: 28px 32px;
+        margin-bottom: 24px;
+        box-shadow: 0 8px 28px rgba(30, 70, 110, 0.07);
+    }
+
+        .lessons-header::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient( 180deg, #1976d2, #0d47a1 );
+        }
+
+        .lessons-header::after {
+            content: "";
+            position: absolute;
+            right: -90px;
+            top: -110px;
+            width: 270px;
+            height: 270px;
+            background: radial-gradient( circle, rgba(25, 118, 210, 0.09), transparent 70% );
+            pointer-events: none;
+        }
+
+    .header-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 17px;
+    }
+
+
+    /* =========================================================
+       PROFESSIONAL HEADER ICON
+       ========================================================= */
+
+    .header-icon {
+        width: 62px;
+        height: 62px;
+        border-radius: 15px;
+        background: linear-gradient( 135deg, #1976d2, #0d47a1 );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        box-shadow: 0 8px 20px rgba(25, 118, 210, 0.22);
+        flex-shrink: 0;
+    }
+
+        .header-icon svg {
+            width: 31px;
+            height: 31px;
+            stroke: currentColor;
+        }
+
+
+    /* =========================================================
+       HEADER TEXT
+       ========================================================= */
+
+    .header-text h1 {
+        margin: 0 0 5px;
+        color: #142033;
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.4px;
+    }
+
+    .header-text p {
+        margin: 0;
+        color: #78879a;
+        font-size: 13px;
+    }
+
+    .instructor-name {
+        color: #1976d2;
+        font-weight: 700;
+    }
+
+
+    /* =========================================================
+       BACK BUTTON
+       ========================================================= */
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 17px;
+        min-height: 42px;
+        border-radius: 9px;
+        background: #ffffff;
+        border: 1px solid #cbd8e6;
+        color: #1976d2;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .back-button svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+        }
+
+        .back-button:hover {
+            background: #eef6ff;
+            border-color: #1976d2;
+            color: #0d47a1;
+            text-decoration: none;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(25, 118, 210, 0.10);
+        }
+
+
+    /* =========================================================
+       MESSAGES
+       ========================================================= */
+
+    .message-success {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #edf9f1;
+        border: 1px solid #cdebd7;
+        color: #287a46;
+        padding: 13px 17px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .message-error {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #fff1f1;
+        border: 1px solid #f0cccc;
+        color: #a33a3a;
+        padding: 13px 17px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .message-icon {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+
+
+    /* =========================================================
+       LESSON SECTION
+       ========================================================= */
+
+    .lesson-section {
+        background: #ffffff;
+        border: 1px solid #dfe7f0;
+        border-radius: 17px;
+        padding: 24px;
+        margin-bottom: 23px;
+        box-shadow: 0 8px 25px rgba(30, 70, 110, 0.055);
+    }
+
+
+    /* =========================================================
+       SECTION HEADER
+       ========================================================= */
+
+    .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 17px;
+        margin-bottom: 17px;
+        border-bottom: 1px solid #edf1f5;
+    }
+
+    .section-heading {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+    }
+
+    .section-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: #eef6ff;
+        color: #1976d2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+        .section-icon svg {
+            width: 19px;
+            height: 19px;
+            stroke: currentColor;
+        }
+
+    .section-title {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 750;
+        color: #172033;
+    }
+
+    .section-subtitle {
+        margin: 3px 0 0;
+        color: #8794a5;
+        font-size: 11px;
+    }
+
+    .section-count {
+        min-width: 32px;
+        text-align: center;
+        background: #eef6ff;
+        border: 1px solid #d4e7fa;
+        color: #1976d2;
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+
+    /* =========================================================
+       LESSON CARD
+       ========================================================= */
+
+    .lesson-card {
+        position: relative;
+        background: #fbfdff;
+        border: 1px solid #e1e9f2;
+        border-radius: 13px;
+        padding: 19px 20px 19px 23px;
+        margin-bottom: 12px;
+        overflow: hidden;
+        transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .lesson-card::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient( 180deg, #1976d2, #64b5f6 );
+        }
+
+        .lesson-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .lesson-card:hover {
+            border-color: #c5d9ed;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(30, 70, 110, 0.08);
+        }
+
+    .lesson-main {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+
+    /* =========================================================
+       STUDENT
+       ========================================================= */
+
+    .student-row {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        margin-bottom: 11px;
+    }
+
+    .student-icon {
+        width: 35px;
+        height: 35px;
+        border-radius: 9px;
+        background: #eef6ff;
+        color: #1976d2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+        .student-icon svg {
+            width: 17px;
+            height: 17px;
+            stroke: currentColor;
+        }
+
+    .lesson-student {
+        color: #172033;
+        font-size: 16px;
+        font-weight: 750;
+    }
+
+
+    /* =========================================================
+       LESSON DETAILS
+       ========================================================= */
+
+    .lesson-details {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px 18px;
+        color: #718096;
+        font-size: 12px;
+    }
+
+    .lesson-detail {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .detail-icon {
+        width: 15px;
+        height: 15px;
+        color: #1976d2;
+        flex-shrink: 0;
+    }
+
+        .detail-icon svg {
+            width: 15px;
+            height: 15px;
+            stroke: currentColor;
+        }
+
+    .lesson-detail strong {
+        color: #46566a;
+    }
+
+
+    /* =========================================================
+       STATUS
+       ========================================================= */
+
+    .lesson-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
+        border-radius: 20px;
+        background: #eef6ff;
+        border: 1px solid #d4e7fa;
+        color: #1976d2;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+    }
+
+    .completed-status {
+        background: #edf9f1;
+        color: #2e8b57;
+        border-color: #d0ecd8;
+    }
+
+    .cancelled-status {
+        background: #f3f5f7;
+        color: #718096;
+        border-color: #dce2e8;
+    }
+
+
+    /* =========================================================
+       ACTIONS
+       ========================================================= */
+
+    .lesson-actions {
+        margin-top: 18px;
+        padding-top: 15px;
+        border-top: 1px solid #edf1f5;
+    }
+
+    .action-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+    }
+
+
+    /* =========================================================
+       COMPLETE BUTTON
+       ========================================================= */
+
+    .btn-complete {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        background: #ffffff;
+        color: #27804b !important;
+        border: 1px solid #bcdcc8;
+        padding: 9px 14px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+        .btn-complete svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+        }
+
+        .btn-complete:hover {
+            background: #edf9f1;
+            border-color: #75b88c;
+            color: #216c3d !important;
+            transform: translateY(-1px);
+        }
+
+
+    /* =========================================================
+       CANCEL BUTTON
+       ========================================================= */
+
+    .btn-cancel {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        background: #ffffff;
+        color: #c03939 !important;
+        border: 1px solid #e1bcbc;
+        padding: 9px 14px;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+        .btn-cancel svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+        }
+
+        .btn-cancel:hover {
+            background: #fff2f2;
+            border-color: #d97b7b;
+            color: #a52f2f !important;
+            transform: translateY(-1px);
+        }
+
+
+    /* =========================================================
+       CANCEL FORM
+       ========================================================= */
+
+    .cancel-form {
+        margin-top: 13px;
+        padding: 16px;
+        background: #fff8f8;
+        border: 1px solid #efd4d4;
+        border-radius: 10px;
+    }
+
+        .cancel-form label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 8px;
+            color: #9d4545;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .cancel-form textarea {
+            width: 100%;
+            min-height: 90px;
+            resize: vertical;
+            padding: 11px 12px;
+            background: #ffffff;
+            border: 1px solid #d8c4c4;
+            border-radius: 8px;
+            color: #172033;
+            font-family: "Segoe UI", Arial, sans-serif;
+            font-size: 12px;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+            .cancel-form textarea::placeholder {
+                color: #a8a8a8;
+            }
+
+            .cancel-form textarea:focus {
+                border-color: #c03939;
+                box-shadow: 0 0 0 3px rgba(192, 57, 57, 0.08);
+            }
+
+    .cancel-form-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .btn-confirm-cancel {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        background: #c03939;
+        color: #ffffff;
+        border: 1px solid #c03939;
+        padding: 9px 14px;
+        border-radius: 7px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+        .btn-confirm-cancel:hover {
+            background: #a93232;
+            border-color: #a93232;
+        }
+
+
+    /* =========================================================
+       CANCELLED REASON
+       ========================================================= */
+
+    .cancellation-reason {
+        margin-top: 15px;
+        padding: 13px 14px;
+        background: #f6f8fa;
+        border: 1px solid #e1e6eb;
+        border-left: 3px solid #9aa6b2;
+        border-radius: 8px;
+    }
+
+    .cancellation-reason-title {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 6px;
+        color: #657384;
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+        .cancellation-reason-title svg {
+            width: 14px;
+            height: 14px;
+            stroke: currentColor;
+        }
+
+    .cancellation-reason-text {
+        color: #536273;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+
+    /* =========================================================
+       EMPTY STATE
+       ========================================================= */
+
+    .empty-state {
+        text-align: center;
+        padding: 38px 20px;
+    }
+
+    .empty-icon {
+        width: 48px;
+        height: 48px;
+        margin: 0 auto 12px;
+        border-radius: 50%;
+        background: #f0f6fc;
+        color: #7da5cc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .empty-icon svg {
+            width: 21px;
+            height: 21px;
+            stroke: currentColor;
+        }
+
+    .empty-state-title {
+        color: #526275;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .empty-state-text {
+        color: #8b98a8;
+        font-size: 12px;
+    }
+
+
+    /* =========================================================
+       RESPONSIVE - TABLET
+       ========================================================= */
+
+    @@media (max-width: 800px) {
+
+        .header-content {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .back-button {
+            width: 100%;
+        }
+
+        .lesson-main {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .lesson-status {
+            align-self: flex-start;
+        }
+
+        .action-row {
+            flex-direction: column;
+        }
+
+        .btn-complete,
+        .btn-cancel {
+            width: 100%;
+        }
+
+        .cancel-form-actions {
+            flex-direction: column;
+        }
+
+            .btn-confirm-cancel,
+            .cancel-form-actions .back-button {
+                width: 100%;
+            }
+    }
+
+
+    /* =========================================================
+       RESPONSIVE - MOBILE
+       ========================================================= */
+
+    @@media (max-width: 576px) {
+
+        .lessons-page {
+            padding: 15px 10px 40px;
+        }
+
+        .lessons-header {
+            padding: 24px 20px;
+        }
+
+        .header-left {
+            align-items: flex-start;
+        }
+
+        .header-icon {
+            width: 52px;
+            height: 52px;
+        }
+
+            .header-icon svg {
+                width: 26px;
+                height: 26px;
+            }
+
+        .header-text h1 {
+            font-size: 22px;
+        }
+
+        .lesson-section {
+            padding: 18px;
+        }
+
+        .lesson-card {
+            padding: 17px 17px 17px 20px;
+        }
+
+        .lesson-details {
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .section-header {
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .section-heading {
+            align-items: flex-start;
+        }
+
+        .section-subtitle {
+            display: none;
+        }
+    }
+</style>
+
+<div class="lessons-page">
+
+    
+    <div class="lessons-wrapper">
+
+
+        <!-- =====================================================
+             SUCCESS / ERROR
+             ===================================================== -->
+
+        @if (TempData["InstructorSuccess"] != null)
+                    {
+                        <div class="message-success">
+
+                            <svg class="message-icon"
+                                 viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2">
+                                <path d="M20 6L9 17l-5-5" />
+                            </svg>
+
+                            @TempData["InstructorSuccess"]
+
+                        </div>
+                    }
+
+        @if (TempData["InstructorError"] != null)
+        {
+            <div class="message-error">
+
+                <svg class="message-icon"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2">
+                    <circle cx="12" cy="12" r="9" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>
+
+                @TempData["InstructorError"]
+
+            </div>
+        }
+
+
+        <!-- =====================================================
+             HEADER
+             ===================================================== -->
+
+        <div class="lessons-header">
+
+            <div class="header-content">
+
+                <div class="header-left">
+
+                    <div class="header-icon">
+
+                        <!-- Calendar / Lessons Icon -->
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <rect x="3" y="4" width="18" height="17" rx="2" />
+
+                            <line x1="16" y1="2" x2="16" y2="6" />
+
+                            <line x1="8" y1="2" x2="8" y2="6" />
+
+                            <line x1="3" y1="9" x2="21" y2="9" />
+
+                            <path d="M8 13h2" />
+                            <path d="M14 13h2" />
+                            <path d="M8 17h2" />
+                            <path d="M14 17h2" />
+
+                        </svg>
+
+                    </div>
+
+                    <div class="header-text">
+
+                        <h1>
+                            My Lessons
+                        </h1>
+
+                        <p>
+                            Instructor:
+
+                            @if (instructor != null)
+                            {
+                                <span class="instructor-name">
+                                    @instructor.FirstName @instructor.LastName
+                                </span>
+                            }
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <a href="@Url.Action("Index", "InstructorDashboard")"
+                   class="back-button">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <line x1="19" y1="12" x2="5" y2="12" />
+                        <polyline points="12 19 5 12 12 5" />
+
+                    </svg>
+
+                    Back to Dashboard
+
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             TODAY'S LESSONS
+             ===================================================== -->
+
+        <div class="lesson-section">
+
+            <div class="section-header">
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <rect x="3" y="4" width="18" height="17" rx="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="9" x2="21" y2="9" />
+                            <circle cx="12" cy="15" r="2.5" />
+
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <h2 class="section-title">
+                            Today's Lessons
+                        </h2>
+
+                        <p class="section-subtitle">
+                            Your active lessons scheduled for today
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <span class="section-count">
+                    @todaysLessons.Count
+                </span>
+
+            </div>
+
+
+            @if (todaysLessons.Any())
+            {
+                foreach (var lesson in todaysLessons)
+                {
+                    var activeBooking = lesson.Bookings
+                        .FirstOrDefault(b =>
+                            b.Registration != null &&
+                            !string.Equals(
+                                b.Status,
+                                "Cancelled",
+                                StringComparison.OrdinalIgnoreCase) &&
+                            !string.Equals(
+                                b.Status,
+                                "Completed",
+                                StringComparison.OrdinalIgnoreCase));
+
+                    <div class="lesson-card">
+
+                        <div class="lesson-main">
+
+                            <div>
+
+                                <div class="student-row">
+
+                                    <div class="student-icon">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.8"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round">
+
+                                            <circle cx="12" cy="8" r="4" />
+
+                                            <path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7" />
+
+                                        </svg>
+
+                                    </div>
+
+                                    <div class="lesson-student">
+
+                                        @if (activeBooking != null)
+                                        {
+                                            @activeBooking.Registration.FirstName
+                                            @(" ")
+                                            @activeBooking.Registration.LastName
+                                        }
+                                        else
+                                        {
+                                            @:No student assigned
+                                        }
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="lesson-details">
+
+                                    <!-- TIME -->
+
+                                    <div class="lesson-detail">
+
+                                        <span class="detail-icon">
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2"
+                                                 stroke-linecap="round"
+                                                 stroke-linejoin="round">
+
+                                                <circle cx="12" cy="12" r="9" />
+                                                <polyline points="12 7 12 12 15 14" />
+
+                                            </svg>
+
+                                        </span>
+
+                                        <strong>Time:</strong>
+
+                                        @lesson.StartTime.ToString(@"hh\:mm")
+                                        -
+                                        @lesson.EndTime.ToString(@"hh\:mm")
+
+                                    </div>
+
+
+                                    <!-- LESSON TYPE -->
+
+                                    <div class="lesson-detail">
+
+                                        <span class="detail-icon">
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2"
+                                                 stroke-linecap="round"
+                                                 stroke-linejoin="round">
+
+                                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+
+                                            </svg>
+
+                                        </span>
+
+                                        <strong>Lesson:</strong>
+
+                                        @if (lesson.LessonType != null)
+                                        {
+                                            @lesson.LessonType.LessonTypeName
+                                        }
+                                        else
+                                        {
+                                            @:N/A
+                                        }
+
+                                    </div>
+
+
+                                    <!-- VEHICLE -->
+
+                                    <div class="lesson-detail">
+
+                                        <span class="detail-icon">
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="1.8"
+                                                 stroke-linecap="round"
+                                                 stroke-linejoin="round">
+
+                                                <path d="M5 17h14" />
+                                                <path d="M6 17l1-6h10l1 6" />
+                                                <path d="M7 11l2-4h6l2 4" />
+                                                <circle cx="8" cy="17" r="1.5" />
+                                                <circle cx="16" cy="17" r="1.5" />
+
+                                            </svg>
+
+                                        </span>
+
+                                        <strong>Vehicle:</strong>
+
+                                        @if (lesson.Vehicle != null)
+                                        {
+                                            @lesson.Vehicle.VehicleId
+                                        }
+                                        else
+                                        {
+                                            @:N/A
+                                        }
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="lesson-status">
+
+                                <span class="status-dot"></span>
+
+                                Scheduled
+
+                            </div>
+
+                        </div>
+
+
+                        @if (activeBooking != null)
+                        {
+                            <div class="lesson-actions">
+
+                                <div class="action-row">
+
+                                    @using (Html.BeginForm(
+                                        "MarkCompleted",
+                                        "InstructorLessons",
+                                        FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+
+                                        <input type="hidden"
+                                               name="id"
+                                               value="@lesson.LessonScheduleId" />
+
+                                        <button type="submit"
+                                                class="btn-complete"
+                                                onclick="return confirm('Are you sure you want to mark this lesson as completed?');">
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2"
+                                                 stroke-linecap="round"
+                                                 stroke-linejoin="round">
+
+                                                <polyline points="20 6 9 17 4 12" />
+
+                                            </svg>
+
+                                            Mark as Completed
+
+                                        </button>
+                                    }
+
+
+                                    <button type="button"
+                                            class="btn-cancel"
+                                            onclick="showCancelForm('@lesson.LessonScheduleId')">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="2"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round">
+
+                                            <circle cx="12" cy="12" r="9" />
+                                            <line x1="8" y1="8" x2="16" y2="16" />
+                                            <line x1="16" y1="8" x2="8" y2="16" />
+
+                                        </svg>
+
+                                        Cancel Lesson
+
+                                    </button>
+
+                                </div>
+
+
+                                <!-- CANCEL FORM -->
+
+                                <div id="cancel-form-@lesson.LessonScheduleId"
+                                     class="cancel-form"
+                                     style="display:none;">
+
+                                    @using (Html.BeginForm(
+                                        "CancelLesson",
+                                        "InstructorLessons",
+                                        FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+
+                                        <input type="hidden"
+                                               name="id"
+                                               value="@lesson.LessonScheduleId" />
+
+                                        <label>
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2">
+
+                                                <circle cx="12" cy="12" r="9" />
+                                                <line x1="12" y1="8" x2="12" y2="12" />
+                                                <line x1="12" y1="16" x2="12.01" y2="16" />
+
+                                            </svg>
+
+                                            Reason for cancellation
+
+                                        </label>
+
+                                        <textarea name="cancellationReason"
+                                                  maxlength="500"
+                                                  placeholder="Please explain why you need to cancel this lesson..."
+                                                  required></textarea>
+
+                                        <div class="cancel-form-actions">
+
+                                            <button type="submit"
+                                                    class="btn-confirm-cancel"
+                                                    onclick="return confirm('Are you sure you want to cancel this lesson? The student will see this cancellation and reason.');">
+
+                                                Confirm Cancellation
+
+                                            </button>
+
+                                            <button type="button"
+                                                    class="back-button"
+                                                    onclick="hideCancelForm('@lesson.LessonScheduleId')">
+
+                                                Keep Lesson
+
+                                            </button>
+
+                                        </div>
+                                    }
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <rect x="3" y="4" width="18" height="17" rx="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="9" x2="21" y2="9" />
+
+                        </svg>
+
+                    </div>
+
+                    <div class="empty-state-title">
+                        No lessons today
+                    </div>
+
+                    <div class="empty-state-text">
+                        You do not have any active lessons scheduled for today.
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+
+        <!-- =====================================================
+             UPCOMING LESSONS
+             ===================================================== -->
+
+        <div class="lesson-section">
+
+            <div class="section-header">
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <rect x="3" y="4" width="18" height="17" rx="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="9" x2="21" y2="9" />
+                            <path d="M8 13h3" />
+                            <path d="M8 17h3" />
+
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <h2 class="section-title">
+                            Upcoming Lessons
+                        </h2>
+
+                        <p class="section-subtitle">
+                            Your future scheduled lessons
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <span class="section-count">
+                    @upcomingLessons.Count
+                </span>
+
+            </div>
+
+
+            @if (upcomingLessons.Any())
+            {
+                foreach (var lesson in upcomingLessons)
+                {
+                    var activeBooking = lesson.Bookings
+                        .FirstOrDefault(b =>
+                            b.Registration != null &&
+                            !string.Equals(
+                                b.Status,
+                                "Cancelled",
+                                StringComparison.OrdinalIgnoreCase) &&
+                            !string.Equals(
+                                b.Status,
+                                "Completed",
+                                StringComparison.OrdinalIgnoreCase));
+
+                    <div class="lesson-card">
+
+                        <div class="lesson-main">
+
+                            <div>
+
+                                <div class="student-row">
+
+                                    <div class="student-icon">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.8"
+                                             stroke-linecap="round"
+                                             stroke-linejoin="round">
+
+                                            <circle cx="12" cy="8" r="4" />
+
+                                            <path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7" />
+
+                                        </svg>
+
+                                    </div>
+
+                                    <div class="lesson-student">
+
+                                        @if (activeBooking != null)
+                                        {
+                                            @activeBooking.Registration.FirstName
+                                            @(" ")
+                                            @activeBooking.Registration.LastName
+                                        }
+                                        else
+                                        {
+                                            @:No student assigned
+                                        }
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="lesson-details">
+
+                                    <!-- DATE -->
+
+                                    <div class="lesson-detail">
+
+                                        <span class="detail-icon">
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2">
+
+                                                <rect x="3" y="4" width="18" height="17" rx="2" />
+                                                <line x1="16" y1="2" x2="16" y2="6" />
+                                                <line x1="8" y1="2" x2="8" y2="6" />
+                                                <line x1="3" y1="9" x2="21" y2="9" />
+
+                                            </svg>
+
+                                        </span>
+
+                                        <strong>Date:</strong>
+
+                                        @lesson.LessonDate.ToString("dd MMM yyyy")
+
+                                    </div>
+
+
+                                    <!-- TIME -->
+
+                                    <div class="lesson-detail">
+
+                                        <span class="detail-icon">
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2">
+
+                                                <circle cx="12" cy="12" r="9" />
+                                                <polyline points="12 7 12 12 15 14" />
+
+                                            </svg>
+
+                                        </span>
+
+                                        <strong>Time:</strong>
+
+                                        @lesson.StartTime.ToString(@"hh\:mm")
+                                        -
+                                        @lesson.EndTime.ToString(@"hh\:mm")
+
+                                    </div>
+
+
+                                    <!-- LESSON -->
+
+                                    <div class="lesson-detail">
+
+                                        <span class="detail-icon">
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2">
+
+                                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+
+                                            </svg>
+
+                                        </span>
+
+                                        <strong>Lesson:</strong>
+
+                                        @if (lesson.LessonType != null)
+                                        {
+                                            @lesson.LessonType.LessonTypeName
+                                        }
+                                        else
+                                        {
+                                            @:N/A
+                                        }
+
+                                    </div>
+
+
+                                    <!-- VEHICLE -->
+
+                                    <div class="lesson-detail">
+
+                                        <span class="detail-icon">
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="1.8">
+
+                                                <path d="M5 17h14" />
+                                                <path d="M6 17l1-6h10l1 6" />
+                                                <path d="M7 11l2-4h6l2 4" />
+                                                <circle cx="8" cy="17" r="1.5" />
+                                                <circle cx="16" cy="17" r="1.5" />
+
+                                            </svg>
+
+                                        </span>
+
+                                        <strong>Vehicle:</strong>
+
+                                        @if (lesson.Vehicle != null)
+                                        {
+                                            @lesson.Vehicle.VehicleId
+                                        }
+                                        else
+                                        {
+                                            @:N/A
+                                        }
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="lesson-status">
+
+                                <span class="status-dot"></span>
+
+                                Scheduled
+
+                            </div>
+
+                        </div>
+
+
+                        @if (activeBooking != null)
+                        {
+                            <div class="lesson-actions">
+
+                                <div class="action-row">
+
+                                    @using (Html.BeginForm(
+                                        "MarkCompleted",
+                                        "InstructorLessons",
+                                        FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+
+                                        <input type="hidden"
+                                               name="id"
+                                               value="@lesson.LessonScheduleId" />
+
+                                        <button type="submit"
+                                                class="btn-complete"
+                                                onclick="return confirm('Are you sure you want to mark this lesson as completed?');">
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2">
+
+                                                <polyline points="20 6 9 17 4 12" />
+
+                                            </svg>
+
+                                            Mark as Completed
+
+                                        </button>
+                                    }
+
+                                    <button type="button"
+                                            class="btn-cancel"
+                                            onclick="showCancelForm('@lesson.LessonScheduleId')">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="2">
+
+                                            <circle cx="12" cy="12" r="9" />
+                                            <line x1="8" y1="8" x2="16" y2="16" />
+                                            <line x1="16" y1="8" x2="8" y2="16" />
+
+                                        </svg>
+
+                                        Cancel Lesson
+
+                                    </button>
+
+                                </div>
+
+
+                                <div id="cancel-form-@lesson.LessonScheduleId"
+                                     class="cancel-form"
+                                     style="display:none;">
+
+                                    @using (Html.BeginForm(
+                                        "CancelLesson",
+                                        "InstructorLessons",
+                                        FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+
+                                        <input type="hidden"
+                                               name="id"
+                                               value="@lesson.LessonScheduleId" />
+
+                                        <label>
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2">
+
+                                                <circle cx="12" cy="12" r="9" />
+                                                <line x1="12" y1="8" x2="12" y2="12" />
+                                                <line x1="12" y1="16" x2="12.01" y2="16" />
+
+                                            </svg>
+
+                                            Reason for cancellation
+
+                                        </label>
+
+                                        <textarea name="cancellationReason"
+                                                  maxlength="500"
+                                                  placeholder="Please explain why you need to cancel this lesson..."
+                                                  required></textarea>
+
+                                        <div class="cancel-form-actions">
+
+                                            <button type="submit"
+                                                    class="btn-confirm-cancel"
+                                                    onclick="return confirm('Are you sure you want to cancel this lesson? The student will see this cancellation and reason.');">
+
+                                                Confirm Cancellation
+
+                                            </button>
+
+                                            <button type="button"
+                                                    class="back-button"
+                                                    onclick="hideCancelForm('@lesson.LessonScheduleId')">
+
+                                                Keep Lesson
+
+                                            </button>
+
+                                        </div>
+                                    }
+
+                                </div>
+
+                            </div>
+                        }
+
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8">
+
+                            <rect x="3" y="4" width="18" height="17" rx="2" />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                            <line x1="3" y1="9" x2="21" y2="9" />
+
+                        </svg>
+
+                    </div>
+
+                    <div class="empty-state-title">
+                        No upcoming lessons
+                    </div>
+
+                    <div class="empty-state-text">
+                        You currently have no upcoming lessons.
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+
+        <!-- =====================================================
+             COMPLETED LESSONS
+             ===================================================== -->
+
+        <div class="lesson-section">
+
+            <div class="section-header">
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8">
+
+                            <circle cx="12" cy="12" r="9" />
+                            <polyline points="8 12 11 15 16 9" />
+
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <h2 class="section-title">
+                            Completed Lessons
+                        </h2>
+
+                        <p class="section-subtitle">
+                            Lessons that have already been completed
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <span class="section-count">
+                    @completedLessons.Count
+                </span>
+
+            </div>
+
+
+            @if (completedLessons.Any())
+            {
+                foreach (var lesson in completedLessons)
+                {
+                    var completedBooking = lesson.Bookings
+                        .FirstOrDefault(b =>
+                            b.Registration != null &&
+                            string.Equals(
+                                b.Status,
+                                "Completed",
+                                StringComparison.OrdinalIgnoreCase));
+
+                    <div class="lesson-card">
+
+                        <div class="lesson-main">
+
+                            <div>
+
+                                <div class="student-row">
+
+                                    <div class="student-icon">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.8">
+
+                                            <circle cx="12" cy="8" r="4" />
+                                            <path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7" />
+
+                                        </svg>
+
+                                    </div>
+
+                                    <div class="lesson-student">
+
+                                        @if (completedBooking != null)
+                                        {
+                                            @completedBooking.Registration.FirstName
+                                            @(" ")
+                                            @completedBooking.Registration.LastName
+                                        }
+                                        else
+                                        {
+                                            @:Student unavailable
+                                        }
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="lesson-details">
+
+                                    <div class="lesson-detail">
+
+                                        <span class="detail-icon">
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2">
+
+                                                <rect x="3" y="4" width="18" height="17" rx="2" />
+                                                <line x1="16" y1="2" x2="16" y2="6" />
+                                                <line x1="8" y1="2" x2="8" y2="6" />
+                                                <line x1="3" y1="9" x2="21" y2="9" />
+
+                                            </svg>
+
+                                        </span>
+
+                                        <strong>Date:</strong>
+
+                                        @lesson.LessonDate.ToString("dd MMM yyyy")
+
+                                    </div>
+
+
+                                    <div class="lesson-detail">
+
+                                        <span class="detail-icon">
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2">
+
+                                                <circle cx="12" cy="12" r="9" />
+                                                <polyline points="12 7 12 12 15 14" />
+
+                                            </svg>
+
+                                        </span>
+
+                                        <strong>Time:</strong>
+
+                                        @lesson.StartTime.ToString(@"hh\:mm")
+                                        -
+                                        @lesson.EndTime.ToString(@"hh\:mm")
+
+                                    </div>
+
+
+                                    <div class="lesson-detail">
+
+                                        <span class="detail-icon">
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2">
+
+                                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+
+                                            </svg>
+
+                                        </span>
+
+                                        <strong>Lesson:</strong>
+
+                                        @if (lesson.LessonType != null)
+                                        {
+                                            @lesson.LessonType.LessonTypeName
+                                        }
+                                        else
+                                        {
+                                            @:N/A
+                                        }
+
+                                    </div>
+
+
+                                    <div class="lesson-detail">
+
+                                        <span class="detail-icon">
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="1.8">
+
+                                                <path d="M5 17h14" />
+                                                <path d="M6 17l1-6h10l1 6" />
+                                                <path d="M7 11l2-4h6l2 4" />
+                                                <circle cx="8" cy="17" r="1.5" />
+                                                <circle cx="16" cy="17" r="1.5" />
+
+                                            </svg>
+
+                                        </span>
+
+                                        <strong>Vehicle:</strong>
+
+                                        @if (lesson.Vehicle != null)
+                                        {
+                                            @lesson.Vehicle.VehicleId
+                                        }
+                                        else
+                                        {
+                                            @:N/A
+                                        }
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="lesson-status completed-status">
+
+                                <span class="status-dot"></span>
+
+                                Completed
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8">
+
+                            <circle cx="12" cy="12" r="9" />
+                            <polyline points="8 12 11 15 16 9" />
+
+                        </svg>
+
+                    </div>
+
+                    <div class="empty-state-title">
+                        No completed lessons
+                    </div>
+
+                    <div class="empty-state-text">
+                        Completed lessons will appear here.
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+
+        <!-- =====================================================
+             CANCELLED LESSONS
+             ===================================================== -->
+
+        <div class="lesson-section">
+
+            <div class="section-header">
+
+                <div class="section-heading">
+
+                    <div class="section-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8">
+
+                            <circle cx="12" cy="12" r="9" />
+                            <line x1="8" y1="8" x2="16" y2="16" />
+                            <line x1="16" y1="8" x2="8" y2="16" />
+
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <h2 class="section-title">
+                            Cancelled Lessons
+                        </h2>
+
+                        <p class="section-subtitle">
+                            Lessons that were cancelled
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <span class="section-count">
+                    @cancelledLessons.Count
+                </span>
+
+            </div>
+
+
+            @if (cancelledLessons.Any())
+            {
+                foreach (var lesson in cancelledLessons)
+                {
+                    var cancelledBooking = lesson.Bookings
+                        .FirstOrDefault(b =>
+                            b.Registration != null &&
+                            string.Equals(
+                                b.Status,
+                                "Cancelled",
+                                StringComparison.OrdinalIgnoreCase));
+
+                    <div class="lesson-card">
+
+                        <div class="lesson-main">
+
+                            <div>
+
+                                <div class="student-row">
+
+                                    <div class="student-icon">
+
+                                        <svg viewBox="0 0 24 24"
+                                             fill="none"
+                                             stroke="currentColor"
+                                             stroke-width="1.8">
+
+                                            <circle cx="12" cy="8" r="4" />
+                                            <path d="M4 21c0-4.2 3.6-7 8-7s8 2.8 8 7" />
+
+                                        </svg>
+
+                                    </div>
+
+                                    <div class="lesson-student">
+
+                                        @if (cancelledBooking != null)
+                                        {
+                                            @cancelledBooking.Registration.FirstName
+                                            @(" ")
+                                            @cancelledBooking.Registration.LastName
+                                        }
+                                        else
+                                        {
+                                            @:Student unavailable
+                                        }
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="lesson-details">
+
+                                    <div class="lesson-detail">
+
+                                        <span class="detail-icon">
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2">
+
+                                                <rect x="3" y="4" width="18" height="17" rx="2" />
+                                                <line x1="16" y1="2" x2="16" y2="6" />
+                                                <line x1="8" y1="2" x2="8" y2="6" />
+                                                <line x1="3" y1="9" x2="21" y2="9" />
+
+                                            </svg>
+
+                                        </span>
+
+                                        <strong>Date:</strong>
+
+                                        @lesson.LessonDate.ToString("dd MMM yyyy")
+
+                                    </div>
+
+
+                                    <div class="lesson-detail">
+
+                                        <span class="detail-icon">
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2">
+
+                                                <circle cx="12" cy="12" r="9" />
+                                                <polyline points="12 7 12 12 15 14" />
+
+                                            </svg>
+
+                                        </span>
+
+                                        <strong>Time:</strong>
+
+                                        @lesson.StartTime.ToString(@"hh\:mm")
+                                        -
+                                        @lesson.EndTime.ToString(@"hh\:mm")
+
+                                    </div>
+
+
+                                    <div class="lesson-detail">
+
+                                        <span class="detail-icon">
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2">
+
+                                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+
+                                            </svg>
+
+                                        </span>
+
+                                        <strong>Lesson:</strong>
+
+                                        @if (lesson.LessonType != null)
+                                        {
+                                            @lesson.LessonType.LessonTypeName
+                                        }
+                                        else
+                                        {
+                                            @:N/A
+                                        }
+
+                                    </div>
+
+
+                                    <div class="lesson-detail">
+
+                                        <span class="detail-icon">
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="1.8">
+
+                                                <path d="M5 17h14" />
+                                                <path d="M6 17l1-6h10l1 6" />
+                                                <path d="M7 11l2-4h6l2 4" />
+                                                <circle cx="8" cy="17" r="1.5" />
+                                                <circle cx="16" cy="17" r="1.5" />
+
+                                            </svg>
+
+                                        </span>
+
+                                        <strong>Vehicle:</strong>
+
+                                        @if (lesson.Vehicle != null)
+                                        {
+                                            @lesson.Vehicle.VehicleId
+                                        }
+                                        else
+                                        {
+                                            @:N/A
+                                        }
+
+                                    </div>
+
+                                </div>
+
+
+                                @if (cancelledBooking != null &&
+                                    !string.IsNullOrWhiteSpace(cancelledBooking.Notes))
+                                {
+                                    <div class="cancellation-reason">
+
+                                        <div class="cancellation-reason-title">
+
+                                            <svg viewBox="0 0 24 24"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2">
+
+                                                <circle cx="12" cy="12" r="9" />
+                                                <line x1="12" y1="8" x2="12" y2="12" />
+                                                <line x1="12" y1="16" x2="12.01" y2="16" />
+
+                                            </svg>
+
+                                            Instructor's Cancellation Reason
+
+                                        </div>
+
+                                        <div class="cancellation-reason-text">
+
+                                            @cancelledBooking.Notes
+
+                                        </div>
+
+                                    </div>
+                                }
+
+                            </div>
+
+
+                            <div class="lesson-status cancelled-status">
+
+                                <span class="status-dot"></span>
+
+                                Cancelled
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8">
+
+                            <circle cx="12" cy="12" r="9" />
+                            <line x1="8" y1="8" x2="16" y2="16" />
+                            <line x1="16" y1="8" x2="8" y2="16" />
+
+                        </svg>
+
+                    </div>
+
+                    <div class="empty-state-title">
+                        No cancelled lessons
+                    </div>
+
+                    <div class="empty-state-text">
+                        Cancelled lessons will appear here.
+                    </div>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+    
+
+</div>
+
+<script>
+
+    function showCancelForm(id) {
+
+        var form = document.getElementById(
+            "cancel-form-" + id
+        );
+
+        if (form) {
+
+            form.style.display = "block";
+
+            var textarea = form.querySelector("textarea");
+
+            if (textarea) {
+                textarea.focus();
+            }
+        }
+    }
+
+
+    function hideCancelForm(id) {
+
+        var form = document.getElementById(
+            "cancel-form-" + id
+        );
+
+        if (form) {
+            form.style.display = "none";
+        }
+    }
+
+</script>

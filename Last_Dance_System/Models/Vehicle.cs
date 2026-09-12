@@ -31,6 +31,10 @@ namespace Last_Dance_System.Models
         public int? CurrentMileage { get; set; }
 
         public bool IsActive { get; set; }
+
         public virtual ICollection<Review> Reviews { get; set; }
+
+        // Instructors using this vehicle
+        public virtual ICollection<Instructor> Instructors { get; set; }
     }
 }

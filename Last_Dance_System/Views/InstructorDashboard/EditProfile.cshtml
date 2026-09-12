@@ -1,0 +1,856 @@
+﻿
+@model Last_Dance_System.Models.Instructor
+
+@{
+    Layout = null;
+    ViewBag.Title = "Edit Profile";
+}
+
+<style>
+
+    /* =========================================================
+       GLOBAL
+       ========================================================= */
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #f4f7fb;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: #172b4d;
+    }
+
+
+    /* =========================================================
+       PAGE
+       ========================================================= */
+
+    .edit-profile-page {
+        min-height: 100vh;
+        padding: 40px 25px 70px;
+        background: radial-gradient( circle at 10% 10%, rgba(37, 99, 235, 0.08), transparent 30% ), radial-gradient( circle at 90% 85%, rgba(14, 165, 233, 0.07), transparent 30% ), #f4f7fb;
+    }
+
+
+    .edit-profile-wrapper {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+
+    .edit-header {
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient( 135deg, #0f3d75 0%, #1565c0 55%, #2196f3 100% );
+        border-radius: 20px 20px 0 0;
+        padding: 32px 38px;
+        color: #ffffff;
+        box-shadow: 0 15px 35px rgba(15, 61, 117, 0.18);
+    }
+
+
+        .edit-header::after {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            right: -60px;
+            top: -90px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+        }
+
+
+    .header-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+
+    /* =========================================================
+       HEADER ICON
+       ========================================================= */
+
+    .header-icon {
+        width: 62px;
+        height: 62px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255,255,255,0.16);
+        border: 1px solid rgba(255,255,255,0.25);
+        font-size: 26px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        flex-shrink: 0;
+    }
+
+
+    .header-text h1 {
+        margin: 0 0 5px;
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+
+
+    .header-text p {
+        margin: 0;
+        color: rgba(255,255,255,0.78);
+        font-size: 13px;
+    }
+
+
+    /* =========================================================
+       FORM CARD
+       ========================================================= */
+
+    .edit-card {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-top: none;
+        border-radius: 0 0 20px 20px;
+        padding: 38px;
+        box-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+    }
+
+
+    /* =========================================================
+       VALIDATION SUMMARY
+       ========================================================= */
+
+    .validation-summary-errors {
+        background: #fff5f5;
+        border: 1px solid #fecaca;
+        border-left: 4px solid #dc2626;
+        border-radius: 10px;
+        padding: 13px 16px;
+        margin-bottom: 25px;
+        color: #b91c1c;
+        font-size: 12px;
+    }
+
+
+    .validation-summary-valid {
+        display: none;
+    }
+
+
+    .text-danger {
+        display: block;
+        margin-top: 5px;
+        color: #dc2626 !important;
+        font-size: 11px;
+    }
+
+
+    /* =========================================================
+       SECTION TITLE
+       ========================================================= */
+
+    .form-section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0 0 22px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid #e5eaf0;
+        color: #172b4d;
+        font-size: 18px;
+        font-weight: 750;
+    }
+
+
+        .form-section-title .section-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9px;
+            background: #eaf3ff;
+            color: #1565c0;
+            font-size: 15px;
+        }
+
+
+        .form-section-title span {
+            color: #1565c0;
+        }
+
+
+    /* =========================================================
+       FORM GRID
+       ========================================================= */
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+
+
+    /* =========================================================
+       FORM GROUP
+       ========================================================= */
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 8px;
+            color: #344563;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+            .form-group label i {
+                color: #1565c0;
+                font-size: 12px;
+            }
+
+
+    /* =========================================================
+       INPUT WRAPPER
+       ========================================================= */
+
+    .input-wrapper {
+        position: relative;
+    }
+
+
+    .input-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #7b8da3;
+        font-size: 13px;
+        pointer-events: none;
+    }
+
+
+    /* =========================================================
+       INPUTS
+       ========================================================= */
+
+    .form-control {
+        width: 100%;
+        height: 46px;
+        padding: 12px 14px 12px 40px;
+        background: #ffffff;
+        color: #172b4d;
+        border: 1px solid #d5deea;
+        border-radius: 10px;
+        outline: none;
+        font-family: "Segoe UI", Arial, sans-serif;
+        font-size: 13px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+
+        .form-control:hover {
+            border-color: #aebed0;
+        }
+
+
+        .form-control:focus {
+            background: #ffffff;
+            border-color: #2196f3;
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.10);
+        }
+
+
+        .form-control::placeholder {
+            color: #9aa9ba;
+        }
+
+
+    /* =========================================================
+       NUMBER INPUT
+       ========================================================= */
+
+    input[type="number"] {
+        appearance: textfield;
+        -moz-appearance: textfield;
+    }
+
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            opacity: 0.5;
+        }
+
+
+    /* =========================================================
+       PROFILE INFORMATION DIVIDER
+       ========================================================= */
+
+    .form-section {
+        margin-top: 32px;
+    }
+
+
+    /* =========================================================
+       BUTTON AREA
+       ========================================================= */
+
+    .button-group {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 12px;
+        margin-top: 15px;
+        padding-top: 25px;
+        border-top: 1px solid #e5eaf0;
+    }
+
+
+    /* =========================================================
+       SAVE BUTTON
+       ========================================================= */
+
+    .save-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-width: 145px;
+        padding: 12px 22px;
+        border-radius: 10px;
+        border: 1px solid #1565c0;
+        background: linear-gradient( 135deg, #1565c0, #1976d2 );
+        color: #ffffff !important;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        text-decoration: none;
+        box-shadow: 0 5px 15px rgba(21, 101, 192, 0.20);
+        transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+
+        .save-btn:hover {
+            background: linear-gradient( 135deg, #0d47a1, #1565c0 );
+            color: #ffffff !important;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(21, 101, 192, 0.28);
+        }
+
+
+    /* =========================================================
+       CANCEL BUTTON
+       ========================================================= */
+
+    .cancel-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-width: 120px;
+        padding: 12px 22px;
+        border-radius: 10px;
+        border: 1px solid #d5deea;
+        background: #ffffff;
+        color: #52657a !important;
+        font-size: 13px;
+        font-weight: 700;
+        text-decoration: none;
+        transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+
+
+        .cancel-btn:hover {
+            background: #f4f7fb;
+            border-color: #b8c6d6;
+            color: #172b4d !important;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+
+
+    /* =========================================================
+       INFORMATION NOTE
+       ========================================================= */
+
+    .profile-note {
+        display: flex;
+        align-items: flex-start;
+        gap: 11px;
+        margin-top: 25px;
+        padding: 15px 17px;
+        background: #f4f8ff;
+        border: 1px solid #dceafe;
+        border-left: 4px solid #2196f3;
+        border-radius: 10px;
+        color: #60758b;
+        font-size: 11px;
+        line-height: 1.6;
+    }
+
+
+        .profile-note i {
+            color: #2196f3;
+            font-size: 15px;
+            margin-top: 1px;
+        }
+
+
+        .profile-note strong {
+            color: #344563;
+        }
+
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @@media (max-width: 750px) {
+
+        .form-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .form-group.full-width {
+            grid-column: auto;
+        }
+
+        .edit-card {
+            padding: 28px;
+        }
+
+        .edit-header {
+            padding: 28px;
+        }
+    }
+
+
+    @@media (max-width: 576px) {
+
+        .edit-profile-page {
+            padding: 15px 10px 40px;
+        }
+
+        .edit-header {
+            padding: 24px 20px;
+        }
+
+        .edit-card {
+            padding: 22px 18px;
+        }
+
+        .header-icon {
+            width: 52px;
+            height: 52px;
+            font-size: 22px;
+        }
+
+        .header-text h1 {
+            font-size: 22px;
+        }
+
+        .button-group {
+            flex-direction: column-reverse;
+            align-items: stretch;
+        }
+
+        .save-btn,
+        .cancel-btn {
+            width: 100%;
+        }
+    }
+</style>
+
+
+<!-- =========================================================
+     FONT AWESOME
+     ========================================================= -->
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+
+<div class="edit-profile-page">
+
+    <div class="edit-profile-wrapper">
+
+
+        <!-- =====================================================
+             PAGE HEADER
+             ===================================================== -->
+
+        <div class="edit-header">
+
+            <div class="header-content">
+
+                <div class="header-icon">
+                    <i class="fa-solid fa-user-pen"></i>
+                </div>
+
+                <div class="header-text">
+
+                    <h1>
+                        Edit My Profile
+                    </h1>
+
+                    <p>
+                        Update and manage your instructor information
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================================================
+             EDIT PROFILE CARD
+             ===================================================== -->
+
+        <div class="edit-card">
+
+            @using (Html.BeginForm(
+                "EditProfile",
+                "InstructorDashboard",
+                FormMethod.Post))
+            {
+
+                @Html.AntiForgeryToken()
+
+
+                <!-- VALIDATION -->
+
+                @Html.ValidationSummary(
+                    true,
+                    "",
+                    new { @class = "validation-summary-errors" })
+
+
+                <!-- =================================================
+                     PERSONAL INFORMATION
+                     ================================================= -->
+
+                <h2 class="form-section-title">
+
+                    <span class="section-icon">
+                        <i class="fa-solid fa-user"></i>
+                    </span>
+
+                    Personal <span>Information</span>
+
+                </h2>
+
+
+                <div class="form-grid">
+
+
+                    <!-- FIRST NAME -->
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(
+                            m => m.FirstName,
+                            new
+                            {
+                                @class = "control-label"
+                            })
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-user input-icon"></i>
+
+                            @Html.TextBoxFor(
+                                m => m.FirstName,
+                                new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "Enter your first name"
+                                })
+
+                        </div>
+
+                        @Html.ValidationMessageFor(
+                            m => m.FirstName,
+                            "",
+                            new { @class = "text-danger" })
+
+                    </div>
+
+
+                    <!-- LAST NAME -->
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(
+                            m => m.LastName,
+                            new
+                            {
+                                @class = "control-label"
+                            })
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-user input-icon"></i>
+
+                            @Html.TextBoxFor(
+                                m => m.LastName,
+                                new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "Enter your last name"
+                                })
+
+                        </div>
+
+                        @Html.ValidationMessageFor(
+                            m => m.LastName,
+                            "",
+                            new { @class = "text-danger" })
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(
+                            m => m.Phone,
+                            new
+                            {
+                                @class = "control-label"
+                            })
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-phone input-icon"></i>
+
+                            @Html.TextBoxFor(
+                                m => m.Phone,
+                                new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "Enter your phone number"
+                                })
+
+                        </div>
+
+                        @Html.ValidationMessageFor(
+                            m => m.Phone,
+                            "",
+                            new { @class = "text-danger" })
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(
+                            m => m.Email,
+                            new
+                            {
+                                @class = "control-label"
+                            })
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-envelope input-icon"></i>
+
+                            @Html.TextBoxFor(
+                                m => m.Email,
+                                new
+                                {
+                                    @class = "form-control",
+                                    type = "email",
+                                    placeholder = "Enter your email address"
+                                })
+
+                        </div>
+
+                        @Html.ValidationMessageFor(
+                            m => m.Email,
+                            "",
+                            new { @class = "text-danger" })
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     PROFESSIONAL INFORMATION
+                     ================================================= -->
+
+                <h2 class="form-section-title form-section">
+
+                    <span class="section-icon">
+                        <i class="fa-solid fa-id-card"></i>
+                    </span>
+
+                    Professional <span>Information</span>
+
+                </h2>
+
+
+                <div class="form-grid">
+
+
+                    <!-- LICENSE NUMBER -->
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(
+                            m => m.LicenseNumber,
+                            new
+                            {
+                                @class = "control-label"
+                            })
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-id-card-clip input-icon"></i>
+
+                            @Html.TextBoxFor(
+                                m => m.LicenseNumber,
+                                new
+                                {
+                                    @class = "form-control",
+                                    placeholder = "Enter license number"
+                                })
+
+                        </div>
+
+                        @Html.ValidationMessageFor(
+                            m => m.LicenseNumber,
+                            "",
+                            new { @class = "text-danger" })
+
+                    </div>
+
+
+                    <!-- EXPERIENCE -->
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(
+                            m => m.Experience,
+                            new
+                            {
+                                @class = "control-label"
+                            })
+
+                        <div class="input-wrapper">
+
+                            <i class="fa-solid fa-calendar-check input-icon"></i>
+
+                            @Html.TextBoxFor(
+                                m => m.Experience,
+                                new
+                                {
+                                    @class = "form-control",
+                                    type = "number",
+                                    min = "0",
+                                    max = "50",
+                                    placeholder = "Years of experience"
+                                })
+
+                        </div>
+
+                        @Html.ValidationMessageFor(
+                            m => m.Experience,
+                            "",
+                            new { @class = "text-danger" })
+
+                    </div>
+
+                </div>
+
+
+                <!-- =================================================
+                     BUTTONS
+                     ================================================= -->
+
+                <div class="button-group">
+
+
+                    <!-- CANCEL -->
+
+                    @Html.ActionLink(
+                        "Cancel",
+                        "Profile",
+                        "InstructorDashboard",
+                        null,
+                        new
+                        {
+                            @class = "cancel-btn"
+                        })
+
+
+                    <!-- SAVE -->
+
+                    <button type="submit"
+                            class="save-btn">
+
+                        <i class="fa-solid fa-floppy-disk"></i>
+
+                        Save Changes
+
+                    </button>
+
+                </div>
+
+
+                <!-- =================================================
+                     INFORMATION NOTE
+                     ================================================= -->
+
+                <div class="profile-note">
+
+                    <i class="fa-solid fa-circle-info"></i>
+
+                    <div>
+
+                        <strong>Profile information:</strong>
+
+                        Your changes will be securely saved to your
+                        instructor account. After saving successfully,
+                        you will be returned to your profile page.
+
+                    </div>
+
+                </div>
+
+            }
+
+        </div>
+
+    </div>
+
+</div>
+

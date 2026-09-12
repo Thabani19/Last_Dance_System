@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Data.Entity;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Last_Dance_System.Models;
@@ -9,7 +10,8 @@ namespace Last_Dance_System.Controllers
     [Authorize]
     public class DashboardController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext db =
+            new ApplicationDbContext();
 
 
         // ============================================================
@@ -18,79 +20,152 @@ namespace Last_Dance_System.Controllers
 
         public ActionResult Index()
         {
-            string userId = User.Identity.GetUserId();
+            // ========================================================
+            // GET LOGGED-IN USER
+            // ========================================================
 
-            var student = db.Registrations
-                .FirstOrDefault(r => r.ApplicationUserId == userId);
+            string userId =
+                User.Identity.GetUserId();
+
+
+            // ========================================================
+            // FIND STUDENT
+            // ========================================================
+
+            var student =
+                db.Registrations
+                .FirstOrDefault(r =>
+                    r.ApplicationUserId == userId);
+
+
+            // ========================================================
+            // STUDENT NOT FOUND
+            // ========================================================
 
             if (student == null)
             {
-                return RedirectToAction("Register", "Account");
+                return RedirectToAction(
+                    "Register",
+                    "Account");
             }
+
+
+            // ========================================================
+            // STUDENT NOTIFICATIONS
+            // ========================================================
+
+            var studentNotifications =
+                db.Notifications
+                .Where(n =>
+                    n.RegistrationId ==
+                    student.RegistrationId)
+                .OrderByDescending(n =>
+                    n.CreatedAt)
+                .ToList();
+
+
+            int unreadNotificationCount =
+                studentNotifications.Count(n =>
+                    !n.IsRead);
 
 
             // ========================================================
             // GET STUDENT BOOKINGS
             // ========================================================
 
-            var bookings = db.Bookings
-                .Where(b => b.RegistrationId == student.RegistrationId)
-                .OrderByDescending(b => b.BookingDate)
+            var bookings =
+                db.Bookings
+                .Include("LessonSchedule")
+                .Include("LessonSchedule.LessonType")
+                .Include("LessonSchedule.Instructor")
+                .Include("LessonSchedule.Vehicle")
+                .Where(b =>
+                    b.RegistrationId ==
+                    student.RegistrationId)
+                .OrderByDescending(b =>
+                    b.BookingDate)
                 .ToList();
 
 
             // ========================================================
-            // LESSON STATISTICS
+            // CANCELLED LESSONS
             // ========================================================
 
-            int totalLessons = bookings.Count;
-
-            int completedLessons = bookings
-                .Count(b => b.Status == "Completed");
-
-            int remainingLessons = bookings
-                .Count(b =>
-                    b.Status != "Completed" &&
-                    b.Status != "Cancelled");
-
-
-            int progressPercentage = totalLessons > 0
-                ? (completedLessons * 100) / totalLessons
-                : 0;
+            int cancelledLessons =
+                bookings.Count(b =>
+                    b.Status != null &&
+                    b.Status.Equals(
+                        "Cancelled",
+                        StringComparison.OrdinalIgnoreCase));
 
 
             // ========================================================
-            // UPCOMING BOOKING
+            // UPCOMING BOOKINGS
             // ========================================================
 
-            var upcomingBooking = bookings
+            var upcomingBookings =
+                bookings
                 .Where(b =>
                     b.LessonSchedule != null &&
-                    b.LessonSchedule.LessonDate >= DateTime.Today &&
-                    b.Status != "Cancelled" &&
-                    b.Status != "Completed")
-                .OrderBy(b => b.LessonSchedule.LessonDate)
-                .ThenBy(b => b.LessonSchedule.StartTime)
-                .FirstOrDefault();
+
+                    b.LessonSchedule.LessonDate >=
+                    DateTime.Today &&
+
+                    b.Status != null &&
+
+                    !b.Status.Equals(
+                        "Cancelled",
+                        StringComparison.OrdinalIgnoreCase) &&
+
+                    !b.Status.Equals(
+                        "Completed",
+                        StringComparison.OrdinalIgnoreCase))
+                .OrderBy(b =>
+                    b.LessonSchedule.LessonDate)
+                .ThenBy(b =>
+                    b.LessonSchedule.StartTime)
+                .ToList();
+
+
+            int upcomingLessonsCount =
+                upcomingBookings.Count;
+
+
+            // ========================================================
+            // NEXT UPCOMING LESSON
+            // ========================================================
+
+            var upcomingBooking =
+                upcomingBookings.FirstOrDefault();
 
 
             // ========================================================
             // DEFAULT UPCOMING INFORMATION
             // ========================================================
 
-            DateTime? upcomingLessonDate = null;
+            DateTime? upcomingLessonDate =
+                null;
 
-            int? upcomingLessonID = null;
+            int? upcomingLessonID =
+                null;
 
-            string upcomingLessonTime = "Not Scheduled";
+            string upcomingLessonTime =
+                "Not Scheduled";
 
-            string upcomingLessonType = "No Lesson";
+            string upcomingLessonType =
+                "Driving Lesson";
 
-            string upcomingInstructor = "Not Assigned";
+            string upcomingInstructor =
+                "Not Assigned";
 
-            string upcomingVehicle = "Not Assigned";
+            string upcomingVehicle =
+                "Not Assigned";
 
-            string bookingStatus = "No Active Booking";
+            string upcomingLocation =
+                "Driving School";
+
+            string bookingStatus =
+                "No Active Booking";
 
 
             // ========================================================
@@ -100,17 +175,22 @@ namespace Last_Dance_System.Controllers
             if (upcomingBooking != null &&
                 upcomingBooking.LessonSchedule != null)
             {
-                var schedule = upcomingBooking.LessonSchedule;
+                var schedule =
+                    upcomingBooking.LessonSchedule;
 
-                upcomingLessonID = upcomingBooking.BookingId;
 
-                upcomingLessonDate = schedule.LessonDate;
+                upcomingLessonID =
+                    upcomingBooking.BookingId;
+
+
+                upcomingLessonDate =
+                    schedule.LessonDate;
 
 
                 upcomingLessonTime =
                     schedule.StartTime.ToString(@"hh\:mm")
-                    + " - " +
-                    schedule.EndTime.ToString(@"hh\:mm");
+                    + " - "
+                    + schedule.EndTime.ToString(@"hh\:mm");
 
 
                 // ====================================================
@@ -131,9 +211,18 @@ namespace Last_Dance_System.Controllers
                 if (schedule.Instructor != null)
                 {
                     upcomingInstructor =
-                        schedule.Instructor.FirstName
-                        + " "
-                        + schedule.Instructor.LastName;
+                        (
+                            schedule.Instructor.FirstName
+                            + " "
+                            + schedule.Instructor.LastName
+                        ).Trim();
+
+                    if (string.IsNullOrWhiteSpace(
+                        upcomingInstructor))
+                    {
+                        upcomingInstructor =
+                            "Not Assigned";
+                    }
                 }
 
 
@@ -144,12 +233,14 @@ namespace Last_Dance_System.Controllers
                 if (schedule.Vehicle != null)
                 {
                     upcomingVehicle =
-                        schedule.Vehicle.Make
-                        + " "
-                        + schedule.Vehicle.Model
-                        + " ("
-                        + schedule.Vehicle.RegistrationNumber
-                        + ")";
+                        (
+                            schedule.Vehicle.Make
+                            + " "
+                            + schedule.Vehicle.Model
+                            + " ("
+                            + schedule.Vehicle.RegistrationNumber
+                            + ")"
+                        ).Trim();
                 }
 
 
@@ -157,97 +248,644 @@ namespace Last_Dance_System.Controllers
                 // BOOKING STATUS
                 // ====================================================
 
-                bookingStatus = upcomingBooking.Status;
+                bookingStatus =
+                    upcomingBooking.Status;
             }
 
 
             // ========================================================
-            // CREATE DASHBOARD MODEL
+            // CURRENT ACTIVE PACKAGE
             // ========================================================
 
-            var model = new StudentDashboardViewModel
+            var currentPackage =
+                db.StudentPackages
+                .Include("LessonPackage")
+                .Where(sp =>
+                    sp.RegistrationId ==
+                    student.RegistrationId &&
+
+                    sp.PaymentStatus != null &&
+
+                    sp.PaymentStatus.Equals(
+                        "Paid",
+                        StringComparison.OrdinalIgnoreCase) &&
+
+                    sp.IsActive &&
+
+                    !sp.IsCancelled)
+                .OrderByDescending(sp =>
+                    sp.PurchaseDate)
+                .FirstOrDefault();
+
+
+            // ========================================================
+            // LESSON STATISTICS
+            // ========================================================
+
+            int totalLessons = 0;
+
+            int completedLessons = 0;
+
+            int remainingLessons = 0;
+
+            int progressPercentage = 0;
+
+
+            if (currentPackage != null)
             {
-                StudentID = student.RegistrationId.ToString(),
-
-                FirstName = student.FirstName,
-
-                LastName = student.LastName,
-
-                Email = student.Email,
+                totalLessons =
+                    currentPackage.LessonsPurchased;
 
 
-                TotalLessons = totalLessons,
-
-                CompletedLessons = completedLessons,
-
-                RemainingLessons = remainingLessons,
-
-                ProgressPercentage = progressPercentage,
+                remainingLessons =
+                    currentPackage.LessonsRemaining;
 
 
-                HasUpcomingLesson =
-                    upcomingBooking != null,
+                completedLessons =
+                    totalLessons -
+                    remainingLessons;
 
-                UpcomingLessonID =
-                    upcomingLessonID,
 
-                UpcomingLessonDate =
-                    upcomingLessonDate,
+                if (completedLessons < 0)
+                {
+                    completedLessons = 0;
+                }
 
-                UpcomingLessonTime =
-                    upcomingLessonTime,
 
-                UpcomingLessonType =
-                    upcomingLessonType,
+                if (totalLessons > 0)
+                {
+                    progressPercentage =
+                        (completedLessons * 100)
+                        / totalLessons;
+                }
 
-                UpcomingInstructor =
-                    upcomingInstructor,
 
-                UpcomingVehicle =
-                    upcomingVehicle,
+                if (progressPercentage < 0)
+                {
+                    progressPercentage = 0;
+                }
 
-                UpcomingLocation =
-                    "Driving School",
 
-                BookingStatus =
-                    bookingStatus,
+                if (progressPercentage > 100)
+                {
+                    progressPercentage = 100;
+                }
+            }
+
+
+            // ========================================================
+            // DEFAULT PACKAGE INFORMATION
+            // ========================================================
+
+            bool hasActivePackage =
+                currentPackage != null;
+
+
+            int? currentStudentPackageID =
+                null;
+
+
+            string currentPackageName =
+                "No Active Package";
+
+
+            int currentPackageLessons =
+                0;
+
+
+            int currentPackageLessonsRemaining =
+                0;
+
+
+            string currentPackagePaymentStatus =
+                "No Package";
+
+
+            decimal currentPackagePrice =
+                0m;
+
+
+            int packageProgressPercentage =
+                0;
+
+
+            // ========================================================
+            // LOAD PACKAGE
+            // ========================================================
+
+            if (currentPackage != null)
+            {
+                currentStudentPackageID =
+                    currentPackage.StudentPackageId;
+
+
+                currentPackageLessons =
+                    currentPackage.LessonsPurchased;
+
+
+                currentPackageLessonsRemaining =
+                    currentPackage.LessonsRemaining;
+
+
+                currentPackagePaymentStatus =
+                    currentPackage.PaymentStatus;
+
+
+                if (currentPackage.LessonPackage != null)
+                {
+                    currentPackageName =
+                        currentPackage
+                        .LessonPackage
+                        .PackageName;
+
+
+                    currentPackagePrice =
+                        currentPackage
+                        .LessonPackage
+                        .Price;
+                }
 
 
                 // ====================================================
-                // PAYMENT
+                // PACKAGE PROGRESS
                 // ====================================================
 
-                PaymentStatus = "Payment Required",
+                if (currentPackageLessons > 0)
+                {
+                    int lessonsUsed =
+                        currentPackageLessons
+                        - currentPackageLessonsRemaining;
 
-                TotalPaid = 0m,
 
-                OutstandingAmount = 0m,
+                    packageProgressPercentage =
+                        (lessonsUsed * 100)
+                        / currentPackageLessons;
+
+
+                    if (packageProgressPercentage < 0)
+                    {
+                        packageProgressPercentage = 0;
+                    }
+
+
+                    if (packageProgressPercentage > 100)
+                    {
+                        packageProgressPercentage = 100;
+                    }
+                }
+            }
+
+
+            // ========================================================
+            // PAYMENT INFORMATION
+            // ========================================================
+
+            string paymentStatus =
+                "No Package";
+
+
+            decimal totalPaid =
+                0m;
+
+
+            decimal outstandingAmount =
+                0m;
+
+
+            if (currentPackage != null)
+            {
+                paymentStatus =
+                    currentPackage.PaymentStatus;
+
+
+                if (currentPackage.PaymentStatus != null &&
+                    currentPackage.PaymentStatus.Equals(
+                        "Paid",
+                        StringComparison.OrdinalIgnoreCase))
+                {
+                    totalPaid =
+                        currentPackagePrice;
+
+
+                    outstandingAmount =
+                        0m;
+                }
+                else
+                {
+                    totalPaid =
+                        0m;
+
+
+                    outstandingAmount =
+                        currentPackagePrice;
+                }
+            }
+
+
+            // ========================================================
+            // INSTRUCTOR FEEDBACK
+            // ========================================================
+            //
+            // IMPORTANT:
+            // Instructor feedback is saved by ReviewController
+            // into the Reviews table.
+            //
+            // Therefore we MUST read Review.Comment here instead
+            // of LessonProgress.InstructorNotes.
+            //
+            // Instructor reviews are identified by:
+            //
+            // ReviewType = "InstructorSession"
+            //
+            // ========================================================
+
+            var latestInstructorFeedback =
+                db.Reviews
+                .Include("Booking")
+                .Include("Booking.LessonSchedule")
+                .Include("Booking.LessonSchedule.Instructor")
+                .Where(r =>
+                    r.RegistrationId ==
+                    student.RegistrationId &&
+
+                    r.ReviewType ==
+                    "InstructorSession" &&
+
+                    r.Comment != null &&
+
+                    r.Comment != "")
+                .OrderByDescending(r =>
+                    r.ReviewDate)
+                .FirstOrDefault();
+
+
+            bool hasInstructorFeedback =
+                latestInstructorFeedback != null;
+
+
+            string latestFeedbackText =
+                "No instructor feedback available.";
+
+
+            string feedbackInstructor =
+                "Instructor";
+
+
+            DateTime? feedbackDate =
+                null;
+
+
+            if (latestInstructorFeedback != null)
+            {
+                // ====================================================
+                // FEEDBACK COMMENT
+                // ====================================================
+
+                latestFeedbackText =
+                    latestInstructorFeedback.Comment;
 
 
                 // ====================================================
-                // REVIEW
+                // FEEDBACK DATE
                 // ====================================================
 
-                HasPendingReview = false,
-
-                ReviewLessonID = null,
+                feedbackDate =
+                    latestInstructorFeedback.ReviewDate;
 
 
                 // ====================================================
-                // FEEDBACK
+                // INSTRUCTOR NAME
                 // ====================================================
 
-                HasInstructorFeedback = false,
+                if (latestInstructorFeedback.Booking != null &&
+                    latestInstructorFeedback.Booking.LessonSchedule != null &&
+                    latestInstructorFeedback.Booking.LessonSchedule.Instructor != null)
+                {
+                    feedbackInstructor =
+                        (
+                            latestInstructorFeedback
+                            .Booking
+                            .LessonSchedule
+                            .Instructor
+                            .FirstName
 
-                LatestFeedback =
-                    "No instructor feedback available."
-            };
+                            + " "
 
+                            +
+
+                            latestInstructorFeedback
+                            .Booking
+                            .LessonSchedule
+                            .Instructor
+                            .LastName
+                        ).Trim();
+                }
+
+
+                // ====================================================
+                // FALLBACK TO REVIEWER INSTRUCTOR
+                // ====================================================
+
+                if (string.IsNullOrWhiteSpace(
+                    feedbackInstructor))
+                {
+                    feedbackInstructor =
+                        "Instructor";
+                }
+            }
+
+
+            // ========================================================
+            // PENDING REVIEW
+            // ========================================================
+            //
+            // IMPORTANT:
+            // Do NOT count every Review anymore.
+            //
+            // Instructor reviews use:
+            // ReviewType = "InstructorSession"
+            //
+            // Student reviews should be counted separately.
+            //
+            // We count reviews that are NOT instructor-session reviews.
+            //
+            // ========================================================
+
+            int reviewCount =
+                db.Reviews
+                .Count(r =>
+                    r.RegistrationId ==
+                    student.RegistrationId &&
+
+                    r.ReviewType !=
+                    "InstructorSession");
+
+
+            // ========================================================
+            // COMPLETED BOOKING
+            // ========================================================
+
+            var completedBooking =
+                bookings
+                .Where(b =>
+                    b.Status != null &&
+                    b.Status.Equals(
+                        "Completed",
+                        StringComparison.OrdinalIgnoreCase))
+                .OrderByDescending(b =>
+                    b.LessonSchedule != null
+                        ? b.LessonSchedule.LessonDate
+                        : b.BookingDate)
+                .FirstOrDefault();
+
+
+            bool hasPendingReview =
+                completedBooking != null &&
+                reviewCount < completedLessons;
+
+
+            int? reviewLessonID =
+                null;
+
+
+            if (hasPendingReview &&
+                completedBooking != null)
+            {
+                reviewLessonID =
+                    completedBooking.BookingId;
+            }
+
+
+            // ========================================================
+            // CREATE VIEW MODEL
+            // ========================================================
+
+            var model =
+                new StudentDashboardViewModel
+                {
+                    // =================================================
+                    // STUDENT
+                    // =================================================
+
+                    StudentID =
+                        student.RegistrationId.ToString(),
+
+                    FirstName =
+                        student.FirstName,
+
+                    LastName =
+                        student.LastName,
+
+                    Email =
+                        student.Email,
+
+
+                    // =================================================
+                    // NOTIFICATIONS
+                    // =================================================
+
+                    UnreadNotificationCount =
+                        unreadNotificationCount,
+
+                    Notifications =
+                        studentNotifications,
+
+
+                    // =================================================
+                    // LESSON STATISTICS
+                    // =================================================
+
+                    TotalLessons =
+                        totalLessons,
+
+                    CompletedLessons =
+                        completedLessons,
+
+                    RemainingLessons =
+                        remainingLessons,
+
+                    ProgressPercentage =
+                        progressPercentage,
+
+                    CancelledLessons =
+                        cancelledLessons,
+
+
+                    // =================================================
+                    // UPCOMING LESSON
+                    // =================================================
+
+                    HasUpcomingLesson =
+                        upcomingBooking != null,
+
+                    UpcomingLessonID =
+                        upcomingLessonID,
+
+                    UpcomingLessonDate =
+                        upcomingLessonDate,
+
+                    UpcomingLessonTime =
+                        upcomingLessonTime,
+
+                    UpcomingLessonType =
+                        upcomingLessonType,
+
+                    UpcomingInstructor =
+                        upcomingInstructor,
+
+                    UpcomingVehicle =
+                        upcomingVehicle,
+
+                    UpcomingLocation =
+                        upcomingLocation,
+
+                    BookingStatus =
+                        bookingStatus,
+
+                    UpcomingLessonsCount =
+                        upcomingLessonsCount,
+
+
+                    // =================================================
+                    // PACKAGE
+                    // =================================================
+
+                    HasActivePackage =
+                        hasActivePackage,
+
+                    CurrentStudentPackageID =
+                        currentStudentPackageID,
+
+                    CurrentPackageName =
+                        currentPackageName,
+
+                    CurrentPackageLessons =
+                        currentPackageLessons,
+
+                    CurrentPackageLessonsRemaining =
+                        currentPackageLessonsRemaining,
+
+                    CurrentPackagePaymentStatus =
+                        currentPackagePaymentStatus,
+
+                    CurrentPackagePrice =
+                        currentPackagePrice,
+
+                    PackageProgressPercentage =
+                        packageProgressPercentage,
+
+
+                    // =================================================
+                    // PAYMENT
+                    // =================================================
+
+                    PaymentStatus =
+                        paymentStatus,
+
+                    TotalPaid =
+                        totalPaid,
+
+                    OutstandingAmount =
+                        outstandingAmount,
+
+
+                    // =================================================
+                    // REVIEW
+                    // =================================================
+
+                    HasPendingReview =
+                        hasPendingReview,
+
+                    ReviewLessonID =
+                        reviewLessonID,
+
+
+                    // =================================================
+                    // INSTRUCTOR FEEDBACK
+                    // =================================================
+
+                    HasInstructorFeedback =
+                        hasInstructorFeedback,
+
+                    LatestFeedback =
+                        latestFeedbackText,
+
+                    FeedbackInstructor =
+                        feedbackInstructor,
+
+                    FeedbackDate =
+                        feedbackDate
+                };
+
+
+            // ========================================================
+            // RETURN DASHBOARD
+            // ========================================================
 
             return View(model);
         }
+        // ============================================================
+        // MY LESSONS
+        // ============================================================
+
+        public ActionResult MyLessons()
+        {
+            // ========================================================
+            // GET LOGGED-IN USER
+            // ========================================================
+
+            string userId =
+                User.Identity.GetUserId();
 
 
+            // ========================================================
+            // FIND STUDENT
+            // ========================================================
+
+            var student =
+                db.Registrations
+                .FirstOrDefault(r =>
+                    r.ApplicationUserId == userId);
+
+
+            // ========================================================
+            // STUDENT NOT FOUND
+            // ========================================================
+
+            if (student == null)
+            {
+                return RedirectToAction(
+                    "Register",
+                    "Account");
+            }
+
+
+            // ========================================================
+            // GET ALL STUDENT BOOKINGS
+            // ========================================================
+
+            var bookings =
+                db.Bookings
+                .Include("LessonSchedule")
+                .Include("LessonSchedule.LessonType")
+                .Include("LessonSchedule.Instructor")
+                .Include("LessonSchedule.Vehicle")
+                .Where(b =>
+                    b.RegistrationId ==
+                    student.RegistrationId)
+                .OrderByDescending(b =>
+                    b.LessonSchedule.LessonDate)
+                .ThenByDescending(b =>
+                    b.LessonSchedule.StartTime)
+                .ToList();
+
+
+            // ========================================================
+            // RETURN MY LESSONS
+            // ========================================================
+
+            return View(bookings);
+        }
 
         // ============================================================
         // PROFILE
@@ -255,20 +893,26 @@ namespace Last_Dance_System.Controllers
 
         public ActionResult Profile()
         {
-            string userId = User.Identity.GetUserId();
+            string userId =
+                User.Identity.GetUserId();
 
-            var student = db.Registrations
+
+            var student =
+                db.Registrations
                 .FirstOrDefault(r =>
                     r.ApplicationUserId == userId);
 
+
             if (student == null)
             {
-                return RedirectToAction("Register", "Account");
+                return RedirectToAction(
+                    "Register",
+                    "Account");
             }
+
 
             return View(student);
         }
-
 
 
         // ============================================================
@@ -278,20 +922,26 @@ namespace Last_Dance_System.Controllers
         [HttpGet]
         public ActionResult EditProfile()
         {
-            string userId = User.Identity.GetUserId();
+            string userId =
+                User.Identity.GetUserId();
 
-            var student = db.Registrations
+
+            var student =
+                db.Registrations
                 .FirstOrDefault(r =>
                     r.ApplicationUserId == userId);
 
+
             if (student == null)
             {
-                return RedirectToAction("Register", "Account");
+                return RedirectToAction(
+                    "Register",
+                    "Account");
             }
+
 
             return View(student);
         }
-
 
 
         // ============================================================
@@ -305,22 +955,19 @@ namespace Last_Dance_System.Controllers
                 "RegistrationId,FirstName,LastName,Gender,DateOfBirth,Phone,Email,Address")]
             Registration student)
         {
-            string userId = User.Identity.GetUserId();
+            string userId =
+                User.Identity.GetUserId();
 
 
-            // ========================================================
-            // FIND ORIGINAL STUDENT
-            // ========================================================
-
-            var existingStudent = db.Registrations
+            var existingStudent =
+                db.Registrations
                 .FirstOrDefault(r =>
-                    r.RegistrationId == student.RegistrationId &&
-                    r.ApplicationUserId == userId);
+                    r.RegistrationId ==
+                    student.RegistrationId &&
 
+                    r.ApplicationUserId ==
+                    userId);
 
-            // ========================================================
-            // SECURITY CHECK
-            // ========================================================
 
             if (existingStudent == null)
             {
@@ -328,19 +975,11 @@ namespace Last_Dance_System.Controllers
             }
 
 
-            // ========================================================
-            // VALIDATION
-            // ========================================================
-
             if (!ModelState.IsValid)
             {
                 return View(student);
             }
 
-
-            // ========================================================
-            // UPDATE INFORMATION
-            // ========================================================
 
             existingStudent.FirstName =
                 student.FirstName;
@@ -364,27 +1003,20 @@ namespace Last_Dance_System.Controllers
                 student.Address;
 
 
-            // ========================================================
-            // SAVE
-            // ========================================================
-
             db.SaveChanges();
 
 
-            // ========================================================
-            // RETURN TO PROFILE
-            // ========================================================
-
-            return RedirectToAction("Profile");
+            return RedirectToAction(
+                "Profile");
         }
-
 
 
         // ============================================================
         // DISPOSE
         // ============================================================
 
-        protected override void Dispose(bool disposing)
+        protected override void Dispose(
+            bool disposing)
         {
             if (disposing)
             {

@@ -1,302 +1,397 @@
-﻿@model Last_Dance_System.Models.InstructorRegisterViewModel
+﻿
+@model Last_Dance_System.Models.InstructorRegisterViewModel
 
 @{
     ViewBag.Title = "Add Instructor";
+    Layout = null;
 }
+
+<!-- =========================================================
+     FONT AWESOME
+     ========================================================= -->
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
 <style>
 
-    /* =========================================
-       INSTRUCTOR PAGE
-       SAME COLOR SYSTEM AS LOGIN
-       ========================================= */
+    /* =========================================================
+       GLOBAL
+       ========================================================= */
 
     * {
         box-sizing: border-box;
     }
 
+    html,
     body {
         margin: 0;
-        background: #050a12;
+        padding: 0;
+        min-height: 100%;
     }
+
+    body {
+        background: #f4f8fc;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: #172b4d;
+    }
+
+
+    /* =========================================================
+       MAIN PAGE
+       ========================================================= */
 
     .instructor-page {
-        min-height: calc(100vh - 50px);
-        background: radial-gradient( circle at 15% 50%, rgba(25, 118, 210, 0.12), transparent 30% ), linear-gradient( 135deg, #03070d 0%, #07111e 50%, #02060b 100% );
-        padding: 40px 25px 60px;
-        font-family: "Segoe UI", Arial, sans-serif;
-        color: #ffffff;
+        min-height: 100vh;
+        padding: 45px 25px 70px;
+        background: radial-gradient( circle at 10% 10%, rgba(33, 150, 243, 0.10), transparent 28% ), radial-gradient( circle at 90% 90%, rgba(13, 71, 161, 0.07), transparent 30% ), linear-gradient( 135deg, #f8fbff 0%, #f1f6fb 50%, #eaf2f9 100% );
     }
 
 
-    /* =========================================
+    /* =========================================================
        WRAPPER
-       ========================================= */
+       ========================================================= */
 
     .instructor-wrapper {
         width: 100%;
-        max-width: 1100px;
+        max-width: 1050px;
         margin: 0 auto;
     }
 
 
-    /* =========================================
+    /* =========================================================
        MAIN CARD
-       ========================================= */
+       ========================================================= */
 
     .instructor-card {
-        background: #0c1724;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 24px;
+        background: #ffffff;
+        border: 1px solid #dce7f1;
+        border-radius: 22px;
         overflow: hidden;
-        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65), 0 0 60px rgba(25, 118, 210, 0.06);
+        box-shadow: 0 20px 55px rgba(23, 43, 77, 0.10), 0 4px 15px rgba(23, 43, 77, 0.05);
     }
 
 
-    /* =========================================
+    /* =========================================================
        HEADER
-       ========================================= */
+       ========================================================= */
 
     .page-header {
         position: relative;
-        background: linear-gradient( 135deg, #03070d 0%, #07111e 55%, #0d2b4d 100% );
-        padding: 38px 45px;
         overflow: hidden;
-        border-bottom: 1px solid rgba(255,255,255,0.06);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 25px;
+        background: linear-gradient( 135deg, #ffffff 0%, #f7fbff 55%, #eaf4ff 100% );
+        padding: 32px 42px;
+        border-bottom: 1px solid #dbe7f2;
     }
 
+
+        /* =========================================================
+       HEADER DECORATION
+       ========================================================= */
 
         .page-header::before {
             content: "";
             position: absolute;
-            width: 240px;
-            height: 240px;
+            width: 280px;
+            height: 280px;
             border-radius: 50%;
-            background: rgba(33, 150, 243, 0.08);
-            top: -120px;
-            right: -60px;
+            background: rgba(33, 150, 243, 0.06);
+            right: -100px;
+            top: -150px;
         }
 
 
         .page-header::after {
             content: "";
             position: absolute;
-            width: 170px;
-            height: 170px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
-            background: rgba(33, 150, 243, 0.06);
-            bottom: -100px;
-            left: 25%;
+            background: rgba(13, 71, 161, 0.045);
+            left: 40%;
+            bottom: -120px;
         }
 
+
+    /* =========================================================
+       HEADER CONTENT
+       ========================================================= */
 
     .header-content {
         position: relative;
         z-index: 2;
         display: flex;
         align-items: center;
-        gap: 20px;
+        gap: 18px;
     }
 
 
-    /* =========================================
+    /* =========================================================
        HEADER ICON
-       ========================================= */
+       ========================================================= */
 
     .header-icon {
         width: 62px;
         height: 62px;
-        border-radius: 15px;
-        background: linear-gradient( 135deg, #2196f3, #0d47a1 );
+        flex-shrink: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 27px;
-        flex-shrink: 0;
-        box-shadow: 0 0 25px rgba(33, 150, 243, 0.30);
+        border-radius: 16px;
+        background: linear-gradient( 135deg, #2196f3, #1565c0 );
+        color: #ffffff;
+        font-size: 25px;
+        box-shadow: 0 8px 22px rgba(33, 150, 243, 0.25);
     }
 
 
-    /* =========================================
+    /* =========================================================
        HEADER TEXT
-       ========================================= */
+       ========================================================= */
 
     .header-text h2 {
-        margin: 0 0 7px;
-        color: #ffffff;
-        font-size: 29px;
+        margin: 0 0 5px;
+        color: #172b4d;
+        font-size: 28px;
         font-weight: 800;
-        letter-spacing: -0.5px;
+        letter-spacing: -0.4px;
     }
 
 
     .header-text p {
         margin: 0;
-        color: #7f91a5;
-        font-size: 14px;
+        color: #71859a;
+        font-size: 13px;
     }
 
 
-    /* =========================================
+    /* =========================================================
+       BACK TO DASHBOARD BUTTON
+       ========================================================= */
+
+    .back-dashboard-button {
+        position: relative;
+        z-index: 5;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 42px;
+        padding: 10px 17px;
+        background: #ffffff;
+        border: 1px solid #cbdceb;
+        border-radius: 9px;
+        color: #31506f;
+        text-decoration: none;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 12px rgba(23, 43, 77, 0.06);
+    }
+
+
+        .back-dashboard-button i {
+            color: #1976d2;
+            font-size: 12px;
+            transition: transform 0.2s ease;
+        }
+
+
+        .back-dashboard-button:hover {
+            background: #edf6ff;
+            border-color: #2196f3;
+            color: #0d47a1;
+            text-decoration: none;
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(33, 150, 243, 0.12);
+        }
+
+
+            .back-dashboard-button:hover i {
+                color: #0d47a1;
+                transform: translateX(-2px);
+            }
+
+
+    /* =========================================================
        FORM AREA
-       ========================================= */
+       ========================================================= */
 
     .instructor-form-area {
-        padding: 42px 50px 45px;
-        background: #0c1724;
+        padding: 38px 45px 42px;
+        background: #ffffff;
     }
 
 
-    /* =========================================
+    /* =========================================================
        VALIDATION
-       ========================================= */
+       ========================================================= */
 
     .validation-summary-errors {
-        background: rgba(220, 53, 69, 0.10);
-        border: 1px solid rgba(220, 53, 69, 0.25);
+        background: #fff4f4;
+        border: 1px solid #f3c7c7;
+        border-left: 4px solid #dc3545;
         border-radius: 10px;
-        padding: 12px 15px;
+        padding: 13px 16px;
         margin-bottom: 25px;
-        color: #ff7b86;
+        color: #b4232f;
         font-size: 13px;
     }
 
 
     .text-danger {
         display: block;
-        color: #ff7b86;
-        font-size: 12px;
+        color: #d93025;
+        font-size: 11px;
         margin-top: 6px;
     }
 
 
-    /* =========================================
-       FORM SECTIONS
-       ========================================= */
+    /* =========================================================
+       FORM SECTION
+       ========================================================= */
 
     .form-section {
-        margin-bottom: 32px;
+        margin-bottom: 34px;
     }
 
+
+    /* =========================================================
+       SECTION HEADING
+       ========================================================= */
 
     .section-heading {
         display: flex;
         align-items: center;
         gap: 12px;
         margin-bottom: 25px;
-        padding-bottom: 14px;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e5edf5;
     }
 
 
     .section-number {
-        width: 34px;
-        height: 34px;
-        border-radius: 9px;
-        background: rgba(33, 150, 243, 0.12);
-        border: 1px solid rgba(33, 150, 243, 0.20);
-        color: #42a5f5;
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 12px;
+        border-radius: 10px;
+        background: #edf6ff;
+        border: 1px solid #cfe6fa;
+        color: #1976d2;
+        font-size: 11px;
         font-weight: 800;
-        flex-shrink: 0;
     }
 
 
     .section-heading h3 {
         margin: 0 0 3px;
-        color: #ffffff;
+        color: #172b4d;
         font-size: 17px;
-        font-weight: 700;
+        font-weight: 750;
     }
 
 
     .section-heading p {
         margin: 0;
-        color: #60758b;
+        color: #8193a7;
         font-size: 12px;
     }
 
 
-    /* =========================================
+    /* =========================================================
        FORM GROUP
-       ========================================= */
+       ========================================================= */
 
     .form-group {
-        margin-bottom: 22px;
+        margin-bottom: 21px;
     }
 
 
     .form-label {
         display: block;
-        margin-bottom: 9px;
-        color: #d9e2ec;
-        font-size: 13px;
-        font-weight: 600;
+        margin-bottom: 8px;
+        color: #34495e;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
     }
 
 
-    /* =========================================
+    /* =========================================================
        INPUT WRAPPER
-       ========================================= */
+       ========================================================= */
 
     .input-wrapper {
         position: relative;
     }
 
 
+    /* =========================================================
+       INPUT ICON
+       ========================================================= */
+
     .input-icon {
         position: absolute;
         left: 15px;
         top: 50%;
         transform: translateY(-50%);
-        color: #60758b;
-        font-size: 15px;
-        z-index: 2;
+        width: 20px;
+        color: #7d93aa;
+        font-size: 14px;
+        text-align: center;
         pointer-events: none;
+        z-index: 2;
     }
 
 
-    /* =========================================
+    /* =========================================================
        INPUTS
-       ========================================= */
+       ========================================================= */
 
     .form-control {
         width: 100%;
-        height: 52px;
-        border-radius: 11px;
-        border: 1px solid #26384b;
-        background: #09121d;
-        color: #ffffff;
+        height: 50px;
+        border-radius: 10px;
+        border: 1px solid #d4e0eb;
+        background: #fbfdff;
+        color: #172b4d;
         padding: 12px 15px 12px 44px;
-        font-size: 14px;
+        font-family: "Segoe UI", Arial, sans-serif;
+        font-size: 13px;
         outline: none;
-        transition: all 0.25s ease;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
 
         .form-control::placeholder {
-            color: #52667b;
+            color: #9aabba;
         }
 
 
         .form-control:hover {
-            border-color: #35506b;
+            border-color: #b8cadb;
+            background: #ffffff;
         }
 
 
         .form-control:focus {
+            background: #ffffff;
             border-color: #2196f3;
-            background: #0a1522;
-            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.10), 0 0 20px rgba(33, 150, 243, 0.08);
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.10), 0 4px 12px rgba(33, 150, 243, 0.06);
         }
 
 
-    /* =========================================
+    /* =========================================================
        PASSWORD
-       ========================================= */
+       ========================================================= */
 
     .password-wrapper {
         position: relative;
@@ -304,38 +399,40 @@
 
 
         .password-wrapper .form-control {
-            padding-right: 65px;
+            padding-right: 75px;
         }
 
 
     .toggle-password {
         position: absolute;
-        right: 13px;
+        right: 10px;
         top: 50%;
         transform: translateY(-50%);
         border: none;
-        background: transparent;
-        color: #7f91a5;
-        font-size: 12px;
-        font-weight: 600;
+        background: #eef6ff;
+        color: #1976d2;
+        border-radius: 7px;
+        padding: 6px 9px;
+        font-size: 11px;
+        font-weight: 700;
         cursor: pointer;
-        padding: 5px;
-        transition: 0.2s;
+        transition: all 0.2s ease;
     }
 
 
         .toggle-password:hover {
-            color: #42a5f5;
+            background: #dceeff;
+            color: #0d47a1;
         }
 
 
-    /* =========================================
+    /* =========================================================
        PASSWORD STRENGTH
-       ========================================= */
+       ========================================================= */
 
     .password-strength {
         height: 4px;
-        background: #26384b;
+        background: #e2eaf2;
         border-radius: 5px;
         margin-top: 9px;
         overflow: hidden;
@@ -345,43 +442,49 @@
     .password-strength-bar {
         width: 0;
         height: 100%;
-        background: linear-gradient( 90deg, #1565c0, #42a5f5 );
-        transition: all 0.25s ease;
+        background: linear-gradient( 90deg, #1976d2, #42a5f5 );
+        border-radius: 5px;
+        transition: width 0.25s ease;
     }
 
 
     .password-strength-text {
         font-size: 11px;
-        color: #60758b;
+        color: #8193a7;
         margin-top: 6px;
     }
 
 
-    /* =========================================
+    /* =========================================================
        CREATE BUTTON
-       ========================================= */
+       ========================================================= */
 
     .btn-create {
         width: 100%;
-        height: 54px;
-        margin-top: 5px;
+        height: 53px;
+        margin-top: 2px;
         border: none;
-        border-radius: 11px;
+        border-radius: 10px;
         background: linear-gradient( 135deg, #2196f3, #1565c0 );
         color: #ffffff;
-        font-size: 14px;
+        font-size: 13px;
         font-weight: 800;
-        letter-spacing: 0.8px;
+        letter-spacing: 0.7px;
         cursor: pointer;
-        transition: all 0.25s ease;
-        box-shadow: 0 8px 25px rgba(33, 150, 243, 0.20);
+        box-shadow: 0 8px 20px rgba(33, 150, 243, 0.20);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
+
+
+        .btn-create i {
+            margin-right: 8px;
+        }
 
 
         .btn-create:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(33, 150, 243, 0.32);
             background: linear-gradient( 135deg, #42a5f5, #1976d2 );
+            box-shadow: 0 12px 28px rgba(33, 150, 243, 0.28);
         }
 
 
@@ -390,39 +493,72 @@
         }
 
 
-    /* =========================================
+    /* =========================================================
        FOOTER NOTE
-       ========================================= */
+       ========================================================= */
 
     .form-note {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
         text-align: center;
-        margin-top: 20px;
-        color: #52667b;
+        margin-top: 18px;
+        color: #8193a7;
         font-size: 11px;
     }
 
 
-        .form-note span {
-            color: #42a5f5;
+        .form-note i {
+            color: #2196f3;
+            font-size: 11px;
         }
 
 
-    /* =========================================
+        .form-note strong {
+            color: #587089;
+        }
+
+
+    /* =========================================================
+       INPUT AUTOFILL
+       ========================================================= */
+
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus {
+        -webkit-text-fill-color: #172b4d;
+        -webkit-box-shadow: 0 0 0 1000px #ffffff inset;
+        transition: background-color 5000s ease-in-out 0s;
+    }
+
+
+    /* =========================================================
        RESPONSIVE
-       ========================================= */
+       ========================================================= */
 
     @@media (max-width: 850px) {
 
         .instructor-page {
-            padding: 25px 18px 45px;
+            padding: 25px 18px 50px;
         }
 
-        .instructor-form-area {
-            padding: 35px 30px;
-        }
 
         .page-header {
-            padding: 35px 30px;
+            padding: 30px;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 18px;
+        }
+
+
+        .instructor-form-area {
+            padding: 32px 30px 38px;
+        }
+
+
+        .back-dashboard-button {
+            width: 100%;
         }
     }
 
@@ -431,55 +567,91 @@
 
         .instructor-page {
             padding: 10px;
-            min-height: 100vh;
         }
+
 
         .instructor-card {
-            border-radius: 18px;
+            border-radius: 17px;
         }
 
+
         .page-header {
-            padding: 30px 22px;
+            padding: 25px 20px;
         }
+
 
         .header-content {
             align-items: flex-start;
         }
 
+
         .header-icon {
             width: 52px;
             height: 52px;
+            border-radius: 13px;
+            font-size: 21px;
+        }
+
+
+        .header-text h2 {
             font-size: 22px;
         }
 
-        .header-text h2 {
-            font-size: 23px;
-        }
 
         .header-text p {
-            font-size: 12px;
+            font-size: 11px;
         }
 
+
         .instructor-form-area {
-            padding: 30px 20px;
+            padding: 28px 20px 32px;
         }
+
+
+        .back-dashboard-button {
+            width: 100%;
+            min-height: 44px;
+        }
+
+
+        .section-heading {
+            align-items: flex-start;
+        }
+
+
+        .section-number {
+            width: 33px;
+            height: 33px;
+        }
+
 
         .row {
             margin-left: 0;
             margin-right: 0;
         }
 
+
         .col-md-6 {
             padding-left: 0;
             padding-right: 0;
         }
 
-        .section-heading {
-            align-items: flex-start;
+
+        .form-control {
+            height: 49px;
+        }
+
+
+        .btn-create {
+            height: 52px;
         }
     }
 </style>
 
+
+<!-- =========================================================
+     PAGE
+     ========================================================= -->
 
 <div class="instructor-page">
 
@@ -488,17 +660,20 @@
         <div class="instructor-card">
 
 
-            <!-- =====================================
+            <!-- =================================================
                  HEADER
-                 ===================================== -->
+                 ================================================= -->
 
             <div class="page-header">
+
+
+                <!-- HEADER LEFT -->
 
                 <div class="header-content">
 
                     <div class="header-icon">
 
-                        👨‍🏫
+                        <i class="fa-solid fa-user-plus"></i>
 
                     </div>
 
@@ -517,12 +692,28 @@
 
                 </div>
 
+
+                <!-- =================================================
+                     BACK TO ADMIN DASHBOARD
+                     ================================================= -->
+
+                <a href="@Url.Action("Index", "Admin")"
+                   class="back-dashboard-button">
+
+                    <i class="fa-solid fa-arrow-left"></i>
+
+                    <span>
+                        Back to Dashboard
+                    </span>
+
+                </a>
+
             </div>
 
 
-            <!-- =====================================
+            <!-- =================================================
                  FORM
-                 ===================================== -->
+                 ================================================= -->
 
             <div class="instructor-form-area">
 
@@ -531,8 +722,13 @@
                     "Instructor",
                     FormMethod.Post))
                 {
+
                     @Html.AntiForgeryToken()
 
+
+                    <!-- =================================================
+                         VALIDATION
+                         ================================================= -->
 
                     @Html.ValidationSummary(
                         true,
@@ -544,9 +740,9 @@
                     )
 
 
-                    <!-- =====================================
-                         INSTRUCTOR INFORMATION
-                         ===================================== -->
+                    <!-- =================================================
+                         SECTION 01
+                         ================================================= -->
 
                     <div class="form-section">
 
@@ -556,6 +752,7 @@
                             <div class="section-number">
                                 01
                             </div>
+
 
                             <div>
 
@@ -572,10 +769,14 @@
                         </div>
 
 
-                        <!-- FIRST NAME / LAST NAME -->
+                        <!-- =================================================
+                             FIRST NAME / LAST NAME
+                             ================================================= -->
 
                         <div class="row">
 
+
+                            <!-- FIRST NAME -->
 
                             <div class="col-md-6">
 
@@ -593,7 +794,9 @@
                                     <div class="input-wrapper">
 
                                         <span class="input-icon">
-                                            👤
+
+                                            <i class="fa-solid fa-user"></i>
+
                                         </span>
 
 
@@ -624,6 +827,8 @@
                             </div>
 
 
+                            <!-- LAST NAME -->
+
                             <div class="col-md-6">
 
                                 <div class="form-group">
@@ -640,7 +845,9 @@
                                     <div class="input-wrapper">
 
                                         <span class="input-icon">
-                                            👤
+
+                                            <i class="fa-solid fa-user"></i>
+
                                         </span>
 
 
@@ -673,10 +880,14 @@
                         </div>
 
 
-                        <!-- PHONE / EMAIL -->
+                        <!-- =================================================
+                             PHONE / EMAIL
+                             ================================================= -->
 
                         <div class="row">
 
+
+                            <!-- PHONE -->
 
                             <div class="col-md-6">
 
@@ -694,7 +905,9 @@
                                     <div class="input-wrapper">
 
                                         <span class="input-icon">
-                                            📞
+
+                                            <i class="fa-solid fa-phone"></i>
+
                                         </span>
 
 
@@ -725,6 +938,8 @@
                             </div>
 
 
+                            <!-- EMAIL -->
+
                             <div class="col-md-6">
 
                                 <div class="form-group">
@@ -741,7 +956,9 @@
                                     <div class="input-wrapper">
 
                                         <span class="input-icon">
-                                            ✉
+
+                                            <i class="fa-solid fa-envelope"></i>
+
                                         </span>
 
 
@@ -775,10 +992,14 @@
                         </div>
 
 
-                        <!-- LICENSE / EXPERIENCE -->
+                        <!-- =================================================
+                             LICENSE / EXPERIENCE
+                             ================================================= -->
 
                         <div class="row">
 
+
+                            <!-- LICENSE -->
 
                             <div class="col-md-6">
 
@@ -796,7 +1017,9 @@
                                     <div class="input-wrapper">
 
                                         <span class="input-icon">
-                                            🪪
+
+                                            <i class="fa-solid fa-id-card"></i>
+
                                         </span>
 
 
@@ -826,6 +1049,8 @@
                             </div>
 
 
+                            <!-- EXPERIENCE -->
+
                             <div class="col-md-6">
 
                                 <div class="form-group">
@@ -842,7 +1067,9 @@
                                     <div class="input-wrapper">
 
                                         <span class="input-icon">
-                                            ⭐
+
+                                            <i class="fa-solid fa-award"></i>
+
                                         </span>
 
 
@@ -879,9 +1106,9 @@
                     </div>
 
 
-                    <!-- =====================================
-                         LOGIN INFORMATION
-                         ===================================== -->
+                    <!-- =================================================
+                         SECTION 02
+                         ================================================= -->
 
                     <div class="form-section">
 
@@ -900,7 +1127,7 @@
                                 </h3>
 
                                 <p>
-                                    Set up the instructor's login credentials
+                                    Set up secure login credentials for the instructor
                                 </p>
 
                             </div>
@@ -911,7 +1138,9 @@
                         <div class="row">
 
 
-                            <!-- PASSWORD -->
+                            <!-- =================================================
+                                 PASSWORD
+                                 ================================================= -->
 
                             <div class="col-md-6">
 
@@ -929,6 +1158,13 @@
                                     <div class="password-wrapper">
 
 
+                                        <span class="input-icon">
+
+                                            <i class="fa-solid fa-lock"></i>
+
+                                        </span>
+
+
                                         @Html.PasswordFor(
                                             m => m.Password,
                                             new
@@ -944,7 +1180,11 @@
                                                 class="toggle-password"
                                                 onclick="togglePassword('InstructorPassword', this)">
 
-                                            Show
+                                            <i class="fa-solid fa-eye"></i>
+
+                                            <span>
+                                                Show
+                                            </span>
 
                                         </button>
 
@@ -982,7 +1222,9 @@
                             </div>
 
 
-                            <!-- CONFIRM PASSWORD -->
+                            <!-- =================================================
+                                 CONFIRM PASSWORD
+                                 ================================================= -->
 
                             <div class="col-md-6">
 
@@ -1000,6 +1242,13 @@
                                     <div class="password-wrapper">
 
 
+                                        <span class="input-icon">
+
+                                            <i class="fa-solid fa-shield-halved"></i>
+
+                                        </span>
+
+
                                         @Html.PasswordFor(
                                             m => m.ConfirmPassword,
                                             new
@@ -1015,7 +1264,11 @@
                                                 class="toggle-password"
                                                 onclick="togglePassword('InstructorConfirmPassword', this)">
 
-                                            Show
+                                            <i class="fa-solid fa-eye"></i>
+
+                                            <span>
+                                                Show
+                                            </span>
 
                                         </button>
 
@@ -1040,23 +1293,31 @@
                     </div>
 
 
-                    <!-- =====================================
+                    <!-- =================================================
                          CREATE BUTTON
-                         ===================================== -->
+                         ================================================= -->
 
                     <button type="submit"
                             class="btn-create">
+
+                        <i class="fa-solid fa-user-plus"></i>
 
                         CREATE INSTRUCTOR
 
                     </button>
 
 
+                    <!-- =================================================
+                         SECURITY NOTE
+                         ================================================= -->
+
                     <div class="form-note">
 
-                        <span>🔒</span>
+                        <i class="fa-solid fa-shield-halved"></i>
 
-                        Instructor login credentials will be created with this account.
+                        <span>
+                            Instructor login credentials will be created securely with this account.
+                        </span>
 
                     </div>
 
@@ -1071,11 +1332,15 @@
 </div>
 
 
+<!-- =========================================================
+     JAVASCRIPT
+     ========================================================= -->
+
 <script>
 
-    /* =========================================
+    /* =========================================================
        SHOW / HIDE PASSWORD
-       ========================================= */
+       ========================================================= */
 
     function togglePassword(inputId, button) {
 
@@ -1083,26 +1348,64 @@
             document.getElementById(inputId);
 
 
+        if (!input) {
+            return;
+        }
+
+
+        var icon =
+            button.querySelector("i");
+
+
+        var text =
+            button.querySelector("span");
+
+
         if (input.type === "password") {
 
             input.type = "text";
 
-            button.innerText = "Hide";
+
+            if (icon) {
+
+                icon.className =
+                    "fa-solid fa-eye-slash";
+            }
+
+
+            if (text) {
+
+                text.innerText =
+                    "Hide";
+            }
 
         }
         else {
 
             input.type = "password";
 
-            button.innerText = "Show";
+
+            if (icon) {
+
+                icon.className =
+                    "fa-solid fa-eye";
+            }
+
+
+            if (text) {
+
+                text.innerText =
+                    "Show";
+            }
+
         }
 
     }
 
 
-    /* =========================================
+    /* =========================================================
        PASSWORD STRENGTH
-       ========================================= */
+       ========================================================= */
 
     document.addEventListener(
         "DOMContentLoaded",
@@ -1127,7 +1430,6 @@
 
 
             if (!password) {
-
                 return;
             }
 
@@ -1143,11 +1445,19 @@
                     var strength = 0;
 
 
+                    /* =================================================
+                       AT LEAST 8 CHARACTERS
+                       ================================================= */
+
                     if (value.length >= 8) {
 
                         strength++;
                     }
 
+
+                    /* =================================================
+                       UPPERCASE
+                       ================================================= */
 
                     if (/[A-Z]/.test(value)) {
 
@@ -1155,11 +1465,19 @@
                     }
 
 
+                    /* =================================================
+                       LOWERCASE
+                       ================================================= */
+
                     if (/[a-z]/.test(value)) {
 
                         strength++;
                     }
 
+
+                    /* =================================================
+                       NUMBER
+                       ================================================= */
 
                     if (/[0-9]/.test(value)) {
 
@@ -1167,46 +1485,73 @@
                     }
 
 
+                    /* =================================================
+                       SPECIAL CHARACTER
+                       ================================================= */
+
                     if (/[^A-Za-z0-9]/.test(value)) {
 
                         strength++;
                     }
 
 
+                    /* =================================================
+                       EMPTY
+                       ================================================= */
+
                     if (value.length === 0) {
 
                         strengthBar.style.width =
                             "0%";
+
 
                         strengthText.innerText =
                             "Create a strong password.";
 
                     }
 
+
+                    /* =================================================
+                       WEAK
+                       ================================================= */
+
                     else if (strength <= 2) {
 
                         strengthBar.style.width =
                             "35%";
+
 
                         strengthText.innerText =
                             "Weak password.";
 
                     }
 
+
+                    /* =================================================
+                       MEDIUM
+                       ================================================= */
+
                     else if (strength === 3) {
 
                         strengthBar.style.width =
                             "60%";
+
 
                         strengthText.innerText =
                             "Medium password.";
 
                     }
 
+
+                    /* =================================================
+                       STRONG
+                       ================================================= */
+
                     else {
 
                         strengthBar.style.width =
                             "100%";
+
 
                         strengthText.innerText =
                             "Strong password.";
@@ -1226,3 +1571,4 @@
     @Scripts.Render("~/bundles/jqueryval")
 
 }
+

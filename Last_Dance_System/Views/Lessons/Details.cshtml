@@ -1,96 +1,297 @@
 ﻿@model Last_Dance_System.Models.Booking
 
 @{
+    Layout = null;
     ViewBag.Title = "Lesson Details";
 
     var lesson = ViewBag.LessonProgress
-        as Last_Dance_System.Models.LessonProgress;
+    as Last_Dance_System.Models.LessonProgress;
 
     var schedule = Model.LessonSchedule;
+
+
 }
 
 <style>
 
+    /* =========================================================
+       GLOBAL
+       ========================================================= */
+
+    * {
+        box-sizing: border-box;
+    }
+
     body {
-        background: #07111f;
-        color: white;
+        margin: 0;
+        background: #f5f8fc;
+        font-family: "Segoe UI", Arial, sans-serif;
+        color: #172033;
     }
 
     .lesson-page {
-        min-height: 90vh;
-        padding: 40px 20px;
-        background: radial-gradient( circle at top right, rgba(225, 6, 0, .12), transparent 30% ), #07111f;
+        min-height: 100vh;
+        padding: 32px 25px 65px;
+        background: radial-gradient( circle at 100% 0%, rgba(25, 118, 210, 0.07), transparent 30% ), #f5f8fc;
     }
 
     .lesson-container {
-        max-width: 1000px;
-        margin: auto;
+        width: 100%;
+        max-width: 1250px;
+        margin: 0 auto;
     }
 
-    /* HEADER */
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
 
     .lesson-header {
-        margin-bottom: 30px;
+        position: relative;
+        overflow: hidden;
+        background: #ffffff;
+        border: 1px solid #dfe7f0;
+        border-radius: 18px;
+        padding: 28px 32px;
+        margin-bottom: 24px;
+        box-shadow: 0 8px 28px rgba(30, 70, 110, 0.07);
     }
 
-        .lesson-header h1 {
-            font-size: 30px;
-            font-weight: 800;
-            margin-bottom: 8px;
+        .lesson-header::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 5px;
+            height: 100%;
+            background: linear-gradient( 180deg, #1976d2, #0d47a1 );
         }
 
-            .lesson-header h1 span {
-                color: #e10600;
-            }
-
-        .lesson-header p {
-            color: #8290a3;
-            margin: 0;
+        .lesson-header::after {
+            content: "";
+            position: absolute;
+            right: -90px;
+            top: -110px;
+            width: 270px;
+            height: 270px;
+            background: radial-gradient( circle, rgba(25, 118, 210, 0.09), transparent 70% );
+            pointer-events: none;
         }
 
-    /* ALERTS */
-
-    .alert {
-        padding: 15px 18px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        font-weight: 600;
-    }
-
-    .alert-success {
-        background: rgba(0, 200, 100, .12);
-        border: 1px solid rgba(0, 200, 100, .3);
-        color: #50e3a4;
-    }
-
-    .alert-error {
-        background: rgba(225, 6, 0, .12);
-        border: 1px solid rgba(225, 6, 0, .3);
-        color: #ff6b6b;
-    }
-
-    /* MAIN GRID */
-
-    .lesson-grid {
-        display: grid;
-        grid-template-columns: 1.4fr .8fr;
+    .lesson-header-content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         gap: 20px;
     }
 
+    .lesson-header-left {
+        display: flex;
+        align-items: center;
+        gap: 17px;
+    }
+
+
+    /* =========================================================
+       HEADER ICON
+       ========================================================= */
+
+    .header-icon {
+        width: 62px;
+        height: 62px;
+        border-radius: 15px;
+        background: linear-gradient( 135deg, #1976d2, #0d47a1 );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #ffffff;
+        flex-shrink: 0;
+        box-shadow: 0 8px 20px rgba(25, 118, 210, 0.22);
+    }
+
+        .header-icon svg {
+            width: 31px;
+            height: 31px;
+            stroke: currentColor;
+        }
+
+
+    /* =========================================================
+       HEADER TEXT
+       ========================================================= */
+
+    .lesson-header h1 {
+        margin: 0 0 5px;
+        color: #142033;
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.4px;
+    }
+
+        .lesson-header h1 span {
+            color: #1976d2;
+        }
+
+    .lesson-header p {
+        margin: 0;
+        color: #78879a;
+        font-size: 13px;
+    }
+
+
+    /* =========================================================
+       BACK BUTTON
+       ========================================================= */
+
+    .back-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 17px;
+        min-height: 42px;
+        border-radius: 9px;
+        background: #ffffff;
+        border: 1px solid #cbd8e6;
+        color: #1976d2;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .back-button svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+        }
+
+        .back-button:hover {
+            background: #eef6ff;
+            border-color: #1976d2;
+            color: #0d47a1;
+            text-decoration: none;
+            transform: translateY(-1px);
+            box-shadow: 0 5px 15px rgba(25, 118, 210, 0.10);
+        }
+
+
+    /* =========================================================
+       ALERTS
+       ========================================================= */
+
+    .alert {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 13px 17px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .alert-icon {
+        width: 20px;
+        height: 20px;
+        flex-shrink: 0;
+    }
+
+    .alert-success {
+        background: #edf9f1;
+        border: 1px solid #cdebd7;
+        color: #287a46;
+    }
+
+    .alert-error {
+        background: #fff1f1;
+        border: 1px solid #f0cccc;
+        color: #a33a3a;
+    }
+
+
+    /* =========================================================
+       MAIN GRID
+       ========================================================= */
+
+    .lesson-grid {
+        display: grid;
+        grid-template-columns: 1.45fr 0.8fr;
+        gap: 23px;
+        align-items: start;
+    }
+
+
+    /* =========================================================
+       CARD
+       ========================================================= */
+
     .card {
-        background: #0c1726;
-        border: 1px solid #1b2a3d;
-        border-radius: 16px;
-        padding: 25px;
+        background: #ffffff;
+        border: 1px solid #dfe7f0;
+        border-radius: 17px;
+        padding: 24px;
+        box-shadow: 0 8px 25px rgba(30, 70, 110, 0.055);
     }
 
         .card h2 {
-            margin-top: 0;
-            font-size: 20px;
-            margin-bottom: 20px;
+            margin: 0 0 20px;
+            color: #172033;
+            font-size: 18px;
+            font-weight: 750;
         }
 
-    /* LESSON INFORMATION */
+
+    /* =========================================================
+       CARD HEADER
+       ========================================================= */
+
+    .card-heading {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding-bottom: 17px;
+        margin-bottom: 17px;
+        border-bottom: 1px solid #edf1f5;
+    }
+
+    .card-heading-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: #eef6ff;
+        color: #1976d2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+        .card-heading-icon svg {
+            width: 19px;
+            height: 19px;
+            stroke: currentColor;
+        }
+
+    .card-heading-text h2 {
+        margin: 0;
+        color: #172033;
+        font-size: 18px;
+        font-weight: 750;
+    }
+
+    .card-heading-text p {
+        margin: 3px 0 0;
+        color: #8794a5;
+        font-size: 11px;
+    }
+
+
+    /* =========================================================
+       LESSON INFORMATION
+       ========================================================= */
 
     .info-grid {
         display: grid;
@@ -99,57 +300,100 @@
     }
 
     .info-box {
-        background: #08111d;
-        border-radius: 10px;
+        background: #fbfdff;
+        border: 1px solid #e1e9f2;
+        border-radius: 11px;
         padding: 15px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
     }
+
+        .info-box:hover {
+            border-color: #c5d9ed;
+            box-shadow: 0 5px 15px rgba(30, 70, 110, 0.05);
+            transform: translateY(-1px);
+        }
 
         .info-box span {
             display: block;
-            color: #718096;
-            font-size: 12px;
-            margin-bottom: 5px;
+            color: #7b899a;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom: 7px;
         }
 
         .info-box strong {
-            font-size: 15px;
-            color: white;
+            display: block;
+            color: #172033;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.4;
         }
 
-    /* STATUS */
+
+    /* =========================================================
+       STATUS
+       ========================================================= */
 
     .status {
-        display: inline-block;
-        padding: 7px 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 12px;
         border-radius: 20px;
-        font-size: 12px;
+        font-size: 11px;
         font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .status-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
     }
 
     .status-confirmed {
-        background: rgba(0, 200, 100, .12);
-        color: #50e3a4;
+        background: #eef6ff;
+        border: 1px solid #d4e7fa;
+        color: #1976d2;
     }
 
     .status-progress {
-        background: rgba(255, 180, 0, .12);
-        color: #ffc107;
+        background: #fff8e5;
+        border: 1px solid #f1df9f;
+        color: #a97800;
     }
 
     .status-completed {
-        background: rgba(50, 150, 255, .12);
-        color: #5da9ff;
+        background: #edf9f1;
+        border: 1px solid #d0ecd8;
+        color: #2e8b57;
     }
 
-    /* CODE AREA */
+
+    /* =========================================================
+       CODE CARD
+       ========================================================= */
 
     .code-card {
         text-align: center;
     }
 
+        .code-card h2 {
+            margin-bottom: 8px;
+        }
+
+    .code-card-subtitle {
+        color: #8794a5;
+        font-size: 12px;
+        margin-bottom: 20px;
+    }
+
     .code-label {
-        color: #8290a3;
-        font-size: 13px;
+        color: #78879a;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
         margin-bottom: 10px;
     }
 
@@ -157,9 +401,9 @@
         font-size: 32px;
         letter-spacing: 8px;
         font-weight: 900;
-        color: #e10600;
-        background: #08111d;
-        border: 1px solid #1b2a3d;
+        color: #1976d2;
+        background: #eef6ff;
+        border: 1px solid #d4e7fa;
         border-radius: 12px;
         padding: 18px 10px;
         margin-bottom: 18px;
@@ -167,57 +411,85 @@
 
     .code-hidden {
         color: #718096;
-        font-size: 14px;
-        background: #08111d;
+        font-size: 13px;
+        line-height: 1.5;
+        background: #f7f9fc;
+        border: 1px solid #e4eaf1;
         border-radius: 10px;
         padding: 18px;
         margin-bottom: 18px;
     }
 
-    /* INPUT */
+
+    /* =========================================================
+       INPUT
+       ========================================================= */
 
     .code-input {
         width: 100%;
         padding: 14px;
-        background: #08111d;
-        border: 1px solid #293b52;
+        background: #fbfdff;
+        border: 1px solid #cbd8e6;
         border-radius: 9px;
-        color: white;
+        color: #172033;
         text-align: center;
         font-size: 20px;
+        font-weight: 700;
         letter-spacing: 5px;
         outline: none;
         margin-bottom: 12px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
     }
 
-        .code-input:focus {
-            border-color: #e10600;
+        .code-input::placeholder {
+            color: #a4afbc;
+            font-weight: 500;
         }
 
-    /* BUTTON */
+        .code-input:focus {
+            background: #ffffff;
+            border-color: #1976d2;
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.10);
+        }
+
+
+    /* =========================================================
+       PRIMARY BUTTON
+       ========================================================= */
 
     .action-button {
         width: 100%;
-        padding: 13px;
-        border: none;
+        min-height: 45px;
+        padding: 12px 15px;
+        border: 1px solid #1976d2;
         border-radius: 9px;
-        background: #e10600;
-        color: white;
+        background: linear-gradient( 135deg, #1976d2, #0d47a1 );
+        color: #ffffff;
         font-weight: 700;
+        font-size: 13px;
         cursor: pointer;
-        transition: .2s;
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        box-shadow: 0 6px 15px rgba(25, 118, 210, 0.16);
     }
 
         .action-button:hover {
-            background: #ff211a;
+            background: linear-gradient( 135deg, #1565c0, #0b3d91 );
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(25, 118, 210, 0.22);
         }
 
         .action-button:disabled {
-            background: #3b4654;
+            background: #b8c3cf;
+            border-color: #b8c3cf;
             cursor: not-allowed;
+            box-shadow: none;
+            transform: none;
         }
 
-    /* TIMER */
+
+    /* =========================================================
+       TIMER
+       ========================================================= */
 
     .timer-card {
         text-align: center;
@@ -225,62 +497,154 @@
     }
 
     .timer-label {
-        color: #8290a3;
-        font-size: 13px;
-        margin-bottom: 10px;
+        color: #78879a;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.6px;
+        margin-bottom: 8px;
     }
 
     .timer {
         font-size: 48px;
         font-weight: 900;
         letter-spacing: 3px;
-        color: #e10600;
+        color: #1976d2;
         margin: 10px 0;
     }
 
     .timer-message {
-        color: #8290a3;
-        font-size: 13px;
+        color: #8794a5;
+        font-size: 12px;
+        line-height: 1.5;
     }
 
-    /* COMPLETED */
+
+    /* =========================================================
+       COMPLETED
+       ========================================================= */
 
     .completed {
         text-align: center;
-        padding: 30px;
+        padding: 30px 24px;
     }
 
     .completed-icon {
-        font-size: 50px;
-        margin-bottom: 10px;
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 15px;
+        border-radius: 50%;
+        background: #edf9f1;
+        border: 1px solid #cdebd7;
+        color: #2e8b57;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        font-weight: 800;
     }
 
     .completed h2 {
-        color: #50e3a4;
+        color: #287a46;
         margin-bottom: 8px;
     }
 
     .completed p {
-        color: #8290a3;
+        color: #8794a5;
+        font-size: 13px;
+        margin-bottom: 18px;
     }
 
-    /* BACK */
 
-    .back-button {
-        display: inline-block;
-        margin-top: 25px;
-        color: #8290a3;
+    /* =========================================================
+       BACK LINK
+       ========================================================= */
+
+    .bottom-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 22px;
+        color: #1976d2;
         text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
     }
 
-        .back-button:hover {
-            color: white;
+        .bottom-back:hover {
+            color: #0d47a1;
+            text-decoration: none;
         }
 
-    @@media(max-width: 800px) {
+        .bottom-back svg {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+        }
+
+
+    /* =========================================================
+       RESPONSIVE - TABLET
+       ========================================================= */
+
+    @@media (max-width: 800px) {
+
+        .lesson-header-content {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .back-button {
+            width: 100%;
+        }
 
         .lesson-grid {
             grid-template-columns: 1fr;
+        }
+
+        .info-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+
+    /* =========================================================
+       RESPONSIVE - MOBILE
+       ========================================================= */
+
+    @@media (max-width: 576px) {
+
+        .lesson-page {
+            padding: 15px 10px 40px;
+        }
+
+        .lesson-header {
+            padding: 24px 20px;
+        }
+
+        .lesson-header-left {
+            align-items: flex-start;
+        }
+
+        .header-icon {
+            width: 52px;
+            height: 52px;
+        }
+
+            .header-icon svg {
+                width: 26px;
+                height: 26px;
+            }
+
+        .lesson-header h1 {
+            font-size: 22px;
+        }
+
+        .lesson-grid {
+            gap: 15px;
+        }
+
+        .card {
+            padding: 18px;
         }
 
         .info-grid {
@@ -290,13 +654,19 @@
         .timer {
             font-size: 40px;
         }
+
+        .code {
+            font-size: 27px;
+            letter-spacing: 6px;
+        }
     }
 </style>
 
-
 <div class="lesson-page">
 
+    
     <div class="lesson-container">
+
 
         <!-- =====================================================
              HEADER
@@ -304,13 +674,87 @@
 
         <div class="lesson-header">
 
-            <h1>
-                Lesson <span>Details</span>
-            </h1>
+            <div class="lesson-header-content">
 
-            <p>
-                Manage your driving lesson attendance.
-            </p>
+                <div class="lesson-header-left">
+
+                    <div class="header-icon">
+
+                        <svg viewBox="0 0 24 24"
+                             fill="none"
+                             stroke="currentColor"
+                             stroke-width="1.8"
+                             stroke-linecap="round"
+                             stroke-linejoin="round">
+
+                            <rect x="3"
+                                  y="4"
+                                  width="18"
+                                  height="17"
+                                  rx="2" />
+
+                            <line x1="16"
+                                  y1="2"
+                                  x2="16"
+                                  y2="6" />
+
+                            <line x1="8"
+                                  y1="2"
+                                  x2="8"
+                                  y2="6" />
+
+                            <line x1="3"
+                                  y1="9"
+                                  x2="21"
+                                  y2="9" />
+
+                            <circle cx="12"
+                                    cy="15"
+                                    r="2.5" />
+
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <h1>
+                            Lesson <span>Details</span>
+                        </h1>
+
+                        <p>
+                            Manage your driving lesson attendance and progress.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <a href="@Url.Action("Index", "Lessons")"
+                   class="back-button">
+
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="2"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+
+                        <line x1="19"
+                              y1="12"
+                              x2="5"
+                              y2="12" />
+
+                        <polyline points="12 19 5 12 12 5" />
+
+                    </svg>
+
+                    Back to My Lessons
+
+                </a>
+
+            </div>
 
         </div>
 
@@ -322,37 +766,114 @@
         @if (TempData["Success"] != null)
         {
             <div class="alert alert-success">
+
+                <svg class="alert-icon"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2">
+
+                    <polyline points="20 6 9 17 4 12" />
+
+                </svg>
+
                 @TempData["Success"]
+
             </div>
         }
+
 
         @if (TempData["Error"] != null)
         {
             <div class="alert alert-error">
+
+                <svg class="alert-icon"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="2">
+
+                    <circle cx="12"
+                            cy="12"
+                            r="9" />
+
+                    <line x1="12"
+                          y1="8"
+                          x2="12"
+                          y2="12" />
+
+                    <line x1="12"
+                          y1="16"
+                          x2="12.01"
+                          y2="16" />
+
+                </svg>
+
                 @TempData["Error"]
+
             </div>
         }
 
 
         <!-- =====================================================
-             LESSON INFORMATION
+             MAIN GRID
         ====================================================== -->
 
         <div class="lesson-grid">
+
+
+            <!-- =================================================
+                 LESSON INFORMATION
+            ================================================== -->
 
             <div>
 
                 <div class="card">
 
-                    <h2>
-                        Lesson Information
-                    </h2>
+                    <div class="card-heading">
+
+                        <div class="card-heading-icon">
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="1.8"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+
+                            </svg>
+
+                        </div>
+
+                        <div class="card-heading-text">
+
+                            <h2>
+                                Lesson Information
+                            </h2>
+
+                            <p>
+                                Details about your scheduled driving lesson
+                            </p>
+
+                        </div>
+
+                    </div>
+
 
                     <div class="info-grid">
 
+
+                        <!-- LESSON TYPE -->
+
                         <div class="info-box">
 
-                            <span>Lesson Type</span>
+                            <span>
+                                Lesson Type
+                            </span>
 
                             <strong>
                                 @schedule.LessonType.LessonTypeName
@@ -361,9 +882,13 @@
                         </div>
 
 
+                        <!-- DATE -->
+
                         <div class="info-box">
 
-                            <span>Date</span>
+                            <span>
+                                Date
+                            </span>
 
                             <strong>
                                 @schedule.LessonDate.ToString("dddd, dd MMMM yyyy")
@@ -372,9 +897,13 @@
                         </div>
 
 
+                        <!-- START -->
+
                         <div class="info-box">
 
-                            <span>Start Time</span>
+                            <span>
+                                Start Time
+                            </span>
 
                             <strong>
                                 @schedule.StartTime.ToString(@"hh\:mm")
@@ -383,9 +912,13 @@
                         </div>
 
 
+                        <!-- END -->
+
                         <div class="info-box">
 
-                            <span>End Time</span>
+                            <span>
+                                End Time
+                            </span>
 
                             <strong>
                                 @schedule.EndTime.ToString(@"hh\:mm")
@@ -394,9 +927,13 @@
                         </div>
 
 
+                        <!-- INSTRUCTOR -->
+
                         <div class="info-box">
 
-                            <span>Instructor</span>
+                            <span>
+                                Instructor
+                            </span>
 
                             <strong>
                                 @schedule.Instructor.FirstName
@@ -406,9 +943,13 @@
                         </div>
 
 
+                        <!-- VEHICLE -->
+
                         <div class="info-box">
 
-                            <span>Vehicle</span>
+                            <span>
+                                Vehicle
+                            </span>
 
                             <strong>
                                 @schedule.Vehicle.Make
@@ -418,28 +959,44 @@
                         </div>
 
 
+                        <!-- BOOKING STATUS -->
+
                         <div class="info-box">
 
-                            <span>Booking Status</span>
+                            <span>
+                                Booking Status
+                            </span>
 
                             <strong>
 
                                 @if (Model.Status == "Confirmed")
                                 {
                                     <span class="status status-confirmed">
+
+                                        <span class="status-dot"></span>
+
                                         Confirmed
+
                                     </span>
                                 }
                                 else if (Model.Status == "Completed")
                                 {
                                     <span class="status status-completed">
+
+                                        <span class="status-dot"></span>
+
                                         Completed
+
                                     </span>
                                 }
                                 else
                                 {
-                                    <span class="status">
+                                    <span class="status status-confirmed">
+
+                                        <span class="status-dot"></span>
+
                                         @Model.Status
+
                                     </span>
                                 }
 
@@ -448,9 +1005,13 @@
                         </div>
 
 
+                        <!-- LESSON STATUS -->
+
                         <div class="info-box">
 
-                            <span>Lesson Status</span>
+                            <span>
+                                Lesson Status
+                            </span>
 
                             <strong>
 
@@ -459,21 +1020,43 @@
                                     if (lesson.LessonStatus == "In Progress")
                                     {
                                         <span class="status status-progress">
+
+                                            <span class="status-dot"></span>
+
                                             In Progress
+
                                         </span>
                                     }
                                     else if (lesson.LessonStatus == "Completed")
                                     {
                                         <span class="status status-completed">
+
+                                            <span class="status-dot"></span>
+
                                             Completed
+
                                         </span>
                                     }
                                     else
                                     {
                                         <span class="status status-confirmed">
+
+                                            <span class="status-dot"></span>
+
                                             @lesson.LessonStatus
+
                                         </span>
                                     }
+                                }
+                                else
+                                {
+                                    <span class="status status-confirmed">
+
+                                        <span class="status-dot"></span>
+
+                                        Pending
+
+                                    </span>
                                 }
 
                             </strong>
@@ -494,6 +1077,7 @@
                      !lesson.CheckOutConfirmed &&
                      lesson.CheckInTime.HasValue)
                 {
+
                     <div class="card timer-card">
 
                         <div class="timer-label">
@@ -502,95 +1086,115 @@
 
                         <div id="lessonTimer"
                              class="timer">
+
                             30:00
+
                         </div>
 
                         <div id="timerMessage"
                              class="timer-message">
+
                             Your lesson is currently in progress.
+
                         </div>
 
                     </div>
 
+
                     <script>
 
-                        var checkInTime =
-                            new Date(
-                                "@lesson.CheckInTime.Value.ToString("yyyy-MM-ddTHH:mm:ss")"
-                            );
+                    var checkInTime =
+                        new Date(
+                            "@lesson.CheckInTime.Value.ToString("yyyy-MM-ddTHH:mm:ss")"
+                        );
 
-                        var lessonEnd =
-                            new Date(
-                                checkInTime.getTime()
-                                +
-                                (30 * 60 * 1000)
-                            );
+                    var lessonEnd =
+                        new Date(
+                            checkInTime.getTime()
+                            +
+                            (30 * 60 * 1000)
+                        );
 
-                        function updateTimer() {
 
-                            var now = new Date();
+                    function updateTimer() {
 
-                            var remaining =
-                                lessonEnd.getTime()
-                                -
-                                now.getTime();
+                        var now = new Date();
 
-                            if (remaining <= 0) {
+                        var remaining =
+                            lessonEnd.getTime()
+                            -
+                            now.getTime();
 
-                                document.getElementById(
-                                    "lessonTimer"
-                                ).innerHTML = "00:00";
 
-                                document.getElementById(
-                                    "timerMessage"
-                                ).innerHTML =
-                                    "Your 30-minute lesson is complete. Your checkout code is now available.";
-
-                                return;
-                            }
-
-                            var totalSeconds =
-                                Math.floor(
-                                    remaining / 1000
-                                );
-
-                            var minutes =
-                                Math.floor(
-                                    totalSeconds / 60
-                                );
-
-                            var seconds =
-                                totalSeconds % 60;
+                        if (remaining <= 0) {
 
                             document.getElementById(
                                 "lessonTimer"
+                            ).innerHTML = "00:00";
+
+
+                            document.getElementById(
+                                "timerMessage"
                             ).innerHTML =
-                                String(minutes).padStart(2, "0")
-                                +
-                                ":"
-                                +
-                                String(seconds).padStart(2, "0");
+                                "Your 30-minute lesson is complete. Your checkout code is now available.";
+
+                            return;
                         }
 
-                        updateTimer();
 
-                        setInterval(
-                            updateTimer,
-                            1000
-                        );
+                        var totalSeconds =
+                            Math.floor(
+                                remaining / 1000
+                            );
+
+
+                        var minutes =
+                            Math.floor(
+                                totalSeconds / 60
+                            );
+
+
+                        var seconds =
+                            totalSeconds % 60;
+
+
+                        document.getElementById(
+                            "lessonTimer"
+                        ).innerHTML =
+                            String(minutes).padStart(2, "0")
+                            +
+                            ":"
+                            +
+                            String(seconds).padStart(2, "0");
+
+                    }
+
+
+                    updateTimer();
+
+
+                    setInterval(
+                        updateTimer,
+                        1000
+                    );
 
                     </script>
+
                 }
 
             </div>
 
 
-            <!-- =====================================================
+            <!-- =================================================
                  CHECK-IN / CHECK-OUT
-            ====================================================== -->
+            ================================================== -->
 
             <div>
 
+
+                <!-- =================================================
+                     CHECK-IN
+                ================================================== -->
 
                 @if (lesson != null &&
                      !lesson.CheckInConfirmed &&
@@ -599,9 +1203,41 @@
 
                     <div class="card code-card">
 
-                        <h2>
-                            Check-In
-                        </h2>
+                        <div class="card-heading">
+
+                            <div class="card-heading-icon">
+
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.8"
+                                     stroke-linecap="round"
+                                     stroke-linejoin="round">
+
+                                    <circle cx="12"
+                                            cy="12"
+                                            r="9" />
+
+                                    <polyline points="12 7 12 12 15 14" />
+
+                                </svg>
+
+                            </div>
+
+                            <div class="card-heading-text">
+
+                                <h2>
+                                    Check-In
+                                </h2>
+
+                                <p>
+                                    Start your driving lesson
+                                </p>
+
+                            </div>
+
+                        </div>
+
 
                         <div class="code-label">
                             SYSTEM-GENERATED CHECK-IN CODE
@@ -617,13 +1253,17 @@
                         else
                         {
                             <div class="code-hidden">
+
                                 Your check-in code will be generated automatically.
+
                             </div>
                         }
 
 
                         <p class="code-label">
+
                             Enter the code shown above to start your lesson.
+
                         </p>
 
 
@@ -632,11 +1272,14 @@
                             "Lessons",
                             FormMethod.Post))
                         {
+
                             @Html.AntiForgeryToken()
+
 
                             <input type="hidden"
                                    name="id"
                                    value="@Model.BookingId" />
+
 
                             <input type="text"
                                    name="checkInCode"
@@ -646,18 +1289,24 @@
                                    placeholder="000000"
                                    required />
 
+
                             <button type="submit"
                                     class="action-button">
 
                                 Confirm Check-In
 
                             </button>
+
                         }
 
                     </div>
 
                 }
 
+
+                <!-- =================================================
+                     CHECK-OUT
+                ================================================== -->
 
                 @if (lesson != null &&
                      lesson.CheckInConfirmed &&
@@ -666,9 +1315,36 @@
 
                     <div class="card code-card">
 
-                        <h2>
-                            Check-Out
-                        </h2>
+                        <div class="card-heading">
+
+                            <div class="card-heading-icon">
+
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.8"
+                                     stroke-linecap="round"
+                                     stroke-linejoin="round">
+
+                                    <polyline points="20 6 9 17 4 12" />
+
+                                </svg>
+
+                            </div>
+
+                            <div class="card-heading-text">
+
+                                <h2>
+                                    Check-Out
+                                </h2>
+
+                                <p>
+                                    Complete your driving lesson
+                                </p>
+
+                            </div>
+
+                        </div>
 
 
                         @{
@@ -689,20 +1365,28 @@
 
                             if (!string.IsNullOrEmpty(lesson.CheckOutCode))
                             {
+
                                 <div class="code">
                                     @lesson.CheckOutCode
                                 </div>
+
                             }
                             else
                             {
+
                                 <div class="code-hidden">
+
                                     Refresh this page to generate your checkout code.
+
                                 </div>
+
                             }
 
 
                             <p class="code-label">
+
                                 Enter the checkout code to complete your lesson.
+
                             </p>
 
 
@@ -711,11 +1395,14 @@
                                 "Lessons",
                                 FormMethod.Post))
                             {
+
                                 @Html.AntiForgeryToken()
+
 
                                 <input type="hidden"
                                        name="id"
                                        value="@Model.BookingId" />
+
 
                                 <input type="text"
                                        name="checkOutCode"
@@ -725,12 +1412,14 @@
                                        placeholder="000000"
                                        required />
 
+
                                 <button type="submit"
                                         class="action-button">
 
                                     Confirm Check-Out
 
                                 </button>
+
                             }
 
                         }
@@ -743,7 +1432,8 @@
                                     Checkout is locked.
                                 </strong>
 
-                                <br /><br />
+                                <br />
+                                <br />
 
                                 You must complete the full
                                 30-minute lesson before checking out.
@@ -757,6 +1447,10 @@
                 }
 
 
+                <!-- =================================================
+                     COMPLETED
+                ================================================== -->
+
                 @if (lesson != null &&
                      lesson.CheckOutConfirmed)
                 {
@@ -764,19 +1458,37 @@
                     <div class="card completed">
 
                         <div class="completed-icon">
-                            ✓
+
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="2"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+
+                                <polyline points="20 6 9 17 4 12" />
+
+                            </svg>
+
                         </div>
+
 
                         <h2>
                             Lesson Completed
                         </h2>
 
+
                         <p>
                             Your driving lesson has been successfully completed.
                         </p>
 
+
                         <div class="status status-completed">
+
+                            <span class="status-dot"></span>
+
                             100% COMPLETE
+
                         </div>
 
                     </div>
@@ -788,13 +1500,34 @@
         </div>
 
 
-        <a href="@Url.Action("Index", "Lessons")"
-           class="back-button">
+        <!-- =====================================================
+             BOTTOM BACK
+        ====================================================== -->
 
-            ← Back to My Lessons
+        <a href="@Url.Action("Index", "Lessons")"
+           class="bottom-back">
+
+            <svg viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round">
+
+                <line x1="19"
+                      y1="12"
+                      x2="5"
+                      y2="12" />
+
+                <polyline points="12 19 5 12 12 5" />
+
+            </svg>
+
+            Back to My Lessons
 
         </a>
 
     </div>
+    
 
 </div>

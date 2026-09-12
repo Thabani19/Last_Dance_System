@@ -9,38 +9,96 @@ namespace Last_Dance_System.Models
         [Key]
         public int ReviewId { get; set; }
 
-        // Student who submitted the review
+
+        // =========================================================
+        // BOOKING / LESSON BEING REVIEWED
+        // =========================================================
+
         [Required]
+        public int BookingId { get; set; }
+
+        [ForeignKey("BookingId")]
+        public virtual Booking Booking { get; set; }
+
+
+        // =========================================================
+        // STUDENT
+        // =========================================================
+
+        // Student connected to the review
         public string RegistrationId { get; set; }
 
         [ForeignKey("RegistrationId")]
         public virtual Registration Registration { get; set; }
 
-        // Optional instructor being reviewed
+
+        // =========================================================
+        // INSTRUCTOR BEING REVIEWED
+        // =========================================================
+
         public int? InstructorId { get; set; }
 
         [ForeignKey("InstructorId")]
         public virtual Instructor Instructor { get; set; }
 
-        // Optional vehicle being reviewed
+
+        // =========================================================
+        // INSTRUCTOR WHO SUBMITTED THE REVIEW
+        // =========================================================
+
+        public int? ReviewerInstructorId { get; set; }
+
+        [ForeignKey("ReviewerInstructorId")]
+        public virtual Instructor ReviewerInstructor { get; set; }
+
+
+        // =========================================================
+        // VEHICLE
+        // =========================================================
+
         public int? VehicleId { get; set; }
 
         [ForeignKey("VehicleId")]
         public virtual Vehicle Vehicle { get; set; }
 
+
+        // =========================================================
+        // REVIEW TYPE
+        // =========================================================
+
         [Required]
-        [StringLength(20)]
+        [StringLength(30)]
         public string ReviewType { get; set; }
+
+
+        // =========================================================
+        // RATING
+        // =========================================================
 
         [Required]
         [Range(1, 5)]
         public int Rating { get; set; }
 
+
+        // =========================================================
+        // COMMENT
+        // =========================================================
+
         [Required]
         [StringLength(1000)]
         public string Comment { get; set; }
 
+
+        // =========================================================
+        // REVIEW DATE
+        // =========================================================
+
         public DateTime ReviewDate { get; set; }
+
+
+        // =========================================================
+        // APPROVAL
+        // =========================================================
 
         public bool IsApproved { get; set; }
     }

@@ -1,59 +1,261 @@
 ﻿@model IEnumerable<Last_Dance_System.Models.Payment>
 
 @{
+    Layout = null;
     ViewBag.Title = "Payment History";
 }
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
 <style>
+
+    /* =========================================================
+       GLOBAL
+       ========================================================= */
 
     * {
         box-sizing: border-box;
     }
 
+    html,
     body {
         margin: 0;
-        background: #050a12;
-        font-family: "Segoe UI", Arial, sans-serif;
-        color: #ffffff;
+        padding: 0;
+        background: #f5f8fc;
+        color: #172033;
+        font-family: "Segoe UI", Arial, Helvetica, sans-serif;
     }
 
+
+    /* =========================================================
+       MAIN PAGE
+       ========================================================= */
+
     .payments-page {
-        min-height: calc(100vh - 50px);
-        padding: 40px 20px;
-        background: radial-gradient(circle at 85% 10%, rgba(225,6,0,.10), transparent 30%), linear-gradient(135deg,#050a12,#08111d);
+        min-height: 100vh;
+        padding: 45px 20px 60px;
+        background: radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 32%), radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.05), transparent 30%), #f5f8fc;
     }
 
     .payments-container {
-        max-width: 1100px;
-        margin: auto;
+        max-width: 1150px;
+        margin: 0 auto;
     }
+
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
 
     .payments-header {
-        margin-bottom: 25px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        gap: 25px;
+        margin-bottom: 30px;
     }
 
-        .payments-header h1 {
-            margin: 0 0 7px;
-            font-size: 30px;
-            font-weight: 800;
+    .payments-header-content {
+        max-width: 700px;
+    }
+
+    .header-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+        color: #2563eb;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+
+        .header-label::before {
+            content: "";
+            width: 25px;
+            height: 2px;
+            background: #2563eb;
+            border-radius: 2px;
         }
 
-            .payments-header h1 span {
-                color: #e10600;
-            }
+    .payments-header h1 {
+        margin: 0 0 10px;
+        color: #172033;
+        font-size: 34px;
+        line-height: 1.15;
+        font-weight: 900;
+    }
 
-        .payments-header p {
-            margin: 0;
-            color: #75818c;
+        .payments-header h1 span {
+            color: #2563eb;
+        }
+
+    .payments-header p {
+        margin: 0;
+        color: #64748b;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+
+    /* =========================================================
+       DASHBOARD BUTTON
+       ========================================================= */
+
+    .dashboard-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        padding: 12px 18px;
+        background: #ffffff;
+        color: #34445a;
+        border: 1px solid #d3deeb;
+        border-radius: 10px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 800;
+        white-space: nowrap;
+        transition: .2s ease;
+        box-shadow: 0 5px 18px rgba(15, 23, 42, 0.05);
+    }
+
+        .dashboard-button i {
+            color: #2563eb;
             font-size: 13px;
         }
 
+        .dashboard-button:hover {
+            background: #eff6ff;
+            border-color: #2563eb;
+            color: #2563eb;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
+
+    /* =========================================================
+       PAYMENT SUMMARY
+       ========================================================= */
+
+    .payment-summary {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-bottom: 22px;
+    }
+
+    .summary-card {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 18px;
+        background: #ffffff;
+        border: 1px solid #dce5f0;
+        border-radius: 13px;
+        box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05);
+        transition: .2s ease;
+    }
+
+        .summary-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+            border-color: #cbdcf5;
+        }
+
+    .summary-icon {
+        width: 46px;
+        height: 46px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 11px;
+        color: #2563eb;
+        font-size: 17px;
+    }
+
+    .summary-content {
+        min-width: 0;
+    }
+
+        .summary-content span {
+            display: block;
+            margin-bottom: 3px;
+            color: #94a3b8;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .summary-content strong {
+            display: block;
+            color: #172033;
+            font-size: 18px;
+            font-weight: 900;
+        }
+
+
+    /* =========================================================
+       TABLE CARD
+       ========================================================= */
+
     .payment-table-card {
-        background: #0d141d;
-        border: 1px solid #1c2733;
+        background: #ffffff;
+        border: 1px solid #dce5f0;
         border-radius: 16px;
         overflow: hidden;
+        box-shadow: 0 8px 28px rgba(15, 23, 42, 0.06);
     }
+
+    .table-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 22px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .table-header-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .table-header-icon {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 9px;
+        color: #2563eb;
+        font-size: 14px;
+    }
+
+    .table-header h2 {
+        margin: 0;
+        color: #172033;
+        font-size: 16px;
+        font-weight: 900;
+    }
+
+    .table-header p {
+        margin: 3px 0 0;
+        color: #94a3b8;
+        font-size: 11px;
+    }
+
+
+    /* =========================================================
+       TABLE
+       ========================================================= */
 
     .table-wrapper {
         overflow-x: auto;
@@ -61,114 +263,478 @@
 
     .payment-table {
         width: 100%;
+        min-width: 850px;
         border-collapse: collapse;
     }
 
         .payment-table th {
-            padding: 17px 20px;
+            padding: 15px 18px;
             text-align: left;
-            background: #101923;
-            color: #7f8b96;
+            background: #f8fafc;
+            color: #64748b;
             font-size: 10px;
+            font-weight: 800;
             text-transform: uppercase;
             letter-spacing: .5px;
-            border-bottom: 1px solid #1d2935;
+            border-bottom: 1px solid #e2e8f0;
+            white-space: nowrap;
         }
 
         .payment-table td {
-            padding: 18px 20px;
-            border-bottom: 1px solid #18232e;
-            color: #d8dee3;
+            padding: 17px 18px;
+            color: #475569;
             font-size: 12px;
+            border-bottom: 1px solid #edf1f5;
+            vertical-align: middle;
         }
+
+        .payment-table tbody tr {
+            transition: .18s ease;
+        }
+
+            .payment-table tbody tr:hover {
+                background: #f8fbff;
+            }
 
         .payment-table tr:last-child td {
             border-bottom: none;
         }
 
-        .payment-table tr:hover td {
-            background: #101923;
-        }
 
-    .amount {
-        color: #ffffff;
+    /* =========================================================
+       PAYMENT ID
+       ========================================================= */
+
+    .payment-id {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #172033;
+        font-weight: 800;
+    }
+
+    .payment-id-icon {
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #eff6ff;
+        border: 1px solid #dbeafe;
+        border-radius: 8px;
+        color: #2563eb;
+        font-size: 11px;
+    }
+
+
+    /* =========================================================
+       BOOKING ID
+       ========================================================= */
+
+    .booking-id {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #64748b;
         font-weight: 700;
     }
 
+        .booking-id i {
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+
+    /* =========================================================
+       AMOUNT
+       ========================================================= */
+
+    .amount {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #172033;
+        font-size: 13px;
+        font-weight: 900;
+        white-space: nowrap;
+    }
+
+        .amount i {
+            color: #2563eb;
+            font-size: 12px;
+        }
+
+    .amount-currency {
+        color: #2563eb;
+    }
+
+
+    /* =========================================================
+       PAYMENT METHOD
+       ========================================================= */
+
+    .method {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #475569;
+        font-weight: 700;
+    }
+
+    .method-icon {
+        width: 26px;
+        height: 26px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 7px;
+        color: #2563eb;
+        font-size: 11px;
+    }
+
+
+    /* =========================================================
+       DATE
+       ========================================================= */
+
+    .payment-date {
+        display: inline-flex;
+        align-items: center;
+        color: #64748b;
+        white-space: nowrap;
+    }
+
+        .payment-date i {
+            margin-right: 7px;
+            color: #2563eb;
+            font-size: 11px;
+        }
+
+
+    /* =========================================================
+       STATUS
+       ========================================================= */
+
     .status {
-        display: inline-block;
-        padding: 6px 10px;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 11px;
         border-radius: 20px;
         font-size: 9px;
-        font-weight: 700;
+        font-weight: 800;
         text-transform: uppercase;
+        letter-spacing: .3px;
     }
 
     .status-paid {
-        color: #63d391;
-        background: rgba(45,190,105,.10);
-        border: 1px solid rgba(45,190,105,.20);
+        color: #15803d;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
     }
+
+        .status-paid i {
+            font-size: 8px;
+        }
 
     .status-pending {
-        color: #ffb347;
-        background: rgba(255,179,71,.10);
-        border: 1px solid rgba(255,179,71,.20);
+        color: #b45309;
+        background: #fffbeb;
+        border: 1px solid #fde68a;
     }
 
+        .status-pending i {
+            font-size: 8px;
+        }
+
+
+    /* =========================================================
+       REFERENCE
+       ========================================================= */
+
+    .reference-wrapper {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .reference-icon {
+        color: #94a3b8;
+        font-size: 11px;
+    }
+
+    .reference {
+        display: inline-block;
+        max-width: 150px;
+        padding: 5px 8px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        color: #64748b;
+        font-size: 10px;
+        font-family: Consolas, monospace;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+
+    /* =========================================================
+       EMPTY STATE
+       ========================================================= */
+
     .empty-state {
-        padding: 70px 20px;
+        padding: 75px 25px;
         text-align: center;
     }
 
     .empty-icon {
-        width: 60px;
-        height: 60px;
-        margin: auto auto 15px;
+        width: 68px;
+        height: 68px;
+        margin: 0 auto 18px;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 13px;
-        background: rgba(225,6,0,.10);
-        border: 1px solid rgba(225,6,0,.20);
-        color: #e10600;
-        font-size: 22px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        border-radius: 16px;
+        color: #2563eb;
+        font-size: 25px;
     }
 
     .empty-state h3 {
-        margin: 0 0 7px;
-        font-size: 16px;
+        margin: 0 0 8px;
+        color: #172033;
+        font-size: 19px;
+        font-weight: 900;
     }
 
     .empty-state p {
-        margin: 0;
-        color: #697580;
+        max-width: 400px;
+        margin: 0 auto;
+        color: #94a3b8;
         font-size: 12px;
+        line-height: 1.6;
+    }
+
+
+    /* =========================================================
+       RESPONSIVE
+       ========================================================= */
+
+    @@media (max-width: 900px) {
+
+        .payments-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .dashboard-button {
+            width: auto;
+        }
+
+        .payment-summary {
+            grid-template-columns: 1fr;
+        }
+    }
+
+
+    @@media (max-width: 650px) {
+
+        .payments-page {
+            padding: 30px 15px 45px;
+        }
+
+        .payments-header h1 {
+            font-size: 28px;
+        }
+
+        .dashboard-button {
+            width: 100%;
+        }
+
+        .table-header {
+            padding: 17px;
+        }
+
+        .payment-table td,
+        .payment-table th {
+            padding-left: 14px;
+            padding-right: 14px;
+        }
     }
 </style>
 
-
 <div class="payments-page">
 
+    
     <div class="payments-container">
+
+
+        <!-- =====================================================
+             HEADER
+             ===================================================== -->
 
         <div class="payments-header">
 
-            <h1>
-                Payment <span>History</span>
-            </h1>
+            <div class="payments-header-content">
 
-            <p>
-                View your driving lesson payments and transactions.
-            </p>
+                <div class="header-label">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    Financial Records
+                </div>
+
+                <h1>
+                    Payment <span>History</span>
+                </h1>
+
+                <p>
+                    View and track your driving lesson payments,
+                    transactions and payment status.
+                </p>
+
+            </div>
+
+
+            <!-- DASHBOARD -->
+
+            <a href="@Url.Action("Index", "Dashboard")"
+               class="dashboard-button">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                Back to Dashboard
+
+            </a>
 
         </div>
 
 
-        <div class="payment-table-card">
+        @if (Model != null && Model.Any())
+        {
 
-            @if (Model != null && Model.Any())
-            {
+
+            <!-- =================================================
+                 PAYMENT SUMMARY
+                 ================================================= -->
+
+            <div class="payment-summary">
+
+
+                <!-- TOTAL TRANSACTIONS -->
+
+                <div class="summary-card">
+
+                    <div class="summary-icon">
+
+                        <i class="fa-solid fa-file-invoice"></i>
+
+                    </div>
+
+                    <div class="summary-content">
+
+                        <span>
+                            Transactions
+                        </span>
+
+                        <strong>
+                            @Model.Count()
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TOTAL PAID -->
+
+                <div class="summary-card">
+
+                    <div class="summary-icon">
+
+                        <i class="fa-solid fa-circle-check"></i>
+
+                    </div>
+
+                    <div class="summary-content">
+
+                        <span>
+                            Paid Payments
+                        </span>
+
+                        <strong>
+                            @Model.Count(p => p.PaymentStatus == "Paid")
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TOTAL AMOUNT -->
+
+                <div class="summary-card">
+
+                    <div class="summary-icon">
+
+                        <i class="fa-solid fa-coins"></i>
+
+                    </div>
+
+                    <div class="summary-content">
+
+                        <span>
+                            Total Amount
+                        </span>
+
+                        <strong>
+                            R @Model.Sum(p => p.Amount).ToString("N2")
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- =================================================
+                 PAYMENT TABLE
+                 ================================================= -->
+
+            <div class="payment-table-card">
+
+
+                <!-- TABLE HEADER -->
+
+                <div class="table-header">
+
+                    <div class="table-header-title">
+
+                        <div class="table-header-icon">
+
+                            <i class="fa-solid fa-money-check-dollar"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                Transaction History
+                            </h2>
+
+                            <p>
+                                Your recent payment activity
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
 
                 <div class="table-wrapper">
 
@@ -218,45 +784,168 @@
 
                                 <tr>
 
-                                    <td>
-                                        #@payment.PaymentId
-                                    </td>
+
+                                    <!-- PAYMENT -->
 
                                     <td>
-                                        #@payment.BookingId
+
+                                        <span class="payment-id">
+
+                                            <span class="payment-id-icon">
+
+                                                <i class="fa-solid fa-receipt"></i>
+
+                                            </span>
+
+                                            #@payment.PaymentId
+
+                                        </span>
+
                                     </td>
 
-                                    <td class="amount">
-                                        R @payment.Amount.ToString("N2")
-                                    </td>
+
+                                    <!-- BOOKING -->
 
                                     <td>
-                                        @payment.PaymentMethod
+
+                                        <span class="booking-id">
+
+                                            <i class="fa-solid fa-bookmark"></i>
+
+                                            #@payment.BookingId
+
+                                        </span>
+
                                     </td>
 
+
+                                    <!-- AMOUNT -->
+
                                     <td>
-                                        @payment.PaymentDate.ToString("dd MMM yyyy HH:mm")
+
+                                        <span class="amount">
+
+                                            <i class="fa-solid fa-rand-sign"></i>
+
+                                            <span>
+
+                                                <span class="amount-currency">
+                                                    R
+                                                </span>
+
+                                                @payment.Amount.ToString("N2")
+
+                                            </span>
+
+                                        </span>
+
                                     </td>
+
+
+                                    <!-- METHOD -->
+
+                                    <td>
+
+                                        <span class="method">
+
+                                            <span class="method-icon">
+
+                                                <i class="fa-solid fa-credit-card"></i>
+
+                                            </span>
+
+                                            @payment.PaymentMethod
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- DATE -->
+
+                                    <td>
+
+                                        <span class="payment-date">
+
+                                            <i class="fa-regular fa-calendar-days"></i>
+
+                                            @payment.PaymentDate.ToString("dd MMM yyyy HH:mm")
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- STATUS -->
 
                                     <td>
 
                                         @if (payment.PaymentStatus == "Paid")
                                         {
+
                                             <span class="status status-paid">
+
+                                                <i class="fa-solid fa-circle-check"></i>
+
                                                 Paid
+
                                             </span>
+
                                         }
                                         else
                                         {
+
                                             <span class="status status-pending">
+
+                                                <i class="fa-solid fa-hourglass-half"></i>
+
                                                 @payment.PaymentStatus
+
                                             </span>
+
                                         }
 
                                     </td>
 
+
+                                    <!-- REFERENCE -->
+
                                     <td>
-                                        @payment.TransactionReference
+
+                                        @if (!string.IsNullOrWhiteSpace(payment.TransactionReference))
+                                        {
+
+                                            <span class="reference-wrapper">
+
+                                                <i class="fa-solid fa-fingerprint reference-icon"></i>
+
+                                                <span class="reference"
+                                                      title="@payment.TransactionReference">
+
+                                                    @payment.TransactionReference
+
+                                                </span>
+
+                                            </span>
+
+                                        }
+                                        else
+                                        {
+
+                                            <span class="reference-wrapper">
+
+                                                <i class="fa-solid fa-circle-minus reference-icon"></i>
+
+                                                <span class="reference">
+
+                                                    No reference
+
+                                                </span>
+
+                                            </span>
+
+                                        }
+
                                     </td>
 
                                 </tr>
@@ -269,14 +958,25 @@
 
                 </div>
 
-            }
-            else
-            {
+            </div>
+
+        }
+        else
+        {
+
+
+            <!-- =================================================
+                 EMPTY STATE
+                 ================================================= -->
+
+            <div class="payment-table-card">
 
                 <div class="empty-state">
 
                     <div class="empty-icon">
-                        <i class="fa-solid fa-receipt"></i>
+
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+
                     </div>
 
                     <h3>
@@ -284,16 +984,17 @@
                     </h3>
 
                     <p>
-                        Your payment transactions will appear here.
-
+                        Your payment transactions will appear here
+                        once you purchase a driving lesson package.
                     </p>
 
                 </div>
 
-            }
+            </div>
 
-        </div>
+        }
 
     </div>
+    
 
 </div>

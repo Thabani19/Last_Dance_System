@@ -1,0 +1,690 @@
+﻿@model Last_Dance_System.Models.LessonPackage
+
+@{
+    Layout = null;
+    ViewBag.Title = "Add Lesson Package";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>Add Lesson Package - Last Dance Driving School</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f7fb;
+            color: #172033;
+            font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+        }
+
+        .page {
+            min-height: 100vh;
+            padding: 40px 25px 70px;
+            background: radial-gradient( circle at 90% 0%, rgba(37, 99, 235, .08), transparent 30% ), linear-gradient( 180deg, #f8fbff 0%, #f3f7fc 100% );
+        }
+
+        .wrapper {
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+        }
+
+        .header {
+            position: relative;
+            background: #ffffff;
+            border: 1px solid #e1e8f2;
+            border-radius: 17px;
+            padding: 25px 28px;
+            margin-bottom: 22px;
+            box-shadow: 0 8px 25px rgba(20, 33, 61, .05);
+            overflow: hidden;
+        }
+
+            .header::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 4px;
+                height: 100%;
+                background: #2563eb;
+            }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-icon {
+            width: 55px;
+            height: 55px;
+            min-width: 55px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eff6ff;
+            border: 1px solid #dbeafe;
+            border-radius: 13px;
+            color: #2563eb;
+            font-size: 21px;
+        }
+
+        .header-text h1 {
+            margin: 0 0 5px;
+            color: #14213d;
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+        .header-text p {
+            margin: 0;
+            color: #748196;
+            font-size: 13px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 17px;
+            border-radius: 9px;
+            border: 1px solid #d9e2ef;
+            background: #ffffff;
+            color: #455468;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 700;
+            transition: all .2s ease;
+        }
+
+            .back-button i {
+                color: #2563eb;
+            }
+
+            .back-button:hover {
+                background: #2563eb;
+                border-color: #2563eb;
+                color: #ffffff;
+                text-decoration: none;
+                transform: translateY(-2px);
+            }
+
+                .back-button:hover i {
+                    color: #ffffff;
+                }
+
+        .form-card {
+            background: #ffffff;
+            border: 1px solid #e1e8f2;
+            border-radius: 17px;
+            padding: 28px;
+            box-shadow: 0 8px 25px rgba(20, 33, 61, .05);
+        }
+
+        .form-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin: 0 0 22px;
+            color: #17213a;
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+            .form-title i {
+                color: #2563eb;
+            }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-bottom: 8px;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+            .form-label i {
+                color: #2563eb;
+                width: 15px;
+            }
+
+        .required {
+            color: #dc2626;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 14px;
+            background: #ffffff;
+            border: 1px solid #dbe3ee;
+            border-radius: 9px;
+            color: #172033;
+            font-size: 13px;
+            outline: none;
+            transition: all .2s ease;
+        }
+
+            .form-control:focus {
+                border-color: #2563eb;
+                box-shadow: 0 0 0 3px rgba(37, 99, 235, .08);
+            }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-help {
+            margin-top: 6px;
+            color: #7b8799;
+            font-size: 10px;
+        }
+
+        .field-validation-error {
+            display: block;
+            margin-top: 6px;
+            color: #dc2626;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .validation-summary-errors {
+            background: #fff7f7;
+            border: 1px solid #fecaca;
+            border-radius: 10px;
+            padding: 13px 16px;
+            margin-bottom: 20px;
+            color: #dc2626;
+            font-size: 11px;
+        }
+
+            .validation-summary-errors ul {
+                margin: 6px 0 0;
+                padding-left: 20px;
+            }
+
+        .status-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 15px;
+            background: #f8fafc;
+            border: 1px solid #edf1f6;
+            border-radius: 10px;
+        }
+
+        .status-info {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .status-icon {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ecfdf5;
+            border: 1px solid #bbf7d0;
+            border-radius: 9px;
+            color: #16a34a;
+        }
+
+        .status-text strong {
+            display: block;
+            color: #334155;
+            font-size: 12px;
+        }
+
+        .status-text span {
+            display: block;
+            margin-top: 3px;
+            color: #7b8799;
+            font-size: 10px;
+        }
+
+        .switch {
+            position: relative;
+            width: 48px;
+            height: 26px;
+        }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+        .slider {
+            position: absolute;
+            inset: 0;
+            background: #cbd5e1;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+            .slider::before {
+                content: "";
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                left: 3px;
+                top: 3px;
+                background: #ffffff;
+                border-radius: 50%;
+                box-shadow: 0 2px 5px rgba(0,0,0,.15);
+                transition: .2s;
+            }
+
+        .switch input:checked + .slider {
+            background: #2563eb;
+        }
+
+            .switch input:checked + .slider::before {
+                transform: translateX(22px);
+            }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 28px;
+            padding-top: 20px;
+            border-top: 1px solid #edf1f6;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 18px;
+            border-radius: 9px;
+            font-size: 12px;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all .2s ease;
+        }
+
+        .btn-cancel {
+            background: #ffffff;
+            border: 1px solid #d9e2ef;
+            color: #64748b;
+        }
+
+            .btn-cancel:hover {
+                background: #f8fafc;
+                color: #334155;
+                text-decoration: none;
+            }
+
+        .btn-save {
+            background: #2563eb;
+            border: 1px solid #2563eb;
+            color: #ffffff;
+        }
+
+            .btn-save:hover {
+                background: #1d4ed8;
+                border-color: #1d4ed8;
+                color: #ffffff;
+                transform: translateY(-1px);
+                box-shadow: 0 7px 16px rgba(37,99,235,.18);
+            }
+
+        @@media (max-width: 700px) {
+
+            .page {
+                padding: 25px 14px 50px;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .back-button {
+                width: 100%;
+            }
+
+            .form-card {
+                padding: 20px;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="page">
+
+        <div class="wrapper">
+
+            <!-- HEADER -->
+
+            <div class="header">
+
+                <div class="header-content">
+
+                    <div class="header-left">
+
+                        <div class="header-icon">
+
+                            <i class="fa-solid fa-box-open"></i>
+
+                        </div>
+
+                        <div class="header-text">
+
+                            <h1>
+                                Add Lesson Package
+                            </h1>
+
+                            <p>
+                                Create a new lesson package for students.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <a href="@Url.Action("Index", "AdminLessonPackages")"
+                       class="back-button">
+
+                        <i class="fa-solid fa-arrow-left"></i>
+
+                        Back to Packages
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- FORM -->
+
+            <div class="form-card">
+
+                <h2 class="form-title">
+
+                    <i class="fa-solid fa-circle-plus"></i>
+
+                    Package Information
+
+                </h2>
+
+
+                @using (Html.BeginForm(
+                    "Create",
+                    "AdminLessonPackages",
+                    FormMethod.Post))
+                {
+
+                    @Html.AntiForgeryToken()
+
+                    @Html.ValidationSummary(
+                        true,
+                        "",
+                        new
+                        {
+                            @class = "validation-summary-errors"
+                        })
+
+
+                    <!-- PACKAGE NAME -->
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+
+                            <i class="fa-solid fa-tag"></i>
+
+                            Package Name
+
+                            <span class="required">*</span>
+
+                        </label>
+
+                        @Html.TextBoxFor(
+                            model => model.PackageName,
+                            new
+                            {
+                                @class = "form-control",
+                                placeholder = "e.g. 10 Lesson Package",
+                                maxlength = "100"
+                            })
+
+                        @Html.ValidationMessageFor(
+                            model => model.PackageName)
+
+                        <div class="form-help">
+                            Give the package a clear and professional name.
+                        </div>
+
+                    </div>
+
+
+                    <!-- NUMBER OF LESSONS -->
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+
+                            <i class="fa-solid fa-book-open"></i>
+
+                            Number of Lessons
+
+                            <span class="required">*</span>
+
+                        </label>
+
+                        @Html.TextBoxFor(
+                            model => model.NumberOfLessons,
+                            new
+                            {
+                                @class = "form-control",
+                                type = "number",
+                                min = "1",
+                                max = "100",
+                                placeholder = "e.g. 10"
+                            })
+
+                        @Html.ValidationMessageFor(
+                            model => model.NumberOfLessons)
+
+                        <div class="form-help">
+                            Number of driving lessons included in this package.
+                        </div>
+
+                    </div>
+
+
+                    <!-- PRICE -->
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+
+                            <i class="fa-solid fa-money-bill-wave"></i>
+
+                            Package Price
+
+                            <span class="required">*</span>
+
+                        </label>
+
+                        @Html.TextBoxFor(
+                            model => model.Price,
+                            new
+                            {
+                                @class = "form-control",
+                                type = "number",
+                                step = "0.01",
+                                min = "0.01",
+                                placeholder = "e.g. 2500.00"
+                            })
+
+                        @Html.ValidationMessageFor(
+                            model => model.Price)
+
+                        <div class="form-help">
+                            Enter the package price in South African Rand (ZAR).
+                        </div>
+
+                    </div>
+
+
+                    <!-- DESCRIPTION -->
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+
+                            <i class="fa-solid fa-align-left"></i>
+
+                            Description
+
+                        </label>
+
+                        @Html.TextAreaFor(
+                            model => model.Description,
+                            new
+                            {
+                                @class = "form-control",
+                                placeholder =
+                                    "Describe what is included in this package...",
+                                maxlength = "500"
+                            })
+
+                        @Html.ValidationMessageFor(
+                            model => model.Description)
+
+                        <div class="form-help">
+                            Optional. Maximum 500 characters.
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTIVE STATUS -->
+
+                    <div class="form-group">
+
+                        <div class="status-box">
+
+                            <div class="status-info">
+
+                                <div class="status-icon">
+
+                                    <i class="fa-solid fa-circle-check"></i>
+
+                                </div>
+
+                                <div class="status-text">
+
+                                    <strong>
+                                        Make Package Active
+                                    </strong>
+
+                                    <span>
+                                        Active packages are visible to students.
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+                            <label class="switch">
+
+                                @Html.CheckBoxFor(
+                                    model => model.IsActive)
+
+                                <span class="slider"></span>
+
+                            </label>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ACTIONS -->
+
+                    <div class="form-actions">
+
+                        <a href="@Url.Action("Index", "AdminLessonPackages")"
+                           class="btn btn-cancel">
+
+                            <i class="fa-solid fa-xmark"></i>
+
+                            Cancel
+
+                        </a>
+
+
+                        <button type="submit"
+                                class="btn btn-save">
+
+                            <i class="fa-solid fa-floppy-disk"></i>
+
+                            Create Package
+
+                        </button>
+
+                    </div>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

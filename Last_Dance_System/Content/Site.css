@@ -1,20 +1,381 @@
-﻿/* Set padding to keep content from hitting the edges */
+﻿/* =========================================================
+   LAST DANCE DRIVING SCHOOL
+   PROFESSIONAL WHITE + BLUE THEME
+   ========================================================= */
+
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+}
+
+body {
+    background: #f5f8fc;
+    color: #1f2937;
+    font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+   ========================================================= */
+
 .body-content {
-    margin-top: 15px;
-    padding-left: 15px;
-    padding-right: 15px;
+    width: 100%;
+    margin: 0;
+    padding: 30px 20px 50px;
+    min-height: calc(100vh - 150px);
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
-.dl-horizontal dt {
-    white-space: normal;
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.lastdance-navbar {
+    background: #ffffff !important;
+    border-bottom: 3px solid #0d6efd;
+    box-shadow: 0 3px 18px rgba(15, 23, 42, 0.08);
+    padding: 12px 0;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
+
+/* BRAND */
+
+.lastdance-brand {
+    color: #0d6efd !important;
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-decoration: none;
+}
+
+    .lastdance-brand:hover {
+        color: #084298 !important;
+    }
+
+
+/* NAV LINKS */
+
+.lastdance-navbar .nav-link {
+    color: #1f2937 !important;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 10px 16px !important;
+    margin: 0 3px;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+}
+
+    .lastdance-navbar .nav-link:hover {
+        color: #ffffff !important;
+        background: #0d6efd;
+    }
+
+
+    /* ACTIVE NAV */
+
+    .lastdance-navbar .nav-link.active {
+        color: #ffffff !important;
+        background: #0d6efd;
+    }
+
+
+/* =========================================================
+   NAVBAR TOGGLER
+   ========================================================= */
+
+.lastdance-navbar .navbar-toggler {
+    border: 1px solid #0d6efd;
+    background: #ffffff;
+    padding: 7px 10px;
+}
+
+    .lastdance-navbar .navbar-toggler:focus {
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+    }
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.btn-primary {
+    background: #0d6efd !important;
+    border-color: #0d6efd !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+}
+
+    .btn-primary:hover {
+        background: #084298 !important;
+        border-color: #084298 !important;
+        transform: translateY(-1px);
+    }
+
+
+.btn-outline-primary {
+    color: #0d6efd !important;
+    border-color: #0d6efd !important;
+    background: #ffffff;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+    .btn-outline-primary:hover {
+        background: #0d6efd !important;
+        border-color: #0d6efd !important;
+        color: #ffffff !important;
+    }
+
+
+/* =========================================================
+   FORMS
+   ========================================================= */
+
 input,
 select,
 textarea {
-    max-width: 280px;
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    padding: 9px 11px;
+    background: #ffffff;
+    color: #1f2937;
+}
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        border-color: #0d6efd;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.12);
+    }
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.card {
+    background: #ffffff;
+    border: 1px solid #e1e8f0;
+    border-radius: 14px;
+    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.06);
+}
+
+.card-header {
+    background: #0d6efd;
+    color: #ffffff;
+    font-weight: 700;
+    border-radius: 13px 13px 0 0 !important;
+}
+
+
+/* =========================================================
+   TABLES
+   ========================================================= */
+
+.table {
+    background: #ffffff;
+    color: #1f2937;
+}
+
+    .table thead {
+        background: #0d6efd;
+        color: #ffffff;
+    }
+
+    .table tbody tr {
+        transition: background 0.2s ease;
+    }
+
+        .table tbody tr:hover {
+            background: #eaf3ff;
+        }
+
+
+/* =========================================================
+   ALERTS
+   ========================================================= */
+
+.alert-info {
+    background: #eaf3ff;
+    border-color: #b6d4fe;
+    color: #084298;
+}
+
+.alert-success {
+    background: #e9f8f0;
+    border-color: #a8dfc1;
+    color: #146c43;
+}
+
+.alert-danger {
+    background: #fff0f1;
+    border-color: #f5b7bd;
+    color: #b02a37;
+}
+
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+a {
+    color: #0d6efd;
+}
+
+    a:hover {
+        color: #084298;
+    }
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.lastdance-footer {
+    background: #ffffff;
+    border-top: 1px solid #dbe3ec;
+    padding: 25px 0;
+    margin-top: 30px;
+}
+
+    .lastdance-footer p {
+        margin: 0;
+        text-align: center;
+        color: #6b7280;
+        font-size: 13px;
+    }
+
+    .lastdance-footer span {
+        color: #0d6efd;
+        font-weight: 700;
+    }
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 576px) {
+
+    .lastdance-brand {
+        font-size: 20px;
+    }
+
+    .lastdance-navbar .nav-link {
+        margin: 3px 0;
+    }
+
+    .body-content {
+        padding: 20px 15px 40px;
+    }
+}
+/* =========================================================
+   FORCE WHITE + BLUE THEME
+   ========================================================= */
+
+html,
+body {
+    background-color: #f5f8fc !important;
+    color: #1f2937 !important;
+}
+
+
+/* Remove Bootstrap dark navbar */
+
+.navbar-dark {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+}
+
+.navbar-light {
+    background-color: #ffffff !important;
+}
+
+
+/* Navbar */
+
+.lastdance-navbar {
+    background-color: #ffffff !important;
+    border-bottom: 3px solid #0d6efd !important;
+    box-shadow: 0 3px 18px rgba(15, 23, 42, 0.08);
+}
+
+
+    /* Navbar links */
+
+    .lastdance-navbar .nav-link {
+        color: #1f2937 !important;
+    }
+
+
+        /* Navbar links hover */
+
+        .lastdance-navbar .nav-link:hover {
+            color: #ffffff !important;
+            background-color: #0d6efd !important;
+        }
+
+
+/* Brand */
+
+.lastdance-brand {
+    color: #0d6efd !important;
+}
+
+
+/* Main page */
+
+.body-content {
+    background-color: #f5f8fc !important;
+}
+
+
+/* Purchase page */
+
+.purchase-page {
+    background-color: #f5f8fc !important;
+    color: #1f2937 !important;
+}
+
+
+/* Purchase cards */
+
+.purchase-header,
+.package-card,
+.payment-card {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+}
+
+
+/* Package blue header */
+
+.package-top {
+    background: linear-gradient(135deg, #0d6efd, #084298) !important;
+    color: #ffffff !important;
+}
+
+
+/* Payment area */
+
+.order-summary {
+    background-color: #f5f8fc !important;
+}
+
+
+/* Footer */
+
+.lastdance-footer {
+    background-color: #ffffff !important;
 }
