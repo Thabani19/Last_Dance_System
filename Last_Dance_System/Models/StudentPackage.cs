@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Last_Dance_System.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Last_Dance_System.Models
 {
@@ -31,6 +33,22 @@ namespace Last_Dance_System.Models
 
         [ForeignKey("LessonPackageId")]
         public virtual LessonPackage LessonPackage { get; set; }
+
+
+        // =========================================================
+        // INSTRUCTOR ASSIGNMENT
+        // =========================================================
+
+        // The instructor is automatically assigned based on
+        // the driving licence code of the purchased package.
+        //
+        // This is nullable because the Learner Theory Package
+        // does not require an instructor.
+
+        public int? InstructorId { get; set; }
+
+        [ForeignKey("InstructorId")]
+        public virtual Instructor Instructor { get; set; }
 
 
         // =========================================================
@@ -95,3 +113,7 @@ namespace Last_Dance_System.Models
         }
     }
 }
+
+
+
+

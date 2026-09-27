@@ -24,6 +24,24 @@ namespace Last_Dance_System.Models
         [StringLength(50)]
         public string VehicleType { get; set; }
 
+        // =========================================================
+        // LICENCE CODE
+        // =========================================================
+        //
+        // Examples:
+        // Code 8
+        // Code 10
+        // Code 14
+        //
+        // This determines which driving packages this vehicle
+        // can be used for.
+        // =========================================================
+
+        [Required]
+        [StringLength(20)]
+        [Display(Name = "Licence Code")]
+        public string LicenseCode { get; set; }
+
         [Required]
         [StringLength(20)]
         public string Status { get; set; }
@@ -38,3 +56,4 @@ namespace Last_Dance_System.Models
         public virtual ICollection<Instructor> Instructors { get; set; }
     }
 }
+

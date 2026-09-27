@@ -1,0 +1,381 @@
+﻿@model Last_Dance_System.Models.LearnerLesson
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@Model.Title - TK Driving School</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+          rel="stylesheet" />
+
+    <style>
+
+        body {
+            background-color: #f4f8fc;
+            font-family: Arial, sans-serif;
+            color: #263238;
+            margin: 0;
+        }
+
+        /* =========================================================
+           TOP HEADER
+           ========================================================= */
+
+        .top-bar {
+            background: linear-gradient(135deg, #0d6efd, #1565c0);
+            color: white;
+            padding: 28px 15px;
+        }
+
+            .top-bar h1 {
+                font-size: 28px;
+                font-weight: 700;
+                margin: 0 0 5px 0;
+            }
+
+            .top-bar p {
+                margin: 0;
+                opacity: 0.95;
+            }
+
+
+        /* =========================================================
+           MAIN CONTAINER
+           ========================================================= */
+
+        .lesson-container {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 15px;
+        }
+
+
+        /* =========================================================
+           MAIN LESSON CARD
+           ========================================================= */
+
+        .lesson-card {
+            background: white;
+            border-radius: 15px;
+            padding: 35px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+
+        /* =========================================================
+           LESSON TITLE
+           ========================================================= */
+
+        .lesson-title {
+            color: #1565c0;
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .lesson-description {
+            color: #607d8b;
+            font-size: 16px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+
+        /* =========================================================
+           LESSON CONTENT
+           ========================================================= */
+
+        .lesson-content {
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+            .lesson-content h2 {
+                color: #1565c0;
+                font-size: 23px;
+                font-weight: 700;
+                margin-top: 35px;
+                margin-bottom: 18px;
+                border-bottom: 2px solid #e3edf7;
+                padding-bottom: 8px;
+            }
+
+            .lesson-content h3 {
+                color: #0d47a1;
+                font-size: 18px;
+                font-weight: 700;
+            }
+
+            .lesson-content p {
+                margin-bottom: 15px;
+            }
+
+            .lesson-content li {
+                margin-bottom: 8px;
+            }
+
+
+        /* =========================================================
+           SIGN / RULE CARDS
+           ========================================================= */
+
+        .sign-card {
+            background: #f8fbff;
+            border: 1px solid #dceaf7;
+            border-radius: 12px;
+            width: 230px;
+            min-height: 250px;
+            padding: 18px;
+            margin: 15px 12px 25px 0;
+            display: inline-flex;
+            vertical-align: top;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+
+            /* =========================================================
+           IMAGE INSIDE EACH CARD
+           ========================================================= */
+
+            .sign-card img.road-sign {
+                width: 90px !important;
+                height: 90px !important;
+                min-width: 90px !important;
+                min-height: 90px !important;
+                max-width: 90px !important;
+                max-height: 90px !important;
+                object-fit: contain;
+                display: block;
+                margin: 5px auto 15px auto;
+                border: none;
+            }
+
+
+            /* =========================================================
+           CARD TITLE
+           ========================================================= */
+
+            .sign-card h3 {
+                color: #0d47a1;
+                font-size: 17px;
+                font-weight: 700;
+                margin: 5px 0 10px 0;
+                text-align: center;
+            }
+
+
+            /* =========================================================
+           CARD DESCRIPTION
+           ========================================================= */
+
+            .sign-card p {
+                color: #455a64;
+                font-size: 14px;
+                line-height: 1.5;
+                margin: 0;
+                text-align: center;
+            }
+
+
+        /* =========================================================
+           VISUAL SYMBOLS
+           ========================================================= */
+
+        .lesson-icon {
+            width: 90px;
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            margin: 5px auto 15px auto;
+        }
+
+
+        /* =========================================================
+           IMPORTANT BOX
+           ========================================================= */
+
+        .important-box {
+            background-color: #e8f2ff;
+            border-left: 5px solid #1565c0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+
+            .important-box h3 {
+                margin-top: 0;
+                color: #0d47a1;
+            }
+
+
+        /* =========================================================
+           CHECKLIST
+           ========================================================= */
+
+        .checklist-box {
+            background-color: #f4f8fc;
+            border: 1px solid #dceaf7;
+            border-radius: 10px;
+            padding: 20px;
+            line-height: 2;
+        }
+
+
+        /* =========================================================
+           BUTTONS
+           ========================================================= */
+
+        .button-container {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 35px;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 25px;
+        }
+
+        .btn-primary {
+            background-color: #1565c0;
+            border-color: #1565c0;
+        }
+
+            .btn-primary:hover {
+                background-color: #0d47a1;
+                border-color: #0d47a1;
+            }
+
+        .btn-secondary {
+            background-color: #607d8b;
+            border-color: #607d8b;
+        }
+
+
+        /* =========================================================
+           MOBILE
+           ========================================================= */
+
+        @@media (max-width: 600px) {
+
+            .lesson-card {
+                padding: 22px;
+            }
+
+            .lesson-title {
+                font-size: 25px;
+            }
+
+            .lesson-content h2 {
+                font-size: 20px;
+            }
+
+            .sign-card {
+                width: 100%;
+                max-width: 230px;
+                margin-right: auto;
+                margin-left: auto;
+                display: flex;
+            }
+
+                .sign-card img.road-sign {
+                    width: 80px !important;
+                    height: 80px !important;
+                    min-width: 80px !important;
+                    min-height: 80px !important;
+                    max-width: 80px !important;
+                    max-height: 80px !important;
+                }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- =========================================================
+         HEADER
+         ========================================================= -->
+
+    <div class="top-bar">
+
+        <div class="container">
+
+            <h1>TK Driving School</h1>
+
+            <p>
+                Learner's Licence Theory Lessons
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         LESSON
+         ========================================================= -->
+
+    <div class="lesson-container">
+
+        <div class="lesson-card">
+
+            <div class="lesson-title">
+                @Model.Title
+            </div>
+
+            <div class="lesson-description">
+                @Model.Description
+            </div>
+
+
+            <!-- =================================================
+                 CONTENT FROM CONFIGURATION.CS
+                 ================================================= -->
+
+            <div class="lesson-content">
+
+                @Html.Raw(Model.Content)
+
+            </div>
+
+
+            <!-- =================================================
+                 BUTTONS
+                 ================================================= -->
+
+            <div class="button-container">
+
+                <a href="@Url.Action("Index", "LearnerLessons")"
+                   class="btn btn-primary">
+
+                    ← Back to Lessons
+
+                </a>
+
+
+                <a href="@Url.Action("Index", "Dashboard")"
+                   class="btn btn-secondary">
+
+                    Back to Dashboard
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

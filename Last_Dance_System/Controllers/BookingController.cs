@@ -21,7 +21,8 @@ namespace Last_Dance_System.Controllers
 
         private void GenerateLessonSchedules()
         {
-            DateTime startDate = DateTime.Today;
+            DateTime startDate =
+                DateTime.Today;
 
             DateTime endDate =
                 startDate.AddDays(30);
@@ -136,13 +137,17 @@ namespace Last_Dance_System.Controllers
                             var schedule =
                                 new LessonSchedule
                                 {
-                                    LessonDate = date,
+                                    LessonDate =
+                                        date,
 
-                                    StartTime = startTime,
+                                    StartTime =
+                                        startTime,
 
-                                    EndTime = endTime,
+                                    EndTime =
+                                        endTime,
 
-                                    LessonTypeId = 1,
+                                    LessonTypeId =
+                                        1,
 
                                     InstructorId =
                                         instructor.InstructorId,
@@ -150,7 +155,8 @@ namespace Last_Dance_System.Controllers
                                     VehicleId =
                                         vehicleId,
 
-                                    Status = "Available"
+                                    Status =
+                                        "Available"
                                 };
 
                             db.LessonSchedules.Add(schedule);
@@ -173,6 +179,7 @@ namespace Last_Dance_System.Controllers
         // =========================================================
 
         [HttpGet]
+
         public ActionResult Create()
         {
             string userId =
@@ -198,38 +205,66 @@ namespace Last_Dance_System.Controllers
 
 
             // =====================================================
-            // FIND ACTIVE PAID PACKAGE
+            // FIND CURRENT ACTIVE PAID DRIVING PACKAGE
+            // =====================================================
+            //
+            // The Learner Theory Package is excluded.
+            //
+            // Only a normal driving package can be used for
+            // practical driving lesson bookings.
             // =====================================================
 
             var package =
                 db.StudentPackages
+                .Include(p => p.LessonPackage)
                 .Where(p =>
                     p.RegistrationId ==
                         student.RegistrationId &&
 
                     p.IsActive &&
 
+                    !p.IsCancelled &&
+
                     p.PaymentStatus == "Paid" &&
 
-                    p.LessonsRemaining > 0)
+                    p.LessonsRemaining > 0 &&
+
+                    p.LessonPackage != null &&
+
+                    p.LessonPackage.IsActive &&
+
+                    !p.LessonPackage.IsLearnerTheoryPackage &&
+
+                    !string.IsNullOrEmpty(
+                        p.LessonPackage.RequiredLicenseCode))
                 .OrderByDescending(p =>
                     p.PurchaseDate)
                 .FirstOrDefault();
 
 
             // =====================================================
-            // NO ACTIVE PACKAGE
+            // NO ACTIVE DRIVING PACKAGE
             // =====================================================
 
             if (package == null)
             {
                 TempData["BookingError"] =
-                    "You need to purchase a lesson package before booking a lesson.";
+                    "You need to purchase an active driving package before booking a driving lesson.";
 
                 return RedirectToAction(
                     "Index",
                     "Package");
             }
+
+
+            // =====================================================
+            // GET REQUIRED LICENCE CODE
+            // =====================================================
+
+            string requiredLicenseCode =
+                package.LessonPackage
+                    .RequiredLicenseCode
+                    .Trim();
 
 
             // =====================================================
@@ -240,7 +275,7 @@ namespace Last_Dance_System.Controllers
 
 
             // =====================================================
-            // CALCULATE DATES
+            // CALCULATE BOOKING DATES
             // =====================================================
 
             DateTime today =
@@ -249,17 +284,40 @@ namespace Last_Dance_System.Controllers
             DateTime bookingEndDate =
                 today.AddDays(30);
 
-
-            // =====================================================
-            // CURRENT DATE AND TIME
-            // =====================================================
-
             DateTime now =
                 DateTime.Now;
 
 
             // =====================================================
-            // GET AVAILABLE LESSONS
+            // GET AVAILABLE LESSON SCHEDULES
+            // =====================================================
+            //
+            // IMPORTANT:
+            //
+            // The student does NOT choose the instructor.
+            //
+            // The system only shows schedules where the instructor's
+            // assigned vehicle matches the student's package code.
+            //
+            // Example:
+            //
+            // Code 8 package
+            //       ↓
+            // Code 8 vehicle
+            //       ↓
+            // Code 8 instructor
+            //
+            // Code 10 package
+            //       ↓
+            // Code 10 vehicle
+            //       ↓
+            // Code 10 instructor
+            //
+            // Code 14 package
+            //       ↓
+            // Code 14 vehicle
+            //       ↓
+            // Code 14 instructor
             // =====================================================
 
             var schedules =
@@ -286,6 +344,11 @@ namespace Last_Dance_System.Controllers
 
                     s.VehicleId ==
                         s.Instructor.VehicleId &&
+
+                    s.Vehicle.LicenseCode != null &&
+
+                    s.Vehicle.LicenseCode ==
+                        requiredLicenseCode &&
 
                     !s.Bookings.Any(b =>
                         b.Status != "Cancelled"))
@@ -318,6 +381,9 @@ namespace Last_Dance_System.Controllers
             ViewBag.LessonsRemaining =
                 package.LessonsRemaining;
 
+            ViewBag.RequiredLicenseCode =
+                requiredLicenseCode;
+
 
             return View(schedules);
         }
@@ -327,25 +393,19 @@ namespace Last_Dance_System.Controllers
         // CREATE BOOKING - POST
         // =========================================================
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(
-            int LessonScheduleId,
-            string Notes)
+       
+[HttpPost]
+[ValidateAntiForgeryToken]
+public ActionResult Create(
+    DateTime LessonDate,
+    TimeSpan StartTime,
+    string Notes)
         {
-            string userId =
-                User.Identity.GetUserId();
+            string userId = User.Identity.GetUserId();
 
-
-            // =====================================================
-            // FIND STUDENT
-            // =====================================================
-
-            var student =
-                db.Registrations
+            var student = db.Registrations
                 .FirstOrDefault(r =>
                     r.ApplicationUserId == userId);
-
 
             if (student == null)
             {
@@ -355,207 +415,304 @@ namespace Last_Dance_System.Controllers
             }
 
 
-            // =====================================================
-            // FIND ACTIVE PAID PACKAGE
-            // =====================================================
+            // =========================================================
+            // FIND THE STUDENT'S ACTIVE PAID DRIVING PACKAGE
+            // =========================================================
 
-            var package =
-                db.StudentPackages
+            var package = db.StudentPackages
+                .Include(p => p.LessonPackage)
                 .Where(p =>
-                    p.RegistrationId ==
-                        student.RegistrationId &&
-
+                    p.RegistrationId == student.RegistrationId &&
                     p.IsActive &&
-
+                    !p.IsCancelled &&
                     p.PaymentStatus == "Paid" &&
-
-                    p.LessonsRemaining > 0)
-                .OrderByDescending(p =>
-                    p.PurchaseDate)
+                    p.LessonsRemaining > 0 &&
+                    p.LessonPackage != null &&
+                    !p.LessonPackage.IsLearnerTheoryPackage &&
+                    p.LessonPackage.IsActive &&
+                    !string.IsNullOrEmpty(
+                        p.LessonPackage.RequiredLicenseCode))
+                .OrderByDescending(p => p.PurchaseDate)
                 .FirstOrDefault();
 
-
-            // =====================================================
-            // PACKAGE VALIDATION
-            // =====================================================
 
             if (package == null)
             {
                 TempData["BookingError"] =
-                    "You need an active paid package with available lessons before booking.";
+                    "You need an active paid driving package with available lessons before booking.";
 
                 return RedirectToAction(
-                    "Index",
-                    "Package");
+                    "Create",
+                    "Booking");
             }
 
 
-            // =====================================================
-            // FIND SCHEDULE
-            // =====================================================
+            string requiredLicenseCode =
+                package.LessonPackage
+                    .RequiredLicenseCode
+                    .Trim();
 
-            var schedule =
-                db.LessonSchedules
+
+            // =========================================================
+            // VALIDATE THE DATE AND TIME
+            // =========================================================
+
+            DateTime requestedDate =
+                LessonDate.Date;
+
+
+            DateTime now =
+                DateTime.Now;
+
+
+            if (requestedDate < DateTime.Today)
+            {
+                TempData["BookingError"] =
+                    "You cannot book a lesson for a date that has already passed.";
+
+                return RedirectToAction(
+                    "Create",
+                    "Booking");
+            }
+
+
+            if (requestedDate > DateTime.Today.AddDays(30))
+            {
+                TempData["BookingError"] =
+                    "Lessons can only be booked within the next 30 days.";
+
+                return RedirectToAction(
+                    "Create",
+                    "Booking");
+            }
+
+
+            if (requestedDate.DayOfWeek == DayOfWeek.Sunday)
+            {
+                TempData["BookingError"] =
+                    "Driving lessons are not available on Sundays.";
+
+                return RedirectToAction(
+                    "Create",
+                    "Booking");
+            }
+
+
+            // =========================================================
+            // GENERATE SCHEDULES IF NECESSARY
+            // =========================================================
+
+            GenerateLessonSchedules();
+
+
+            // =========================================================
+            // AUTOMATICALLY FIND THE APPROPRIATE INSTRUCTOR
+            // =========================================================
+            //
+            // The student does NOT select an instructor.
+            //
+            // The system looks for:
+            //
+            // 1. The requested date
+            // 2. The requested time
+            // 3. An available schedule
+            // 4. An active instructor
+            // 5. An active vehicle
+            // 6. The instructor's vehicle
+            // 7. The vehicle's licence code matching
+            //    the student's package
+            //
+            // If several instructors are available, the first
+            // matching available instructor is assigned.
+            // =========================================================
+
+            var schedule = db.LessonSchedules
                 .Include(s => s.Instructor)
                 .Include(s => s.Vehicle)
                 .FirstOrDefault(s =>
-                    s.LessonScheduleId ==
-                        LessonScheduleId);
+                    s.LessonDate == requestedDate &&
+                    s.StartTime == StartTime &&
+                    s.Status == "Available" &&
 
+                    s.Instructor != null &&
+                    s.Instructor.IsActive &&
+
+                    s.Instructor.VehicleId.HasValue &&
+
+                    s.Vehicle != null &&
+                    s.Vehicle.IsActive &&
+
+                    s.VehicleId == s.Instructor.VehicleId &&
+
+                    s.Vehicle.LicenseCode != null &&
+
+                    s.Vehicle.LicenseCode == requiredLicenseCode &&
+
+                    !s.Bookings.Any(b =>
+                        b.Status != "Cancelled"));
+
+
+            // =========================================================
+            // NO MATCHING INSTRUCTOR / VEHICLE
+            // =========================================================
 
             if (schedule == null)
             {
                 TempData["BookingError"] =
-                    "The selected lesson could not be found.";
+                    "No instructor is currently available for the selected time with the required licence category. Please choose another time.";
 
                 return RedirectToAction(
-                    "Create");
+                    "Create",
+                    "Booking");
             }
 
 
-            // =====================================================
-            // CHECK SCHEDULE STATUS
-            // =====================================================
-
-            if (schedule.Status != "Available")
-            {
-                TempData["BookingError"] =
-                    "This lesson is no longer available.";
-
-                return RedirectToAction(
-                    "Create");
-            }
-
-
-            // =====================================================
-            // CHECK INSTRUCTOR
-            // =====================================================
+            // =========================================================
+            // DOUBLE-CHECK THE INSTRUCTOR
+            // =========================================================
 
             if (schedule.Instructor == null)
             {
                 TempData["BookingError"] =
-                    "This lesson does not have a valid instructor.";
+                    "The selected lesson does not have an instructor assigned.";
 
                 return RedirectToAction(
-                    "Create");
+                    "Create",
+                    "Booking");
             }
 
-
-            // =====================================================
-            // CHECK INSTRUCTOR IS ACTIVE
-            // =====================================================
 
             if (!schedule.Instructor.IsActive)
             {
                 TempData["BookingError"] =
-                    "This instructor is currently unavailable for bookings.";
+                    "The assigned instructor is no longer active.";
 
                 return RedirectToAction(
-                    "Create");
+                    "Create",
+                    "Booking");
             }
 
-
-            // =====================================================
-            // CHECK INSTRUCTOR HAS VEHICLE
-            // =====================================================
 
             if (!schedule.Instructor.VehicleId.HasValue)
             {
                 TempData["BookingError"] =
-                    "This instructor currently has no vehicle assigned and cannot be booked.";
+                    "The assigned instructor does not currently have a vehicle.";
 
                 return RedirectToAction(
-                    "Create");
+                    "Create",
+                    "Booking");
             }
 
-
-            // =====================================================
-            // CHECK VEHICLE
-            // =====================================================
 
             if (schedule.Vehicle == null)
             {
                 TempData["BookingError"] =
-                    "This lesson does not have a valid vehicle assigned.";
+                    "The assigned vehicle could not be found.";
 
                 return RedirectToAction(
-                    "Create");
+                    "Create",
+                    "Booking");
             }
 
-
-            // =====================================================
-            // CHECK VEHICLE IS ACTIVE
-            // =====================================================
 
             if (!schedule.Vehicle.IsActive)
             {
                 TempData["BookingError"] =
-                    "The assigned vehicle is currently unavailable.";
+                    "The assigned vehicle is no longer active.";
 
                 return RedirectToAction(
-                    "Create");
+                    "Create",
+                    "Booking");
             }
 
-
-            // =====================================================
-            // VEHICLE MUST MATCH INSTRUCTOR
-            // =====================================================
 
             if (schedule.VehicleId !=
                 schedule.Instructor.VehicleId.Value)
             {
                 TempData["BookingError"] =
-                    "The vehicle assigned to this lesson is no longer valid.";
+                    "The instructor and vehicle assignment is invalid.";
 
                 return RedirectToAction(
-                    "Create");
+                    "Create",
+                    "Booking");
             }
 
 
-            // =====================================================
-            // CALCULATE LESSON END
-            // =====================================================
+            // =========================================================
+            // CHECK LICENCE CODE
+            // =========================================================
+
+            if (string.IsNullOrWhiteSpace(
+                schedule.Vehicle.LicenseCode))
+            {
+                TempData["BookingError"] =
+                    "The assigned vehicle does not have a licence category.";
+
+                return RedirectToAction(
+                    "Create",
+                    "Booking");
+            }
+
+
+            if (!string.Equals(
+                schedule.Vehicle.LicenseCode.Trim(),
+                requiredLicenseCode,
+                StringComparison.OrdinalIgnoreCase))
+            {
+                TempData["BookingError"] =
+                    "The assigned vehicle does not match your driving package licence category.";
+
+                return RedirectToAction(
+                    "Create",
+                    "Booking");
+            }
+
+
+            // =========================================================
+            // MAKE SURE THE LESSON HAS NOT ENDED
+            // =========================================================
 
             DateTime lessonEndDateTime =
                 schedule.LessonDate.Date
                 .Add(schedule.EndTime);
 
 
-            if (DateTime.Now >= lessonEndDateTime)
+            if (now >= lessonEndDateTime)
             {
                 TempData["BookingError"] =
-                    "You cannot book a lesson that has already ended.";
+                    "This lesson time has already passed. Please choose another time.";
 
                 return RedirectToAction(
-                    "Create");
+                    "Create",
+                    "Booking");
             }
 
 
-            // =====================================================
-            // CHECK IF ALREADY BOOKED
-            // =====================================================
+            // =========================================================
+            // CHECK IF THE SLOT HAS ALREADY BEEN BOOKED
+            // =========================================================
 
             bool lessonAlreadyBooked =
                 db.Bookings.Any(b =>
                     b.LessonScheduleId ==
-                        LessonScheduleId &&
-
+                        schedule.LessonScheduleId &&
                     b.Status != "Cancelled");
 
 
             if (lessonAlreadyBooked)
             {
                 TempData["BookingError"] =
-                    "This lesson has already been booked by another student.";
+                    "This lesson time has just been booked by another student. Please choose another time.";
 
                 return RedirectToAction(
-                    "Create");
+                    "Create",
+                    "Booking");
             }
 
 
-            // =====================================================
-            // CHECK CURRENT STUDENT
-            // =====================================================
+            // =========================================================
+            // CHECK IF THIS STUDENT ALREADY BOOKED THIS SLOT
+            // =========================================================
 
             bool alreadyBookedByStudent =
                 db.Bookings.Any(b =>
@@ -563,7 +720,7 @@ namespace Last_Dance_System.Controllers
                         student.RegistrationId &&
 
                     b.LessonScheduleId ==
-                        LessonScheduleId &&
+                        schedule.LessonScheduleId &&
 
                     b.Status != "Cancelled");
 
@@ -574,76 +731,69 @@ namespace Last_Dance_System.Controllers
                     "You have already booked this lesson.";
 
                 return RedirectToAction(
-                    "Create");
+                    "Create",
+                    "Booking");
             }
 
 
-            // =====================================================
+            // =========================================================
             // CREATE BOOKING
-            // =====================================================
+            // =========================================================
 
-            var booking =
-                new Booking
-                {
-                    RegistrationId =
-                        student.RegistrationId,
+            var booking = new Booking
+            {
+                RegistrationId =
+                    student.RegistrationId,
 
-                    StudentPackageId =
-                        package.StudentPackageId,
+                StudentPackageId =
+                    package.StudentPackageId,
 
-                    LessonScheduleId =
-                        LessonScheduleId,
+                LessonScheduleId =
+                    schedule.LessonScheduleId,
 
-                    BookingDate =
-                        DateTime.Now,
+                BookingDate =
+                    DateTime.Now,
 
-                    Status =
-                        "Booked",
+                Status =
+                    "Booked",
 
-                    AttendanceStatus =
-                        "Not Confirmed",
+                AttendanceStatus =
+                    "Not Confirmed",
 
-                    Notes =
-                        Notes
-                };
+                Notes =
+                    Notes
+            };
 
 
             db.Bookings.Add(booking);
 
 
-            // =====================================================
-            // MARK SCHEDULE BOOKED
-            // =====================================================
-
+            // Mark the selected schedule as booked.
             schedule.Status =
                 "Booked";
 
 
-            // =====================================================
-            // REMOVE ONE LESSON CREDIT
-            // =====================================================
-
+            // Consume one lesson from the student's package.
             package.LessonsRemaining -= 1;
 
 
-            // =====================================================
-            // SAVE
-            // =====================================================
-
+            // Save everything together.
             db.SaveChanges();
 
 
-            // =====================================================
+            // =========================================================
             // SUCCESS MESSAGE
-            // =====================================================
+            // =========================================================
 
             TempData["BookingSuccess"] =
-                "Your lesson has been booked successfully!";
+                "Your lesson has been booked successfully. An appropriate instructor has been automatically assigned to you.";
 
 
             return RedirectToAction(
-                "MyLessons");
+                "MyLessons",
+                "Booking");
         }
+
 
 
         // =========================================================
@@ -655,6 +805,7 @@ namespace Last_Dance_System.Controllers
         {
             var bookings =
                 db.Bookings
+                .Include(b => b.LessonSchedule)
                 .Where(b =>
                     b.RegistrationId ==
                         registrationId &&
@@ -761,6 +912,7 @@ namespace Last_Dance_System.Controllers
 
             var package =
                 db.StudentPackages
+                .Include(p => p.LessonPackage)
                 .Where(p =>
                     p.RegistrationId ==
                         student.RegistrationId &&
@@ -779,7 +931,8 @@ namespace Last_Dance_System.Controllers
             // PACKAGE INFORMATION
             // =====================================================
 
-            if (package != null)
+            if (package != null &&
+                package.LessonPackage != null)
             {
                 ViewBag.PackageName =
                     package.LessonPackage.PackageName;
@@ -1141,11 +1294,6 @@ namespace Last_Dance_System.Controllers
             // =====================================================
             // FIND BOOKING
             // =====================================================
-            //
-            // Load instructor and vehicle because we need them
-            // for both the email and in-system notification.
-            //
-            // =====================================================
 
             var booking =
                 db.Bookings
@@ -1376,7 +1524,6 @@ namespace Last_Dance_System.Controllers
                     .Add(lesson.StartTime)
                     .ToString("HH:mm");
 
-
                 string endTime =
                     DateTime.Today
                     .Add(lesson.EndTime)
@@ -1390,7 +1537,8 @@ namespace Last_Dance_System.Controllers
                 var notification =
                     new Notification
                     {
-                        RegistrationId = null,
+                        RegistrationId =
+                            null,
 
                         InstructorId =
                             instructor.InstructorId,
@@ -1527,7 +1675,6 @@ namespace Last_Dance_System.Controllers
                     .Add(lesson.StartTime)
                     .ToString("HH:mm");
 
-
                 string endTime =
                     DateTime.Today
                     .Add(lesson.EndTime)
@@ -1662,7 +1809,7 @@ namespace Last_Dance_System.Controllers
                 // =================================================
 
                 Last_Dance_System.Services.EmailService emailService =
-                new Last_Dance_System.Services.EmailService();
+                    new Last_Dance_System.Services.EmailService();
 
 
                 emailService.SendEmail(

@@ -54,5 +54,6 @@ namespace Last_Dance_System.Models
         public virtual ICollection<Cancellation> Cancellations { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
         public virtual ICollection<Notification> Notifications { get; set; }
+        public virtual ICollection<QuizResult> QuizResults { get; set; }
     }
 }

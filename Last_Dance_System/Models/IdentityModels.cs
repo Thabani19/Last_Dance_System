@@ -33,8 +33,7 @@ namespace Last_Dance_System.Models
     // APPLICATION DATABASE CONTEXT
     // =============================================================
 
-    public class ApplicationDbContext
-        : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext: IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
             : base(
@@ -48,9 +47,12 @@ namespace Last_Dance_System.Models
         // DATABASE TABLES
         // =========================================================
 
+        public DbSet<LearnerLesson> LearnerLessons { get; set; }
         public DbSet<Registration> Registrations { get; set; }
 
         public DbSet<Instructor> Instructors { get; set; }
+        public DbSet<QuizQuestion> QuizQuestions { get; set; }
+        public DbSet<QuizResult> QuizResults { get; set; }
 
         public DbSet<Administrator> Administrators { get; set; }
 

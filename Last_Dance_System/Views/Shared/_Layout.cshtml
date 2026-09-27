@@ -3,11 +3,21 @@
 <html>
 <head>
 
+    <!-- =====================================================
+         TK DRIVING SCHOOL FAVICON
+         ===================================================== -->
+    <link rel="icon"
+          type="image/png"
+          href="@Url.Content("~/Content/Images/tk-favicon.png")" />
+
     <meta charset="utf-8" />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
 
-    <title>@ViewBag.Title - Last Dance Driving School</title>
+    <title>
+        @ViewBag.Title - Last Dance Driving School
+    </title>
 
     <!-- Font Awesome -->
     <link rel="stylesheet"
@@ -23,121 +33,6 @@
 <body>
 
     <!-- =====================================================
-         NAVIGATION BAR
-         ===================================================== -->
-
-    <nav class="navbar navbar-expand-sm navbar-light lastdance-navbar">
-
-        <div class="container">
-
-            <!-- BRAND -->
-
-            @Html.ActionLink(
-                "Last Dance",
-                "Index",
-                "Home",
-                new { area = "" },
-                new
-                {
-                    @class = "navbar-brand lastdance-brand"
-                }
-            )
-
-
-            <!-- MOBILE MENU BUTTON -->
-
-            <button type="button"
-                    class="navbar-toggler"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#mainNavigation"
-                    aria-controls="mainNavigation"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation">
-
-                <span class="navbar-toggler-icon"></span>
-
-            </button>
-
-
-            <!-- NAVIGATION -->
-
-            <div class="collapse navbar-collapse"
-                 id="mainNavigation">
-
-                <ul class="navbar-nav me-auto mb-2 mb-sm-0">
-
-                    <!-- HOME -->
-
-                    <li class="nav-item">
-
-                        @Html.ActionLink(
-                            "Home",
-                            "Index",
-                            "Home",
-                            new { area = "" },
-                            new
-                            {
-                                @class = "nav-link"
-                            }
-                        )
-
-                    </li>
-
-
-                    <!-- ABOUT -->
-
-                    <li class="nav-item">
-
-                        @Html.ActionLink(
-                            "About",
-                            "About",
-                            "Home",
-                            new { area = "" },
-                            new
-                            {
-                                @class = "nav-link"
-                            }
-                        )
-
-                    </li>
-
-
-                    <!-- CONTACT -->
-
-                    <li class="nav-item">
-
-                        @Html.ActionLink(
-                            "Contact",
-                            "Contact",
-                            "Home",
-                            new { area = "" },
-                            new
-                            {
-                                @class = "nav-link"
-                            }
-                        )
-
-                    </li>
-
-                </ul>
-
-
-                <!-- LOGIN / ACCOUNT -->
-
-                <div class="lastdance-account">
-
-                    @Html.Partial("_LoginPartial")
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </nav>
-
-
-    <!-- =====================================================
          MAIN CONTENT
          ===================================================== -->
 
@@ -146,31 +41,6 @@
         @RenderBody()
 
     </main>
-
-
-    <!-- =====================================================
-         FOOTER
-         ===================================================== -->
-
-    <footer class="lastdance-footer">
-
-        <div class="container">
-
-            <p>
-
-                &copy; @DateTime.Now.Year
-
-                <span>
-                    Last Dance Driving School
-                </span>
-
-                — All Rights Reserved.
-
-            </p>
-
-        </div>
-
-    </footer>
 
 
     <!-- =====================================================

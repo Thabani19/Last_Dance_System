@@ -1,0 +1,331 @@
+﻿
+@model Last_Dance_System.Models.StudentPackage
+
+@{
+    Layout = null;
+    ViewBag.Title = "Delete Pending Package";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8" />
+
+    <title>Delete Pending Package</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f5f8fc;
+            color: #172033;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 560px;
+            background: #ffffff;
+            border: 1px solid #dfe7f1;
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: 0 10px 30px rgba(26, 55, 92, .08);
+        }
+
+        .icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff1f1;
+            border: 1px solid #f3c1c1;
+            border-radius: 14px;
+            color: #c53030;
+            font-size: 25px;
+        }
+
+        h1 {
+            margin: 0 0 10px;
+            color: #172033;
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+        .message {
+            color: #68768b;
+            font-size: 14px;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .package-info {
+            background: #f7faff;
+            border: 1px solid #dce8f7;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 25px;
+        }
+
+        .package-name {
+            color: #172033;
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 9px 0;
+            border-bottom: 1px solid #e5ebf3;
+            font-size: 13px;
+        }
+
+            .info-row:last-child {
+                border-bottom: none;
+            }
+
+            .info-row span {
+                color: #7b8798;
+            }
+
+            .info-row strong {
+                color: #26364d;
+                text-align: right;
+            }
+
+        .pending {
+            color: #b27b00 !important;
+        }
+
+        .warning {
+            background: #fff9e9;
+            border: 1px solid #f2dfaa;
+            color: #866300;
+            padding: 13px 14px;
+            border-radius: 9px;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .button {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 13px 18px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 800;
+            text-decoration: none;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .delete-button {
+            background: #c53030;
+            color: #ffffff;
+            border: 1px solid #c53030;
+        }
+
+            .delete-button:hover {
+                background: #a92323;
+                border-color: #a92323;
+                color: #ffffff;
+            }
+
+        .back-button {
+            background: #ffffff;
+            color: #26364d;
+            border: 1px solid #dce4ef;
+        }
+
+            .back-button:hover {
+                background: #eef5ff;
+                border-color: #1769e0;
+                color: #1769e0;
+            }
+
+        @@media (max-width: 550px) {
+
+            .card {
+                padding: 25px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="page">
+
+        <div class="card">
+
+            <div class="icon">
+                🗑
+            </div>
+
+            <h1>
+                Delete Pending Package
+            </h1>
+
+            <div class="message">
+
+                Are you sure you want to delete this pending package?
+
+                The package and its pending payment information will
+                be removed from your account.
+
+            </div>
+
+
+            <!-- PACKAGE INFORMATION -->
+
+            <div class="package-info">
+
+                <div class="package-name">
+
+                    @Model.LessonPackage.PackageName
+
+                </div>
+
+                <div class="info-row">
+
+                    <span>
+                        Lessons
+                    </span>
+
+                    <strong>
+                        @Model.LessonsPurchased
+                    </strong>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span>
+                        Package Price
+                    </span>
+
+                    <strong>
+                        R @Model.LessonPackage.Price.ToString("N2")
+                    </strong>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span>
+                        Payment Method
+                    </span>
+
+                    <strong>
+                        @Model.PaymentMethod
+                    </strong>
+
+                </div>
+
+                <div class="info-row">
+
+                    <span>
+                        Payment Status
+                    </span>
+
+                    <strong class="pending">
+                        @Model.PaymentStatus
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- WARNING -->
+
+            <div class="warning">
+
+                <strong>Important:</strong>
+
+                This action permanently removes the pending package.
+                You can purchase the package again later if you need it.
+
+            </div>
+
+
+            <!-- ACTIONS -->
+
+            <div class="actions">
+
+                <!-- CANCEL -->
+
+                <a href="@Url.Action(
+                    "MyPackages",
+                    "Package")"
+                   class="button back-button">
+
+                    Keep Package
+
+                </a>
+
+
+                <!-- DELETE -->
+
+                @using (Html.BeginForm(
+                    "DeletePendingPackageConfirmed",
+                    "Package",
+                    new
+                    {
+                        id = Model.StudentPackageId
+                    },
+                    FormMethod.Post,
+                    null))
+                {
+
+                    @Html.AntiForgeryToken()
+
+                    <button type="submit"
+                            class="button delete-button"
+                            onclick="return confirm('Are you sure you want to permanently delete this pending package?');">
+
+                        Delete Package
+
+                    </button>
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>
+

@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
@@ -88,43 +89,83 @@ namespace Last_Dance_System.Controllers
 
 
             // =====================================================
-            // CHECK EXISTING PACKAGE
+            // CHECK EXISTING PACKAGE OF THE SAME TYPE
+            // =====================================================
+            //
+            // THEORY and DRIVING packages are independent.
+            //
+            // A paid theory package must NOT prevent the student
+            // from buying a driving package.
+            //
+            // A paid driving package must NOT prevent the student
+            // from buying the theory package.
             // =====================================================
 
             var existingPackage =
                 db.StudentPackages
+                    .Include(sp =>
+                        sp.LessonPackage)
                     .FirstOrDefault(sp =>
                         sp.RegistrationId ==
                             student.RegistrationId &&
 
                         !sp.IsCancelled &&
 
+                        sp.LessonPackage
+                            .IsLearnerTheoryPackage ==
+                            package.IsLearnerTheoryPackage &&
+
                         (
-                            sp.PaymentStatus == "Pending"
+                            sp.PaymentStatus ==
+                                "Pending"
 
                             ||
 
                             (
-                                sp.PaymentStatus == "Paid" &&
+                                sp.PaymentStatus ==
+                                    "Paid" &&
+
                                 sp.IsActive &&
-                                sp.LessonsRemaining > 0
+
+                                (
+                                    // Theory package does not
+                                    // depend on lesson credits.
+                                    package.IsLearnerTheoryPackage
+
+                                    ||
+
+                                    // Driving package uses
+                                    // lesson credits.
+                                    sp.LessonsRemaining > 0
+                                )
                             )
                         ));
 
             if (existingPackage != null)
             {
-                if (existingPackage.PaymentStatus == "Pending")
+                if (existingPackage.PaymentStatus ==
+                    "Pending")
                 {
                     TempData["Error"] =
-                        "You already have a pending package purchase. " +
-                        "Please complete the payment or remove the pending " +
-                        "package before purchasing another package.";
+                        "You already have a pending purchase for this " +
+                        "type of package. Please complete the payment " +
+                        "or remove the pending package before purchasing " +
+                        "another package of the same type.";
                 }
                 else
                 {
-                    TempData["Error"] =
-                        "You already have an active package with lesson " +
-                        "credits remaining.";
+                    if (package.IsLearnerTheoryPackage)
+                    {
+                        TempData["Error"] =
+                            "You already have an active Learner Theory " +
+                            "Package.";
+                    }
+                    else
+                    {
+                        TempData["Error"] =
+                            "You already have an active driving lesson " +
+                            "package with lesson credits remaining.";
+                    }
                 }
 
                 return RedirectToAction(
@@ -173,43 +214,74 @@ namespace Last_Dance_System.Controllers
 
 
             // =====================================================
-            // CHECK EXISTING PACKAGE
+            // CHECK EXISTING PACKAGE OF THE SAME TYPE
             // =====================================================
 
             var existingPackage =
                 db.StudentPackages
+                    .Include(sp =>
+                        sp.LessonPackage)
                     .FirstOrDefault(sp =>
                         sp.RegistrationId ==
                             student.RegistrationId &&
 
                         !sp.IsCancelled &&
 
+                        sp.LessonPackage
+                            .IsLearnerTheoryPackage ==
+                            package.IsLearnerTheoryPackage &&
+
                         (
-                            sp.PaymentStatus == "Pending"
+                            sp.PaymentStatus ==
+                                "Pending"
 
                             ||
 
                             (
-                                sp.PaymentStatus == "Paid" &&
+                                sp.PaymentStatus ==
+                                    "Paid" &&
+
                                 sp.IsActive &&
-                                sp.LessonsRemaining > 0
+
+                                (
+                                    // Theory package does not
+                                    // use lesson credits.
+                                    package.IsLearnerTheoryPackage
+
+                                    ||
+
+                                    // Driving package requires
+                                    // remaining lesson credits.
+                                    sp.LessonsRemaining > 0
+                                )
                             )
                         ));
 
             if (existingPackage != null)
             {
-                if (existingPackage.PaymentStatus == "Pending")
+                if (existingPackage.PaymentStatus ==
+                    "Pending")
                 {
                     TempData["Error"] =
-                        "You already have a pending package purchase. " +
-                        "Please complete the payment or remove the pending " +
-                        "package before purchasing another package.";
+                        "You already have a pending purchase for this " +
+                        "type of package. Please complete the payment " +
+                        "or remove the pending package before purchasing " +
+                        "another package of the same type.";
                 }
                 else
                 {
-                    TempData["Error"] =
-                        "You already have an active package with lesson " +
-                        "credits remaining.";
+                    if (package.IsLearnerTheoryPackage)
+                    {
+                        TempData["Error"] =
+                            "You already have an active Learner Theory " +
+                            "Package.";
+                    }
+                    else
+                    {
+                        TempData["Error"] =
+                            "You already have an active driving lesson " +
+                            "package with lesson credits remaining.";
+                    }
                 }
 
                 return RedirectToAction(
@@ -238,7 +310,8 @@ namespace Last_Dance_System.Controllers
                 "EFT"
             };
 
-            if (!allowedPaymentMethods.Contains(paymentMethod))
+            if (!allowedPaymentMethods.Contains(
+                paymentMethod))
             {
                 TempData["Error"] =
                     "Invalid payment method.";
@@ -576,6 +649,8 @@ namespace Last_Dance_System.Controllers
 
             var studentPackage =
                 db.StudentPackages
+                    .Include(p =>
+                        p.LessonPackage)
                     .FirstOrDefault(p =>
                         p.StudentPackageId == id &&
 
@@ -598,6 +673,11 @@ namespace Last_Dance_System.Controllers
 
             // =====================================================
             // FIND BOOKINGS
+            // =====================================================
+            //
+            // A theory package should not have driving bookings.
+            // Therefore, this query will simply return no bookings
+            // for a theory package.
             // =====================================================
 
             var bookings =
@@ -673,17 +753,23 @@ namespace Last_Dance_System.Controllers
             // SUCCESS MESSAGE
             // =====================================================
 
-            if (bookings.Any())
+            if (studentPackage.LessonPackage
+                .IsLearnerTheoryPackage)
             {
                 TempData["Success"] =
-                    "Your package has been cancelled successfully. " +
+                    "Your Learner Theory Package has been cancelled successfully.";
+            }
+            else if (bookings.Any())
+            {
+                TempData["Success"] =
+                    "Your driving lesson package has been cancelled successfully. " +
                     bookings.Count +
                     " booked lesson(s) were also cancelled.";
             }
             else
             {
                 TempData["Success"] =
-                    "Your package has been cancelled successfully.";
+                    "Your driving lesson package has been cancelled successfully.";
             }
 
             return RedirectToAction(
@@ -1215,9 +1301,20 @@ namespace Last_Dance_System.Controllers
                 // SUCCESS MESSAGE
                 // =================================================
 
-                TempData["Success"] =
-                    "Payment successful! Your lesson package " +
-                    "is now active.";
+                if (studentPackage.LessonPackage
+                    .IsLearnerTheoryPackage)
+                {
+                    TempData["Success"] =
+                        "Payment successful! Your Learner Theory Package " +
+                        "is now active. You can access all learner lessons, " +
+                        "quizzes and quiz results.";
+                }
+                else
+                {
+                    TempData["Success"] =
+                        "Payment successful! Your driving lesson package " +
+                        "is now active.";
+                }
 
                 return RedirectToAction(
                     "MyPackages");
@@ -1242,13 +1339,14 @@ namespace Last_Dance_System.Controllers
         }
 
 
-        // =========================================================
-        // STRIPE PAYMENT CANCELLED
-        // =========================================================
+      
+// =========================================================
+// STRIPE PAYMENT CANCELLED
+// =========================================================
 
-        [HttpGet]
-        public ActionResult PaymentCancel(
-            int id)
+[HttpGet]
+public ActionResult PaymentCancel(
+    int id)
         {
             string userId =
                 User.Identity.GetUserId();
@@ -1265,25 +1363,81 @@ namespace Last_Dance_System.Controllers
                     "Account");
             }
 
+
+            // =====================================================
+            // FIND ONLY THE STUDENT'S PENDING PACKAGE
+            // =====================================================
+
             var studentPackage =
                 db.StudentPackages
                     .FirstOrDefault(p =>
                         p.StudentPackageId == id &&
 
                         p.RegistrationId ==
-                            student.RegistrationId);
+                            student.RegistrationId &&
+
+                        p.PaymentStatus == "Pending" &&
+
+                        !p.IsCancelled);
+
 
             if (studentPackage == null)
             {
-                return HttpNotFound();
+                TempData["Error"] =
+                    "The pending package could not be found.";
+
+                return RedirectToAction(
+                    "MyPackages");
             }
 
-            TempData["Error"] =
-                "Payment was cancelled. Your package is still pending payment.";
+
+            // =====================================================
+            // DELETE ANY PAYMENT RECORD LINKED TO THIS PACKAGE
+            // =====================================================
+
+            var pendingPayments =
+                db.Payments
+                    .Where(p =>
+                        p.StudentPackageId ==
+                            studentPackage.StudentPackageId &&
+
+                        p.PaymentStatus == "Pending")
+                    .ToList();
+
+
+            foreach (var payment in pendingPayments)
+            {
+                db.Payments.Remove(payment);
+            }
+
+
+            // =====================================================
+            // DELETE THE PENDING PACKAGE
+            // =====================================================
+
+            db.StudentPackages.Remove(
+                studentPackage);
+
+
+            // =====================================================
+            // SAVE
+            // =====================================================
+
+            db.SaveChanges();
+
+
+            // =====================================================
+            // SUCCESS MESSAGE
+            // =====================================================
+
+            TempData["Success"] =
+                "Your cancelled payment and pending package have been removed successfully.";
+
 
             return RedirectToAction(
                 "MyPackages");
         }
+
 
 
         // =========================================================
@@ -1380,6 +1534,69 @@ namespace Last_Dance_System.Controllers
             return View(payment);
         }
 
+       
+// =========================================================
+// FIND INSTRUCTOR FOR DRIVING PACKAGE
+// =========================================================
+//
+// Finds the active instructor whose assigned active vehicle
+// matches the licence code required by the package.
+//
+// Example:
+//
+// Code 8 package
+//      ↓
+// Code 8 vehicle
+//      ↓
+// Instructor assigned to that vehicle
+//
+// Learner Theory Package does not use this method.
+// =========================================================
+
+private Instructor FindInstructorForPackage(
+    LessonPackage package)
+        {
+            if (package == null)
+            {
+                return null;
+            }
+
+            // Theory packages do not require an instructor.
+            if (package.IsLearnerTheoryPackage)
+            {
+                return null;
+            }
+
+            if (string.IsNullOrWhiteSpace(
+                package.RequiredLicenseCode))
+            {
+                return null;
+            }
+
+            string requiredCode =
+                package.RequiredLicenseCode.Trim();
+
+            var instructor =
+                db.Instructors
+                    .Include(i => i.Vehicle)
+                    .Where(i =>
+                        i.IsActive &&
+
+                        i.VehicleId.HasValue &&
+
+                        i.Vehicle != null &&
+
+                        i.Vehicle.IsActive &&
+
+                        i.Vehicle.LicenseCode != null &&
+
+                        i.Vehicle.LicenseCode == requiredCode)
+                    .OrderBy(i => i.InstructorId)
+                    .FirstOrDefault();
+
+            return instructor;
+        }
+
 
         // =========================================================
         // DISPOSE
@@ -1397,3 +1614,4 @@ namespace Last_Dance_System.Controllers
         }
     }
 }
+

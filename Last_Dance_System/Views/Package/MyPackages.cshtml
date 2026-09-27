@@ -402,6 +402,36 @@
             transform: translateY(-1px);
         }
 
+    /* =====================================================
+       DELETE PENDING PACKAGE BUTTON
+       ===================================================== */
+
+    .delete-pending-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 13px 18px;
+        background: #ffffff;
+        color: #c53030;
+        border: 1px solid #e2a5a5;
+        border-radius: 9px;
+        text-decoration: none;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 700;
+        transition: .2s ease;
+    }
+
+        .delete-pending-button:hover {
+            background: #fff1f1;
+            border-color: #c53030;
+            color: #c53030;
+            text-decoration: none;
+            transform: translateY(-1px);
+        }
+
     .active-package-button {
         display: flex;
         align-items: center;
@@ -471,12 +501,14 @@
         }
 
     @@media (max-width: 850px) {
+
         .packages-grid {
             grid-template-columns: 1fr;
         }
     }
 
     @@media (max-width: 650px) {
+
         .packages-page {
             padding: 30px 15px;
         }
@@ -507,6 +539,7 @@
     }
 
     @@media (max-width: 450px) {
+
         .package-card {
             padding: 21px;
         }
@@ -945,6 +978,8 @@
                             @if (isPending)
                             {
 
+                                <!-- PAY NOW -->
+
                                 <a href="@Url.Action(
                                     "Pay",
                                     "Package",
@@ -957,6 +992,24 @@
                                     <i class="fa-solid fa-credit-card"></i>
 
                                     Pay Now
+
+                                </a>
+
+
+                                <!-- DELETE PENDING PACKAGE -->
+
+                                <a href="@Url.Action(
+                                    "DeletePendingPackage",
+                                    "Package",
+                                    new
+                                    {
+                                        id = studentPackage.StudentPackageId
+                                    })"
+                                   class="delete-pending-button">
+
+                                    <i class="fa-solid fa-trash"></i>
+
+                                    Delete Pending Package
 
                                 </a>
 

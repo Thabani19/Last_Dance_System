@@ -1,0 +1,298 @@
+﻿@model IEnumerable<Last_Dance_System.Models.LearnerLesson>
+
+@{
+    ViewBag.Title = "Theory Quizzes";
+}
+
+<style>
+    .quiz-page {
+        background-color: #f4f8fc;
+        min-height: 100vh;
+        padding: 40px 20px;
+    }
+
+    .quiz-header {
+        text-align: center;
+        margin-bottom: 35px;
+    }
+
+        .quiz-header h1 {
+            color: #1565c0;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .quiz-header p {
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 18px;
+        }
+
+    /* =========================
+       TOP BUTTONS
+       ========================= */
+
+    .quiz-header-buttons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        margin-top: 15px;
+    }
+
+    .quiz-results-btn,
+    .dashboard-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 11px 22px;
+        border-radius: 8px;
+        text-decoration: none !important;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+    /* Quiz Results */
+
+    .quiz-results-btn {
+        background-color: #1565c0;
+        color: white !important;
+        border: 1px solid #1565c0;
+    }
+
+        .quiz-results-btn:hover {
+            background-color: #0d47a1;
+            border-color: #0d47a1;
+            color: white !important;
+        }
+
+    /* Back to Dashboard */
+
+    .dashboard-btn {
+        background-color: white;
+        color: #1565c0 !important;
+        border: 1px solid #1565c0;
+    }
+
+        .dashboard-btn:hover {
+            background-color: #1565c0;
+            color: white !important;
+        }
+
+    /* =========================
+       QUIZ GRID
+       ========================= */
+
+    .quiz-grid {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 22px;
+    }
+
+    .quiz-card {
+        background-color: white;
+        border: 1px solid #dceaf7;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .quiz-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 7px 18px rgba(0, 0, 0, 0.10);
+        }
+
+    .quiz-number {
+        width: 45px;
+        height: 45px;
+        background-color: #1565c0;
+        color: white;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 18px;
+    }
+
+    .quiz-card h2 {
+        color: #0d47a1;
+        font-size: 21px;
+        margin-bottom: 12px;
+    }
+
+    .quiz-card p {
+        color: #666;
+        line-height: 1.6;
+        min-height: 70px;
+        margin-bottom: 20px;
+    }
+
+    .start-quiz-btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+        background-color: #1565c0;
+        color: white !important;
+        padding: 12px 15px;
+        border-radius: 7px;
+        text-decoration: none !important;
+        font-weight: 600;
+        transition: background-color 0.2s ease;
+    }
+
+        .start-quiz-btn:hover {
+            background-color: #0d47a1;
+        }
+
+    /* =========================
+       NO QUIZZES
+       ========================= */
+
+    .no-quizzes {
+        max-width: 700px;
+        margin: 40px auto;
+        background-color: white;
+        border: 1px solid #dceaf7;
+        border-radius: 12px;
+        padding: 35px;
+        text-align: center;
+    }
+
+        .no-quizzes h2 {
+            color: #1565c0;
+        }
+
+    /* =========================
+       MOBILE
+       ========================= */
+
+    @@media (max-width: 600px) {
+
+        .quiz-page {
+            padding: 30px 15px;
+        }
+
+        .quiz-header h1 {
+            font-size: 27px;
+        }
+
+        .quiz-header-buttons {
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .quiz-results-btn,
+        .dashboard-btn {
+            width: 100%;
+            max-width: 280px;
+        }
+    }
+</style>
+
+<div class="quiz-page">
+
+    <!-- =========================
+         HEADER
+         ========================= -->
+
+    <div class="quiz-header">
+
+        <h1>Theory Quizzes</h1>
+
+        <p>
+            Test your knowledge after studying the driving theory lessons.
+        </p>
+
+
+        <!-- =========================
+             TOP BUTTONS
+             ========================= -->
+
+        <div class="quiz-header-buttons">
+
+            <!-- QUIZ RESULTS -->
+
+            <a href="@Url.Action("Index", "QuizResults")"
+               class="quiz-results-btn">
+
+                <i class="fa-solid fa-chart-column"></i>
+
+                Quiz Results
+
+            </a>
+
+
+            <!-- BACK TO DASHBOARD -->
+
+            <a href="@Url.Action("Index", "Dashboard")"
+               class="dashboard-btn">
+
+                <i class="fa-solid fa-house"></i>
+
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         QUIZ CARDS
+         ========================= -->
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="quiz-grid">
+
+            @foreach (var lesson in Model)
+            {
+                <div class="quiz-card">
+
+                    <div class="quiz-number">
+                        @lesson.LessonOrder
+                    </div>
+
+                    <h2>
+                        @lesson.Title
+                    </h2>
+
+                    <p>
+                        @lesson.Description
+                    </p>
+
+                    <a href="@Url.Action("Start", "Quiz", new { lessonId = lesson.LearnerLessonId })"
+                       class="start-quiz-btn">
+
+                        Start Quiz
+
+                    </a>
+
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="no-quizzes">
+
+            <h2>No Quizzes Available</h2>
+
+            <p>
+                There are currently no theory quizzes available.
+                Please check again later.
+            </p>
+
+        </div>
+    }
+
+</div>

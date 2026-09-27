@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Linq;
 using System.Data.Entity;
 using System.Web.Mvc;
@@ -30,10 +31,12 @@ namespace Last_Dance_System.Controllers
 
             // ========================================================
             // FIND STUDENT
+            // READ-ONLY QUERY - NO CHANGE TRACKING
             // ========================================================
 
             var student =
                 db.Registrations
+                .AsNoTracking()
                 .FirstOrDefault(r =>
                     r.ApplicationUserId == userId);
 
@@ -56,6 +59,7 @@ namespace Last_Dance_System.Controllers
 
             var studentNotifications =
                 db.Notifications
+                .AsNoTracking()
                 .Where(n =>
                     n.RegistrationId ==
                     student.RegistrationId)
@@ -70,42 +74,45 @@ namespace Last_Dance_System.Controllers
 
 
             // ========================================================
-            // GET STUDENT BOOKINGS
+            // CANCELLED LESSONS
+            //
+            // Instead of loading every booking into memory,
+            // let SQL Server count cancelled bookings directly.
             // ========================================================
 
-            var bookings =
+            int cancelledLessons =
                 db.Bookings
+                .AsNoTracking()
+                .Where(b =>
+                    b.RegistrationId ==
+                    student.RegistrationId &&
+
+                    b.Status != null &&
+
+                    b.Status.ToUpper() ==
+                    "CANCELLED")
+                .Count();
+
+
+            // ========================================================
+            // UPCOMING BOOKINGS
+            //
+            // Only upcoming bookings are loaded here.
+            // This avoids loading the student's complete booking
+            // history just to display the dashboard.
+            // ========================================================
+
+            var upcomingBookings =
+                db.Bookings
+                .AsNoTracking()
                 .Include("LessonSchedule")
                 .Include("LessonSchedule.LessonType")
                 .Include("LessonSchedule.Instructor")
                 .Include("LessonSchedule.Vehicle")
                 .Where(b =>
                     b.RegistrationId ==
-                    student.RegistrationId)
-                .OrderByDescending(b =>
-                    b.BookingDate)
-                .ToList();
+                    student.RegistrationId &&
 
-
-            // ========================================================
-            // CANCELLED LESSONS
-            // ========================================================
-
-            int cancelledLessons =
-                bookings.Count(b =>
-                    b.Status != null &&
-                    b.Status.Equals(
-                        "Cancelled",
-                        StringComparison.OrdinalIgnoreCase));
-
-
-            // ========================================================
-            // UPCOMING BOOKINGS
-            // ========================================================
-
-            var upcomingBookings =
-                bookings
-                .Where(b =>
                     b.LessonSchedule != null &&
 
                     b.LessonSchedule.LessonDate >=
@@ -113,13 +120,11 @@ namespace Last_Dance_System.Controllers
 
                     b.Status != null &&
 
-                    !b.Status.Equals(
-                        "Cancelled",
-                        StringComparison.OrdinalIgnoreCase) &&
+                    b.Status.ToUpper() !=
+                    "CANCELLED" &&
 
-                    !b.Status.Equals(
-                        "Completed",
-                        StringComparison.OrdinalIgnoreCase))
+                    b.Status.ToUpper() !=
+                    "COMPLETED")
                 .OrderBy(b =>
                     b.LessonSchedule.LessonDate)
                 .ThenBy(b =>
@@ -255,10 +260,13 @@ namespace Last_Dance_System.Controllers
 
             // ========================================================
             // CURRENT ACTIVE PACKAGE
+            //
+            // READ-ONLY QUERY - NO CHANGE TRACKING
             // ========================================================
 
             var currentPackage =
                 db.StudentPackages
+                .AsNoTracking()
                 .Include("LessonPackage")
                 .Where(sp =>
                     sp.RegistrationId ==
@@ -266,9 +274,8 @@ namespace Last_Dance_System.Controllers
 
                     sp.PaymentStatus != null &&
 
-                    sp.PaymentStatus.Equals(
-                        "Paid",
-                        StringComparison.OrdinalIgnoreCase) &&
+                    sp.PaymentStatus.ToUpper() ==
+                    "PAID" &&
 
                     sp.IsActive &&
 
@@ -459,9 +466,8 @@ namespace Last_Dance_System.Controllers
 
 
                 if (currentPackage.PaymentStatus != null &&
-                    currentPackage.PaymentStatus.Equals(
-                        "Paid",
-                        StringComparison.OrdinalIgnoreCase))
+                    currentPackage.PaymentStatus.ToUpper() ==
+                    "PAID")
                 {
                     totalPaid =
                         currentPackagePrice;
@@ -501,6 +507,7 @@ namespace Last_Dance_System.Controllers
 
             var latestInstructorFeedback =
                 db.Reviews
+                .AsNoTracking()
                 .Include("Booking")
                 .Include("Booking.LessonSchedule")
                 .Include("Booking.LessonSchedule.Instructor")
@@ -598,21 +605,10 @@ namespace Last_Dance_System.Controllers
             // ========================================================
             // PENDING REVIEW
             // ========================================================
-            //
-            // IMPORTANT:
-            // Do NOT count every Review anymore.
-            //
-            // Instructor reviews use:
-            // ReviewType = "InstructorSession"
-            //
-            // Student reviews should be counted separately.
-            //
-            // We count reviews that are NOT instructor-session reviews.
-            //
-            // ========================================================
 
             int reviewCount =
                 db.Reviews
+                .AsNoTracking()
                 .Count(r =>
                     r.RegistrationId ==
                     student.RegistrationId &&
@@ -623,15 +619,22 @@ namespace Last_Dance_System.Controllers
 
             // ========================================================
             // COMPLETED BOOKING
+            //
+            // Only retrieve the latest completed booking instead
+            // of loading the student's entire booking history.
             // ========================================================
 
             var completedBooking =
-                bookings
+                db.Bookings
+                .AsNoTracking()
                 .Where(b =>
+                    b.RegistrationId ==
+                    student.RegistrationId &&
+
                     b.Status != null &&
-                    b.Status.Equals(
-                        "Completed",
-                        StringComparison.OrdinalIgnoreCase))
+
+                    b.Status.ToUpper() ==
+                    "COMPLETED")
                 .OrderByDescending(b =>
                     b.LessonSchedule != null
                         ? b.LessonSchedule.LessonDate
@@ -824,6 +827,8 @@ namespace Last_Dance_System.Controllers
 
             return View(model);
         }
+
+
         // ============================================================
         // MY LESSONS
         // ============================================================
@@ -840,10 +845,12 @@ namespace Last_Dance_System.Controllers
 
             // ========================================================
             // FIND STUDENT
+            // READ-ONLY QUERY
             // ========================================================
 
             var student =
                 db.Registrations
+                .AsNoTracking()
                 .FirstOrDefault(r =>
                     r.ApplicationUserId == userId);
 
@@ -862,10 +869,12 @@ namespace Last_Dance_System.Controllers
 
             // ========================================================
             // GET ALL STUDENT BOOKINGS
+            // READ-ONLY QUERY - NO CHANGE TRACKING
             // ========================================================
 
             var bookings =
                 db.Bookings
+                .AsNoTracking()
                 .Include("LessonSchedule")
                 .Include("LessonSchedule.LessonType")
                 .Include("LessonSchedule.Instructor")
@@ -887,6 +896,7 @@ namespace Last_Dance_System.Controllers
             return View(bookings);
         }
 
+
         // ============================================================
         // PROFILE
         // ============================================================
@@ -899,6 +909,7 @@ namespace Last_Dance_System.Controllers
 
             var student =
                 db.Registrations
+                .AsNoTracking()
                 .FirstOrDefault(r =>
                     r.ApplicationUserId == userId);
 
@@ -928,6 +939,7 @@ namespace Last_Dance_System.Controllers
 
             var student =
                 db.Registrations
+                .AsNoTracking()
                 .FirstOrDefault(r =>
                     r.ApplicationUserId == userId);
 
@@ -958,6 +970,11 @@ namespace Last_Dance_System.Controllers
             string userId =
                 User.Identity.GetUserId();
 
+
+            // ========================================================
+            // THIS QUERY MUST REMAIN TRACKED
+            // BECAUSE WE MODIFY AND SAVE existingStudent.
+            // ========================================================
 
             var existingStudent =
                 db.Registrations

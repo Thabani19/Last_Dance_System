@@ -1,0 +1,451 @@
+﻿@model IEnumerable<Last_Dance_System.Models.QuizQuestion>
+
+@{
+    ViewBag.Title = "Start Quiz";
+}
+
+<style>
+    .quiz-container {
+        background-color: #f4f8fc;
+        min-height: 100vh;
+        padding: 40px 20px;
+    }
+
+    .quiz-wrapper {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    /* =========================
+       QUIZ TITLE
+       ========================= */
+
+    .quiz-title {
+        background-color: white;
+        border: 1px solid #dceaf7;
+        border-radius: 12px;
+        padding: 30px;
+        margin-bottom: 25px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+        .quiz-title h1 {
+            color: #1565c0;
+            font-size: 30px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .quiz-title p {
+            color: #666;
+            margin: 0;
+        }
+
+    /* =========================
+       QUIZ WARNING
+       ========================= */
+
+    .quiz-warning {
+        background-color: #fff8e1;
+        border: 1px solid #ffe082;
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin-top: 18px;
+        color: #795548;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+        .quiz-warning strong {
+            color: #5d4037;
+        }
+
+    /* =========================
+       QUIZ INFO
+       ========================= */
+
+    .quiz-info {
+        background-color: #eaf4ff;
+        border: 1px solid #cfe5fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 15px;
+        color: #0d47a1;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    /* =========================
+       QUESTION CARD
+       ========================= */
+
+    .question-card {
+        background-color: white;
+        border: 1px solid #dceaf7;
+        border-radius: 12px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .question-number {
+        color: #1565c0;
+        font-weight: 700;
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+
+    .question-text {
+        color: #222;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+    /* =========================
+       ANSWER OPTIONS
+       ========================= */
+
+    .answer-option {
+        display: block;
+        border: 1px solid #dceaf7;
+        border-radius: 8px;
+        padding: 13px 15px;
+        margin-bottom: 10px;
+        cursor: pointer;
+        transition: background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+        .answer-option:hover {
+            background-color: #f4f8fc;
+            border-color: #1565c0;
+        }
+
+        .answer-option input {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+    /* =========================
+       SUBMIT
+       ========================= */
+
+    .submit-container {
+        text-align: center;
+        margin-top: 30px;
+        padding-bottom: 30px;
+    }
+
+    .submit-button {
+        background-color: #1565c0;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 14px 40px;
+        font-size: 17px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+        .submit-button:hover {
+            background-color: #0d47a1;
+        }
+
+        .submit-button:disabled {
+            background-color: #90a4ae;
+            cursor: not-allowed;
+        }
+
+    /* =========================
+       MOBILE
+       ========================= */
+
+    @@media (max-width: 600px) {
+
+        .quiz-container {
+            padding: 25px 15px;
+        }
+
+        .quiz-title {
+            padding: 25px 18px;
+        }
+
+            .quiz-title h1 {
+                font-size: 25px;
+            }
+
+        .question-card {
+            padding: 20px;
+        }
+
+        .question-text {
+            font-size: 17px;
+        }
+
+        .submit-button {
+            width: 100%;
+        }
+    }
+</style>
+
+
+<div class="quiz-container">
+
+    <div class="quiz-wrapper">
+
+        <!-- =========================
+         QUIZ HEADER
+         ========================= -->
+
+        <div class="quiz-title">
+
+            <h1>
+                @ViewBag.LessonTitle Quiz
+            </h1>
+
+            <p>
+                Choose the correct answer for each question.
+            </p>
+
+
+            <div class="quiz-info">
+
+                Questions: @Model.Count()
+
+            </div>
+
+
+            <div class="quiz-warning">
+
+                <strong>Important:</strong>
+
+                Once you start this quiz, your attempt will be
+                recorded when you submit or leave the quiz.
+                Any unanswered questions will be counted as incorrect.
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+         QUIZ FORM
+         ========================= -->
+
+        @using (Html.BeginForm("Submit", "Quiz", FormMethod.Post, new { id = "quizForm" }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.Hidden("lessonId", (int)ViewBag.LessonId)
+
+            @Html.Hidden("attemptId", (string)ViewBag.AttemptId)
+
+   
+
+
+            int questionNumber = 1;
+
+
+            foreach (var question in Model)
+            {
+                <div class="question-card">
+
+                    <div class="question-number">
+
+                        Question @questionNumber
+
+                    </div>
+
+
+                    <div class="question-text">
+
+                        @question.Question
+
+                    </div>
+
+
+                    <!-- OPTION A -->
+
+                    <label class="answer-option">
+
+                        <input type="radio"
+                               name="Question_@question.QuizQuestionId"
+                               value="A" />
+
+                        <strong>A.</strong>
+
+                        @question.OptionA
+
+                    </label>
+
+
+                    <!-- OPTION B -->
+
+                    <label class="answer-option">
+
+                        <input type="radio"
+                               name="Question_@question.QuizQuestionId"
+                               value="B" />
+
+                        <strong>B.</strong>
+
+                        @question.OptionB
+
+                    </label>
+
+
+                    <!-- OPTION C -->
+
+                    <label class="answer-option">
+
+                        <input type="radio"
+                               name="Question_@question.QuizQuestionId"
+                               value="C" />
+
+                        <strong>C.</strong>
+
+                        @question.OptionC
+
+                    </label>
+
+
+                    <!-- OPTION D -->
+
+                    <label class="answer-option">
+
+                        <input type="radio"
+                               name="Question_@question.QuizQuestionId"
+                               value="D" />
+
+                        <strong>D.</strong>
+
+                        @question.OptionD
+
+                    </label>
+
+                </div>
+
+
+                questionNumber++;
+            }
+
+
+            <!-- =========================
+             SUBMIT BUTTON
+             ========================= -->
+
+            <div class="submit-container">
+
+                <button type="submit"
+                        id="submitQuizButton"
+                        class="submit-button">
+
+                    Submit Quiz
+
+                </button>
+
+            </div>
+        }
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /*
+     * ==========================================
+     * QUIZ LEAVING PROTECTION
+     * ==========================================
+     *
+     * If the student tries to close, refresh,
+     * or leave the page, the browser will warn them.
+     */
+
+    var quizSubmitted = false;
+
+    var quizForm = document.getElementById("quizForm");
+
+    var submitButton =
+        document.getElementById("submitQuizButton");
+
+
+    /*
+     * ==========================================
+     * NORMAL SUBMISSION
+     * ==========================================
+     *
+     * When the student clicks Submit Quiz,
+     * mark the quiz as submitted so the
+     * automatic leave handler does not submit
+     * the quiz a second time.
+     */
+
+    quizForm.addEventListener("submit", function () {
+
+        quizSubmitted = true;
+
+        submitButton.disabled = true;
+
+        submitButton.innerText = "Submitting Quiz...";
+
+    });
+
+
+    /*
+     * ==========================================
+     * WARN BEFORE LEAVING
+     * ==========================================
+     *
+     * This protects the student from accidentally
+     * refreshing, closing the tab or navigating
+     * away from the quiz.
+     */
+
+    window.addEventListener("beforeunload", function (event) {
+
+        if (!quizSubmitted) {
+
+            event.preventDefault();
+
+            event.returnValue =
+                "You have not submitted your quiz. " +
+                "If you leave, your current answers will be recorded.";
+
+            return event.returnValue;
+        }
+
+    });
+
+
+    /*
+     * ==========================================
+     * AUTOMATIC FINAL SUBMISSION
+     * ==========================================
+     *
+     * If the student actually leaves the page,
+     * send the current answers to the server.
+     *
+     * navigator.sendBeacon() is designed for
+     * sending information when a page is being
+     * closed or navigated away from.
+     */
+
+  
+
+            /*
+             * If the browser does not support
+             * sendBeacon, the normal browser
+             * leave warning still protects the
+             * attempt as much as the browser allows.
+             */
+
+        }
+
+    });
+
+</script>

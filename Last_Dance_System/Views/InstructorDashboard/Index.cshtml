@@ -1,4 +1,5 @@
-﻿@using System
+﻿
+@using System
 @using System.Collections.Generic
 @using System.Linq
 @using Last_Dance_System.Models
@@ -7,8 +8,7 @@
     Layout = null;
     ViewBag.Title = "Instructor Dashboard";
 
-
-var instructor = ViewBag.Instructor as Instructor;
+    var instructor = ViewBag.Instructor as Instructor;
 
     var todaysLessons =
         ViewBag.TodaysLessons as List<LessonSchedule>
@@ -26,8 +26,6 @@ var instructor = ViewBag.Instructor as Instructor;
         ViewBag.UnreadNotificationCount != null
         ? (int)ViewBag.UnreadNotificationCount
         : 0;
-
-
 }
 
 <!DOCTYPE html>
@@ -35,7 +33,6 @@ var instructor = ViewBag.Instructor as Instructor;
 <html>
 <head>
 
-    
     <meta name="viewport" content="width=device-width" />
 
     <title>Instructor Dashboard</title>
@@ -45,859 +42,908 @@ var instructor = ViewBag.Instructor as Instructor;
 
     <style>
 
-         /* =========================================================
-        GLOBAL
+        /* =========================================================
+           GLOBAL
         ========================================================= */
 
-         * {
-             box-sizing: border-box;
-         }
+        * {
+            box-sizing: border-box;
+        }
 
-         html,
-         body {
-             margin: 0;
-             padding: 0;
-             min-height: 100%;
-         }
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100%;
+        }
 
-         body {
-             background: #f4f7fb;
-             font-family: "Segoe UI", Arial, sans-serif;
-             color: #172033;
-         }
+        body {
+            background: #f4f7fb;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #172033;
+        }
 
-         a {
-             text-decoration: none;
-         }
+        a {
+            text-decoration: none;
+        }
 
 
-         /* =========================================================
-        MAIN DASHBOARD
+        /* =========================================================
+           MAIN DASHBOARD
         ========================================================= */
 
-         .dashboard-page {
-             min-height: 100vh;
-             padding: 35px 25px 70px;
-             background: #f4f7fb;
-         }
+        .dashboard-page {
+            min-height: 100vh;
+            padding: 35px 25px 70px;
+            background: #f4f7fb;
+        }
 
-         .dashboard-wrapper {
-             width: 100%;
-             max-width: 1250px;
-             margin: 0 auto;
-         }
+        .dashboard-wrapper {
+            width: 100%;
+            max-width: 1250px;
+            margin: 0 auto;
+        }
 
 
-         /* =========================================================
-        DASHBOARD HEADER
+        /* =========================================================
+           DASHBOARD HEADER
         ========================================================= */
 
-         .dashboard-header {
-             position: relative;
-             overflow: hidden;
-             background: #ffffff;
-             border: 1px solid #e1e8f0;
-             border-radius: 18px;
-             padding: 30px 35px;
-             margin-bottom: 25px;
-             box-shadow: 0 8px 25px rgba(30, 70, 110, 0.07);
-         }
+        .dashboard-header {
+            position: relative;
+            overflow: hidden;
+            background: #ffffff;
+            border: 1px solid #e1e8f0;
+            border-radius: 18px;
+            padding: 30px 35px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(30, 70, 110, 0.07);
+        }
 
-             .dashboard-header::before {
-                 content: "";
-                 position: absolute;
-                 left: 0;
-                 top: 0;
-                 width: 5px;
-                 height: 100%;
-                 background: linear-gradient(180deg, #1976d2, #0d47a1);
-             }
+            .dashboard-header::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 5px;
+                height: 100%;
+                background: linear-gradient(180deg, #1976d2, #0d47a1);
+            }
 
-             .dashboard-header::after {
-                 content: "";
-                 position: absolute;
-                 right: -80px;
-                 top: -100px;
-                 width: 260px;
-                 height: 260px;
-                 background: radial-gradient( circle, rgba(25, 118, 210, 0.08), transparent 70% );
-                 pointer-events: none;
-             }
+            .dashboard-header::after {
+                content: "";
+                position: absolute;
+                right: -80px;
+                top: -100px;
+                width: 260px;
+                height: 260px;
+                background: radial-gradient( circle, rgba(25, 118, 210, 0.08), transparent 70% );
+                pointer-events: none;
+            }
 
 
-         /* =========================================================
-        HEADER CONTENT
+        /* =========================================================
+           HEADER CONTENT
         ========================================================= */
 
-         .header-content {
-             position: relative;
-             z-index: 2;
-             display: flex;
-             justify-content: space-between;
-             align-items: center;
-             gap: 25px;
-         }
+        .header-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 25px;
+        }
 
-         .header-left {
-             display: flex;
-             align-items: center;
-             gap: 18px;
-         }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
 
 
-         /* =========================================================
-        HEADER ICON
+        /* =========================================================
+           HEADER ICON
         ========================================================= */
 
-         .header-icon {
-             width: 64px;
-             height: 64px;
-             border-radius: 16px;
-             background: linear-gradient(135deg, #1976d2, #0d47a1);
-             display: flex;
-             align-items: center;
-             justify-content: center;
-             font-size: 27px;
-             color: #ffffff;
-             box-shadow: 0 8px 20px rgba(25, 118, 210, 0.22);
-             flex-shrink: 0;
-         }
+        .header-icon {
+            width: 64px;
+            height: 64px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #1976d2, #0d47a1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 27px;
+            color: #ffffff;
+            box-shadow: 0 8px 20px rgba(25, 118, 210, 0.22);
+            flex-shrink: 0;
+        }
 
 
-         /* =========================================================
-        HEADER TEXT
+        /* =========================================================
+           HEADER TEXT
         ========================================================= */
 
-         .header-text h1 {
-             margin: 0 0 6px;
-             color: #142033;
-             font-size: 29px;
-             font-weight: 800;
-             letter-spacing: -0.5px;
-         }
+        .header-text h1 {
+            margin: 0 0 6px;
+            color: #142033;
+            font-size: 29px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
 
-         .header-text p {
-             margin: 0;
-             color: #718096;
-             font-size: 14px;
-         }
+        .header-text p {
+            margin: 0;
+            color: #718096;
+            font-size: 14px;
+        }
 
-         .instructor-name {
-             color: #1976d2;
-             font-weight: 700;
-             margin-left: 3px;
-         }
+        .instructor-name {
+            color: #1976d2;
+            font-weight: 700;
+            margin-left: 3px;
+        }
 
 
-         /* =========================================================
-        HEADER BUTTONS
+        /* =========================================================
+           HEADER BUTTONS
         ========================================================= */
 
-         .header-buttons {
-             display: flex;
-             align-items: center;
-             gap: 10px;
-             flex-wrap: wrap;
-         }
+        .header-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
 
-         .dashboard-button {
-             display: inline-flex;
-             align-items: center;
-             justify-content: center;
-             gap: 8px;
-             padding: 12px 18px;
-             min-height: 43px;
-             border-radius: 9px;
-             font-size: 13px;
-             font-weight: 700;
-             transition: all 0.2s ease;
-             cursor: pointer;
-             white-space: nowrap;
-         }
+        .dashboard-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 18px;
+            min-height: 43px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            white-space: nowrap;
+        }
 
 
-         /* =========================================================
-        MY LESSONS
+        /* =========================================================
+           MY LESSONS
         ========================================================= */
 
-         .my-lessons-button {
-             background: linear-gradient(135deg, #1976d2, #0d47a1);
-             color: #ffffff !important;
-             border: 1px solid #1976d2;
-             box-shadow: 0 5px 15px rgba(25, 118, 210, 0.18);
-         }
+        .my-lessons-button {
+            background: linear-gradient(135deg, #1976d2, #0d47a1);
+            color: #ffffff !important;
+            border: 1px solid #1976d2;
+            box-shadow: 0 5px 15px rgba(25, 118, 210, 0.18);
+        }
 
-             .my-lessons-button:hover {
-                 background: linear-gradient(135deg, #2196f3, #1565c0);
-                 color: #ffffff !important;
-                 transform: translateY(-2px);
-                 box-shadow: 0 8px 20px rgba(25, 118, 210, 0.25);
-             }
+            .my-lessons-button:hover {
+                background: linear-gradient(135deg, #2196f3, #1565c0);
+                color: #ffffff !important;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(25, 118, 210, 0.25);
+            }
 
 
-         /* =========================================================
-        NOTIFICATIONS
+        /* =========================================================
+           NOTIFICATIONS
         ========================================================= */
 
-         .notification-button {
-             position: relative;
-             background: #ffffff;
-             border: 1px solid #cbd7e4;
-             color: #1976d2 !important;
-         }
+        .notification-button {
+            position: relative;
+            background: #ffffff;
+            border: 1px solid #cbd7e4;
+            color: #1976d2 !important;
+        }
 
-             .notification-button:hover {
-                 background: #eef6ff;
-                 border-color: #1976d2;
-                 color: #0d47a1 !important;
-                 transform: translateY(-2px);
-                 box-shadow: 0 6px 18px rgba(25, 118, 210, 0.10);
-             }
+            .notification-button:hover {
+                background: #eef6ff;
+                border-color: #1976d2;
+                color: #0d47a1 !important;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 18px rgba(25, 118, 210, 0.10);
+            }
 
-         .notification-badge {
-             position: absolute;
-             top: -7px;
-             right: -7px;
-             min-width: 21px;
-             height: 21px;
-             padding: 0 5px;
-             display: flex;
-             align-items: center;
-             justify-content: center;
-             background: #d32f2f;
-             color: #ffffff;
-             border: 2px solid #ffffff;
-             border-radius: 50%;
-             font-size: 10px;
-             font-weight: 800;
-             line-height: 1;
-             box-shadow: 0 3px 8px rgba(211, 47, 47, 0.25);
-         }
+        .notification-badge {
+            position: absolute;
+            top: -7px;
+            right: -7px;
+            min-width: 21px;
+            height: 21px;
+            padding: 0 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #d32f2f;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            font-size: 10px;
+            font-weight: 800;
+            line-height: 1;
+            box-shadow: 0 3px 8px rgba(211, 47, 47, 0.25);
+        }
 
 
-         /* =========================================================
-        PROFILE
+        /* =========================================================
+           PROFILE
         ========================================================= */
 
-         .profile-button {
-             background: #ffffff;
-             border: 1px solid #cbd7e4;
-             color: #1976d2 !important;
-         }
+        .profile-button {
+            background: #ffffff;
+            border: 1px solid #cbd7e4;
+            color: #1976d2 !important;
+        }
 
-             .profile-button:hover {
-                 background: #eef6ff;
-                 border-color: #1976d2;
-                 color: #0d47a1 !important;
-                 transform: translateY(-2px);
-                 box-shadow: 0 6px 18px rgba(25, 118, 210, 0.10);
-             }
+            .profile-button:hover {
+                background: #eef6ff;
+                border-color: #1976d2;
+                color: #0d47a1 !important;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 18px rgba(25, 118, 210, 0.10);
+            }
 
 
-         /* =========================================================
-        LOGOUT
+        /* =========================================================
+           LOGOUT
         ========================================================= */
 
-         .logout-form {
-             margin: 0;
-             padding: 0;
-         }
+        .logout-form {
+            margin: 0;
+            padding: 0;
+        }
 
-         .logout-button {
-             background: #ffffff;
-             border: 1px solid #e1c7c7;
-             color: #c62828;
-         }
+        .logout-button {
+            background: #ffffff;
+            border: 1px solid #e1c7c7;
+            color: #c62828;
+        }
 
-             .logout-button:hover {
-                 background: #fff5f5;
-                 border-color: #c62828;
-                 color: #b71c1c;
-                 transform: translateY(-2px);
-                 box-shadow: 0 6px 18px rgba(198, 40, 40, 0.10);
-             }
+            .logout-button:hover {
+                background: #fff5f5;
+                border-color: #c62828;
+                color: #b71c1c;
+                transform: translateY(-2px);
+                box-shadow: 0 6px 18px rgba(198, 40, 40, 0.10);
+            }
 
 
-         /* =========================================================
-        ASSIGNED VEHICLE
+        /* =========================================================
+           ASSIGNED VEHICLE
         ========================================================= */
 
-         .vehicle-section {
-             background: #ffffff;
-             border: 1px solid #e1e8f0;
-             border-radius: 17px;
-             padding: 25px;
-             margin-bottom: 25px;
-             box-shadow: 0 8px 25px rgba(30, 70, 110, 0.06);
-         }
+        .vehicle-section {
+            background: #ffffff;
+            border: 1px solid #e1e8f0;
+            border-radius: 17px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(30, 70, 110, 0.06);
+        }
 
-         .vehicle-section-header {
-             display: flex;
-             justify-content: space-between;
-             align-items: center;
-             margin-bottom: 18px;
-         }
+        .vehicle-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
 
-         .vehicle-section-title {
-             margin: 0;
-             font-size: 19px;
-             font-weight: 750;
-             color: #172033;
-             display: flex;
-             align-items: center;
-             gap: 9px;
-         }
+        .vehicle-section-title {
+            margin: 0;
+            font-size: 19px;
+            font-weight: 750;
+            color: #172033;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
 
-             .vehicle-section-title i {
-                 color: #1976d2;
-             }
+            .vehicle-section-title i {
+                color: #1976d2;
+            }
 
-         .vehicle-section-subtitle {
-             margin: 5px 0 0;
-             color: #8190a3;
-             font-size: 12px;
-         }
+        .vehicle-section-subtitle {
+            margin: 5px 0 0;
+            color: #8190a3;
+            font-size: 12px;
+        }
 
-         .vehicle-card {
-             display: flex;
-             align-items: center;
-             gap: 20px;
-             padding: 20px;
-             background: #f8fbff;
-             border: 1px solid #dce8f4;
-             border-radius: 14px;
-             position: relative;
-             overflow: hidden;
-         }
+        .vehicle-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: #f8fbff;
+            border: 1px solid #dce8f4;
+            border-radius: 14px;
+            position: relative;
+            overflow: hidden;
+        }
 
-             .vehicle-card::before {
-                 content: "";
-                 position: absolute;
-                 left: 0;
-                 top: 0;
-                 width: 4px;
-                 height: 100%;
-                 background: linear-gradient(180deg, #1976d2, #64b5f6);
-             }
+            .vehicle-card::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 4px;
+                height: 100%;
+                background: linear-gradient(180deg, #1976d2, #64b5f6);
+            }
 
-         .vehicle-icon {
-             width: 58px;
-             height: 58px;
-             flex-shrink: 0;
-             border-radius: 14px;
-             display: flex;
-             align-items: center;
-             justify-content: center;
-             background: #eef6ff;
-             color: #1976d2;
-             font-size: 24px;
-         }
+        .vehicle-icon {
+            width: 58px;
+            height: 58px;
+            flex-shrink: 0;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eef6ff;
+            color: #1976d2;
+            font-size: 24px;
+        }
 
-         .vehicle-information {
-             flex: 1;
-         }
+        .vehicle-information {
+            flex: 1;
+        }
 
-             .vehicle-information h3 {
-                 margin: 0 0 5px;
-                 color: #172033;
-                 font-size: 18px;
-                 font-weight: 800;
-             }
+            .vehicle-information h3 {
+                margin: 0 0 5px;
+                color: #172033;
+                font-size: 18px;
+                font-weight: 800;
+            }
 
-         .vehicle-registration {
-             display: inline-block;
-             background: #1976d2;
-             color: #ffffff;
-             padding: 5px 10px;
-             border-radius: 6px;
-             font-size: 11px;
-             font-weight: 800;
-             letter-spacing: 0.5px;
-             margin-bottom: 8px;
-         }
-
-         .vehicle-details {
-             display: flex;
-             flex-wrap: wrap;
-             gap: 15px;
-             color: #718096;
-             font-size: 12px;
-         }
-
-         .vehicle-detail {
-             display: inline-flex;
-             align-items: center;
-             gap: 6px;
-         }
-
-             .vehicle-detail i {
-                 color: #1976d2;
-             }
-
-         .vehicle-status {
-             padding: 7px 12px;
-             border-radius: 20px;
-             background: #edf9f1;
-             border: 1px solid #d0ecd8;
-             color: #2e8b57;
-             font-size: 11px;
-             font-weight: 700;
-             white-space: nowrap;
-         }
-
-         .no-vehicle {
-             padding: 25px;
-             text-align: center;
-             background: #fafcff;
-             border: 1px dashed #cbd7e4;
-             border-radius: 12px;
-         }
-
-             .no-vehicle i {
-                 font-size: 25px;
-                 color: #9aa9b9;
-                 margin-bottom: 10px;
-             }
-
-             .no-vehicle h3 {
-                 margin: 0 0 5px;
-                 color: #526275;
-                 font-size: 15px;
-             }
-
-             .no-vehicle p {
-                 margin: 0;
-                 color: #8b98a8;
-                 font-size: 12px;
-             }
+        .vehicle-registration {
+            display: inline-block;
+            background: #1976d2;
+            color: #ffffff;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
 
 
-         /* =========================================================
-        STATISTICS
+        /* =========================================================
+           VEHICLE LICENCE CODE
         ========================================================= */
 
-         .stats-grid {
-             display: grid;
-             grid-template-columns: repeat(3, 1fr);
-             gap: 18px;
-             margin-bottom: 25px;
-         }
+        .vehicle-license-code {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+            margin-bottom: 12px;
+            padding: 7px 10px;
+            background: #edf6ff;
+            border: 1px solid #cfe3f7;
+            border-radius: 7px;
+            color: #1976d2;
+            font-size: 11px;
+            font-weight: 700;
+        }
 
-         .stat-card {
-             position: relative;
-             background: #ffffff;
-             border: 1px solid #e1e8f0;
-             border-radius: 16px;
-             padding: 23px;
-             box-shadow: 0 8px 25px rgba(30, 70, 110, 0.06);
-             overflow: hidden;
-             transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-         }
+            .vehicle-license-code i {
+                color: #1976d2;
+                font-size: 12px;
+            }
 
-             .stat-card:hover {
-                 transform: translateY(-3px);
-                 border-color: #c5d9ed;
-                 box-shadow: 0 12px 30px rgba(30, 70, 110, 0.10);
-             }
+            .vehicle-license-code span {
+                color: #60758a;
+                font-weight: 700;
+            }
 
-             .stat-card::after {
-                 content: "";
-                 position: absolute;
-                 left: 0;
-                 bottom: 0;
-                 width: 100%;
-                 height: 3px;
-                 background: linear-gradient(90deg, #1976d2, #64b5f6);
-             }
+            .vehicle-license-code strong {
+                background: #1565c0;
+                color: #ffffff;
+                padding: 4px 8px;
+                border-radius: 5px;
+                font-size: 10px;
+                font-weight: 800;
+                letter-spacing: 0.3px;
+            }
 
-         .stat-top {
-             display: flex;
-             align-items: center;
-             justify-content: space-between;
-             margin-bottom: 14px;
-         }
-
-         .stat-icon {
-             width: 44px;
-             height: 44px;
-             border-radius: 11px;
-             display: flex;
-             align-items: center;
-             justify-content: center;
-             background: #eef6ff;
-             color: #1976d2;
-             font-size: 17px;
-         }
-
-         .stat-label {
-             color: #718096;
-             font-size: 11px;
-             font-weight: 700;
-             margin-bottom: 5px;
-             letter-spacing: 0.6px;
-         }
-
-         .stat-number {
-             color: #172033;
-             font-size: 31px;
-             font-weight: 800;
-             line-height: 1.1;
-         }
-
-         .stat-description {
-             color: #8a97a8;
-             font-size: 11px;
-             margin-top: 7px;
-         }
+                .vehicle-license-code strong.not-set {
+                    background: #fff4f4;
+                    border: 1px solid #f0caca;
+                    color: #c62828;
+                }
 
 
-         /* =========================================================
-        LESSON SECTION
+        /* =========================================================
+           VEHICLE DETAILS
         ========================================================= */
 
-         .lesson-section {
-             background: #ffffff;
-             border: 1px solid #e1e8f0;
-             border-radius: 17px;
-             padding: 25px;
-             margin-bottom: 25px;
-             box-shadow: 0 8px 25px rgba(30, 70, 110, 0.06);
-         }
+        .vehicle-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            color: #718096;
+            font-size: 12px;
+        }
 
-         .section-header {
-             display: flex;
-             justify-content: space-between;
-             align-items: center;
-             padding-bottom: 18px;
-             margin-bottom: 18px;
-             border-bottom: 1px solid #edf1f5;
-         }
+        .vehicle-detail {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
 
-         .section-title {
-             margin: 0;
-             font-size: 19px;
-             font-weight: 750;
-             color: #172033;
-             display: flex;
-             align-items: center;
-             gap: 9px;
-         }
+            .vehicle-detail i {
+                color: #1976d2;
+            }
 
-             .section-title i {
-                 color: #1976d2;
-                 font-size: 17px;
-             }
+        .vehicle-status {
+            padding: 7px 12px;
+            border-radius: 20px;
+            background: #edf9f1;
+            border: 1px solid #d0ecd8;
+            color: #2e8b57;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
 
-         .section-subtitle {
-             margin: 5px 0 0;
-             color: #8190a3;
-             font-size: 12px;
-         }
+        .no-vehicle {
+            padding: 25px;
+            text-align: center;
+            background: #fafcff;
+            border: 1px dashed #cbd7e4;
+            border-radius: 12px;
+        }
 
-         .section-count {
-             background: #eef6ff;
-             border: 1px solid #d4e7fa;
-             color: #1976d2;
-             padding: 6px 12px;
-             border-radius: 20px;
-             font-size: 12px;
-             font-weight: 700;
-         }
+            .no-vehicle i {
+                font-size: 25px;
+                color: #9aa9b9;
+                margin-bottom: 10px;
+            }
+
+            .no-vehicle h3 {
+                margin: 0 0 5px;
+                color: #526275;
+                font-size: 15px;
+            }
+
+            .no-vehicle p {
+                margin: 0;
+                color: #8b98a8;
+                font-size: 12px;
+            }
 
 
-         /* =========================================================
-        LESSON CARD
+        /* =========================================================
+           STATISTICS
         ========================================================= */
 
-         .lesson-card {
-             position: relative;
-             background: #fbfdff;
-             border: 1px solid #e3eaf2;
-             border-radius: 13px;
-             padding: 19px 20px;
-             margin-bottom: 12px;
-             transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
-             overflow: hidden;
-         }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
+        }
 
-             .lesson-card:last-child {
-                 margin-bottom: 0;
-             }
+        .stat-card {
+            position: relative;
+            background: #ffffff;
+            border: 1px solid #e1e8f0;
+            border-radius: 16px;
+            padding: 23px;
+            box-shadow: 0 8px 25px rgba(30, 70, 110, 0.06);
+            overflow: hidden;
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
 
-             .lesson-card::before {
-                 content: "";
-                 position: absolute;
-                 left: 0;
-                 top: 0;
-                 width: 4px;
-                 height: 100%;
-                 background: linear-gradient(180deg, #1976d2, #64b5f6);
-             }
+            .stat-card:hover {
+                transform: translateY(-3px);
+                border-color: #c5d9ed;
+                box-shadow: 0 12px 30px rgba(30, 70, 110, 0.10);
+            }
 
-             .lesson-card:hover {
-                 border-color: #c5d9ed;
-                 transform: translateY(-2px);
-                 box-shadow: 0 8px 22px rgba(30, 70, 110, 0.08);
-             }
+            .stat-card::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                height: 3px;
+                background: linear-gradient(90deg, #1976d2, #64b5f6);
+            }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 14px;
+        }
+
+        .stat-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 11px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #eef6ff;
+            color: #1976d2;
+            font-size: 17px;
+        }
+
+        .stat-label {
+            color: #718096;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: 0.6px;
+        }
+
+        .stat-number {
+            color: #172033;
+            font-size: 31px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .stat-description {
+            color: #8a97a8;
+            font-size: 11px;
+            margin-top: 7px;
+        }
 
 
-         /* =========================================================
-        LESSON MAIN
+        /* =========================================================
+           LESSON SECTION
         ========================================================= */
 
-         .lesson-main {
-             display: flex;
-             justify-content: space-between;
-             align-items: center;
-             gap: 20px;
-         }
+        .lesson-section {
+            background: #ffffff;
+            border: 1px solid #e1e8f0;
+            border-radius: 17px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(30, 70, 110, 0.06);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 18px;
+            margin-bottom: 18px;
+            border-bottom: 1px solid #edf1f5;
+        }
+
+        .section-title {
+            margin: 0;
+            font-size: 19px;
+            font-weight: 750;
+            color: #172033;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+            .section-title i {
+                color: #1976d2;
+                font-size: 17px;
+            }
+
+        .section-subtitle {
+            margin: 5px 0 0;
+            color: #8190a3;
+            font-size: 12px;
+        }
+
+        .section-count {
+            background: #eef6ff;
+            border: 1px solid #d4e7fa;
+            color: #1976d2;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
 
 
-         /* =========================================================
-        STUDENT
+        /* =========================================================
+           LESSON CARD
         ========================================================= */
 
-         .lesson-student {
-             color: #172033;
-             font-size: 16px;
-             font-weight: 700;
-             margin-bottom: 10px;
-             display: flex;
-             align-items: center;
-             gap: 8px;
-         }
+        .lesson-card {
+            position: relative;
+            background: #fbfdff;
+            border: 1px solid #e3eaf2;
+            border-radius: 13px;
+            padding: 19px 20px;
+            margin-bottom: 12px;
+            transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            overflow: hidden;
+        }
 
-             .lesson-student i {
-                 color: #1976d2;
-                 font-size: 14px;
-             }
+            .lesson-card:last-child {
+                margin-bottom: 0;
+            }
+
+            .lesson-card::before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 4px;
+                height: 100%;
+                background: linear-gradient(180deg, #1976d2, #64b5f6);
+            }
+
+            .lesson-card:hover {
+                border-color: #c5d9ed;
+                transform: translateY(-2px);
+                box-shadow: 0 8px 22px rgba(30, 70, 110, 0.08);
+            }
 
 
-         /* =========================================================
-        LESSON DETAILS
+        /* =========================================================
+           LESSON MAIN
         ========================================================= */
 
-         .lesson-details {
-             display: flex;
-             flex-wrap: wrap;
-             gap: 12px 18px;
-             color: #718096;
-             font-size: 12px;
-         }
-
-         .lesson-detail {
-             display: inline-flex;
-             align-items: center;
-             gap: 5px;
-         }
-
-             .lesson-detail i {
-                 color: #1976d2;
-                 font-size: 11px;
-             }
-
-             .lesson-detail strong {
-                 color: #425466;
-             }
+        .lesson-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
 
 
-         /* =========================================================
-        LESSON VEHICLE
+        /* =========================================================
+           STUDENT
         ========================================================= */
 
-         .lesson-vehicle-registration {
-             color: #1976d2;
-             font-weight: 800;
-         }
+        .lesson-student {
+            color: #172033;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
-         .lesson-vehicle-name {
-             color: #526275;
-             font-weight: 600;
-         }
+            .lesson-student i {
+                color: #1976d2;
+                font-size: 14px;
+            }
 
 
-         /* =========================================================
-        STATUS
+        /* =========================================================
+           LESSON DETAILS
         ========================================================= */
 
-         .lesson-status {
-             display: inline-flex;
-             align-items: center;
-             gap: 6px;
-             padding: 7px 12px;
-             border-radius: 20px;
-             background: #eef6ff;
-             border: 1px solid #d4e7fa;
-             color: #1976d2;
-             font-size: 11px;
-             font-weight: 700;
-             white-space: nowrap;
-         }
+        .lesson-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 18px;
+            color: #718096;
+            font-size: 12px;
+        }
 
-             .lesson-status.completed {
-                 background: #edf9f1;
-                 border: 1px solid #d0ecd8;
-                 color: #2e8b57;
-             }
+        .lesson-detail {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+            .lesson-detail i {
+                color: #1976d2;
+                font-size: 11px;
+            }
+
+            .lesson-detail strong {
+                color: #425466;
+            }
 
 
-         /* =========================================================
-        EMPTY STATE
+        /* =========================================================
+           LESSON VEHICLE
         ========================================================= */
 
-         .empty-state {
-             text-align: center;
-             padding: 42px 20px;
-             color: #8291a3;
-         }
+        .lesson-vehicle-registration {
+            color: #1976d2;
+            font-weight: 800;
+        }
 
-         .empty-state-icon {
-             width: 52px;
-             height: 52px;
-             margin: 0 auto 14px;
-             border-radius: 50%;
-             display: flex;
-             align-items: center;
-             justify-content: center;
-             background: #f0f6fc;
-             color: #7da5cc;
-             font-size: 19px;
-         }
-
-         .empty-state-title {
-             color: #526275;
-             font-size: 15px;
-             font-weight: 650;
-             margin-bottom: 6px;
-         }
-
-         .empty-state-text {
-             font-size: 12px;
-             color: #8b98a8;
-         }
-
-         .completed-section {
-             margin-top: 5px;
-         }
+        .lesson-vehicle-name {
+            color: #526275;
+            font-weight: 600;
+        }
 
 
-         /* =========================================================
-        RESPONSIVE
+        /* =========================================================
+           STATUS
         ========================================================= */
 
-         @@media (max-width: 1100px) {
+        .lesson-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            border-radius: 20px;
+            background: #eef6ff;
+            border: 1px solid #d4e7fa;
+            color: #1976d2;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
 
-             .header-content {
-                 flex-direction: column;
-                 align-items: flex-start;
-             }
-
-             .header-buttons {
-                 width: 100%;
-             }
-         }
-
-
-         @@media (max-width: 900px) {
-
-             .stats-grid {
-                 grid-template-columns: repeat(2, 1fr);
-             }
-         }
-
-
-         @@media (max-width: 700px) {
-
-             .lesson-main {
-                 flex-direction: column;
-                 align-items: flex-start;
-             }
-
-             .lesson-status {
-                 align-self: flex-start;
-             }
-
-             .header-buttons {
-                 width: 100%;
-                 display: grid;
-                 grid-template-columns: 1fr 1fr;
-             }
-
-             .dashboard-button {
-                 width: 100%;
-             }
-
-             .vehicle-card {
-                 flex-direction: column;
-                 align-items: flex-start;
-             }
-
-             .vehicle-status {
-                 align-self: flex-start;
-             }
-         }
+            .lesson-status.completed {
+                background: #edf9f1;
+                border: 1px solid #d0ecd8;
+                color: #2e8b57;
+            }
 
 
-         @@media (max-width: 576px) {
+        /* =========================================================
+           EMPTY STATE
+        ========================================================= */
 
-             .dashboard-page {
-                 padding: 15px 10px 40px;
-             }
+        .empty-state {
+            text-align: center;
+            padding: 42px 20px;
+            color: #8291a3;
+        }
 
-             .dashboard-header {
-                 padding: 25px 20px;
-             }
+        .empty-state-icon {
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 14px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f6fc;
+            color: #7da5cc;
+            font-size: 19px;
+        }
 
-             .header-left {
-                 align-items: flex-start;
-             }
+        .empty-state-title {
+            color: #526275;
+            font-size: 15px;
+            font-weight: 650;
+            margin-bottom: 6px;
+        }
 
-             .header-icon {
-                 width: 52px;
-                 height: 52px;
-                 font-size: 22px;
-             }
+        .empty-state-text {
+            font-size: 12px;
+            color: #8b98a8;
+        }
 
-             .header-text h1 {
-                 font-size: 23px;
-             }
+        .completed-section {
+            margin-top: 5px;
+        }
 
-             .stats-grid {
-                 grid-template-columns: 1fr;
-             }
 
-             .lesson-section,
-             .vehicle-section {
-                 padding: 18px;
-             }
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
 
-             .lesson-card {
-                 padding: 17px;
-             }
+        @@media (max-width: 1100px) {
 
-             .lesson-details {
-                 flex-direction: column;
-                 gap: 7px;
-             }
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
 
-             .section-header,
-             .vehicle-section-header {
-                 align-items: flex-start;
-                 gap: 10px;
-             }
+            .header-buttons {
+                width: 100%;
+            }
+        }
 
-             .header-buttons {
-                 grid-template-columns: 1fr;
-             }
-         }
+
+        @@media (max-width: 900px) {
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+
+        @@media (max-width: 700px) {
+
+            .lesson-main {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .lesson-status {
+                align-self: flex-start;
+            }
+
+            .header-buttons {
+                width: 100%;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .dashboard-button {
+                width: 100%;
+            }
+
+            .vehicle-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .vehicle-status {
+                align-self: flex-start;
+            }
+        }
+
+
+        @@media (max-width: 576px) {
+
+            .dashboard-page {
+                padding: 15px 10px 40px;
+            }
+
+            .dashboard-header {
+                padding: 25px 20px;
+            }
+
+            .header-left {
+                align-items: flex-start;
+            }
+
+            .header-icon {
+                width: 52px;
+                height: 52px;
+                font-size: 22px;
+            }
+
+            .header-text h1 {
+                font-size: 23px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .lesson-section,
+            .vehicle-section {
+                padding: 18px;
+            }
+
+            .lesson-card {
+                padding: 17px;
+            }
+
+            .lesson-details {
+                flex-direction: column;
+                gap: 7px;
+            }
+
+            .section-header,
+            .vehicle-section-header {
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .header-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
-    
 
 </head>
 
 <body>
 
-    
     <div class="dashboard-page">
 
         <div class="dashboard-wrapper">
@@ -928,11 +974,11 @@ var instructor = ViewBag.Instructor as Instructor;
                                 Welcome,
 
                                 @if (instructor != null)
-                                            {
-                                                <span class="instructor-name">
-                                                    @instructor.FirstName @instructor.LastName
-                                                </span>
-                                            }
+                                {
+                                    <span class="instructor-name">
+                                        @instructor.FirstName @instructor.LastName
+                                    </span>
+                                }
 
                             </p>
 
@@ -1086,6 +1132,34 @@ var instructor = ViewBag.Instructor as Instructor;
                             <span class="vehicle-registration">
                                 @instructor.Vehicle.RegistrationNumber
                             </span>
+
+
+                            <!-- =================================================
+                                 LICENCE CODE
+                                 ================================================= -->
+
+                            <div class="vehicle-license-code">
+
+                                <i class="fa-solid fa-id-card-clip"></i>
+
+                                <span>
+                                    Licence Code
+                                </span>
+
+                                @if (!string.IsNullOrWhiteSpace(instructor.Vehicle.LicenseCode))
+                                {
+                                    <strong>
+                                        @instructor.Vehicle.LicenseCode
+                                    </strong>
+                                }
+                                else
+                                {
+                                    <strong class="not-set">
+                                        Not Set
+                                    </strong>
+                                }
+
+                            </div>
 
 
                             <div class="vehicle-details">
@@ -1934,7 +2008,7 @@ var instructor = ViewBag.Instructor as Instructor;
         </div>
 
     </div>
-    
 
 </body>
 </html>
+

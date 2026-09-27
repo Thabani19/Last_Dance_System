@@ -1,0 +1,778 @@
+﻿@model IEnumerable<Last_Dance_System.Models.QuizResult>
+
+@{
+    ViewBag.Title = "Quiz Results";
+
+
+int totalAttempts = ViewBag.TotalAttempts ?? 0;
+    int averageScore = ViewBag.AverageScore ?? 0;
+    int bestScore = ViewBag.BestScore ?? 0;
+    int averagePercentage = ViewBag.AveragePercentage ?? 0;
+
+    int passMark = 80;
+
+
+}
+
+<style>
+    .results-page {
+        background-color: #f4f8fc;
+        min-height: 100vh;
+        padding: 40px 20px;
+    }
+
+    .results-container {
+        max-width: 1100px;
+        margin: 0 auto;
+    }
+
+    .results-header {
+        background-color: white;
+        border: 1px solid #dceaf7;
+        border-radius: 14px;
+        padding: 30px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .results-header h1 {
+        color: #1565c0;
+        font-size: 30px;
+        font-weight: 700;
+        margin: 0 0 8px 0;
+    }
+
+    .results-header p {
+        color: #666;
+        margin: 0;
+        font-size: 15px;
+    }
+
+    /* STATISTICS */
+
+    .statistics-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-bottom: 25px;
+    }
+
+    .stat-card {
+        background-color: white;
+        border: 1px solid #dceaf7;
+        border-radius: 12px;
+        padding: 25px 20px;
+        text-align: center;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .stat-number {
+        color: #1565c0;
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .stat-label {
+        color: #666;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    /* PERFORMANCE */
+
+    .performance-card {
+        background-color: white;
+        border: 1px solid #dceaf7;
+        border-radius: 14px;
+        padding: 30px;
+        margin-bottom: 25px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .performance-title {
+        color: #1565c0;
+        font-size: 21px;
+        font-weight: 700;
+        margin-bottom: 25px;
+    }
+
+    .performance-content {
+        display: flex;
+        align-items: center;
+        gap: 35px;
+    }
+
+    .score-circle {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 10px solid #eaf4ff;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+    }
+
+    .score-circle strong {
+        color: #1565c0;
+        font-size: 32px;
+        font-weight: 700;
+    }
+
+    .score-circle span {
+        color: #777;
+        font-size: 13px;
+        margin-top: 3px;
+    }
+
+    .performance-info {
+        flex: 1;
+    }
+
+    .performance-info h3 {
+        color: #222;
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+
+    .performance-info p {
+        color: #666;
+        font-size: 15px;
+        line-height: 1.6;
+        margin: 0;
+    }
+
+    /* PROGRESS */
+
+    .progress-section {
+        margin-top: 25px;
+    }
+
+    .progress-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        color: #555;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .progress-bar {
+        width: 100%;
+        height: 12px;
+        background-color: #eaf0f6;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background-color: #1565c0;
+        border-radius: 20px;
+        width: @(averagePercentage)%;
+    }
+
+    /* HISTORY */
+
+    .history-card {
+        background-color: white;
+        border: 1px solid #dceaf7;
+        border-radius: 14px;
+        padding: 30px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .history-title {
+        color: #1565c0;
+        font-size: 21px;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .results-table-wrapper {
+        overflow-x: auto;
+        border: 1px solid #e4edf5;
+        border-radius: 10px;
+    }
+
+    .results-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 850px;
+    }
+
+    .results-table th {
+        background-color: #f4f8fc;
+        color: #1565c0;
+        padding: 15px 16px;
+        text-align: left;
+        font-size: 13px;
+        font-weight: 700;
+        border-bottom: 2px solid #dceaf7;
+        white-space: nowrap;
+    }
+
+    .results-table td {
+        padding: 16px;
+        color: #444;
+        font-size: 14px;
+        border-bottom: 1px solid #edf2f7;
+        vertical-align: middle;
+    }
+
+    .results-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .results-table tbody tr {
+        transition: background-color 0.2s ease;
+    }
+
+    .results-table tbody tr:hover {
+        background-color: #f8fbff;
+    }
+
+    .lesson-name {
+        color: #222;
+        font-weight: 600;
+    }
+
+    .score-text {
+        color: #333;
+        font-weight: 600;
+    }
+
+    .percentage-badge {
+        display: inline-block;
+        min-width: 60px;
+        text-align: center;
+        padding: 6px 12px;
+        border-radius: 20px;
+        background-color: #eaf4ff;
+        color: #1565c0;
+        font-weight: 700;
+        font-size: 13px;
+    }
+
+    /* STATUS */
+
+    .status-badge {
+        display: inline-block;
+        min-width: 100px;
+        text-align: center;
+        padding: 7px 13px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .status-passed {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .status-failed {
+        background-color: #ffebee;
+        color: #c62828;
+    }
+
+    .date-text {
+        color: #666;
+        white-space: nowrap;
+    }
+
+    /* VIEW RESULT */
+
+    .view-result-button {
+        display: inline-block;
+        background-color: #1565c0;
+        color: white;
+        padding: 8px 14px;
+        border-radius: 7px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+        transition: background-color 0.2s ease;
+    }
+
+    .view-result-button:hover {
+        background-color: #0d47a1;
+        color: white;
+        text-decoration: none;
+    }
+
+    /* EMPTY */
+
+    .empty-results {
+        text-align: center;
+        padding: 50px 20px;
+    }
+
+    .empty-results h3 {
+        color: #1565c0;
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+
+    .empty-results p {
+        color: #666;
+        margin-bottom: 20px;
+    }
+
+    /* BUTTONS */
+
+    .results-actions {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 25px;
+        flex-wrap: wrap;
+    }
+
+    .results-button {
+        display: inline-block;
+        background-color: #1565c0;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: background-color 0.2s ease;
+    }
+
+    .results-button:hover {
+        background-color: #0d47a1;
+        color: white;
+        text-decoration: none;
+    }
+
+    .secondary-button {
+        display: inline-block;
+        background-color: white;
+        color: #1565c0;
+        border: 1px solid #1565c0;
+        padding: 12px 24px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+    .secondary-button:hover {
+        background-color: #eaf4ff;
+        color: #0d47a1;
+        text-decoration: none;
+    }
+
+    /* MOBILE */
+
+    @@media (max-width: 900px) {
+
+        .statistics-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .performance-content {
+            flex-direction: column;
+            text-align: center;
+        }
+    }
+
+    @@media (max-width: 600px) {
+
+        .results-page {
+            padding: 25px 15px;
+        }
+
+        .statistics-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .results-header {
+            padding: 25px 20px;
+        }
+
+        .results-header h1 {
+            font-size: 25px;
+        }
+
+        .performance-card,
+        .history-card {
+            padding: 22px 18px;
+        }
+
+        .score-circle {
+            width: 130px;
+            height: 130px;
+        }
+
+        .score-circle strong {
+            font-size: 28px;
+        }
+    }
+</style>
+
+<div class="results-page">
+
+    
+    <div class="results-container">
+
+        <!-- HEADER -->
+
+        <div class="results-header">
+
+            <h1>Quiz Results</h1>
+
+            <p>
+                Track your theory quiz performance and monitor your progress.
+            </p>
+
+        </div>
+
+
+        <!-- STATISTICS -->
+
+        <div class="statistics-grid">
+
+            <div class="stat-card">
+
+                <div class="stat-number">
+                    @totalAttempts
+                </div>
+
+                <div class="stat-label">
+                    Total Attempts
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-number">
+                    @averageScore
+                </div>
+
+                <div class="stat-label">
+                    Average Score
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-number">
+                    @bestScore
+                </div>
+
+                <div class="stat-label">
+                    Best Score
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-number">
+                    @averagePercentage%
+                </div>
+
+                <div class="stat-label">
+                    Average Percentage
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- OVERALL PERFORMANCE -->
+
+        <div class="performance-card">
+
+            <div class="performance-title">
+                Overall Performance
+            </div>
+
+            <div class="performance-content">
+
+                <div class="score-circle">
+
+                    <strong>
+                        @averagePercentage%
+                    </strong>
+
+                    <span>
+                        Average
+                    </span>
+
+                </div>
+
+
+                <div class="performance-info">
+
+                    @if (totalAttempts == 0)
+                    {
+                        <h3>No Quiz Attempts Yet</h3>
+
+                        <p>
+                            Complete your first theory quiz to start tracking
+                            your performance.
+                        </p>
+                    }
+                    else if (averagePercentage >= passMark)
+                    {
+                        <h3>Passing Performance</h3>
+
+                        <p>
+                            Your average percentage is currently
+                            @averagePercentage%.
+                            The passing mark is @passMark%.
+                            Continue practising to maintain your performance.
+                        </p>
+                    }
+                    else
+                    {
+                        <h3>More Practice Needed</h3>
+
+                        <p>
+                            Your average percentage is currently
+                            @averagePercentage%.
+                            The passing mark is @passMark%.
+                            Review the learner lessons and practise the quizzes
+                            to improve your understanding.
+                        </p>
+                    }
+
+                    @if (totalAttempts > 0)
+                    {
+                        <div class="progress-section">
+
+                            <div class="progress-header">
+
+                                <span>
+                                    Average Performance
+                                </span>
+
+                                <span>
+                                    @averagePercentage%
+                                </span>
+
+                            </div>
+
+                            <div class="progress-bar">
+
+                                <div class="progress-fill"></div>
+
+                            </div>
+
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- QUIZ HISTORY -->
+
+        <div class="history-card">
+
+            <div class="history-title">
+                Quiz Attempt History
+            </div>
+
+
+            @if (Model != null && Model.Any())
+            {
+                <div class="results-table-wrapper">
+
+                    <table class="results-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Lesson
+                                </th>
+
+                                <th>
+                                    Score
+                                </th>
+
+                                <th>
+                                    Percentage
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Date Taken
+                                </th>
+
+                                <th>
+                                    Action
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var result in Model)
+                            {
+                                <tr>
+
+                                    <!-- LESSON -->
+
+                                    <td>
+
+                                        <span class="lesson-name">
+
+                                            @(result.LearnerLesson != null
+                                            ? result.LearnerLesson.Title
+                                            : "Unknown Lesson")
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- SCORE -->
+
+                                    <td>
+
+                                        <span class="score-text">
+
+                                            @result.Score /
+                                            @result.TotalQuestions
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- PERCENTAGE -->
+
+                                    <td>
+
+                                        <span class="percentage-badge">
+
+                                            @result.Percentage%
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- STATUS -->
+
+                                    <td>
+
+                                        @if (result.Percentage >= passMark)
+                                        {
+                                            <span class="status-badge status-passed">
+                                                Passed
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="status-badge status-failed">
+                                                Failed
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <!-- DATE -->
+
+                                    <td>
+
+                                        <span class="date-text">
+
+                                            @result.DateTaken.ToString(
+                                                "dd MMM yyyy, HH:mm")
+
+                                        </span>
+
+                                    </td>
+
+
+                                    <!-- ACTION -->
+
+                                    <td>
+
+                                        <a href="@Url.Action(
+                                        "Result",
+                                        "Quiz",
+                                        new { id = result.QuizResultId })"
+                                           class="view-result-button">
+
+                                            View Result
+
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+            }
+            else
+            {
+                <div class="empty-results">
+
+                    <h3>No Results Yet</h3>
+
+                    <p>
+                        You have not completed any theory quizzes yet.
+                    </p>
+
+                </div>
+            }
+
+        </div>
+
+
+        <!-- ACTION BUTTONS -->
+
+        <div class="results-actions">
+
+            <a href="@Url.Action("Index", "Quiz")"
+               class="results-button">
+
+                Take a Quiz
+
+            </a>
+
+            <a href="@Url.Action("Index", "Dashboard")"
+               class="secondary-button">
+
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+    </div>
+    
+
+</div>

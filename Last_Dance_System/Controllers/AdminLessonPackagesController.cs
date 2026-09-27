@@ -10,7 +10,8 @@ namespace Last_Dance_System.Controllers
     [Authorize(Roles = "Administrator")]
     public class AdminLessonPackagesController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationDbContext db =
+            new ApplicationDbContext();
 
 
         // =========================================================
@@ -37,7 +38,8 @@ namespace Last_Dance_System.Controllers
         {
             var package = new LessonPackage
             {
-                IsActive = true
+                IsActive = true,
+                IsLearnerTheoryPackage = false
             };
 
             return View(package);
@@ -94,26 +96,37 @@ namespace Last_Dance_System.Controllers
 
 
                 // -------------------------------------------------
-                // CHECK DUPLICATE PACKAGE NAME
+                // CLEAN PACKAGE NAME
                 // -------------------------------------------------
 
-                var duplicatePackage = db.LessonPackages
-                    .Any(p =>
-                        p.PackageName.ToLower() ==
-                        package.PackageName.ToLower()
-                    );
+                string packageName =
+                    package.PackageName == null
+                        ? ""
+                        : package.PackageName.Trim();
 
-                if (duplicatePackage)
+
+                // -------------------------------------------------
+                // CLEAN LICENCE CODE
+                // -------------------------------------------------
+
+                string licenseCode =
+                    package.RequiredLicenseCode == null
+                        ? ""
+                        : package.RequiredLicenseCode.Trim();
+
+
+                // -------------------------------------------------
+                // THEORY PACKAGE DOES NOT NEED A LICENCE CODE
+                // -------------------------------------------------
+
+                if (package.IsLearnerTheoryPackage)
                 {
-                    ModelState.AddModelError(
-                        "PackageName",
-                        "A lesson package with this name already exists."
-                    );
+                    licenseCode = "";
                 }
 
 
                 // -------------------------------------------------
-                // RETURN VIEW IF VALIDATION FAILS
+                // RETURN VIEW IF INVALID
                 // -------------------------------------------------
 
                 if (!ModelState.IsValid)
@@ -123,11 +136,14 @@ namespace Last_Dance_System.Controllers
 
 
                 // -------------------------------------------------
-                // CLEAN PACKAGE NAME
+                // SET CLEAN VALUES
                 // -------------------------------------------------
 
                 package.PackageName =
-                    package.PackageName.Trim();
+                    packageName;
+
+                package.RequiredLicenseCode =
+                    licenseCode;
 
 
                 // -------------------------------------------------
@@ -177,8 +193,8 @@ namespace Last_Dance_System.Controllers
             }
 
 
-            var package = db.LessonPackages
-                .FirstOrDefault(p =>
+            var package =
+                db.LessonPackages.FirstOrDefault(p =>
                     p.LessonPackageId == id
                 );
 
@@ -208,8 +224,8 @@ namespace Last_Dance_System.Controllers
             }
 
 
-            var package = db.LessonPackages
-                .FirstOrDefault(p =>
+            var package =
+                db.LessonPackages.FirstOrDefault(p =>
                     p.LessonPackageId == id
                 );
 
@@ -248,7 +264,7 @@ namespace Last_Dance_System.Controllers
 
 
                 // -------------------------------------------------
-                // VALIDATE LESSONS
+                // VALIDATE NUMBER OF LESSONS
                 // -------------------------------------------------
 
                 if (package.NumberOfLessons <= 0)
@@ -274,11 +290,11 @@ namespace Last_Dance_System.Controllers
 
 
                 // -------------------------------------------------
-                // CHECK EXISTING PACKAGE
+                // FIND EXISTING PACKAGE
                 // -------------------------------------------------
 
-                var existingPackage = db.LessonPackages
-                    .FirstOrDefault(p =>
+                var existingPackage =
+                    db.LessonPackages.FirstOrDefault(p =>
                         p.LessonPackageId ==
                         package.LessonPackageId
                     );
@@ -291,25 +307,32 @@ namespace Last_Dance_System.Controllers
 
 
                 // -------------------------------------------------
-                // CHECK DUPLICATE NAME
+                // CLEAN PACKAGE NAME
                 // -------------------------------------------------
 
-                var duplicatePackage = db.LessonPackages
-                    .Any(p =>
-                        p.LessonPackageId !=
-                        package.LessonPackageId
-                        &&
-                        p.PackageName.ToLower() ==
-                        package.PackageName.ToLower()
-                    );
+                string packageName =
+                    package.PackageName == null
+                        ? ""
+                        : package.PackageName.Trim();
 
 
-                if (duplicatePackage)
+                // -------------------------------------------------
+                // CLEAN LICENCE CODE
+                // -------------------------------------------------
+
+                string licenseCode =
+                    package.RequiredLicenseCode == null
+                        ? ""
+                        : package.RequiredLicenseCode.Trim();
+
+
+                // -------------------------------------------------
+                // THEORY PACKAGE DOES NOT NEED A LICENCE CODE
+                // -------------------------------------------------
+
+                if (package.IsLearnerTheoryPackage)
                 {
-                    ModelState.AddModelError(
-                        "PackageName",
-                        "Another lesson package already uses this name."
-                    );
+                    licenseCode = "";
                 }
 
 
@@ -324,11 +347,11 @@ namespace Last_Dance_System.Controllers
 
 
                 // -------------------------------------------------
-                // UPDATE FIELDS
+                // UPDATE PACKAGE
                 // -------------------------------------------------
 
                 existingPackage.PackageName =
-                    package.PackageName.Trim();
+                    packageName;
 
                 existingPackage.NumberOfLessons =
                     package.NumberOfLessons;
@@ -341,6 +364,12 @@ namespace Last_Dance_System.Controllers
 
                 existingPackage.IsActive =
                     package.IsActive;
+
+                existingPackage.IsLearnerTheoryPackage =
+                    package.IsLearnerTheoryPackage;
+
+                existingPackage.RequiredLicenseCode =
+                    licenseCode;
 
 
                 // -------------------------------------------------
@@ -384,8 +413,8 @@ namespace Last_Dance_System.Controllers
             }
 
 
-            var package = db.LessonPackages
-                .FirstOrDefault(p =>
+            var package =
+                db.LessonPackages.FirstOrDefault(p =>
                     p.LessonPackageId == id
                 );
 
@@ -411,8 +440,8 @@ namespace Last_Dance_System.Controllers
         {
             try
             {
-                var package = db.LessonPackages
-                    .FirstOrDefault(p =>
+                var package =
+                    db.LessonPackages.FirstOrDefault(p =>
                         p.LessonPackageId == id
                     );
 
@@ -431,8 +460,7 @@ namespace Last_Dance_System.Controllers
                 // -------------------------------------------------
 
                 var packageIsUsed =
-                    db.StudentPackages
-                    .Any(sp =>
+                    db.StudentPackages.Any(sp =>
                         sp.LessonPackageId == id
                     );
 
@@ -472,7 +500,7 @@ namespace Last_Dance_System.Controllers
 
 
         // =========================================================
-        // ACTIVATE / DEACTIVATE
+        // TOGGLE STATUS
         // =========================================================
 
         [HttpPost]
@@ -481,8 +509,8 @@ namespace Last_Dance_System.Controllers
         {
             try
             {
-                var package = db.LessonPackages
-                    .FirstOrDefault(p =>
+                var package =
+                    db.LessonPackages.FirstOrDefault(p =>
                         p.LessonPackageId == id
                     );
 
@@ -496,10 +524,6 @@ namespace Last_Dance_System.Controllers
                 }
 
 
-                // -------------------------------------------------
-                // TOGGLE STATUS
-                // -------------------------------------------------
-
                 package.IsActive =
                     !package.IsActive;
 
@@ -509,10 +533,6 @@ namespace Last_Dance_System.Controllers
 
                 db.SaveChanges();
 
-
-                // -------------------------------------------------
-                // SUCCESS MESSAGE
-                // -------------------------------------------------
 
                 if (package.IsActive)
                 {
@@ -548,8 +568,8 @@ namespace Last_Dance_System.Controllers
         {
             try
             {
-                var package = db.LessonPackages
-                    .FirstOrDefault(p =>
+                var package =
+                    db.LessonPackages.FirstOrDefault(p =>
                         p.LessonPackageId == id
                     );
 
@@ -597,8 +617,8 @@ namespace Last_Dance_System.Controllers
         {
             try
             {
-                var package = db.LessonPackages
-                    .FirstOrDefault(p =>
+                var package =
+                    db.LessonPackages.FirstOrDefault(p =>
                         p.LessonPackageId == id
                     );
 
@@ -651,3 +671,4 @@ namespace Last_Dance_System.Controllers
         }
     }
 }
+

@@ -1,4 +1,5 @@
-﻿using Last_Dance_System.Models;
+﻿
+using Last_Dance_System.Models;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Data.Entity;
@@ -512,6 +513,9 @@ namespace Last_Dance_System.Controllers
             vehicle.VehicleType =
                 vehicle.VehicleType?.Trim();
 
+            vehicle.LicenseCode =
+                vehicle.LicenseCode?.Trim();
+
             vehicle.Status =
                 vehicle.Status?.Trim();
 
@@ -615,6 +619,9 @@ namespace Last_Dance_System.Controllers
             vehicle.VehicleType =
                 vehicle.VehicleType?.Trim();
 
+            vehicle.LicenseCode =
+                vehicle.LicenseCode?.Trim();
+
             vehicle.Status =
                 vehicle.Status?.Trim();
 
@@ -684,6 +691,9 @@ namespace Last_Dance_System.Controllers
 
             existingVehicle.VehicleType =
                 vehicle.VehicleType;
+
+            existingVehicle.LicenseCode =
+                vehicle.LicenseCode;
 
             existingVehicle.Status =
                 vehicle.Status;

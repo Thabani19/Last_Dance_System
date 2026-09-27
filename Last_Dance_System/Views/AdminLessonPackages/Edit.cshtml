@@ -1,4 +1,5 @@
-﻿@model Last_Dance_System.Models.LessonPackage
+﻿
+@model Last_Dance_System.Models.LessonPackage
 
 @{
     Layout = null;
@@ -36,7 +37,7 @@
         .page {
             min-height: 100vh;
             padding: 40px 25px 70px;
-            background: radial-gradient( circle at 90% 0%, rgba(37,99,235,.08), transparent 30% ), linear-gradient( 180deg, #f8fbff 0%, #f3f7fc 100% );
+            background: radial-gradient(circle at 90% 0%, rgba(37,99,235,.08), transparent 30%), linear-gradient(180deg, #f8fbff 0%, #f3f7fc 100%);
         }
 
         .wrapper {
@@ -204,6 +205,7 @@
             margin-top: 6px;
             color: #7b8799;
             font-size: 10px;
+            line-height: 1.5;
         }
 
         .field-validation-error {
@@ -223,6 +225,127 @@
             color: #dc2626;
             font-size: 11px;
         }
+
+        /* PACKAGE TYPE */
+
+        .package-type-box {
+            padding: 18px;
+            background: #f8fbff;
+            border: 1px solid #dbe7f5;
+            border-radius: 12px;
+        }
+
+        .package-type-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+            color: #1e3a5f;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+            .package-type-title i {
+                color: #2563eb;
+            }
+
+        .package-type-help {
+            margin-bottom: 15px;
+            color: #7b8799;
+            font-size: 10px;
+            line-height: 1.5;
+        }
+
+        .package-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .package-option {
+            position: relative;
+        }
+
+            .package-option input {
+                position: absolute;
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            .package-option label {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                min-height: 72px;
+                padding: 13px;
+                background: #ffffff;
+                border: 1px solid #dbe3ee;
+                border-radius: 10px;
+                cursor: pointer;
+                transition: all .2s ease;
+            }
+
+                .package-option label:hover {
+                    border-color: #93b4e8;
+                    background: #f8fbff;
+                }
+
+            .package-option input:checked + label {
+                border-color: #2563eb;
+                background: #eff6ff;
+                box-shadow: 0 0 0 2px rgba(37,99,235,.08);
+            }
+
+        .package-option-icon {
+            width: 42px;
+            height: 42px;
+            min-width: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 17px;
+        }
+
+        .package-option input:checked + label .package-option-icon {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .package-option-text strong {
+            display: block;
+            color: #334155;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .package-option-text span {
+            display: block;
+            margin-top: 4px;
+            color: #7b8799;
+            font-size: 9px;
+            line-height: 1.4;
+        }
+
+        /* LICENCE CODE */
+
+        .license-code-box {
+            padding: 18px;
+            background: #f8fbff;
+            border: 1px solid #dbe7f5;
+            border-radius: 12px;
+        }
+
+        .license-code-help {
+            margin-top: 6px;
+            color: #7b8799;
+            font-size: 10px;
+            line-height: 1.5;
+        }
+
+        /* STATUS */
 
         .status-box {
             display: flex;
@@ -335,6 +458,12 @@
             color: #64748b;
         }
 
+            .btn-cancel:hover {
+                background: #f8fafc;
+                color: #334155;
+                text-decoration: none;
+            }
+
         .btn-save {
             background: #2563eb;
             border: 1px solid #2563eb;
@@ -367,6 +496,10 @@
                 padding: 20px;
             }
 
+            .package-options {
+                grid-template-columns: 1fr;
+            }
+
             .form-actions {
                 flex-direction: column-reverse;
             }
@@ -384,6 +517,8 @@
     <div class="page">
 
         <div class="wrapper">
+
+            <!-- HEADER -->
 
             <div class="header">
 
@@ -425,6 +560,8 @@
             </div>
 
 
+            <!-- FORM -->
+
             <div class="form-card">
 
                 <h2 class="form-title">
@@ -457,6 +594,165 @@
                         })
 
 
+                    <!-- PACKAGE TYPE -->
+
+                    <div class="form-group">
+
+                        <div class="package-type-box">
+
+                            <div class="package-type-title">
+
+                                <i class="fa-solid fa-layer-group"></i>
+
+                                Package Type
+
+                                <span class="required">*</span>
+
+                            </div>
+
+                            <div class="package-type-help">
+
+                                Select whether this package is for learner theory
+                                or practical driving lessons.
+
+                            </div>
+
+
+                            <div class="package-options">
+
+
+                                <!-- DRIVING PACKAGE -->
+
+                                <div class="package-option">
+
+                                    <input type="radio"
+                                           id="drivingPackage"
+                                           name="IsLearnerTheoryPackage"
+                                           value="false"
+                                           @(Model.IsLearnerTheoryPackage ? "" : "checked") />
+
+                                    <label for="drivingPackage">
+
+                                        <div class="package-option-icon">
+
+                                            <i class="fa-solid fa-car"></i>
+
+                                        </div>
+
+                                        <div class="package-option-text">
+
+                                            <strong>
+                                                Driving Lesson Package
+                                            </strong>
+
+                                            <span>
+                                                Used for practical driving lessons
+                                                and lesson bookings.
+                                            </span>
+
+                                        </div>
+
+                                    </label>
+
+                                </div>
+
+
+                                <!-- THEORY PACKAGE -->
+
+                                <div class="package-option">
+
+                                    <input type="radio"
+                                           id="theoryPackage"
+                                           name="IsLearnerTheoryPackage"
+                                           value="true"
+                                           @(Model.IsLearnerTheoryPackage ? "checked" : "") />
+
+                                    <label for="theoryPackage">
+
+                                        <div class="package-option-icon">
+
+                                            <i class="fa-solid fa-book-open"></i>
+
+                                        </div>
+
+                                        <div class="package-option-text">
+
+                                            <strong>
+                                                Learner Theory Package
+                                            </strong>
+
+                                            <span>
+                                                Unlocks learner lessons, study
+                                                material, quizzes and results.
+                                            </span>
+
+                                        </div>
+
+                                    </label>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- LICENCE CODE -->
+
+                    <div class="form-group">
+
+                        <div class="license-code-box">
+
+                            <label class="form-label">
+
+                                <i class="fa-solid fa-id-card-clip"></i>
+
+                                Required Licence Code
+
+                            </label>
+
+                            @Html.DropDownListFor(
+                                model => model.RequiredLicenseCode,
+                                new SelectList(
+                                    new[]
+                                    {
+                                        "Code 8",
+                                        "Code 10",
+                                        "Code 14"
+                                    },
+                                    Model.RequiredLicenseCode
+                                ),
+                                "No licence code required",
+                                new
+                                {
+                                    @class = "form-control"
+                                }
+                            )
+
+                            <div class="license-code-help">
+
+                                Select the licence code required for this
+                                practical driving package. The system will use
+                                this code to match the student with the
+                                appropriate vehicle and instructor.
+
+                                For the Learner Theory Package, leave this
+                                field as "No licence code required".
+
+                            </div>
+
+                            @Html.ValidationMessageFor(
+                                model => model.RequiredLicenseCode)
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PACKAGE NAME -->
+
                     <div class="form-group">
 
                         <label class="form-label">
@@ -483,6 +779,8 @@
                     </div>
 
 
+                    <!-- NUMBER OF LESSONS -->
+
                     <div class="form-group">
 
                         <label class="form-label">
@@ -508,8 +806,19 @@
                         @Html.ValidationMessageFor(
                             model => model.NumberOfLessons)
 
+                        <div class="form-help">
+
+                            For driving packages, this is the number of practical
+                            lessons included. For the learner theory package,
+                            use 1 because it represents the complete theory
+                            programme.
+
+                        </div>
+
                     </div>
 
+
+                    <!-- PRICE -->
 
                     <div class="form-group">
 
@@ -539,6 +848,8 @@
                     </div>
 
 
+                    <!-- DESCRIPTION -->
+
                     <div class="form-group">
 
                         <label class="form-label">
@@ -562,6 +873,8 @@
 
                     </div>
 
+
+                    <!-- ACTIVE STATUS -->
 
                     <div class="form-group">
 
@@ -603,6 +916,8 @@
                     </div>
 
 
+                    <!-- ACTIONS -->
+
                     <div class="form-actions">
 
                         <a href="@Url.Action("Index", "AdminLessonPackages")"
@@ -636,3 +951,4 @@
 
 </body>
 </html>
+

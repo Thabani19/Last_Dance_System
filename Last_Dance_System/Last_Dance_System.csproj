@@ -212,11 +212,14 @@
     <Compile Include="Controllers\instructorController.cs" />
     <Compile Include="Controllers\InstructorDashboardController.cs" />
     <Compile Include="Controllers\InstructorLessonsController.cs" />
+    <Compile Include="Controllers\LearnerLessonsController.cs" />
     <Compile Include="Controllers\LessonsController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NotificationController.cs" />
     <Compile Include="Controllers\PackageController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
+    <Compile Include="Controllers\QuizController.cs" />
+    <Compile Include="Controllers\QuizResultsController.cs" />
     <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\StudentFeedbackController.cs" />
     <Compile Include="Controllers\VehicleController.cs" />
@@ -295,6 +298,34 @@
     <Compile Include="Migrations\202608312045266_AddInstructorFeedback.Designer.cs">
       <DependentUpon>202608312045266_AddInstructorFeedback.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202609210952390_AddLearnerLessons.cs" />
+    <Compile Include="Migrations\202609210952390_AddLearnerLessons.Designer.cs">
+      <DependentUpon>202609210952390_AddLearnerLessons.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202609211722423_AddQuizQuestions.cs" />
+    <Compile Include="Migrations\202609211722423_AddQuizQuestions.Designer.cs">
+      <DependentUpon>202609211722423_AddQuizQuestions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202609211800547_AddQuizResults.cs" />
+    <Compile Include="Migrations\202609211800547_AddQuizResults.Designer.cs">
+      <DependentUpon>202609211800547_AddQuizResults.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202609211836213_AddQuizAttemptId.cs" />
+    <Compile Include="Migrations\202609211836213_AddQuizAttemptId.Designer.cs">
+      <DependentUpon>202609211836213_AddQuizAttemptId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202609220622034_AddLearnerTheoryPackageFlag.cs" />
+    <Compile Include="Migrations\202609220622034_AddLearnerTheoryPackageFlag.Designer.cs">
+      <DependentUpon>202609220622034_AddLearnerTheoryPackageFlag.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202609220755489_AddLicenseCodeToVehicle.cs" />
+    <Compile Include="Migrations\202609220755489_AddLicenseCodeToVehicle.Designer.cs">
+      <DependentUpon>202609220755489_AddLicenseCodeToVehicle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202609220842240_AddInstructorToStudentPackage.cs" />
+    <Compile Include="Migrations\202609220842240_AddInstructorToStudentPackage.Designer.cs">
+      <DependentUpon>202609220842240_AddInstructorToStudentPackage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Administrator.cs" />
@@ -304,6 +335,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Instructor.cs" />
     <Compile Include="Models\InstructorFeedback.cs" />
+    <Compile Include="Models\LearnerLesson.cs" />
     <Compile Include="Models\LessonCodeGenerator.cs" />
     <Compile Include="Models\LessonPackage.cs" />
     <Compile Include="Models\LessonProgress.cs" />
@@ -313,6 +345,8 @@
     <Compile Include="Models\Notification.cs" />
     <Compile Include="Models\PackagePayment.cs" />
     <Compile Include="Models\Payment.cs" />
+    <Compile Include="Models\QuizQuestion.cs" />
+    <Compile Include="Models\QuizResult.cs" />
     <Compile Include="Models\Registration.cs" />
     <Compile Include="Models\Review.cs" />
     <Compile Include="Models\StudentCourse.cs" />
@@ -341,6 +375,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\Images\tk-favicon.png" />
     <Content Include="Content\landing_style.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -441,10 +476,17 @@
     <Content Include="Views\StudentFeedback\Details.cshtml" />
     <Content Include="Views\InstructorDashboard\GiveFeedback.cshtml" />
     <Content Include="Views\Dashboard\MyLessons.cshtml" />
+    <Content Include="Views\LearnerLessons\Index.cshtml" />
+    <Content Include="Views\LearnerLessons\Details.cshtml" />
+    <Content Include="Views\Quiz\Index.cshtml" />
+    <Content Include="Views\Quiz\Start.cshtml" />
+    <Content Include="Views\Quiz\Result.cshtml" />
+    <Content Include="Views\QuizResults\Index.cshtml" />
+    <Content Include="Views\Package\DeletePendingPackage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\Images\" />
+    <Folder Include="Content\Images\Lessons\" />
     <Folder Include="NewFolder1\" />
     <Folder Include="Views\NewFolder1\" />
     <Folder Include="Views\Vehicle\" />
@@ -530,6 +572,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202608312045266_AddInstructorFeedback.resx">
       <DependentUpon>202608312045266_AddInstructorFeedback.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202609210952390_AddLearnerLessons.resx">
+      <DependentUpon>202609210952390_AddLearnerLessons.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202609211722423_AddQuizQuestions.resx">
+      <DependentUpon>202609211722423_AddQuizQuestions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202609211800547_AddQuizResults.resx">
+      <DependentUpon>202609211800547_AddQuizResults.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202609211836213_AddQuizAttemptId.resx">
+      <DependentUpon>202609211836213_AddQuizAttemptId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202609220622034_AddLearnerTheoryPackageFlag.resx">
+      <DependentUpon>202609220622034_AddLearnerTheoryPackageFlag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202609220755489_AddLicenseCodeToVehicle.resx">
+      <DependentUpon>202609220755489_AddLicenseCodeToVehicle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202609220842240_AddInstructorToStudentPackage.resx">
+      <DependentUpon>202609220842240_AddInstructorToStudentPackage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
