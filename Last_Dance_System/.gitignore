@@ -1,0 +1,15 @@
+﻿# Visual Studio
+.vs/
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+
+# Local configuration containing secrets
+Web.Local.config
+
+# Environment files
+.env
+.env.*
